@@ -1,0 +1,15 @@
+#-- Compiled
+*.elf
+*.bin
+*.hex
+
+*.lss
+*.sym
+*.map
+
+*.o
+*.d
+
+#-- Build
+bin/
+obj/
