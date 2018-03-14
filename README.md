@@ -1,14 +1,15 @@
 Keyboard Controler
 ==================
 
-This is the start of my own USB Keyboard Controler on Teensy 3.2 with TFT ST7735 display. Called K.C. ("Kacey") for short.
+This is the start of my own USB Keyboard Controler on Teensy 3.2 with TFT ST7735 display.
+Called K.C. ("Kacey") for short.
 
 It uses code from repositories:
 * [PaulStoffregen cores](https://github.com/PaulStoffregen/cores/tree/master/teensy3) for teensy 3 core,
 * [sumotoy TFT_ST7735](https://github.com/sumotoy/TFT_ST7735/tree/1.0p1) for fast TFT ST7735 display
 * [Adafruit-GFX-Library](https://github.com/adafruit/Adafruit-GFX-Library) for drawing, combined with above
 
-Info about my previous keyboards on [My Website](http://cryham.tuxfamily.org/archives/portfolio/crystal-keyboard-3-and-4), this [Forum post](https://geekhack.org/index.php?topic=81312.0).
+Info about my previous keyboards on [My Website](http://cryham.tuxfamily.org/archives/portfolio/crystal-keyboard-3-and-4).
 
 Hardware
 --------
