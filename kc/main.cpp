@@ -1,5 +1,6 @@
 #include "WProgram.h"
 #include "usb_keyboard.h"
+#include "matrix.h"
 #include "plasma.h"
 #include "kbd_draw.h"
 #include "Ada4_ST7735.h"
@@ -27,11 +28,16 @@ int main()
 	char a[128];
 
 
-	int text = 3, plasma = 0;
+	//uint16_t scanNum = 0; // K
+	Matrix_setup();
+
+	int text = 3, key = 1, plasma = 0;
 
 
 	while(1)
 	{
+		Matrix_scan( 0 );  // K
+
 		#ifdef pin
 		digitalWriteFast(pin, LOW);
 		#endif
@@ -70,6 +76,18 @@ int main()
 			}
 			tft.setTextColor(0xFFFF);
 
+			//  matrix  -------
+			if (text == 2)
+			for (uint c=0; c < Matrix_colsNum; ++c)
+			for (uint r=0; r < Matrix_rowsNum; ++r)
+			{
+				tft.setCursor(c*16, 30 + r*8);
+				const KeyState& k = Matrix_scanArray[Matrix_colsNum * r + c];
+				sprintf(a,"%d", k.curState);
+				tft.print(a);
+			}
+			//Matrix_scan( 1 );  // K
+			//scanNum = 0;
 
 
 			//  fps  ---------
@@ -91,6 +109,10 @@ int main()
 			sprintf(a,"%2d:%02d:%02d  %d", h,m,s, c);
 			tft.print(a);
 
+			//  keys  ***
+			tft.setCursor(0,20); //hh-20);
+			sprintf(a,"P %d  R %d  H %d", cnt_press, cnt_rel, cnt_hold);
+			tft.print(a);
 
 			/*tft.setCursor(0,50); //hh-20);
 			sprintf(a,"txt %d  pls %d  key %d", text, plasma, key);
@@ -110,6 +132,48 @@ int main()
 		++c;
 
 
+		//  kbd
+		//------------------------------------------------
+		const int rr = Matrix_colsNum;
+		KeyState& k = Matrix_scanArray[0 * rr + 0];
+		k = Matrix_scanArray[1 * rr + 1];
+		if (k.curState == KeyState_Press)
+		{
+			++plasma;
+			if (plasma > 6)
+				plasma = 0;
+		}
+		k = Matrix_scanArray[0 * rr + 1];
+		if (k.curState == KeyState_Press)
+		{
+			++text;
+			if (text > 3)
+				text = 0;
+		}
+
+		k = Matrix_scanArray[1 * rr + 0];
+		if (k.curState == KeyState_Press)
+			key = 1 - key;
+
+		//------------------------------------------------
+		if (key)
+		{
+			//int u = 0;
+			for (uint c=2; c < Matrix_colsNum; ++c)
+			for (uint r=0; r < Matrix_rowsNum; ++r)
+			{
+				int id = rr * r + c;
+				k = Matrix_scanArray[id];
+				if (k.curState == KeyState_Press)
+				{	Keyboard.press(KEY_A + id);
+					Keyboard.send_now();
+				}
+				else if (k.curState == KeyState_Release)
+				{	Keyboard.release(KEY_A + id);
+					Keyboard.send_now();
+				}
+			}
+		}
 
 		if (text || plasma)
 			tft.display();
