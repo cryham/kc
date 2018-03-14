@@ -72,15 +72,8 @@
 #include "_includes/TFT_ST7735_registers.h"
 
 //Load sumotoy universal descriptors (used in many other libraries)
-#include "_includes/sumotoy_fontDescription.h"
 #include "_includes/sumotoy_imageDescription.h"
 #include "_includes/sumotoy_iconDescription.h"
-
-#if defined(_ST7735_DEF_FONT_PATH)
-	#include _ST7735_DEF_FONT_PATH
-#else
-	#include "_fonts/nullfont.c"
-#endif
 
 #if defined(ESP8266) && !defined(_ESP8266_STANDARDMODE)
 	#include <eagle_soc.h>
@@ -107,7 +100,7 @@ enum ST7735_iconMods { NONE=0,TRANSPARENT,REPLACE,BOTH};//0,1,2,3
 enum ST7735_centerMode { NORM=0,SCREEN,REL_X,REL_Y,REL_XY};//0,1,2,3,4
 
 #ifdef __cplusplus
-class TFT_ST7735 : public Print {
+class TFT_ST7735 {
 
  public:
 
@@ -180,22 +173,6 @@ class TFT_ST7735 : public Print {
 	void 		endPushData();
 	void 		drawImage(int16_t x, int16_t y,const tPicture *img,const enum ST7735_iconMods m=NONE,uint16_t b=BLACK);
 	void 		drawIcon(int16_t x, int16_t y,const tIcon *icon,uint8_t scale=1,uint16_t f=WHITE,uint16_t b=BLACK,bool inverse=false);
-	//------------------------------- TEXT ----------------------------------------------------
-    void		setTextColor(uint16_t color);
-    void		setTextColor(uint16_t frgrnd, uint16_t bckgnd);
-	void		setTextScale(uint8_t s);
-	void 		setTextScale(uint8_t sx,uint8_t sy);
-    void		setTextWrap(boolean w);
-	void		setCharSpacing(uint8_t space);
-	void 		setFontInterline(uint8_t distance);
-	void		setInternalFont(void);
-	void 		setFont(const tFont *font);
-	virtual size_t 	write(uint8_t b) { _textWrite((const char *)&b, 1); return 1;}
-	virtual size_t  write(const uint8_t *buffer, size_t size) {_textWrite((const char *)buffer, size); return size;}
-	//void		getStringBox(int16_t &w,int16_t &h);
-    //------------------------------- CURSOR ----------------------------------------------------
-	void		setCursor(int16_t x,int16_t y,enum ST7735_centerMode c=NORM);
-	void		getCursor(int16_t &x,int16_t &y);
 	//------------------------------- SCROLL ----------------------------------------------------
 	void 		defineScrollArea(int16_t tfa, int16_t bfa);
 
@@ -218,19 +195,7 @@ class TFT_ST7735 : public Print {
 	//void 			printPacket(word data,uint8_t count);
  protected:
 	int16_t					_width, _height;
-	volatile int16_t		_cursorX, _cursorY;
 
-	int						_spaceCharWidth;
-	const tFont   		*	_currentFont;
-	uint8_t					_charSpacing;
-	uint16_t 				_textForeground;
-	uint16_t 				_textBackground;
-	uint8_t					_textScaleX;
-	uint8_t					_textScaleY;
-	uint8_t					_centerText;
-	uint8_t					_fontInterline;
-	boolean 				_textWrap; // If set, 'wrap' text at right edge of display
-	uint8_t					_fontRemapOffset;
 	/* fot remap offset will remap sections of char to other sections
 		0: no remap
 		1:minus to CAPITAL  if (c > 96 && c < 123) c -= 32;
@@ -774,35 +739,7 @@ class TFT_ST7735 : public Print {
 		int16_t 	sizeCheck(int16_t origin,int16_t len,int16_t maxVal);
 	#endif
 	//GPO
-	int						_STRlen_helper(const char* buffer,int len);
-	int						_getCharCode(uint8_t ch);
-	void					_textWrite(const char* buffer, uint16_t len);
-	bool					_renderSingleChar(const char c);
 	void 					_pushColors_cont(uint16_t data,uint32_t times);
-	void					_glyphRender_unc(
-											const _smCharType * charGlyp,//N
-											int16_t 	x,
-											int16_t 	y,
-											int 		charW,
-											int 		charH,
-											uint8_t 	scaleX,
-											uint8_t 	scaleY,
-											uint16_t 	totalBytes,
-											uint8_t 	cspacing,
-											uint16_t 	foreColor,
-											uint16_t 	backColor,
-											bool	 	inverse
-							);
-	void					_charLineRender(
-											bool 		lineBuffer[],
-											int 		charW,
-											int16_t 	x,
-											int16_t 	y,
-											uint8_t 	scaleX,
-											uint8_t 	scaleY,
-											int16_t 	currentYposition,
-											uint16_t 	foreColor
-							);
 };
 #endif
 #endif
