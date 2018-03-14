@@ -29,7 +29,7 @@
  */
 
 
-#include <Arduino.h>
+#include "avr_emulation.h"
 #include "SPIFIFO.h"
 
 uint8_t SPCRemulation::pinout = 0;
