@@ -27,7 +27,7 @@ int main()
 	char a[128];
 
 
-	int text = 3, plasma = 2;
+	int text = 3, plasma = 0;
 
 
 	while(1)
@@ -47,6 +47,27 @@ int main()
 		//------------------------------------------------
 		if (text)
 		{
+			//  kbd draw  ---------
+			if (text == 3)
+			{
+				int x = 0, y = 0;
+				for (int i=0; i < numKeys; ++i)
+				{
+					const SKey& k = keys[i];
+					if (k.x >=0)  x = k.x;  else  x -= k.x;
+					if (k.y > 0)  y = k.y + 60; /*Y*/  else  y -= k.y;
+	
+					tft.drawRect(x, y, k.w+1, k.h+1, clrRect[k.o]);
+					tft.setCursor(
+						k.o==5 || k.o==7 ? x + k.w - 6 :
+								k.o==3 ? x+1 : x+1,
+						k.h < H ? y :
+								k.o==3 ? y+1 : y+1);
+					tft.setTextColor(clrText[k.o]);
+					sprintf(a,"%c", k.c);
+					tft.print(a);
+				}
+			}
 			tft.setTextColor(0xFFFF);
 
 
