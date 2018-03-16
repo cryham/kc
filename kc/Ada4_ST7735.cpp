@@ -49,8 +49,8 @@ uint16_t* Ada4_ST7735::getBuffer()
 // the most basic function, set a single pixel
 void Ada4_ST7735::drawPixel(int16_t x, int16_t y, uint16_t color)
 {
-//  if (x < 0 || x >= ww || y < 0 || y >= hh)
-//    return;
+	if (x < 0 || x >= ww || y < 0 || y >= hh)
+		return;
 
 	buffer[x + ww*y] = color;
 }
@@ -91,6 +91,15 @@ void Ada4_ST7735::print(const char* str)
 void Ada4_ST7735::print(char c)
 {
 	write(c);
+}
+
+static char ch[32];
+void Ada4_ST7735::println(int i)
+{
+	sprintf(ch,"%d",i);
+	print(ch);
+	cursor_x = 0;
+	cursor_y += 8;
 }
 
 

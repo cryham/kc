@@ -1,15 +1,20 @@
 #include "WProgram.h"
+
 #include "usb_keyboard.h"
 #include "matrix.h"
+
 #include "plasma.h"
-#include "kbd_draw.h"
+#include "demos.h"
+
 #include "Ada4_ST7735.h"
+//#include "kbd_draw.h"
 
 //  vars
 unsigned long tm;
 uint32_t oldti = 0;  // dt
 uint c=0;   // frame counter
 //#define pin 6
+Demos demos;
 
 
 //------------------------------------------------------------------------------------
@@ -31,7 +36,9 @@ int main()
 	//uint16_t scanNum = 0; // K
 	Matrix_setup();
 
-	int text = 3, key = 1, plasma = 0;
+	int text = 1, key = 0, plasma = 4;
+	/*EDemo*/ int demo = D_Hedrons;
+	demos.Init();
 
 
 	while(1)
@@ -45,15 +52,32 @@ int main()
 
 		// C 11- 13fps, 0 37fps, >2 20fps  txt 55fps 3ln
 		//------------------------------------------------
-		if (plasma)
-			Plasma(plasma);
-		else
+		if (demo != D_Rain)
 			tft.clear();
+
+//		if (plasma)
+//			Plasma(plasma);
+		switch (demo)
+		{
+		case D_Plasma:    Plasma(plasma);  break;
+		case D_None:  break;
+		case D_Space:  demos.Space(tft);  break;
+		case D_Balls:  demos.Balls(tft);  break;
+		case D_Rain:   demos.Rain(tft);  break;
+		case D_Fountain:  demos.Fountain(tft);  break;
+		case D_Ngons:     demos.Ngons(tft);  break;
+		case D_Hedrons:   demos.Hedrons(tft);  break;
+		case D_CK_Logo:   demos.CK_logo(tft);  break;
+		}
+
+//		case 1: clD  Font_ver(d, false);  break;
+//		case 2: clD  Chars(d,0);  break;
 
 		//------------------------------------------------
 		if (text)
 		{
 			//  kbd draw  ---------
+			#if 0
 			if (text == 3)
 			{
 				int x = 0, y = 0;
@@ -74,6 +98,7 @@ int main()
 					tft.print(a);
 				}
 			}
+			#endif
 			tft.setTextColor(0xFFFF);
 
 			//  matrix  -------
@@ -103,27 +128,26 @@ int main()
 			oldti = ti;
 
 			//  time  ---
+			if (text == 3)
+			{
 			tm = rtc_get();
 			int h = tm/3600%24, m = tm/60%60, s = tm%60;
 			tft.setCursor(0,8); //hh-20);
 			sprintf(a,"%2d:%02d:%02d  %d", h,m,s, c);
 			tft.print(a);
+			}
 
 			//  keys  ***
+			if (text == 2)
+			{
 			tft.setCursor(0,20); //hh-20);
 			sprintf(a,"P %d  R %d  H %d", cnt_press, cnt_rel, cnt_hold);
 			tft.print(a);
-
+			}
 			/*tft.setCursor(0,50); //hh-20);
 			sprintf(a,"txt %d  pls %d  key %d", text, plasma, key);
 			//sprintf(a,"%f", fr);
 			tft.print(a);*/
-			}
-
-			if (!plasma)
-			{
-				//delay(1);  // delay
-				//tft.display();
 			}
 		}
 		#ifdef pin
@@ -135,26 +159,35 @@ int main()
 		//  kbd
 		//------------------------------------------------
 		const int rr = Matrix_colsNum;
-		KeyState& k = Matrix_scanArray[0 * rr + 0];
-		k = Matrix_scanArray[1 * rr + 1];
-		if (k.curState == KeyState_Press)
+		#define K(y,x)  (Matrix_scanArray[y * rr + x].curState == KeyState_Press ? 1 : 0)
+
+		if (K(1,1))
 		{
-			++plasma;
-			if (plasma > 6)
-				plasma = 0;
+			++demo;
+			if (demo >= D_All)
+				demo = D_None;
 		}
-		k = Matrix_scanArray[0 * rr + 1];
-		if (k.curState == KeyState_Press)
+		if (K(0,1))
 		{
 			++text;
 			if (text > 3)
 				text = 0;
 		}
 
-		k = Matrix_scanArray[1 * rr + 0];
-		if (k.curState == KeyState_Press)
-			key = 1 - key;
+//		if (K(0,1))
+//			key = 1 - key;
 
+		//  demo keys
+		int k = K(0,3) - K(0,2), e = K(1,2) - K(1,3);
+		demos.KeyPress((EDemo)demo, k, e, K(0,1), 0);
+		if (demo == D_Plasma && k != 0)
+			plasma += k;
+
+//		tft.setCursor(0, 108);
+//		sprintf(a,"k %d  e %d", k, e);
+//		tft.print(a);
+
+		//  keyboard send
 		//------------------------------------------------
 		if (key)
 		{
@@ -163,7 +196,7 @@ int main()
 			for (uint r=0; r < Matrix_rowsNum; ++r)
 			{
 				int id = rr * r + c;
-				k = Matrix_scanArray[id];
+				const KeyState& k = Matrix_scanArray[id];
 				if (k.curState == KeyState_Press)
 				{	Keyboard.press(KEY_A + id);
 					Keyboard.send_now();
@@ -175,7 +208,7 @@ int main()
 			}
 		}
 
-		if (text || plasma)
+		if (text || demo > D_None)
 			tft.display();
 	}
 }

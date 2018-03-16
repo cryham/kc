@@ -1,27 +1,24 @@
 #include "WProgram.h"
 #include "plasma.h"
+#include "demos.h"  // sint
 
-//  sin table  ----
-//#define SX  8192   // 8192  mem size 16kB
-#define SX  16384
-#define SY  16384  // 16384  y quality
-#define Cos(x)  sint[(SX/2+(x))%SX]
-#define Sin(x)  sint[      (x) %SX]
 
-const int16_t sint[SX] =
-{	// flash
-	//#include "sint8k.h"
-	#include "sint16k.h"
-};
-
+//  buffer, dim
 uint16_t* data = 0;
-int ww = 160, hh = 128;
+uint ww = 160, hh = 128;
 
 uint t;
 int8_t tadd[5];   // speed
 
 
-void PlasmaInit(uint16_t* buf, int w, int h)
+const int16_t sint[SX] =
+{	// flash
+	#include "sint8k.h"
+	//#include "sint16k.h"
+};
+
+
+void PlasmaInit(uint16_t* buf, uint w, uint h)
 {
 	data = buf;
 	ww = w;  hh = h;
@@ -32,12 +29,12 @@ void PlasmaInit(uint16_t* buf, int w, int h)
 
 void Plasma(int plasma)
 {
-		 if (plasma == 1)  Plasma0();
-	else if (plasma == 2)  Plasma1();
-	else if (plasma == 3)  Plasma2();
-	else if (plasma == 4)  Plasma3();
-	else if (plasma == 5)  Plasma4();
-	else if (plasma == 6)  PlasmaC();
+		 if (plasma == 1)  PlasmaC();
+	else if (plasma == 2)  Plasma0();
+	else if (plasma == 3)  Plasma1();
+	else if (plasma == 4)  Plasma2();
+	else if (plasma == 5)  Plasma3();
+	else if (plasma == 6)  Plasma4();
 }
 
 void Plasma0()
@@ -186,9 +183,13 @@ void Plasma2()
 			xx[0]+=111; xx[1]+=75; xx[2]+=100; xx[3]+=97; xx[4]+=114; xx[5]+=43;
 			xx[6]+=91; xx[7]+=103; xx[8]+=124; xx[9]+=88; xx[10]+=132; xx[11]+=17;
 
-			//c /= SY*(SY/14);  c = 64-max(0, 64-abs(c*2-64));  //^
-			c /= SY*(SY/20);  c = abs(64-max(0, c*2-64));  //^
-			data[a] = ((c/6)<<6) + ((c/8)<<11);
+			c /= SY*(SY/18);  c = abs(31-max(0, c-31));  //^
+//			c /= SY*(SY/14);  c = 31-max(0, 31-abs(c-31));  //^
+//			data[a] = ((c/6)<<6) + ((c/8)<<11);
+
+			//c /= SY*(SY/12);
+			data[a] = ((c/3)<<6) + ((c/4)<<11);
+
 		}
 		yy[0]+=71; yy[1]+=136; yy[2]+=128; yy[3]+=82; yy[4]+=78; yy[5]+=149;
 		yy[6]+=93; yy[7]+=56; yy[8]+=113; yy[9]+=109; yy[10]+=121; yy[11]+=132;

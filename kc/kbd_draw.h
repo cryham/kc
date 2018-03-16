@@ -11,7 +11,12 @@ struct SKey
 };
 
 #define Emax 9
-const int16_t  W = 8, X = -W,  H = 9, G = 6,  NX = 127;  // add x, size
+#define W 8
+#define X -W
+#define H 9
+#define G 6
+#define NX 127  // add x, size
+//const int16_t  W = 8, X = -W,  H = 9, G = 6,  NX = 127;  // add x, size
 
 
 #define RGB(r,g,b) ((r<<11)+ ((g)<<6) +b)	// R F800  G 07E0  B 001F  R 32 G 64 B 32
