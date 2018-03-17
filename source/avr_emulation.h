@@ -979,7 +979,7 @@ public:
 		if ((val & (1<<CPHA)) && (SPI0_CTAR0 & SPI_CTAR_CPHA)) ret |= (1<<CPHA);
 		if ((val & 3) != 0) {
 			uint32_t dbr = SPI0_CTAR0 & 15;
-			uint32_t spr10;
+			uint32_t spr10 = 0;
 			if (dbr <= 1) {
 				spr10 = 0;
 			} else if (dbr <= 4) {
