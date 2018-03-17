@@ -3,7 +3,6 @@
 #include "usb_keyboard.h"
 #include "matrix.h"
 
-#include "plasma.h"
 #include "demos.h"
 
 #include "Ada4_ST7735.h"
@@ -23,7 +22,6 @@ int main()
 	Ada4_ST7735 tft;
 	tft.begin();
 
-	PlasmaInit(tft.getBuffer(),160,128);
 	tm = rtc_get();
 
 	#ifdef pin
@@ -36,9 +34,9 @@ int main()
 	//uint16_t scanNum = 0; // K
 	Matrix_setup();
 
-	int text = 1, key = 0, plasma = 4;
-	/*EDemo*/ int demo = D_Hedrons;
-	demos.Init();
+	int text = 1, key = 0;
+	/*EDemo*/ int demo = D_Plasma;
+	demos.Init(&tft);
 
 
 	while(1)
@@ -50,28 +48,25 @@ int main()
 		#endif
 
 
-		// C 11- 13fps, 0 37fps, >2 20fps  txt 55fps 3ln
+		// PlasmaC 11- 13fps, 0 37fps, >2 20fps  txt 55fps 3ln
 		//------------------------------------------------
 		if (demo != D_Rain)
 			tft.clear();
 
-//		if (plasma)
-//			Plasma(plasma);
 		switch (demo)
 		{
-		case D_Plasma:    Plasma(plasma);  break;
+		case D_Plasma:   demos.Plasma();  break;
 		case D_None:  break;
-		case D_Space:  demos.Space(tft);  break;
-		case D_Balls:  demos.Balls(tft);  break;
-		case D_Rain:   demos.Rain(tft);  break;
-		case D_Fountain:  demos.Fountain(tft);  break;
-		case D_Ngons:     demos.Ngons(tft);  break;
-		case D_Hedrons:   demos.Hedrons(tft);  break;
-		case D_CK_Logo:   demos.CK_logo(tft);  break;
+		case D_Space:    demos.Space();  break;
+		case D_Balls:    demos.Balls();  break;
+		case D_Rain:     demos.Rain();  break;
+		case D_Fountain: demos.Fountain();  break;
+		case D_Ngons:    demos.Ngons();  break;
+		case D_Hedrons:  demos.Hedrons();  break;
+		case D_CK_Logo:  demos.CK_logo();  break;
+		//case 1: clD  Font_ver(d, false);  break;
+		//case 2: clD  Chars(d,0);  break;
 		}
-
-//		case 1: clD  Font_ver(d, false);  break;
-//		case 2: clD  Chars(d,0);  break;
 
 		//------------------------------------------------
 		if (text)
@@ -174,18 +169,13 @@ int main()
 				text = 0;
 		}
 
-//		if (K(0,1))
-//			key = 1 - key;
+		//if (K(0,1))
+		//	key = 1 - key;
 
 		//  demo keys
-		int k = K(0,3) - K(0,2), e = K(1,2) - K(1,3);
+		int k = K(0,3) - K(0,2), e = K(1,3) - K(1,2);
 		demos.KeyPress((EDemo)demo, k, e, K(0,1), 0);
-		if (demo == D_Plasma && k != 0)
-			plasma += k;
 
-//		tft.setCursor(0, 108);
-//		sprintf(a,"k %d  e %d", k, e);
-//		tft.print(a);
 
 		//  keyboard send
 		//------------------------------------------------

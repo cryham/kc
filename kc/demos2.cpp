@@ -37,11 +37,11 @@ const static int  cw[2][8] = {  // centers xw1,xw2, yw1,yw2,  amplitudes same
 	{496,402, 130,180,  222,262, 362,282},
 	{496,502,  50,320,  222,312, 482,342}};
 	
-void Demos::CK_logo(D d)
+void Demos::CK_logo()
 {
 	#define K 1024  // wave																		// scale ofs
-	#define CX(x) {  x = w-cx;  x = ( (x*(K +ax*Cos(8*w      +tt[0])/SY*Sin(7*w      +tt[1])/SY) /K) +cx)/7 +6;  }
-	#define CY(y) {  y = w-cy;  y = ( (y*(K +ay*Cos(9*w+ x*73+tt[2])/SY*Sin(6*w+ x*52+tt[3])/SY) /K) +cy)/8 -1;  }
+	#define CX(x) {  x = w-cx;  x = ( (x*(K +ax*Cos(8*w      +tt[0])/SY*Sin(7*w      +tt[1])/SY) /K) +cx)/7 +11;  }
+	#define CY(y) {  y = w-cy;  y = ( (y*(K +ay*Cos(9*w+ x*73+tt[2])/SY*Sin(6*w+ x*52+tt[3])/SY) /K) +cy)/8 +29;  }
 
 	const uint tt[4] = {t*7,t*5,t*8,t*5};
 	for (int w2=0; w2<2; ++w2)
@@ -62,16 +62,16 @@ void Demos::CK_logo(D d)
 				case 1:  y1=y;  CY(y)  i=2;  break;  }
 
 			if (i==2)
-			{	i=0;  d.drawLine(x1+5,y1+30, x+5,y+30, 31 + ((a/4)<<6) + ((a/2)<<11));  }
+			{	i=0;  d->drawLine(x1,y1, x,y, 31 + ((a/3)<<6) + ((a/2)<<11));  }
 		}
 		while (w >= 0);
 	}
 
 	if (iInfo > 0)
 	{
-		d.setCursor(0,8);
-		d.print("Cur ");  d.println(ckCur);
-		d.print("Spd ");  d.println(ckSpeed);
+		d->setCursor(0,8);
+		d->print("Cur ");  d->println(ckCur);
+		d->print("Spd ");  d->println(ckSpeed);
 	}
 
 	t += ckSpeed;
@@ -330,7 +330,7 @@ const float    SCa[ALL] = { 1.18, 1.18, 1.26, 1.26, 1.35, 1.35, 1.35, 1.35,  1.3
 
 
 ///  Draw 3D
-void Demos::Hedrons(D d)
+void Demos::Hedrons()
 {
 	if (hdtOn)
 	{	++hdt;
@@ -401,7 +401,7 @@ void Demos::Hedrons(D d)
 		if (px[i]<0 || px[i]>=W || py[i]<0 || py[i]>=H)
 			c[i] = -1;  // outside
 		//c[i] = z < zz ? 1 : 0;
-		//d.drawPixel(px[i], py[i],WHITE);
+		//d->drawPixel(px[i], py[i],WHITE);
 	}
 	
 	//  draw far/covered edges  --
@@ -410,7 +410,7 @@ void Demos::Hedrons(D d)
 		int e0 = ee[a++], e1 = ee[a++];
 		int8_t cc = max(c[e0],c[e1]);
 		if (cc==0)
-			d.drawLine( px[e0],py[e0], px[e1],py[e1], cl[e0]);
+			d->drawLine( px[e0],py[e0], px[e1],py[e1], cl[e0]);
 	}
 
 	//  draw far faces  /|
@@ -420,7 +420,7 @@ void Demos::Hedrons(D d)
 		int f0 = ff[a++], f1 = ff[a++], f2 = ff[a++];
 		int8_t cc = min(c[f0],c[f1]);  cc = min(cc,c[f2]);
 		if (cc==0)
-			d.fillTriangle( px[f0],py[f0], px[f1],py[f1], px[f2],py[f2], cl[f0]);
+			d->fillTriangle( px[f0],py[f0], px[f1],py[f1], px[f2],py[f2], cl[f0]);
 	}
 
 	//  draw near/visible edges  --
@@ -429,7 +429,7 @@ void Demos::Hedrons(D d)
 		int e0 = ee[a++], e1 = ee[a++];
 		int8_t cc = max(c[e0],c[e1]);
 		if (cc>0)
-			d.drawLine( px[e0],py[e0], px[e1],py[e1], cl[e0]);
+			d->drawLine( px[e0],py[e0], px[e1],py[e1], cl[e0]);
 	}
 	
 	//  draw near faces  /|
@@ -439,18 +439,18 @@ void Demos::Hedrons(D d)
 		int f0 = ff[a++], f1 = ff[a++], f2 = ff[a++];
 		int8_t cc = min(c[f0],c[f1]);  cc = min(cc,c[f2]);
 		if (cc>0)
-			d.fillTriangle( px[f0],py[f0], px[f1],py[f1], px[f2],py[f2], cl[f0]);
+			d->fillTriangle( px[f0],py[f0], px[f1],py[f1], px[f2],py[f2], cl[f0]);
 	}
 
 	if (iInfo > 0)
 	{
-		d.setCursor(0,8);
-		d.print("Cur ");  d.println(hdCur);
-		d.print("Rot ");  d.println(hdRot);
-		//if (hdtOn)  d.println("On");
+		d->setCursor(0,8);
+		d->print("Cur ");  d->println(hdCur);
+		d->print("Rot ");  d->println(hdRot);
+		//if (hdtOn)  d->println("On");
 	}
 	++t;
-	delay(8);
+//	delay(6);
 }
 
 #endif

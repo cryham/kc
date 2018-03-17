@@ -11,7 +11,7 @@
 
 //  regular polygons with diagonals
 //....................................................................................
-void Demos::Ngons(D d)
+void Demos::Ngons()
 {
 	#define ngtM 200
 	float a=0, b=0, e = 2*PI / ngCur;  // angles
@@ -35,7 +35,7 @@ void Demos::Ngons(D d)
 		{
 			float xa = xx + sy*cos(a+c), ya = yy - sy*sin(a+c);
 			if (a != b)
-				d.drawLine(xb, yb, xa, ya, 0xFF00 + 0x1*cc);
+				d->drawLine(xb, yb, xa, ya, 0xFF00 + 0x1*cc);
 			++cc;
 		}
 	}
@@ -45,11 +45,11 @@ void Demos::Ngons(D d)
 
 	if (iInfo > 0)
 	{
-		d.setCursor(0,8);
-		d.print("An ");  d.println(ngRot);
+		d->setCursor(0,8);
+		d->print("An ");  d->println(ngRot);
 
-		d.setCursor(0, H-8);
-		d.println(ngCur);  // n sides
+		d->setCursor(0, H-8);
+		d->println(ngCur);  // n sides
 	}
 
 	delay(ngMax - ngCur + 1);
@@ -58,40 +58,40 @@ void Demos::Ngons(D d)
 
 //  Rain circles
 //....................................................................................
-void Demos::Rain(D d)
+void Demos::Rain()
 {
 	int x,y,r,i, s = rCur ? r2Size : r1Size;
 	#define RClr  random(0xAF) * 0x100 + 0xFF
 	if (!rCur)  // 0
-	{		x=random(W); y=random(H);  r= random(26);  d.drawCircle(x,y,r,BLACK);
-			x=random(W); y=random(H);  r= random(24);  d.drawCircle(x,y,r,BLACK);
-			x=random(W); y=random(H);  r= random(20);  d.drawCircle(x,y,r,BLACK);
+	{		x=random(W); y=random(H);  r= random(26);  d->drawCircle(x,y,r,0);
+			x=random(W); y=random(H);  r= random(24);  d->drawCircle(x,y,r,0);
+			x=random(W); y=random(H);  r= random(20);  d->drawCircle(x,y,r,0);
 
 		if (random(100) < 30 + r1Int * 5)
-		{	x=random(W); y=random(H);  r= random(6+s)+1+s;  d.drawCircle(x,y,r,RClr);
+		{	x=random(W); y=random(H);  r= random(6+s)+1+s;  d->drawCircle(x,y,r,RClr);
 		}
 	}else  // 1
 	{
 		for (i=0; i < 12 + r2Int; ++i)
 		{
-			if (random(400) < 10) {  x=random(W); y=random(H);  r= random(28)+20;  d.drawCircle(x,y,r,BLACK);  }
-			if (random(200) < 10) {  x=random(W); y=random(H);  r= random(20)+16;  d.drawCircle(x,y,r,BLACK);  }
-			if (random(100) < 20) {  x=random(W); y=random(H);  r= random(14)+14;  d.drawCircle(x,y,r,BLACK);  }
-			if (random(10)  < 3)  {  x=random(W); y=random(H);  r= random(10)+1;   d.drawCircle(x,y,r,BLACK);  }
+			if (random(400) < 10) {  x=random(W); y=random(H);  r= random(28)+20;  d->drawCircle(x,y,r,0);  }
+			if (random(200) < 10) {  x=random(W); y=random(H);  r= random(20)+16;  d->drawCircle(x,y,r,0);  }
+			if (random(100) < 20) {  x=random(W); y=random(H);  r= random(14)+14;  d->drawCircle(x,y,r,0);  }
+			if (random(10)  < 3)  {  x=random(W); y=random(H);  r= random(10)+1;   d->drawCircle(x,y,r,0);  }
 		}
 		for (i=0; i < 2 + r2Int; ++i)  //if (random(10) < 8)
 		{
-			if (random(600) < 30) {  x=random(W); y=random(H);  r= s+random(6+s)+3;  d.drawCircle(x,y,r,RClr);  }
-			if (random(300) < 40) {  x=random(W); y=random(H);  r= s+random(5+s)+4;  d.drawCircle(x,y,r,RClr);  }
-			if (random(100) < 50) {  x=random(W); y=random(H);  r= s+random(4)+2;  d.drawCircle(x,y,r,RClr);  }
-									 x=random(W); y=random(H);  r= random(3)+1;  d.drawCircle(x,y,r,RClr);
+			if (random(600) < 30) {  x=random(W); y=random(H);  r= s+random(6+s)+3;  d->drawCircle(x,y,r,RClr);  }
+			if (random(300) < 40) {  x=random(W); y=random(H);  r= s+random(5+s)+4;  d->drawCircle(x,y,r,RClr);  }
+			if (random(100) < 50) {  x=random(W); y=random(H);  r= s+random(4)+2;  d->drawCircle(x,y,r,RClr);  }
+									 x=random(W); y=random(H);  r= random(3)+1;  d->drawCircle(x,y,r,RClr);
 	}	}
 	if (iInfo > 0)
 	{
-		d.setCursor(0,8);
-		d.print("Int ");  d.println(rCur ? r2Int : r1Int);
-		d.print("Size "); d.println(s);
-		d.print("Cur ");  d.println(rCur);
+		d->setCursor(0,8);
+		d->print("Int ");  d->println(rCur ? r2Int : r1Int);
+		d->print("Size "); d->println(s);
+		d->print("Cur ");  d->println(rCur);
 	}
 	delay(8);
 }
@@ -100,47 +100,47 @@ void Demos::Rain(D d)
 
 //  text fonts
 //....................................................................................
-void Demos::Font_ver(D d, bool st)
+void Demos::Font_ver(bool st)
 {
 	if (!st)  // demo
-	{	d.setCursor(0,10);  // logo
-//		d.setFont(&FreeSans9pt7b/*FreeSans12pt7b*/);
-		d.print("CrystaL");
+	{	d->setCursor(0,10);  // logo
+//		d->setFont(&FreeSans9pt7b/*FreeSans12pt7b*/);
+		d->print("CrystaL");
 
-		d.setCursor(36,32);
-//		d.setFont(&FreeSans9pt7b);
-		d.print("Keyboard");
-		d.setFont(0);
+		d->setCursor(36,32);
+//		d->setFont(&FreeSans9pt7b);
+		d->print("Keyboard");
+		d->setFont(0);
 	}
 	if (st)
-	{	d.setCursor(0, H-3-2*8);
-		d.print("Ver");
-		d.setCursor(6*5, H-3-2*8);
+	{	d->setCursor(0, H-3-2*8);
+		d->print("Ver");
+		d->setCursor(6*5, H-3-2*8);
 	}else
-		d.setCursor(96, 0);
+		d->setCursor(96, 0);
 	
-	d.print("3.25");  /// version text
+	d->print("3.25");  /// version text
 	
-	d.setCursor(0, H-8);
+	d->setCursor(0, H-8);
 	const char* a={__DATE__}, *m={__TIME__};
 	const char dt[] = {
 		//  build date, time  format yyyy-mmm-dd hh:mm
 		a[7],a[8],a[9],a[10],' ',a[0],a[1],a[2],' ',a[4],a[5],' ',' ',m[0],m[1],':',m[3],m[4],0};
-	d.print(dt);
+	d->print(dt);
 }
 
 #ifdef DEMOS
 //  text all chars   128x64 = 20x8
-void Demos::Chars(D d, uint8_t set)
+void Demos::Chars(uint8_t set)
 {
-	d.setCursor(0,8);
+	d->setCursor(0,8);
 	uint8_t cc = set*128;
 
 	for (int i=0; i < 128; i++)
 	{	if (i == '\n') continue;
-		d.write(cc + i);
+		d->write(cc + i);
 		if (i > 0 && (i % 20 == 0))
-		  d.print('\n');
+		  d->print('\n');
 	}
 }
 
@@ -165,7 +165,7 @@ void Demos::BallsInit()
 	einit = IBalls;
 }
 
-void Demos::Balls(D d)
+void Demos::Balls()
 {
 	if (einit != IBalls)
 		BallsInit();
@@ -177,18 +177,18 @@ void Demos::Balls(D d)
 		b.x += b.vx;  b.y += b.vy;
 
 		if (b.r)
-			d.drawCircle(b.x/bDet, b.y/bDet, b.r, b.c);
+			d->drawCircle(b.x/bDet, b.y/bDet, b.r, b.c);
 		else
-			d.drawPixel(b.x/bDet, b.y/bDet, b.c);
+			d->drawPixel(b.x/bDet, b.y/bDet, b.c);
 	}
 
 	if (iInfo > 0)
 	{
-		d.setCursor(0,8);
-		d.print("Cnt ");  d.println(bCnt);
-		d.print("Spd ");  d.println(bSpd);
-		d.print("Rnd ");  d.println(bSpRnd);
-		d.print("Rad ");  d.println(bRad);
+		d->setCursor(0,8);
+		d->print("Cnt ");  d->println(bCnt);
+		d->print("Spd ");  d->println(bSpd);
+		d->print("Rnd ");  d->println(bSpRnd);
+		d->print("Rad ");  d->println(bRad);
 	}
 	delay(3);
 }
@@ -216,7 +216,7 @@ void Demos::Star(int i)
 	star[i].v = random(sDet*sVel/2) + sDet*sVel/4;  // speed
 	star[i].c = random(0xFF) * 0x100 + 0xFF;
 }
-void Demos::Space(D d)
+void Demos::Space()
 {
 	if (einit != ISpace)
 		SpaceInit();
@@ -226,7 +226,7 @@ void Demos::Space(D d)
 		int z = star[i].z + 1*sDet;
 		int x = star[i].x/z / sDet +W/2;  // pos 3d to 2d
 		int y = star[i].y/z / sDet +H/2;
-		d.drawPixel(x,y, star[i].c);
+		d->drawPixel(x,y, star[i].c);
 			
 		star[i].z -= star[i].v;
 		if (x < 0 || x > W ||
@@ -238,9 +238,9 @@ void Demos::Space(D d)
 	}
 	if (iInfo > 0)
 	{
-		d.setCursor(0,8);
-		d.print("Cnt ");  d.println(sCnt);
-		d.print("Vel ");  d.println(sVel);
+		d->setCursor(0,8);
+		d->print("Cnt ");  d->println(sCnt);
+		d->print("Vel ");  d->println(sVel);
 	}
 	delay(8);  // ms - limit to 100 fps
 }
@@ -255,7 +255,7 @@ void Demos::FountainInit()
 	einit = IDrops;
 }
 
-void Demos::Fountain(D d)
+void Demos::Fountain()
 {
 	if (einit != IDrops)
 		FountainInit();
@@ -278,7 +278,7 @@ void Demos::Fountain(D d)
 				y >= H)  // outside
 			{	o.t = -1;  }
 			else
-				d.drawPixel(x,y, o.c);
+				d->drawPixel(x,y, o.c);
 		}
 		else  // spawn new
 		if (nn < fInt)  // max 9
@@ -299,12 +299,12 @@ void Demos::Fountain(D d)
 
 	if (iInfo > 0)
 	{
-		d.setCursor(0,8);
-		d.print("Int ");  d.println(fInt);
-		d.print("Spd ");  d.println(fWave);
+		d->setCursor(0,8);
+		d->print("Int ");  d->println(fInt);
+		d->print("Spd ");  d->println(fWave);
 
-		d.setCursor(0, H-8);
-		d.println(io);  // drops used
+		d->setCursor(0, H-8);
+		d->println(io);  // drops used
 	}
 
 	t += fWave;

@@ -8,10 +8,6 @@
 #define W 160  // area
 #define H 128
 
-#define D  Ada4_ST7735&
-
-#define WHITE 0xFFFF
-#define BLACK 0x0000
 
 //  sin table  ----
 #define SX  8192   // 8192  mem size 16kB
@@ -33,32 +29,41 @@ struct Demos
 {
 	//  main  ----
 	Demos();
-	void Init();  //, Reset(D d), KeyGlob(D d);
+
+	Ada4_ST7735* d;
+	uint16_t* data = 0;  // buffer
+
+	void Init(Ada4_ST7735* tft);  //, Reset(D d), KeyGlob(D d);
 //	void Draw(D d, int8_t menu, int8_t ym, int8_t ym2);
 
-	int8_t dim;  // dim display toggle
 	int8_t fps;  // show frames per second, 1 on, 0 off
 	uint32_t ti, oti;  // fps: time us, old
 
-	static void Font_ver(D d, bool st);  // ver, date, st - in status or demo
+	void Font_ver(bool st);  // ver, date, st - in status or demo
 
 #ifdef DEMOS
 	int8_t iPrev;   // prev demo, for init
 	int16_t iInfo;
 	int8_t iInfoOff;  // params info text
 	const static int8_t iOff = 2;
-//	void KeyPress(int8_t demo, int8_t ym, int8_t ym2);
 	void KeyPress(EDemo demo, int k, int e, int ct, int kinf);
 
 
-	uint t;  // frame counter
 	//  Plasma
-	int8_t tadd[5];  // speed
+	uint t;  // frame counter
+	int8_t plasma;  // cur mode
+	const static int8_t num_plasma = 6;
+	int8_t tadd[num_plasma];  // speeds
+
+	void Plasma(), PlasmaT(int8_t dt);
+	void Plasma0(),Plasma1(),Plasma2(),Plasma3(),Plasma4(),Plasma5();
 
 
 	//  Balls  --------
 //	const static int sMax = 10, bMax = 10, dMax = 10;
-	const static int sMax = 240, bMax = 300, dMax = 1350;  //1350
+	const static int sMax = 240, bMax = 300, dMax = 550;  // 76%  50k
+//	const static int sMax = 240, bMax = 300, dMax = 1350;  // 90% ram
+
 	int sCnt, sVel;  // stars: count, velocity
 	int bCnt, bSpd, bSpRnd, bRad;  // balls: count, speed, radius max
 	const static int bSpRMax = 8;
@@ -75,46 +80,45 @@ struct Demos
 		Drop drop[dMax];
 	};
 	void BallsInit();
-	void Balls(D d);
+	void Balls();
 
 
 	//  Rain
 	int8_t rCur, r1Int,r1Size, r2Int,r2Size;
-	void Rain(D d);
+	void Rain();
 	
-	//  text
-	void Chars(D d, uint8_t set=0);
-	
+
 	//  CK logo, 2D lines
 	const static int8_t ckMax = 2;
 	int8_t ckCur, ckSpeed;
-	void CK_logo(D d);
+	void CK_logo();
+	void Chars(uint8_t set=0);
 
 
 	//  Space
 	void SpaceInit();
 	void Star(int i);  // new
-	void Space(D d);
+	void Space();
 
 	//  Fountain, drops  ----
 	int fInt, fWave;
 	void FountainInit();
-	void Fountain(D d);
+	void Fountain();
 
 
 	//  Ngons 2D
 	int16_t ngt;  int8_t ngCur,  ngtOn, ngRot;
 	const static int8_t ngMin = 5, ngMax = 14, ngRotMax = 4;
-	void Ngons(D d);
+	void Ngons();
 
 	//  Polyhedrons 3D  ----
 	const static int8_t hdA = 11, hdRotMax = 4;  // all presets
 	const static int16_t hdtMax = 100;  // cycle time
 
 	int16_t hdt;  int8_t hdCur,  hdtOn, hdRot;
-	void Hedrons(D d);
+	void Hedrons();
 	
-	//void Spiral, Fire..
+	//void Spiral, Fire, Water..
 #endif
 };
 
