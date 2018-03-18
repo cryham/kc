@@ -12,6 +12,7 @@ const int16_t sint[SX] =
 
 void Demos::Plasma()
 {
+	// sint in ram 0 37fps, >2 20fps
 		 if (plasma == 0)  Plasma5();  // 12 fps Clr1 blur circles
 	else if (plasma == 1)  Plasma2();  // 16 fps Clr2 lines
 	else if (plasma == 2)  Plasma0();  // 30 viol  was 37

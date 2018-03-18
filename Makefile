@@ -23,25 +23,28 @@ OPTIONS += -D__$(MCU)__ -DARDUINO=10805 -DTEENSYDUINO=141
 COMPILERPATH ?= /usr/local/bin
 
 SRCDIR = source
+SRCKC = kc
+
 OBJDIR = obj
 BINDIR = bin
 PROJECT = main
 
-INC = -I$(SRCDIR) -Ikc
+INC = -I$(SRCDIR) -I$(SRCKC)
 MCU_LD = $(SRCDIR)/$(LOWER_MCU).ld
 
 
 #  FLAGS
 #************************************************************************
 
-# CPPFLAGS = compiler options for C and C++
-#CPPFLAGS = -Wall -g -Os -mcpu=$(CPUARCH) -mthumb -MMD $(OPTIONS)
+ARCH = -mcpu=$(CPUARCH) -mthumb -MMD
+WARN = -Wall -g
+OPT = -O3
 
 # compiler options for C only
-CFLAGS = -Wall -g -Os -mcpu=$(CPUARCH) -mthumb -MMD $(OPTIONS)
+CFLAGS = $(WARN) $(OPT) $(ARCH) $(OPTIONS)
 
 # compiler options for C++ only
-CXXFLAGS = -Wall -g -Os -mcpu=$(CPUARCH) -mthumb -MMD -std=gnu++14 -felide-constructors -fno-exceptions -fno-rtti $(OPTIONS)
+CXXFLAGS = $(WARN) $(OPT) $(ARCH) -std=gnu++14 -felide-constructors -fno-exceptions -fno-rtti $(OPTIONS)
 
 # linker options
 LDFLAGS = -Os -Wl,--gc-sections,--defsym=__rtc_localtime=0 --specs=nano.specs -mcpu=$(CPUARCH) -mthumb -T$(MCU_LD)
@@ -57,8 +60,8 @@ OBJCOPY = @$(COMPILERPATH)/arm-none-eabi-objcopy
 SIZE = $(COMPILERPATH)/arm-none-eabi-size
 
 #  auto create lists of sources and objects
-C_FILES := $(wildcard $(SRCDIR)/*.c) $(wildcard kc/*.c)
-CPP_FILES := $(wildcard $(SRCDIR)/*.cpp) $(wildcard kc/*.cpp)
+C_FILES := $(wildcard $(SRCDIR)/*.c) $(wildcard $(SRCKC)/*.c)
+CPP_FILES := $(wildcard $(SRCDIR)/*.cpp) $(wildcard $(SRCKC)/*.cpp)
 OBJ_FILES := $(addprefix $(OBJDIR)/,$(notdir $(CPP_FILES:.cpp=.o))) $(addprefix $(OBJDIR)/,$(notdir $(C_FILES:.c=.o)))
 
 
@@ -78,6 +81,7 @@ WARN_CLR = \e[33m
 OBJ_CLR  = \e[38;5;248m
 NORM_CLR = \e[38;5;249m
 NO_CLR   = \033[m
+ST_CLR = \e[38;5;51m
 
 COLOR_OUTPUT = 2>&1 |                                   \
 	while IFS='' read -r line; do                       \
@@ -97,7 +101,7 @@ COLOR_OUTPUT = 2>&1 |                                   \
 all: $(BINDIR)/$(PROJECT).hex
 
 # C compilation
-$(OBJDIR)/%.o : kc/%.c
+$(OBJDIR)/%.o : $(SRCKC)/%.c
 	@echo -e "$(CC_CLR)  CC\e[m" $<
 	$(CC) $(CFLAGS) $(INC) -c $< -o $@ $(COLOR_OUTPUT)
 $(OBJDIR)/%.o : $(SRCDIR)/%.c
@@ -105,7 +109,7 @@ $(OBJDIR)/%.o : $(SRCDIR)/%.c
 	$(CC) $(CFLAGS) $(INC) -c $< -o $@ $(COLOR_OUTPUT)
 
 # C++ compilation
-$(OBJDIR)/%.o : kc/%.cpp
+$(OBJDIR)/%.o : $(SRCKC)/%.cpp
 	@echo -e "$(CXX_CLR) CXX\e[m" $<
 	$(CXX) $(CXXFLAGS) $(INC) -c $< -o $@ $(COLOR_OUTPUT)
 $(OBJDIR)/%.o : $(SRCDIR)/%.cpp
@@ -127,15 +131,18 @@ $(BINDIR)/$(PROJECT).hex : $(BINDIR)/$(PROJECT).elf
 	$(OBJCOPY) -O ihex -R .eeprom $< $@
 
 
-clean:
-	rm -f $(OBJDIR)/*.o $(OBJDIR)/*.d $(BINDIR)/$(PROJECT).elf $(BINDIR)/$(PROJECT).hex
+#  SHORTCUTS
+#************************************************************************
 
+#clean:
 c:
-	make clean
+	@echo -e "$(ST_CLR)Clean$(NO_CLR)"
+	rm -f $(OBJDIR)/*.o $(OBJDIR)/*.d $(BINDIR)/$(PROJECT).elf $(BINDIR)/$(PROJECT).hex
+#rebuild:
 r:
-	make clean
-	make -j
-
-rebuild:
-	make clean
-	make -j
+	@make c --no-print-directory
+	@echo -e "$(ST_CLR)Rebuild$(NO_CLR)"
+	@make m --no-print-directory
+#make -j
+m:
+	@make -j --no-print-directory

@@ -44,7 +44,7 @@ typedef struct GPIO_Pin {
 #define gpio( port, pin ) { Port_##port, Pin_##pin }
 
 
-//  ----***  matrix  ***----
+//  ----  pinout  ----
 #define T3_0  gpio(B,16)
 #define T3_1  gpio(B,17)
 #define T3_2  gpio(D,0 )
@@ -82,14 +82,23 @@ typedef struct GPIO_Pin {
 #define T3_40 gpio(A,14) //dac
 
 
-///  matrix  ----
-const static GPIO_Pin Matrix_cols[] = { T3_14, T3_15, T3_18, T3_19 };
-const static GPIO_Pin Matrix_rows[] = { T3_16, T3_17 };
+//  ----***  matrix  ***----
+// 4 x 2
+//const static GPIO_Pin Matrix_cols[] = { T3_14, T3_15, T3_18, T3_19 };
+//const static GPIO_Pin Matrix_rows[] = { T3_16, T3_17 };
+// 7 x 6
+//| 2:19  4:16  8:18  9:14  10:15  11:17  12:20  13:21
+//- 3:0  4:1  5:2  6:3  7:23  8:22
+const static GPIO_Pin Matrix_cols[] = { T3_19, T3_16, T3_18, T3_14, T3_15, T3_17, T3_20, T3_21 };
+const static GPIO_Pin Matrix_rows[] = { T3_0, T3_1, T3_2, T3_3, T3_23, T3_22 };
+// 3 x 3
+//const static GPIO_Pin Matrix_cols[] = { T3_16, T3_18, T3_15 };
+//const static GPIO_Pin Matrix_rows[] = { T3_0, T3_1, T3_2 };
 
 
-#define Matrix_colsNum sizeof( Matrix_cols ) / sizeof( GPIO_Pin )
-#define Matrix_rowsNum sizeof( Matrix_rows ) / sizeof( GPIO_Pin )
-#define Matrix_maxKeys sizeof( Matrix_scanArray ) / sizeof( KeyState )
+#define Matrix_colsNum  sizeof( Matrix_cols ) / sizeof( GPIO_Pin )
+#define Matrix_rowsNum  sizeof( Matrix_rows ) / sizeof( GPIO_Pin )
+#define Matrix_maxKeys  sizeof( Matrix_scanArray ) / sizeof( KeyState )
 
 
 // Define type of scan matrix

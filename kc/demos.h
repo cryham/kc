@@ -8,12 +8,14 @@
 #define W 160  // area
 #define H 128
 
+#define RGB(r,g,b) ((r<<11)+ ((g)<<6) +b)	// R F800  G 07E0  B 001F  R 32 G 64 B 32
 
-//  sin table  ----
+
+//  sinus table  ----
 #define SX  8192   // 8192  mem size 16kB
 //#define SX  16384
 #define SY  16384  // 16384  y quality
-#define Cos(x)  sint[(SX/2+(x))%SX]
+#define Cos(x)  sint[(SX/2+(x))%SX]  // %SX
 #define Sin(x)  sint[      (x) %SX]
 
 extern const int16_t sint[SX];
@@ -22,7 +24,7 @@ extern const int16_t sint[SX];
 enum EDemo
 {
 	D_None=0, D_Space, D_Balls, D_Rain, D_Fountain,
-	D_Ngons, D_Hedrons, D_CK_Logo, D_Plasma, D_All
+	D_Ngons, D_Hedrons, D_CK_Logo, D_Fonts, D_Chars, D_Plasma, D_All
 };
 
 struct Demos
@@ -92,7 +94,7 @@ struct Demos
 	const static int8_t ckMax = 2;
 	int8_t ckCur, ckSpeed;
 	void CK_logo();
-	void Chars(uint8_t set=0);
+	void Chars();
 
 
 	//  Space

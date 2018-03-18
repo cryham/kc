@@ -22,11 +22,11 @@ void Demos::Init(Ada4_ST7735* tft)
 	iInfo = 1;  iInfoOff = 1;
 
 	einit = INone;
-	sCnt = 80;  sVel = 8;  // stars
-	bCnt = 80;  bSpd = 120;  bSpRnd = 1;  bRad = 3;  // balls
+	sCnt = sMax/2;  sVel = 10;  //16 stars
+	bCnt = min(200,bMax);  bSpd = 100;  bSpRnd = 1;  bRad = 3;  // balls
 
-	r1Int = 0;  r1Size = 0;  // rain
-	r2Int = 0;  r2Size = 0;  rCur = 0;
+	r1Int = 2;  r1Size = 2;  // rain
+	r2Int = 3;  r2Size = 3;  rCur = 0;
 	
 	fInt = 5;  fWave = 1;  // fountain
 
@@ -121,34 +121,29 @@ void Demos::Draw(D d, int8_t menu, int8_t y, int8_t y2)
 //....................................................................................
 void Demos::KeyPress(EDemo demo, int k, int e, int ct, int kinf)
 {
-//	int k = 0, e = 0;
-//	int sh = kk[KEY_RSHIFT], ct = kk[KEY_RCTRL];
 	int sh = 0; //, ct = 0;
 	int sp = sh ? 2 : 10;
 
 	//  change
 //	if (key(PAGE_UP  ))  k = -1;
-//	if (key(PAGE_DOWN))  k =  1;
 //	if (key(HOME))  e = -1;
-//	if (key(END ))  e =  1;
 
 	//  global
 //	if (key(R))
-//	{
-//		Init(0);  return;  //  reset all
-//	}
+//	{	Init(0);  return;  }  // reset all
 
 	//  info txt
-	if (kinf) //keyp(MINUS) || key(ESC))
-//	if (ct)
-//		iInfoOff = (iInfoOff + 1) % (iOff+1);  // mode,off
-//	else
+	if (kinf)
+		iInfo = 1 - iInfo;
+	/*if (ct)
+		iInfoOff = (iInfoOff + 1) % (iOff+1);  // mode,off
+	else
 	{	if (iInfoOff == iOff)  iInfo = 40;
 		else
 		if (iInfo)  iInfo = 0;
 		else  iInfo = -1;
 		return;  //  show/hide
-	}
+	}*/
 	
 	if (/*demo &&*/ (k || e))
 	{	//iInfo = -1;

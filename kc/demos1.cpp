@@ -6,7 +6,7 @@
 //#include "gui.h"  // menu enum, ym etc
 #define PROGMEM
 #include "FreeSans9pt7b.h"  // 2k flash, 1%
-//#include "FreeSans12pt7b.h"
+//#include "FreeSans12pt7b.h"  // 3k, 1%
 
 
 //  regular polygons with diagonals
@@ -52,7 +52,7 @@ void Demos::Ngons()
 		d->println(ngCur);  // n sides
 	}
 
-	delay(ngMax - ngCur + 1);
+	//delay(ngMax - ngCur + 1);
 }
 
 
@@ -93,7 +93,7 @@ void Demos::Rain()
 		d->print("Size "); d->println(s);
 		d->print("Cur ");  d->println(rCur);
 	}
-	delay(8);
+	//delay(8);
 }
 #endif
 
@@ -104,13 +104,16 @@ void Demos::Font_ver(bool st)
 {
 	if (!st)  // demo
 	{	d->setCursor(0,10);  // logo
-//		d->setFont(&FreeSans9pt7b/*FreeSans12pt7b*/);
+		d->setFont(&FreeSans9pt7b);
+		d->setTextColor(RGB(22,31,31));
 		d->print("CrystaL");
 
-		d->setCursor(36,32);
-//		d->setFont(&FreeSans9pt7b);
+		d->setCursor(36,42);
+//		d->setFont(&FreeSans12pt7b);
+		d->setTextColor(RGB(31,26,21));
 		d->print("Keyboard");
 		d->setFont(0);
+		d->setTextColor(RGB(21,26,31));
 	}
 	if (st)
 	{	d->setCursor(0, H-3-2*8);
@@ -119,7 +122,7 @@ void Demos::Font_ver(bool st)
 	}else
 		d->setCursor(96, 0);
 	
-	d->print("3.25");  /// version text
+	d->print("KC 0.71");  /// version text
 	
 	d->setCursor(0, H-8);
 	const char* a={__DATE__}, *m={__TIME__};
@@ -130,16 +133,15 @@ void Demos::Font_ver(bool st)
 }
 
 #ifdef DEMOS
-//  text all chars   128x64 = 20x8
-void Demos::Chars(uint8_t set)
+//  text all chars
+void Demos::Chars()
 {
-	d->setCursor(0,8);
-	uint8_t cc = set*128;
+	d->setCursor(0,16);
 
-	for (int i=0; i < 128; i++)
+	for (int i=0; i < 256; i++)
 	{	if (i == '\n') continue;
-		d->write(cc + i);
-		if (i > 0 && (i % 20 == 0))
+		d->write(i);
+		if (i > 0 && (i % 24 == 0))
 		  d->print('\n');
 	}
 }
@@ -190,7 +192,7 @@ void Demos::Balls()
 		d->print("Rnd ");  d->println(bSpRnd);
 		d->print("Rad ");  d->println(bRad);
 	}
-	delay(3);
+	//delay(3);
 }
 
 
@@ -242,7 +244,7 @@ void Demos::Space()
 		d->print("Cnt ");  d->println(sCnt);
 		d->print("Vel ");  d->println(sVel);
 	}
-	delay(8);  // ms - limit to 100 fps
+	//delay(3);  // ms, limit fps
 }
 
 
@@ -308,7 +310,7 @@ void Demos::Fountain()
 	}
 
 	t += fWave;
-	delay(4);
+	//delay(3);
 }
 
 #endif
