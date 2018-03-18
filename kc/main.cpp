@@ -10,7 +10,7 @@
 
 //  vars
 unsigned long tm;
-uint32_t oldti = 0, tdr = 0;  // dt
+uint32_t oldti = 0;  // dt
 uint c=0;   // frame counter
 //#define pin 6
 
@@ -36,9 +36,9 @@ int main()
 	Matrix_setup();
 	const static int rr = Matrix_colsNum;
 
-	int text = 2, key = 0;
-//	int demo = D_Plasma;
-	int demo = D_Space;
+	int text = 1, key = 0;
+	int demo = D_Wave; //D_Plasma;
+//	int demo = D_Space;
 	demos.Init(&tft);
 
 
@@ -60,7 +60,7 @@ int main()
 
 		switch (demo)
 		{
-		case D_Plasma:   demos.Plasma();  break;  // clr 40 ms
+		case D_Plasma:   demos.Plasma();  break;  // clr 55, 40 ms
 		case D_None:  break;
 		case D_Space:    demos.Space();  break;
 		case D_Balls:    demos.Balls();  break;
@@ -68,6 +68,7 @@ int main()
 		case D_Fountain: demos.Fountain();  break;
 		case D_Ngons:    demos.Ngons();  break;  // 12 8ms 14 10ms
 		case D_Hedrons:  demos.Hedrons();  break;  // 5-9ms
+		case D_Wave:     demos.Wave();  break;
 		case D_CK_Logo:  demos.CK_logo();  break;  // 7
 		case D_Fonts:	 demos.Font_ver(false);  break;
 		case D_Chars:    demos.Chars();  break;
@@ -125,7 +126,7 @@ int main()
 			float fr = 1000.f / (ti - oldti);
 			int ff = fr;
 			//sprintf(a,"%4.1f", fr);
-			sprintf(a,"%d %lu %lu", ff, tdemo, tdr);
+			sprintf(a,"%d %lu", ff, tdemo);
 			tft.print(a);
 			oldti = ti;
 
@@ -213,10 +214,6 @@ int main()
 		}
 
 		if (text || demo > D_None)
-		{
-			uint32_t oti2 = millis();
 			tft.display();  // 58 Fps, 15ms @144MHz, 20ms @72MHz
-			tdr = millis() - oti2;
-		}
 	}
 }

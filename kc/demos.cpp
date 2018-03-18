@@ -11,6 +11,7 @@ Demos::Demos()
 {
 	Init(0);
 }
+//....................................................................................
 void Demos::Init(Ada4_ST7735* tft)
 {
 	fps = 0;
@@ -19,7 +20,7 @@ void Demos::Init(Ada4_ST7735* tft)
 	
 #ifdef DEMOS
 	iPrev = -1;  // params
-	iInfo = 1;  iInfoOff = 1;
+	iInfo = 0;  iInfoOff = 1;
 
 	einit = INone;
 	sCnt = sMax/2;  sVel = 10;  //16 stars
@@ -38,81 +39,20 @@ void Demos::Init(Ada4_ST7735* tft)
 
 	plasma = 1;  t = 31210;
 	tadd[0]=2; tadd[1]=5; tadd[2]=3; tadd[3]=5; tadd[4]=5; tadd[5]=5;
+
+	twv = 7;
 #endif
 }
 
 
 #if 0  ///--
-//  Draw
-//....................................................................................
 void Demos::Draw(D d, int8_t menu, int8_t y, int8_t y2)
 {
-#ifdef DEMOS
-	#define clD  d->clearDisplay();
-	if (menu)
-	{
-		if (iInfo < 0)
-			iInfo = iInfoOff == iOff ? 0 :
-					60 + iInfoOff*60;  //par
-		if (iInfo > 0)
-			--iInfo;
-
-		d->setTextColor(WHITE,BLACK);  // backgr
-		if (y == MDemos)
-		{
-			if (iPrev != y2)  //  Init on change
-			switch (y2)
-			{
-				case 0:  einit = INone;  break;  // Stars
-				case 1:  einit = INone;  break;
-
-				case 4:  ngtOn = 1;  break;  // Ngons
-				case 5:  hdtOn = 1;  break;  // Hedrons
-			}
-			switch (y2)
-			{
-				case 0: clD  Space(d);  break;
-				case 1: clD  Balls(d);  break;
-
-				case 2:		 Rain(d);  break;
-				case 3: clD  Fountain(d);  break;
-				
-				case 4: clD  Ngons(d);  break;
-				case 5: clD  Hedrons(d);  break;
-			}
-			iPrev = y2;
-		}
-		else if (y == MText)
-		switch (y2)
-		{
-			case 0: clD  CK_logo(d);  break;
-			case 1: clD  Font_ver(d, false);  break;
-			case 2: clD  Chars(d,0);  break;
-			case 3: clD  Chars(d,1);  break;
-		}
-		else if (y == MPlasma)
-		switch (y2)
-		{
-			case 4: Plasma4(d->getBuffer());  break;
-			case 3: Plasma3(d->getBuffer());  break;
-			case 2: Plasma2(d->getBuffer());  break;
-			case 1: Plasma1(d->getBuffer());  break;
-			case 0: Plasma0(d->getBuffer());  break;
-		}
-		d->setTextColor(WHITE);  // transp
-	}
-#endif
-
-	if (fps)  /// fps
-	{
-		oti = ti;  ti = micros();
-		d->setFont(0);
-		d->setCursor(0,0);
-		d->setTextColor(WHITE,BLACK);  // backgr
-		d->println(int16_t(1000000.f/(ti-oti)));
-		d->setTextColor(WHITE);  // transp
-	}
-}
+	if (iInfo < 0)
+		iInfo = iInfoOff == iOff ? 0 :
+				60 + iInfoOff*60;  //par
+	if (iInfo > 0)
+		--iInfo;
 #endif
 
 
@@ -207,6 +147,11 @@ void Demos::KeyPress(EDemo demo, int k, int e, int ct, int kinf)
 		case D_Plasma:
 			if (k){  plasma += k; if (plasma < 0) plasma = num_plasma-1;  if (plasma >= num_plasma) plasma = 0;  }
 			if (e)  PlasmaT(e);
+			break;
+
+		case D_Wave:
+			if (k)  twv += k;
+			if (e)  twv += e*10;
 			break;
 
 		default:

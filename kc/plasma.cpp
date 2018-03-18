@@ -31,6 +31,49 @@ void Demos::PlasmaT(int8_t dt)
 	else if (plasma == 5)  tadd[4] += dt;
 }
 
+static int yw[W];
+
+void Demos::Wave()
+{
+	uint tt[16]={t*9,t*7,t*5,t*4, t*14,t*13,t*11,t*12, t*21,t*23,t*25,t*28, t*42,t*46,t*41,t*34};
+
+	uint xx[16]={0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+	for (uint x=0; x<W; ++x)
+	{
+		int c;
+		c =11*Sin( xx[0] +tt[0]) + 10*Cos( xx[1] +tt[1]);
+		c-=12*Sin( xx[2] +tt[2]) + 10*Cos( xx[3] +tt[3]);
+		c+= 8*Cos( xx[4] +tt[4]) +  8*Sin( xx[5] +tt[5]);
+		c-=10*Cos( xx[6] +tt[6]) +  9*Sin( xx[7] +tt[7]);
+		c+= 7*Sin( xx[8] +tt[8]) +  8*Cos( xx[9] +tt[9]);
+		c-= 8*Sin( xx[10]+tt[10])+  6*Cos( xx[11]+tt[11]);
+		c+= 5*Cos( xx[12]+tt[12])+  3*Sin( xx[13]+tt[13]);
+		c-= 4*Cos( xx[14]+tt[14])+  2*Sin( xx[15]+tt[15]);
+
+		xx[0]+=22; xx[1]+=35; xx[2]+=31; xx[3]+=45; xx[4]+=66; xx[5]+=93;
+		xx[6]+=131; xx[7]+=293; xx[8]+=458; xx[9]+=229; xx[10]+=388; xx[11]+=1256;
+		xx[12]+=633; xx[13]+=1928; xx[14]+=836; xx[15]+=3301;
+
+		//c *= 6*H/2;  c /= SY*SY;
+		c /= 80*(SY/(H/2));
+		yw[x] = c;
+		//yw[x] = Sin(SX*x/W+t)/(SY/32);
+	}
+
+	for (uint y=0; y<H; ++y)
+	{
+		uint a = y*W;
+		for (uint x=0; x<W; ++x, ++a)
+		{
+			int c = yw[x];
+			int d = y-H/2-c;  d = H/2-abs(d);  d = max(0,d);
+			c = RGB(min(31, d/3), min(31, d/2), min(31, d));
+			data[a] = c;
+		}
+	}
+	t+=twv;
+}
+
 
 void Demos::Plasma0()  // viol fastest
 {
@@ -115,7 +158,7 @@ void Demos::Plasma5()  // Clr1 blur
 			c = abs(c);
 			xx[0]+=41; xx[1]+=25; xx[2]+=48; xx[3]+=61; xx[4]+=54; xx[5]+=33;
 //			xx[6]+=131; xx[7]+=53; xx[8]+=144; xx[9]+=88; xx[10]+=132; xx[11]+=17;
-			c /= 3*SY*(SY/11);
+			c /= 3*SY*(SY/11)/2;
 
 			d = 6*Sin( yy2[0] +xx2[0]) * Cos( xx2[1] +tt2[0]);
 			d-= 4*Cos( yy2[1] +tt2[1]) * Sin( xx2[2] +tt2[2]);
@@ -133,7 +176,7 @@ void Demos::Plasma5()  // Clr1 blur
 			xx3[0]+=31; xx3[1]+=48; xx3[2]+=83; xx3[3]+=62; xx3[4]+=37; xx3[5]+=25;
 			e /= 3*SY*(SY/11);
 
-			data[a] = (e<<11) + (c<<6) + d;
+			data[a] = (e<<11) + (c<<5) + d;
 		}
 		yy[0]+=61; yy[1]+=43; yy[2]+=18; yy[3]+=51; yy[4]+=26; yy[5]+=39;
 //		yy[6]+=136; yy[7]+=56; yy[8]+=213; yy[9]+=109; yy[10]+=82; yy[11]+=132;

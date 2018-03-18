@@ -24,7 +24,8 @@ extern const int16_t sint[SX];
 enum EDemo
 {
 	D_None=0, D_Space, D_Balls, D_Rain, D_Fountain,
-	D_Ngons, D_Hedrons, D_CK_Logo, D_Fonts, D_Chars, D_Plasma, D_All
+	D_Ngons, D_Hedrons, D_CK_Logo, D_Fonts, D_Chars,
+	D_Plasma, D_Wave, D_All
 };
 
 struct Demos
@@ -121,6 +122,8 @@ struct Demos
 	void Hedrons();
 	
 	//void Spiral, Fire, Water..
+	int8_t twv;
+	void Wave();
 #endif
 };
 

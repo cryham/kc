@@ -103,7 +103,7 @@ void Demos::Rain()
 void Demos::Font_ver(bool st)
 {
 	if (!st)  // demo
-	{	d->setCursor(0,10);  // logo
+	{	d->setCursor(0,20);  // logo
 		d->setFont(&FreeSans9pt7b);
 		d->setTextColor(RGB(22,31,31));
 		d->print("CrystaL");
