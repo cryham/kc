@@ -15,24 +15,6 @@
 		_mosi = mosi;
 		_sclk = sclk;
 	}
-	#elif defined(__MKL26Z64__) //Teensy LC
-	TFT_ST7735::TFT_ST7735(const uint8_t cspin,const uint8_t dcpin,const uint8_t rstpin,const uint8_t mosi,const uint8_t sclk)
-	{
-		_cs   = cspin;
-		_dc   = dcpin;
-		_rst  = rstpin;
-		_mosi = mosi;
-		_sclk = sclk;
-		_useSPI1 = false;
-		if ((_mosi == 0 || _mosi == 21) && (_sclk == 20)) _useSPI1 = true;
-	}
-	#else //All the rest
-	TFT_ST7735::TFT_ST7735(const uint8_t cspin,const uint8_t dcpin,const uint8_t rstpin)
-	{
-		_cs   = cspin;
-		_dc   = dcpin;
-		_rst  = rstpin;
-	}
 	#endif
 
 
@@ -45,8 +27,6 @@ void TFT_ST7735::useBacklight(const uint8_t pin)
 	pinMode(_bklPin, OUTPUT);
 	#if defined(__MK20DX128__) || defined(__MK20DX256__) || defined(__MK64FX512__) || defined(__MK66FX1M0__)
 		digitalWriteFast(_bklPin,LOW);
-	#else
-		digitalWrite(_bklPin,LOW);
 	#endif
 }
 
@@ -57,75 +37,18 @@ void TFT_ST7735::backlight(bool state)
 			digitalWriteFast(_bklPin,!state);
 			_backlight = state;
 		}
-	#else
-		if (_bklPin != 255) {
-			digitalWrite(_bklPin,!state);
-			_backlight = state;
-		}
 	#endif
 }
 
 /*********************************************************
 *******************    some SPI stuff     ****************
 **********************************************************/
-#if defined(__AVR__)
-//-----------------Arduino Uno, Leonardo, Mega, Teensy 2.0, any 8 bit AVR
-	#if !defined (SPI_HAS_TRANSACTION)
-	void TFT_ST7735::setBitrate(uint32_t n)
-	{
-			if (n >= 8000000) {
-				SPI.setClockDivider(SPI_CLOCK_DIV2);
-			} else if (n >= 4000000) {
-				SPI.setClockDivider(SPI_CLOCK_DIV4);
-			} else if (n >= 2000000) {
-				SPI.setClockDivider(SPI_CLOCK_DIV8);
-			} else {
-				SPI.setClockDivider(SPI_CLOCK_DIV16);
-			}
-	}
-	#endif
-#elif defined(__SAM3X8E__)
-//------------------------------------------Arduino Due
-	#if !defined(SPI_HAS_TRANSACTION)
-	void TFT_ST7735::setBitrate(uint32_t n)
-	{
-			uint32_t divider = 1;
-			while (divider < 255) {
-				if (n >= 84000000 / divider) break;
-				divider = divider - 1;
-			}
-			SPI.setClockDivider(divider);
-	}
-	#endif
-#elif defined(__MKL26Z64__)
-//-----------------------------------------Teensy LC
-	#if !defined (SPI_HAS_TRANSACTION)
-	void TFT_ST7735::setBitrate(uint32_t n)
-	{
-		//nop
-	}
-	#endif
-#elif defined(__MK20DX128__) || defined(__MK20DX256__) || defined(__MK64FX512__) || defined(__MK66FX1M0__)
+#if defined(__MK20DX128__) || defined(__MK20DX256__) || defined(__MK64FX512__) || defined(__MK66FX1M0__)
 //-----------------------------------------Teensy 3.0 & 3.1 & 3.2
 	#if !defined (SPI_HAS_TRANSACTION)
 	void TFT_ST7735::setBitrate(uint32_t n)
 	{
 		//nop
-	}
-	#endif
-#else
-	#if !defined (SPI_HAS_TRANSACTION)
-	void TFT_ST7735::setBitrate(uint32_t n)
-	{
-		if (n >= 8000000) {
-			SPI.setClockDivider(SPI_CLOCK_DIV2);
-		} else if (n >= 4000000) {
-			SPI.setClockDivider(SPI_CLOCK_DIV4);
-		} else if (n >= 2000000) {
-			SPI.setClockDivider(SPI_CLOCK_DIV8);
-		} else {
-			SPI.setClockDivider(SPI_CLOCK_DIV16);
-		}
 	}
 	#endif
 #endif
@@ -152,85 +75,7 @@ void TFT_ST7735::begin(bool avoidSPIinit)
 	#if defined(SPI_HAS_TRANSACTION)
 		_ST7735SPI = SPISettings(TFT_ST7735_SPI_SPEED, MSBFIRST, SPI_MODE0);
 	#endif
-#if defined(__AVR__)//(avr) Any 8Bit AVR
-	pinMode(_dc, OUTPUT);
-	pinMode(_cs, OUTPUT);
-	csport    = portOutputRegister(digitalPinToPort(_cs));
-	rsport    = portOutputRegister(digitalPinToPort(_dc));
-	cspinmask = digitalPinToBitMask(_cs);
-	dcpinmask = digitalPinToBitMask(_dc);
-    if (!avoidSPIinit) SPI.begin();
-	#if !defined(SPI_HAS_TRANSACTION)
-		if (!avoidSPIinit){
-			SPI.setClockDivider(SPI_CLOCK_DIV2); // 8 MHz
-			SPI.setBitOrder(MSBFIRST);
-			SPI.setDataMode(SPI_MODE0);
-		}
-	#endif
-	*csport |= cspinmask;//hi
-	enableDataStream();
-#elif defined(__SAM3X8E__)//(arm) DUE
-	pinMode(_dc, OUTPUT);
-	pinMode(_cs, OUTPUT);
-	csport    = digitalPinToPort(_cs);
-	rsport    = digitalPinToPort(_dc);
-	cspinmask = digitalPinToBitMask(_cs);
-	dcpinmask = digitalPinToBitMask(_dc);
-    if (!avoidSPIinit) SPI.begin();
-	#if !defined(SPI_HAS_TRANSACTION)
-		if (!avoidSPIinit){
-			SPI.setClockDivider(5); // 8 MHz
-			SPI.setBitOrder(MSBFIRST);
-			SPI.setDataMode(SPI_MODE0);
-		}
-	#endif
-	csport->PIO_SODR  |=  cspinmask;//HI
-	enableDataStream();
-#elif defined(__MKL26Z64__)//(arm) Teensy LC (preliminary)
-	pinMode(_dc, OUTPUT);
-	pinMode(_cs, OUTPUT);
-	if (_useSPI1){
-		if ((_mosi == 0 || _mosi == 21) && (_sclk == 20)) {//identify alternate SPI channel 1 (24Mhz)
-			SPI1.setMOSI(_mosi);
-			SPI1.setSCK(_sclk);
-			if (!avoidSPIinit) SPI1.begin();
-			_useSPI1 = true; //confirm
-		} else {
-			bitSet(_initError,0);
-			return;
-		}
-		if (!SPI.pinIsChipSelect(_cs)) {//ERROR
-			bitSet(_initError,1);
-			return;
-		}
-	} else {
-		if ((_mosi == 11 || _mosi == 7) && (_sclk == 13 || _sclk == 14)) {//valid SPI pins?
-			SPI.setMOSI(_mosi);
-			SPI.setSCK(_sclk);
-			if (!avoidSPIinit) SPI.begin();
-			_useSPI1 = false; //confirm
-		} else {
-			bitSet(_initError,0);
-			return;
-		}
-		if (!SPI.pinIsChipSelect(_cs)) {//ERROR
-			bitSet(_initError,1);
-			return;
-		}
-	}
-	#if defined(_TEENSYLC_FASTPORT)
-		csportSet    	= portSetRegister(digitalPinToPort(_cs));
-		csportClear     = portClearRegister(digitalPinToPort(_cs));
-		cspinmask 		= digitalPinToBitMask(_cs);
-		dcportSet       = portSetRegister(digitalPinToPort(_dc));
-		dcportClear     = portClearRegister(digitalPinToPort(_dc));
-		dcpinmask	    = digitalPinToBitMask(_dc);
-		*csportSet = cspinmask;
-	#else
-		digitalWriteFast(_cs,HIGH);
-	#endif
-		enableDataStream();
-#elif defined(__MK20DX128__) || defined(__MK20DX256__) || defined(__MK64FX512__) || defined(__MK66FX1M0__)
+#if defined(__MK20DX128__) || defined(__MK20DX256__) || defined(__MK64FX512__) || defined(__MK66FX1M0__)
 	if ((_mosi == 11 || _mosi == 7) && (_sclk == 13 || _sclk == 14)) {
         SPI.setMOSI(_mosi);
         SPI.setSCK(_sclk);
@@ -248,36 +93,6 @@ void TFT_ST7735::begin(bool avoidSPIinit)
 		bitSet(_initError,1);
 		return;
 	}
-#elif defined(ESP8266)//(arm) XTENSA ESP8266
-	pinMode(_dc, OUTPUT);
-	pinMode(_cs, OUTPUT);
-	if (!avoidSPIinit) SPI.begin();
-	#if !defined(SPI_HAS_TRANSACTION)
-		if (!avoidSPIinit){
-			SPI.setClockDivider(4);
-			SPI.setBitOrder(MSBFIRST);
-			SPI.setDataMode(SPI_MODE0);
-		}
-	#endif
-	#if defined(ESP8266) && defined(_ESP8266_STANDARDMODE)
-		digitalWrite(_cs,HIGH);
-	#else
-		GPIO_REG_WRITE(GPIO_OUT_W1TS_ADDRESS, _pinRegister(_cs));//H
-	#endif
-	enableDataStream();
-#else//(xxx) Rest of CPU
-	pinMode(_dc, OUTPUT);
-	pinMode(_cs, OUTPUT);
-	if (!avoidSPIinit) SPI.begin();
-	#if !defined(SPI_HAS_TRANSACTION)
-		if (!avoidSPIinit){
-			SPI.setClockDivider(4);
-			SPI.setBitOrder(MSBFIRST);
-			SPI.setDataMode(SPI_MODE0);
-		}
-	#endif
-	digitalWrite(_cs,HIGH);
-	enableDataStream();
 #endif
 	if (_rst != 255) {
 		pinMode(_rst, OUTPUT);
@@ -375,8 +190,6 @@ void TFT_ST7735::clearMemory(void)
 	_pushColors_cont(_defaultBgColor,TFT_ST7735_CGRAM);
 	#if defined(__MK20DX128__) || defined(__MK20DX256__) || defined(__MK64FX512__) || defined(__MK66FX1M0__)
 		writecommand_last(CMD_NOP);
-	#else
-		disableCS();
 	#endif
 	
 	endTransaction();
@@ -459,8 +272,6 @@ void TFT_ST7735::changeMode(const enum ST7735_modes m)
 		
 		#if defined(__MK20DX128__) || defined(__MK20DX256__) || defined(__MK64FX512__) || defined(__MK66FX1M0__)
 			writecommand_last(CMD_NOP);
-		#else
-			disableCS();
 		#endif
 		endTransaction();
 		if (checkBacklight) backlight(!_backlight);
@@ -479,8 +290,6 @@ void TFT_ST7735::setArea(uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1)
 	setAddrWindow_cont(x0,y0,x1,y1);
 	#if defined(__MK20DX128__) || defined(__MK20DX256__) || defined(__MK64FX512__) || defined(__MK66FX1M0__)
 		writecommand_last(CMD_NOP);
-	#else
-		disableCS();
 	#endif
 	endTransaction();
 }
@@ -745,8 +554,6 @@ void TFT_ST7735::drawPixel(int16_t x, int16_t y, uint16_t color)
 	drawPixel_cont(x,y,color);
 	#if defined(__MK20DX128__) || defined(__MK20DX256__) || defined(__MK64FX512__) || defined(__MK66FX1M0__)
 		writecommand_last(CMD_NOP);
-	#else
-		disableCS();
 	#endif
 	endTransaction();
 }
@@ -765,8 +572,6 @@ void TFT_ST7735::fillScreen(uint16_t color)
 	_pushColors_cont(color,_width * _height);
 	#if defined(__MK20DX128__) || defined(__MK20DX256__) || defined(__MK64FX512__) || defined(__MK66FX1M0__)
 		writecommand_last(CMD_NOP);
-	#else
-		disableCS();
 	#endif
 	
 	endTransaction();
@@ -791,8 +596,6 @@ void TFT_ST7735::fillScreen(uint16_t color1,uint16_t color2)
 	}
 	#if defined(__MK20DX128__) || defined(__MK20DX256__) || defined(__MK64FX512__) || defined(__MK66FX1M0__)
 		writecommand_last(CMD_NOP);
-	#else
-		disableCS();
 	#endif
 	
 	endTransaction();
@@ -819,8 +622,6 @@ void TFT_ST7735::drawFastVLine(int16_t x, int16_t y, int16_t h, uint16_t color)
 	drawFastVLine_cont(x,y,h,color);
 	#if defined(__MK20DX128__) || defined(__MK20DX256__) || defined(__MK64FX512__) || defined(__MK66FX1M0__)
 		writecommand_last(CMD_NOP);
-	#else
-		disableCS();
 	#endif
 	endTransaction();
 }
@@ -841,8 +642,6 @@ void TFT_ST7735::drawFastHLine(int16_t x, int16_t y, int16_t w, uint16_t color)
 	drawFastHLine_cont(x,y,w,color);
 	#if defined(__MK20DX128__) || defined(__MK20DX256__) || defined(__MK64FX512__) || defined(__MK66FX1M0__)
 		writecommand_last(CMD_NOP);
-	#else
-		disableCS();
 	#endif
 	endTransaction();
 }
@@ -861,8 +660,6 @@ void TFT_ST7735::fillRect(int16_t x, int16_t y, int16_t w, int16_t h, uint16_t c
 	fillRect_cont(x,y,w,h,color,color);
 	#if defined(__MK20DX128__) || defined(__MK20DX256__) || defined(__MK64FX512__) || defined(__MK66FX1M0__)
 		writecommand_last(CMD_NOP);
-	#else
-		disableCS();
 	#endif
 	endTransaction();
 }
@@ -881,8 +678,6 @@ void TFT_ST7735::fillRect(int16_t x, int16_t y, int16_t w, int16_t h, uint16_t c
 	fillRect_cont(x,y,w,h,color1,color2);
 	#if defined(__MK20DX128__) || defined(__MK20DX256__) || defined(__MK64FX512__) || defined(__MK66FX1M0__)
 		writecommand_last(CMD_NOP);
-	#else
-		disableCS();
 	#endif
 	endTransaction();
 }
@@ -915,8 +710,6 @@ void TFT_ST7735::fillRect_cont(int16_t x, int16_t y, int16_t w, int16_t h, uint1
 					writedata16_cont(Color565(rR,gG,bB)); 
 				} while (--wtemp > 0);
 				wtemp = w;
-			#else
-				_pushColors_cont(Color565(rR,gG,bB),wtemp);
 			#endif
 			pos++;
 		} while (--h > 0);
@@ -935,8 +728,6 @@ void TFT_ST7735::drawLine(int16_t x0, int16_t y0,int16_t x1, int16_t y1, uint16_
 	drawLine_cont(x0,y0,x1,y1,color);
 	#if defined(__MK20DX128__) || defined(__MK20DX256__) || defined(__MK64FX512__) || defined(__MK66FX1M0__)
 		writecommand_last(CMD_NOP);
-	#else
-		disableCS();
 	#endif
 	endTransaction();
 }
@@ -993,9 +784,6 @@ void TFT_ST7735::drawLine_cont(int16_t x0, int16_t y0,int16_t x1, int16_t y1, ui
 				y0 += ystep;
 				err += dx;
 			}
-			#if defined(ESP8266)   	
-				yield(); 	
-			#endif
 		}
 		if (x0 > xbegin + 1) drawFastVLine_cont(y0, xbegin, x0 - xbegin, color);
 	} else {
@@ -1012,9 +800,6 @@ void TFT_ST7735::drawLine_cont(int16_t x0, int16_t y0,int16_t x1, int16_t y1, ui
 				y0 += ystep;
 				err += dx;
 			}
-			#if defined(ESP8266)   	
-				yield(); 	
-			#endif
 		}
 		if (x0 > xbegin + 1) drawFastHLine_cont(xbegin, y0, x0 - xbegin, color);
 	}
@@ -1032,8 +817,6 @@ void TFT_ST7735::drawRect(int16_t x, int16_t y, int16_t w, int16_t h, uint16_t c
 		drawFastVLine_cont((x+w)-1, y, h, color);	
 	#if defined(__MK20DX128__) || defined(__MK20DX256__) || defined(__MK64FX512__) || defined(__MK66FX1M0__)
 		writecommand_last(CMD_NOP);
-	#else
-		disableCS();
 	#endif
 	endTransaction();
 }
@@ -1188,14 +971,9 @@ void TFT_ST7735::drawArcHelper(uint16_t cx, uint16_t cy, uint16_t radius, uint16
 														// which we haven't found in the loop so the last pixel in a column must be the end
 				drawFastVLine_cont(cx + x, cy + y2s, ymax - y2s + 1, color);
 			}
-			#if defined(ESP8266)   	
-				yield(); 	
-			#endif
 		}
 	#if defined(__MK20DX128__) || defined(__MK20DX256__) || defined(__MK64FX512__) || defined(__MK66FX1M0__)
 		writecommand_last(CMD_NOP);
-	#else
-		disableCS();
 	#endif
 		endTransaction();
 	}
@@ -1259,9 +1037,6 @@ void TFT_ST7735::drawEllipse(int16_t cx,int16_t cy,int16_t radiusW,int16_t radiu
 			ellipseError += xchange;
 			xchange += twoBSquare;
 		}
-		#if defined(ESP8266)   	
-			yield(); 	
-		#endif
     }
     x = 0;
     y = radiusH;
@@ -1282,14 +1057,9 @@ void TFT_ST7735::drawEllipse(int16_t cx,int16_t cy,int16_t radiusW,int16_t radiu
 			ellipseError += ychange;
 			ychange += twoASquare;
 		}
-		#if defined(ESP8266)   	
-			yield(); 	
-		#endif
     }
 	#if defined(__MK20DX128__) || defined(__MK20DX256__) || defined(__MK64FX512__) || defined(__MK66FX1M0__)
 		writecommand_last(CMD_NOP);
-	#else
-		disableCS();
 	#endif
 	endTransaction();
 }
@@ -1353,9 +1123,6 @@ void TFT_ST7735::drawCircle_cont(int16_t x,int16_t y,int16_t radius,uint8_t corn
 				drawPixel_cont(x - deltax, y - deltay, color);
 			}
 		}
-		#if defined(ESP8266)   	
-			yield(); 	
-		#endif
 	}
 }
 
@@ -1387,9 +1154,6 @@ void TFT_ST7735::fillCircle_cont(int16_t x, int16_t y, int16_t radius, uint8_t c
 			drawFastVLine_cont(x-deltax, y-deltay, 2*deltay+1+delta, color);
 			drawFastVLine_cont(x-deltay, y-deltax, 2*deltax+1+delta, color);
 		}
-		#if defined(ESP8266)   	
-			yield(); 	
-		#endif
 	}
 }
 
@@ -1400,8 +1164,6 @@ void TFT_ST7735::drawCircle(int16_t x, int16_t y, int16_t radius, uint16_t color
 	drawCircle_cont(x,y,radius,254,color);
 	#if defined(__MK20DX128__) || defined(__MK20DX256__) || defined(__MK64FX512__) || defined(__MK66FX1M0__)
 		writecommand_last(CMD_NOP);
-	#else
-		disableCS();
 	#endif
 	endTransaction();
 }
@@ -1414,8 +1176,6 @@ void TFT_ST7735::fillCircle(int16_t x, int16_t y, int16_t radius,uint16_t color)
 	fillCircle_cont(x, y, radius, 3, 0, color);
 	#if defined(__MK20DX128__) || defined(__MK20DX256__) || defined(__MK64FX512__) || defined(__MK66FX1M0__)
 		writecommand_last(CMD_NOP);
-	#else
-		disableCS();
 	#endif
 	endTransaction();//close SPI comm
 }
@@ -1438,8 +1198,6 @@ void TFT_ST7735::drawRoundRect(int16_t x, int16_t y, int16_t w,int16_t h, int16_
 	drawCircle_cont(x+radius    , y+h-radius-1, radius, 8, color);
 	#if defined(__MK20DX128__) || defined(__MK20DX256__) || defined(__MK64FX512__) || defined(__MK66FX1M0__)
 		writecommand_last(CMD_NOP);
-	#else
-		disableCS();
 	#endif
 	endTransaction();
 }
@@ -1460,8 +1218,6 @@ void TFT_ST7735::fillRoundRect(int16_t x, int16_t y, int16_t w,int16_t h, int16_
 	fillCircle_cont(x+radius    , y+radius, radius, 2, h-2*radius-1, color);
 	#if defined(__MK20DX128__) || defined(__MK20DX256__) || defined(__MK64FX512__) || defined(__MK66FX1M0__)
 		writecommand_last(CMD_NOP);
-	#else
-		disableCS();
 	#endif
 	endTransaction();
 }
@@ -1476,8 +1232,6 @@ void TFT_ST7735::drawQuad(int16_t x0, int16_t y0,int16_t x1, int16_t y1,int16_t 
 	drawLine_cont(x3, y3, x0, y0, color);//low 2
 	#if defined(__MK20DX128__) || defined(__MK20DX256__) || defined(__MK64FX512__) || defined(__MK66FX1M0__)
 		writecommand_last(CMD_NOP);
-	#else
-		disableCS();
 	#endif
 	endTransaction();//close SPI comm
 }
@@ -1491,8 +1245,6 @@ void TFT_ST7735::fillQuad(int16_t x0, int16_t y0,int16_t x1, int16_t y1,int16_t 
     fillTriangle_cont(x1,y1,x2,y2,x3,y3,color);
 	#if defined(__MK20DX128__) || defined(__MK20DX256__) || defined(__MK64FX512__) || defined(__MK66FX1M0__)
 		writecommand_last(CMD_NOP);
-	#else
-		disableCS();
 	#endif
 	endTransaction();//close SPI comm
 }
@@ -1514,8 +1266,6 @@ void TFT_ST7735::drawPolygon(int16_t x, int16_t y, uint8_t sides, int16_t diamet
 	}
 	#if defined(__MK20DX128__) || defined(__MK20DX256__) || defined(__MK64FX512__) || defined(__MK66FX1M0__)
 		writecommand_last(CMD_NOP);
-	#else
-		disableCS();
 	#endif
 	endTransaction();//close SPI comm
 }
@@ -1540,8 +1290,6 @@ void TFT_ST7735::drawMesh(int16_t x, int16_t y, int16_t w, int16_t h, uint16_t c
 	}
 	#if defined(__MK20DX128__) || defined(__MK20DX256__) || defined(__MK64FX512__) || defined(__MK66FX1M0__)
 		writecommand_last(CMD_NOP);
-	#else
-		disableCS();
 	#endif
 	endTransaction();//close SPI comm
 }
@@ -1554,8 +1302,6 @@ void TFT_ST7735::drawTriangle(int16_t x0, int16_t y0,int16_t x1, int16_t y1,int1
 	drawLine_cont(x2, y2, x0, y0, color);
 	#if defined(__MK20DX128__) || defined(__MK20DX256__) || defined(__MK64FX512__) || defined(__MK66FX1M0__)
 		writecommand_last(CMD_NOP);
-	#else
-		disableCS();
 	#endif
 	endTransaction();//close SPI comm
 }
@@ -1567,8 +1313,6 @@ void TFT_ST7735::fillTriangle(int16_t x0, int16_t y0,int16_t x1, int16_t y1,int1
 	fillTriangle_cont(x0,y0,x1,y1,x2,y2,color);//
 	#if defined(__MK20DX128__) || defined(__MK20DX256__) || defined(__MK64FX512__) || defined(__MK66FX1M0__)
 		writecommand_last(CMD_NOP);
-	#else
-		disableCS();
 	#endif
 	endTransaction();//close SPI comm
 }
@@ -1822,8 +1566,6 @@ void TFT_ST7735::endPushData()
 {
 	#if defined(__MK20DX128__) || defined(__MK20DX256__) || defined(__MK64FX512__) || defined(__MK66FX1M0__)
 		writecommand_last(CMD_NOP);
-	#else
-		disableCS();
 	#endif
 	endTransaction();
 }
@@ -1860,8 +1602,6 @@ void TFT_ST7735::drawIcon(int16_t x, int16_t y,const tIcon *icon,uint8_t scale,u
 
 	#if defined(__MK20DX128__) || defined(__MK20DX256__) || defined(__MK64FX512__) || defined(__MK66FX1M0__)
 		writecommand_last(CMD_NOP);
-	#else
-		disableCS();
 	#endif
 	endTransaction();
 }
@@ -1935,8 +1675,6 @@ void TFT_ST7735::drawImage(int16_t x, int16_t y,const tPicture *img,const enum S
 	
 	#if defined(__MK20DX128__) || defined(__MK20DX256__) || defined(__MK64FX512__) || defined(__MK66FX1M0__)
 		writecommand_last(CMD_NOP);
-	#else
-		disableCS();
 	#endif
 	endTransaction();
 }
@@ -1950,9 +1688,6 @@ void TFT_ST7735::drawBitmap(int16_t x, int16_t y,const uint8_t *bitmap, int16_t 
 		for (i = 0; i < w; i++ ) {
 			if (pgm_read_byte(bitmap + j * byteWidth + i / 8) & (128 >> (i & 7))) drawPixel(x + i, y + j, color);
 		}
-		#if defined(ESP8266)   	
-			yield(); 	
-		#endif
 	}
 }
 
@@ -1968,9 +1703,6 @@ void TFT_ST7735::drawBitmap(int16_t x, int16_t y,const uint8_t *bitmap, int16_t 
 				drawPixel(x + i, y + j, bg);
 		}
     }
-	#if defined(ESP8266)   	
-		yield(); 	
-	#endif
   }
 }
 
@@ -1978,59 +1710,12 @@ void TFT_ST7735::drawBitmap(int16_t x, int16_t y,const uint8_t *bitmap, int16_t 
 /*
  ----------------- PushColor stream --------------------------------
 */
-#if defined(__AVR__)
-	void TFT_ST7735::_pushColors_cont(uint16_t data,uint32_t times){
-		uint8_t i;
-		enableDataStream();
-		while(times--) {
-			for (i=0;i<2;i++){
-				while(!(SPSR & (1 << SPIF)));
-				SPDR = (data >> (8 - (i*8)));
-			}
-		}
-		while(!(SPSR & (1 << SPIF)));
-	}
-#elif defined(__SAM3X8E__)
-	void TFT_ST7735::_pushColors_cont(uint16_t data,uint32_t times)
-	{
-		enableDataStream();
-		while(times--) { SPI.transfer16(data); }
-	}
-#elif defined(__MKL26Z64__)
-	void TFT_ST7735::_pushColors_cont(uint16_t data,uint32_t times)
-	{
-		enableDataStream();
-		while(times--) {
-			if (_useSPI1){
-				SPI1.transfer16(data);
-			} else {
-				SPI.transfer16(data);
-			}
-		}
-	}
-#elif defined(__MK20DX128__) || defined(__MK20DX256__) || defined(__MK64FX512__) || defined(__MK66FX1M0__)
+#if defined(__MK20DX128__) || defined(__MK20DX256__) || defined(__MK64FX512__) || defined(__MK66FX1M0__)
 	void TFT_ST7735::_pushColors_cont(uint16_t data,uint32_t times)
 	{
 		do { 
 			writedata16_cont(data); 
 		} while (--times > 0);
-	}
-#elif defined(ESP8266)
-	void TFT_ST7735::_pushColors_cont(uint16_t data,uint32_t times)
-	{
-		enableDataStream();
-		while(times--) { spiwrite16(data); }
-		//alternative faster (but currently not work at 80Mhz or more)
-		//uint8_t pattern[2] = { (uint8_t)(data >> 8), (uint8_t)(data >> 0) };
-		//SPI.writePattern(pattern, 2, times);
-	}
-#else
-	void TFT_ST7735::_pushColors_cont(uint16_t data,uint32_t times)
-	{
-		enableDataStream();
-			while(times--) {
-			SPI.transfer(data >> 8); SPI.transfer(data);
-		}
 	}
 #endif
 /* -------------------------------------------------------------------------------------------
