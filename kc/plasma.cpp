@@ -13,22 +13,24 @@ const int16_t sint[SX] =
 void Demos::Plasma()
 {
 	// sint in ram 0 37fps, >2 20fps
-		 if (plasma == 0)  Plasma5();  // 12 fps Clr1 blur circles
-	else if (plasma == 1)  Plasma2();  // 16 fps Clr2 lines
-	else if (plasma == 2)  Plasma0();  // 30 viol  was 37
-	else if (plasma == 3)  Plasma1();  // 17 blue
-	else if (plasma == 4)  Plasma3();  // 16 orng small
-	else if (plasma == 5)  Plasma4();  // 16 tiny
+		 if (plasma == 0)  PlasmaC1();  // 12 fps Clr1 blur circles
+	else if (plasma == 1)  PlasmaC2();  // 16 fps Clr2 lines
+	else if (plasma == 2)  PlasmaC2b(); // 16 fps Clr2
+	else if (plasma == 3)  Plasma1();  // 30 viol  was 37
+	else if (plasma == 4)  Plasma2();  // 17 blue
+	else if (plasma == 5)  Plasma3();  // 16 orng small
+	else if (plasma == 6)  Plasma4();  // 16 tiny
 }
 
 void Demos::PlasmaT(int8_t dt)
 {
 		 if (plasma == 0)  tadd[5] += dt;
 	else if (plasma == 1)  tadd[2] += dt;
-	else if (plasma == 2)  tadd[0] += dt;
-	else if (plasma == 3)  tadd[1] += dt;
-	else if (plasma == 4)  tadd[3] += dt;
-	else if (plasma == 5)  tadd[4] += dt;
+	else if (plasma == 2)  tadd[2] += dt;
+	else if (plasma == 3)  tadd[0] += dt;
+	else if (plasma == 4)  tadd[1] += dt;
+	else if (plasma == 5)  tadd[3] += dt;
+	else if (plasma == 6)  tadd[4] += dt;
 }
 
 static int yw[W];
@@ -75,69 +77,8 @@ void Demos::Wave()
 }
 
 
-void Demos::Plasma0()  // viol fastest
-{
-	uint tt[4]={t*7,t*17,t*8,t*3};
-	uint yy[6]={0,0,0,0,0,0};
-
-	for (uint y=0; y<H; ++y)
-	{
-		uint a = y*W;
-		uint xx[6]={0,0,0,0,0,0};
-
-		for (uint x=0; x<W; ++x, ++a)
-		{
-			int c;
-			c = 8*Sin( yy[0] +xx[0]) * Cos( xx[1] +tt[0]);
-			c+= 8*Cos( yy[1] +tt[1]) * Sin( xx[2] +tt[2]);
-			c+= 6*Sin( yy[2] +tt[3]) * Cos( xx[3] +yy[3]);
-			c+= 6*Cos( yy[4] +xx[4]) * Sin( xx[5] +yy[5]);
-			c = abs(c);
-			xx[0]+=15; xx[1]+=62; xx[2]+=85; xx[3]+=92; xx[4]+=77; xx[5]+=115;
-
-			c /= SY*(SY/12);
-			data[a] = ((c/5)<<11) + c/3;
-		}
-		yy[0]+=66; yy[1]+=51; yy[2]+=166; yy[3]+=6; yy[4]+=151; yy[5]+=4;
-	}	t+=tadd[0];
-}
-
-
-void Demos::Plasma1()  // blue fast
-{
-	uint tt[16]={t*9,t*12,t*5,t*4, t*14,t*3,t*7,t*12, t*5,t*13,t*4,t*8, t*2,t*6,t*10,t*11};
-	uint yy[12]={0,0,0,0,0,0,0,0,0,0,0,0};
-
-	for (uint y=0; y<H; ++y)
-	{
-		uint a = y*W;
-		uint xx[12]={0,0,0,0,0,0,0,0,0,0,0,0};
-
-		for (uint x=0; x<W; ++x, ++a)
-		{
-			int c;
-			c = 4*Sin( yy[0] +xx[0]+tt[0]) * Cos( xx[1]        +tt[1]);
-			c-= 4*Sin( yy[1]       +tt[2]) * Cos( xx[2] +yy[2] +tt[3]);
-			c+= 5*Cos( yy[3] +xx[4]+tt[4]) * Sin( xx[3]        +tt[5]);
-			c-= 5*Cos( yy[4]       +tt[6]) * Sin( xx[5] +yy[5] +tt[7]);
-			c+= 4*Sin( yy[6]       +tt[8]) * Cos( xx[6]        +tt[9]);
-			c-= 4*Sin( yy[8] +xx[7]+tt[10])* Cos( xx[8]        +tt[11]);
-			c+= 5*Cos( yy[9] +xx[9]+tt[12])* Sin( xx[10]+yy[7] +tt[13]);
-			c-= 5*Cos( yy[11]      +tt[14])* Sin( xx[11]+yy[10]+tt[15]);
-			c = abs(c);
-			xx[0]+=111; xx[1]+=75; xx[2]+=100; xx[3]+=97; xx[4]+=154; xx[5]+=143;
-			xx[6]+=131; xx[7]+=53; xx[8]+=144; xx[9]+=88; xx[10]+=132; xx[11]+=17;
-
-			c /= SY*(SY/12);
-			data[a] = ((c/5)<<6) + c/3;
-		}
-		yy[0]+=71; yy[1]+=93; yy[2]+=128; yy[3]+=151; yy[4]+=78; yy[5]+=149;
-		yy[6]+=136; yy[7]+=56; yy[8]+=213; yy[9]+=109; yy[10]+=82; yy[11]+=132;
-	}	t+=tadd[1];
-}
-
-
-void Demos::Plasma5()  // Clr1 blur
+// . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+void Demos::PlasmaC1()  // Clr1 blur
 {
 	uint tt[16]={t*9,t*12,t*5,t*4, t*14,t*3,t*7,t*12, t*5,t*13,t*4,t*8, t*2,t*6,t*10,t*11};
 	uint tt2[4]={t*7,t*17,t*8,t*3}, tt3[4]={t*11,t*14,t*7,t*5};
@@ -183,11 +124,11 @@ void Demos::Plasma5()  // Clr1 blur
 
 		yy2[0]+=56; yy2[1]+=61; yy2[2]+=87; yy2[3]+=73; yy2[4]+=47; yy2[5]+=51;
 		yy3[0]+=73; yy3[1]+=34; yy3[2]+=69; yy3[3]+=40; yy3[4]+=61; yy3[5]+=55;
-	}	t+=tadd[5];
+	}	t+=tadd[0];
 }
 
 
-void Demos::Plasma2()  // Clr2 lines
+void Demos::PlasmaC2()  // Clr2 lines
 {
 	uint tt[16]={t*9,t*12,t*5,t*4, t*14,t*3,t*7,t*12, t*5,t*13,t*4,t*8, t*2,t*6,t*10,t*11};
 	uint yy[12]={0,0,0,0,0,0,0,0,0,0,0,0};
@@ -212,14 +153,126 @@ void Demos::Plasma2()  // Clr2 lines
 			xx[0]+=111; xx[1]+=75; xx[2]+=100; xx[3]+=97; xx[4]+=114; xx[5]+=43;
 			xx[6]+=91; xx[7]+=103; xx[8]+=124; xx[9]+=88; xx[10]+=132; xx[11]+=17;
 
+		#if 1
 			c /= SY*(SY/8);  c = min(31, max(0, 31-c));  //^
 			b /= SY*(SY/8);  b = min(31, max(0, 31-b));
 			r /= SY*(SY/16);  //r = max(0, 31 - r);
 			data[a] = ((r/4)<<11) + (c<<6) + b;
+		#else
+			c /= SY*(SY/8);  //c = min(31, max(0, 31-c));  //^
+			b /= SY*(SY/8);  //b = min(31, max(0, 31-b));
+			r /= SY*(SY/16);  //r = max(0, 31 - r);
+			data[a] = ((r/4)<<11) + (c/3<<6) + b/3;
+		#endif
+		}
+		yy[0]+=71; yy[1]+=136; yy[2]+=128; yy[3]+=82; yy[4]+=78; yy[5]+=149;
+		yy[6]+=93; yy[7]+=56; yy[8]+=113; yy[9]+=109; yy[10]+=121; yy[11]+=132;
+	}	t+=tadd[1];
+}
+
+void Demos::PlasmaC2b()  // Clr2
+{
+	uint tt[16]={t*9,t*12,t*5,t*4, t*14,t*3,t*7,t*12, t*5,t*13,t*4,t*8, t*2,t*6,t*10,t*11};
+	uint yy[12]={0,0,0,0,0,0,0,0,0,0,0,0};
+
+	for (uint y=0; y<H; ++y)
+	{
+		uint a = y*W;
+		uint xx[12]={0,0,0,0,0,0,0,0,0,0,0,0};
+
+		for (uint x=0; x<W; ++x, ++a)
+		{
+			int c,r,b;
+			c = 4*Sin( yy[0] +xx[0]+tt[0]) * Cos( xx[1]        +tt[1]);
+			c-= 4*Sin( yy[1]       +tt[2]) * Cos( xx[2] +yy[2] +tt[3]);
+			c+= 5*Cos( yy[3] +xx[4]+tt[4]) * Sin( xx[3]        +tt[5]);
+			c-= 5*Cos( yy[4]       +tt[6]) * Sin( xx[5] +yy[5] +tt[7]);
+			c+= 4*Sin( yy[6]       +tt[8]) * Cos( xx[6]        +tt[9]);  r = c;
+			c-= 4*Sin( yy[8] +xx[7]+tt[10])* Cos( xx[8]        +tt[11]);
+			c+= 5*Cos( yy[9] +xx[9]+tt[12])* Sin( xx[10]+yy[7] +tt[13]);
+			c-= 5*Cos( yy[11]      +tt[14])* Sin( xx[11]+yy[10]+tt[15]);  b = c-r;
+			c = abs(c);  r = abs(r);  b = abs(b);
+			xx[0]+=111; xx[1]+=75; xx[2]+=100; xx[3]+=97; xx[4]+=114; xx[5]+=43;
+			xx[6]+=91; xx[7]+=103; xx[8]+=124; xx[9]+=88; xx[10]+=132; xx[11]+=17;
+
+		#if 0
+			c /= SY*(SY/8);  c = min(31, max(0, 31-c));  //^
+			b /= SY*(SY/8);  b = min(31, max(0, 31-b));
+			r /= SY*(SY/16);  //r = max(0, 31 - r);
+			data[a] = ((r/4)<<11) + (c<<6) + b;
+		#else
+			c /= SY*(SY/8);  //c = min(31, max(0, 31-c));  //^
+			b /= SY*(SY/8);  //b = min(31, max(0, 31-b));
+			r /= SY*(SY/16);  //r = max(0, 31 - r);
+			data[a] = ((r/4)<<11) + (c/3<<6) + b/3;
+		#endif
 		}
 		yy[0]+=71; yy[1]+=136; yy[2]+=128; yy[3]+=82; yy[4]+=78; yy[5]+=149;
 		yy[6]+=93; yy[7]+=56; yy[8]+=113; yy[9]+=109; yy[10]+=121; yy[11]+=132;
 	}	t+=tadd[2];
+}
+
+
+// . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+void Demos::Plasma1()  // viol fastest
+{
+	uint tt[4]={t*7,t*17,t*8,t*3};
+	uint yy[6]={0,0,0,0,0,0};
+
+	for (uint y=0; y<H; ++y)
+	{
+		uint a = y*W;
+		uint xx[6]={0,0,0,0,0,0};
+
+		for (uint x=0; x<W; ++x, ++a)
+		{
+			int c;
+			c = 8*Sin( yy[0] +xx[0]) * Cos( xx[1] +tt[0]);
+			c+= 8*Cos( yy[1] +tt[1]) * Sin( xx[2] +tt[2]);
+			c+= 6*Sin( yy[2] +tt[3]) * Cos( xx[3] +yy[3]);
+			c+= 6*Cos( yy[4] +xx[4]) * Sin( xx[5] +yy[5]);
+			c = abs(c);
+			xx[0]+=15; xx[1]+=62; xx[2]+=85; xx[3]+=92; xx[4]+=77; xx[5]+=115;
+
+			c /= SY*(SY/12);
+			data[a] = ((c/5)<<11) + c/3;
+		}
+		yy[0]+=66; yy[1]+=51; yy[2]+=166; yy[3]+=6; yy[4]+=151; yy[5]+=4;
+	}	t+=tadd[3];
+}
+
+
+void Demos::Plasma2()  // blue fast
+{
+	uint tt[16]={t*9,t*12,t*5,t*4, t*14,t*3,t*7,t*12, t*5,t*13,t*4,t*8, t*2,t*6,t*10,t*11};
+	uint yy[12]={0,0,0,0,0,0,0,0,0,0,0,0};
+
+	for (uint y=0; y<H; ++y)
+	{
+		uint a = y*W;
+		uint xx[12]={0,0,0,0,0,0,0,0,0,0,0,0};
+
+		for (uint x=0; x<W; ++x, ++a)
+		{
+			int c;
+			c = 4*Sin( yy[0] +xx[0]+tt[0]) * Cos( xx[1]        +tt[1]);
+			c-= 4*Sin( yy[1]       +tt[2]) * Cos( xx[2] +yy[2] +tt[3]);
+			c+= 5*Cos( yy[3] +xx[4]+tt[4]) * Sin( xx[3]        +tt[5]);
+			c-= 5*Cos( yy[4]       +tt[6]) * Sin( xx[5] +yy[5] +tt[7]);
+			c+= 4*Sin( yy[6]       +tt[8]) * Cos( xx[6]        +tt[9]);
+			c-= 4*Sin( yy[8] +xx[7]+tt[10])* Cos( xx[8]        +tt[11]);
+			c+= 5*Cos( yy[9] +xx[9]+tt[12])* Sin( xx[10]+yy[7] +tt[13]);
+			c-= 5*Cos( yy[11]      +tt[14])* Sin( xx[11]+yy[10]+tt[15]);
+			c = abs(c);
+			xx[0]+=111; xx[1]+=75; xx[2]+=100; xx[3]+=97; xx[4]+=154; xx[5]+=143;
+			xx[6]+=131; xx[7]+=53; xx[8]+=144; xx[9]+=88; xx[10]+=132; xx[11]+=17;
+
+			c /= SY*(SY/12);
+			data[a] = ((c/5)<<6) + c/3;
+		}
+		yy[0]+=71; yy[1]+=93; yy[2]+=128; yy[3]+=151; yy[4]+=78; yy[5]+=149;
+		yy[6]+=136; yy[7]+=56; yy[8]+=213; yy[9]+=109; yy[10]+=82; yy[11]+=132;
+	}	t+=tadd[4];
 }
 
 
@@ -267,7 +320,7 @@ void Demos::Plasma3()  // orange small
 		yy[6]+=166; yy[7]+=6; yy[8]+=183; yy[9]+=151; yy[10]+=4; yy[11]+=177;
 		yy[12]+=266; yy[13]+=283; yy[14]+=48; yy[15]+=351; yy[16]+=377; yy[17]+=39;
 		yy[18]+=16; yy[19]+=86; yy[20]+=13; yy[21]+=11; yy[22]+=74; yy[23]+=17;
-	}	t+=tadd[3];
+	}	t+=tadd[5];
 }
 
 
@@ -301,5 +354,5 @@ void Demos::Plasma4()  // tiny
 		}
 		yy[0]+=371; yy[1]+=236; yy[2]+=428; yy[3]+=282; yy[4]+=508; yy[5]+=319;
 		yy[6]+=393; yy[7]+=256; yy[8]+=413; yy[9]+=249; yy[10]+=521; yy[11]+=352;
-	}	t+=tadd[4];
+	}	t+=tadd[6];
 }

@@ -55,11 +55,12 @@ struct Demos
 	//  Plasma
 	uint t;  // frame counter
 	int8_t plasma;  // cur mode
-	const static int8_t num_plasma = 6;
+	const static int8_t num_plasma = 7;
 	int8_t tadd[num_plasma];  // speeds
 
 	void Plasma(), PlasmaT(int8_t dt);
-	void Plasma0(),Plasma1(),Plasma2(),Plasma3(),Plasma4(),Plasma5();
+	void Plasma1(),Plasma2(),Plasma3(),Plasma4(),
+		PlasmaC1(),PlasmaC2(),PlasmaC2b();
 
 
 	//  Balls  --------

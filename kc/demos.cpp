@@ -37,8 +37,9 @@ void Demos::Init(Ada4_ST7735* tft)
 
 	ckCur = 0;	ckSpeed = 6;  // logo
 
-	plasma = 1;  t = 31210;
-	tadd[0]=2; tadd[1]=5; tadd[2]=3; tadd[3]=5; tadd[4]=5; tadd[5]=5;
+	plasma = 1;  t = 131210;
+	for (int i=0; i < num_plasma; ++i)
+		tadd[i]=5;
 
 	twv = 7;
 #endif
