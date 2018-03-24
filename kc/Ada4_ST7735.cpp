@@ -1,23 +1,9 @@
-/*********************************************************************
 
-*********************************************************************/
+#define pgm_read_byte(addr) (*(const unsigned char *)(addr))
 
-#ifdef __AVR__
-  #include <avr/pgmspace.h>
-#elif defined(ESP8266)
- #include <pgmspace.h>
-#else
- #define pgm_read_byte(addr) (*(const unsigned char *)(addr))
-#endif
-
-#if !defined(__ARM_ARCH) && !defined(ENERGIA) && !defined(ESP8266)
- #include <util/delay.h>
-#endif
-
+#include <util/delay.h>
 #include <stdlib.h>
 
-//#include <Wire.h>
-#include <SPI.h>
 #include "Adafruit_GFX.h"
 #include "Ada4_ST7735.h"
 

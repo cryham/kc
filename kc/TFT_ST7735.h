@@ -6,9 +6,7 @@
 	- Very FAST!, expecially with Teensy 3.x where uses hyper optimized SPI.
 	- Extreme easy to use.
 	- It uses just 4 or 5 wires.
-	- Compatible with many CPU (Teensy's, Arduino 8Bit, DUE, ESP8266)
 	- Full featured
-	- GPO Fast Font Rendering
 	- ICON support (with many feature included transparency)
 	- Multiple Instances Compatible (just 1 pin more x display)
 	- Can handle any type of display
@@ -48,9 +46,7 @@
 	- Sleep mode shows only white screen due hardware limitation (gates are pullup during sleep)
 	- multi instances with dc shared works only for Teensy 3.x
 	Please report any!
-
 */
-
 
 #ifndef _TFT_ST7735LIB_H_
 #define _TFT_ST7735LIB_H_
@@ -66,14 +62,14 @@
 #include <SPI.h>
 #include "kinetis.h"
 
-#include "_settings/TFT_ST7735_settings.h"
-#include "_includes/TFT_ST7735_cpuCommons.h"
-#include "_settings/TFT_ST7735_colors.h"
-#include "_includes/TFT_ST7735_registers.h"
+#include "_display/TFT_ST7735_settings.h"
+#include "_display/TFT_ST7735_cpuCommons.h"
+#include "_display/TFT_ST7735_colors.h"
+#include "_display/TFT_ST7735_registers.h"
 
 //Load sumotoy universal descriptors (used in many other libraries)
-#include "_includes/sumotoy_imageDescription.h"
-#include "_includes/sumotoy_iconDescription.h"
+#include "_display/sumotoy_imageDescription.h"
+#include "_display/sumotoy_iconDescription.h"
 
 #if defined(ESP8266) && !defined(_ESP8266_STANDARDMODE)
 	#include <eagle_soc.h>

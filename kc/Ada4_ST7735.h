@@ -1,7 +1,8 @@
 /*********************************************************************
    Wrapper from ST7735 to Adafruit GFX
-   with double buffering
+   with single buffering
 *********************************************************************/
+
 #ifndef _Ada4_ST7735_H_
 #define _Ada4_ST7735_H_
 
