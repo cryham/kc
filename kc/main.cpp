@@ -66,7 +66,7 @@ void main_periodic()
 	//------------------------------------------------
 	#define Key(y,x)  (Matrix_scanArray[y * rr + x].curState == KeyState_Press ? 1 : 0)
 
-	if (K(5,0))  key = 1-key;
+	if (Key(5,0))  key = 1-key;
 	//int d = Key(5,0) - Key(3,0);  // F12+ F11-
 	//int d = Key(4,0) - Key(2,0);  // Ent+ \-
 	//int d = Key(2,2) - Key(0,2);  // End+ Hom-
@@ -142,15 +142,12 @@ int main()
 
 	demos.Init(&tft);
 
-	//uint16_t scanNum = 0; // K
 	Matrix_setup();
 
 	// Setup periodic timer function
-	// 1000 = 9.6k, d:2fps -
-	// 10000 = 4.8kHz x2, d:30fps
-	// 30000 = 1.6kHz  display: 47fps
-	// 40000 = 1.2kHz  d:50fps +
-	// 50000 = 960Hz  d:52fps
+	// 30000  1.6kHz  d:47fps
+	// 40000  1.2kHz  d:50fps
+	// 50000  960Hz  d:52fps
 	Periodic_init( 50000 );
 	Periodic_function( &main_periodic );
 
@@ -261,8 +258,7 @@ int main()
 
 		if (text || demo > D_None)
 		{
-			tft.display();
-			// 58 Fps, 15ms @144MHz, 20ms @72MHz
+			tft.display();  // 58 Fps, 15ms @144MHz
 		}
 	}
 }
