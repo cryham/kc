@@ -15,8 +15,13 @@
 #define SX  8192   // 8192  mem size 16kB
 //#define SX  16384
 #define SY  16384  // 16384  y quality
+#if 1
 #define Cos(x)  sint[(SX/2+(x))%SX]  // %SX
 #define Sin(x)  sint[      (x) %SX]
+#else
+#define Cos(x)  ( ( ((SX/2+(x))%SX) *4 -SY) )   /1\2  4
+#define Sin(x)  ( ( (      (x) %SX) *4 -SY) )  0   \3/
+#endif
 
 extern const int16_t sint[SX];
 

@@ -104,7 +104,8 @@ void IntervalTimer::end() {
 }
 
 
-#if defined(KINETISK)
+//#if defined(KINETISK)
+#if 0
 void pit0_isr()
 {
 	PIT_TFLG0 = 1;

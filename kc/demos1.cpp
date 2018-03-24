@@ -67,7 +67,7 @@ void Demos::Rain()
 			x=random(W); y=random(H);  r= random(24);  d->drawCircle(x,y,r,0);
 			x=random(W); y=random(H);  r= random(20);  d->drawCircle(x,y,r,0);
 
-		if (random(100) < 30 + r1Int * 5)
+		if ((int)random(100) < 30 + r1Int * 5)
 		{	x=random(W); y=random(H);  r= random(6+s)+1+s;  d->drawCircle(x,y,r,RClr);
 		}
 	}else  // 1

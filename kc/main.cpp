@@ -3,6 +3,15 @@
 #include "usb_keyboard.h"
 #include "matrix.h"
 
+#ifdef	__cplusplus
+extern "C"
+{
+#endif
+#include "periodic.h"
+#ifdef	__cplusplus
+}
+#endif
+
 #include "demos.h"
 
 #include "Ada4_ST7735.h"
@@ -11,14 +20,113 @@
 //  vars
 unsigned long tm;
 uint32_t oldti = 0;  // dt
-uint c=0;   // frame counter
+uint frm_cnt = 0;   // frame counter
+
 //#define pin 6
 
+//  tim
+uint tim_cnt = 0, tim_fq = 0;  // scan counter, freq
+const static int rr = Matrix_colsNum;
+
+uint8_t v = LOW;  // pin
+uint32_t us_scan = 0, ms_scan = 0;
+
+
+//  gui
+int text = 1, key = 1;
+int demo = D_Plasma;
+
+Demos demos;
+
+
+void main_periodic()
+{
+	uint32_t us = micros();
+
+	//  freq info
+	uint32_t ms = millis(),
+		ms_diff = ms - ms_scan;
+	if (ms_diff >= 1000)  // 1s
+	{
+		ms_scan = ms;
+		tim_fq = tim_cnt;  // Hz
+		tim_cnt = 0;
+	}
+	++tim_cnt;
+
+	//  kbd scan
+	Matrix_scan( 0 );  // K
+
+	#ifdef pin
+	digitalWriteFast(pin, v);
+	v = v==LOW ? HIGH : LOW;
+	#endif
+
+	//  kbd  gui
+	//------------------------------------------------
+	#define Key(y,x)  (Matrix_scanArray[y * rr + x].curState == KeyState_Press ? 1 : 0)
+
+	if (K(5,0))  key = 1-key;
+	//int d = Key(5,0) - Key(3,0);  // F12+ F11-
+	//int d = Key(4,0) - Key(2,0);  // Ent+ \-
+	//int d = Key(2,2) - Key(0,2);  // End+ Hom-
+	int d = Key(2,1) - Key(0,1);  // PgDn+ PgUp-
+	if (d)
+	{	demo += d;  if (demo < 0) demo = D_All-1;
+		if (demo >= D_All) demo = D_None;
+	}
+
+	d = Key(0,6) - Key(2,6);  // Add+ Ent-
+	if (d)
+		text = (text + d + 4) % 4;
+
+	//if (K(0,1))
+	//	key = 1 - key;
+	/*
+		-|  0    1     2    3  4    5  6    7
+		0        PgUp  Hom  U  ^    R  +    E
+		1   Bck  ->    <-   Y  Del  T       F3
+		2   \    PgDn  End  J  v    F  Ent  D
+		3   F11  Del.  Spc  H  Ins  G  Up   F4
+		4   Ent  *     Num  M  /    V       C
+		5   F12  -          N       B
+	*/
+
+	//  demo keys
+	int k = Key(1,1) - Key(1,2),  // ->  <-  next
+		e = Key(0,4) - Key(2,4);  // Up+ Dn-  speed
+	demos.KeyPress((EDemo)demo, k, e, Key(3,4), Key(5,1));  // ins ct, - inf
+
+
+	//  keyboard send
+	//------------------------------------------------
+	if (key)
+	{
+		//int u = 0;
+		for (uint c=0; c < Matrix_colsNum; ++c)
+		for (uint r=0; r < Matrix_rowsNum; ++r)
+		{
+			int id = rr * r + c;
+			const KeyState& k = Matrix_scanArray[id];
+			if (k.curState == KeyState_Press)
+			{	Keyboard.press(KEY_A + id);
+				Keyboard.send_now();
+			}
+			else if (k.curState == KeyState_Release)
+			{	Keyboard.release(KEY_A + id);
+				Keyboard.send_now();
+			}
+		}
+	}
+
+	us_scan = micros() - us;
+	// 115 us,  90 us w/o strobe delay
+}
 
 //------------------------------------------------------------------------------------
 int main()
 {
-	Demos demos;
+//	Demos demos;
 
 	Ada4_ST7735 tft;
 	tft.begin();
@@ -32,26 +140,23 @@ int main()
 	char a[128];
 
 
+	demos.Init(&tft);
+
 	//uint16_t scanNum = 0; // K
 	Matrix_setup();
-	const static int rr = Matrix_colsNum;
 
-	int text = 1, key = 0;
-	int demo = D_Wave; //D_Plasma;
-//	int demo = D_Space;
-	demos.Init(&tft);
+	// Setup periodic timer function
+	// 1000 = 9.6k, d:2fps -
+	// 10000 = 4.8kHz x2, d:30fps
+	// 30000 = 1.6kHz  display: 47fps
+	// 40000 = 1.2kHz  d:50fps +
+	// 50000 = 960Hz  d:52fps
+	Periodic_init( 50000 );
+	Periodic_function( &main_periodic );
 
 
 	while(1)
 	{
-		Matrix_scan( 0 );  // K
-
-		#ifdef pin
-		digitalWriteFast(pin, LOW);
-		#endif
-
-
-		// txt 55fps 3ln
 		//------------------------------------------------
 		if (demo != D_Rain)
 			tft.clear();
@@ -75,6 +180,7 @@ int main()
 		}
 		uint32_t tdemo = millis() - oti1;
 
+		// txt 55fps 3ln
 		//------------------------------------------------
 		if (text)
 		{
@@ -125,8 +231,8 @@ int main()
 			tft.setCursor(0,0);
 			float fr = 1000.f / (ti - oldti);
 			int ff = fr;
-			//sprintf(a,"%4.1f", fr);
-			sprintf(a,"%d %lu", ff, tdemo);
+
+			sprintf(a,"%d %lu %u %lu", ff, tdemo, tim_fq, us_scan);
 			tft.print(a);
 			oldti = ti;
 
@@ -136,11 +242,12 @@ int main()
 				tm = rtc_get();
 				int h = tm/3600%24, m = tm/60%60, s = tm%60;
 				tft.setCursor(0,8);
-				sprintf(a,"%2d:%02d:%02d  %d", h,m,s, c);
+
+				sprintf(a,"%2d:%02d:%02d  %d", h,m,s, frm_cnt);
 				tft.print(a);
 			}
 
-			//  keys  ***
+			//  keys
 			if (text == 2)
 			{
 				tft.setCursor(0,20);
@@ -149,71 +256,13 @@ int main()
 			}
 		}
 
-		//Matrix_scan( 1 );  // K
-		//scanNum = 0;
-		#ifdef pin
-		digitalWriteFast(pin, HIGH);
-		#endif
-		++c;
+		++frm_cnt;
 
-
-		//  kbd
-		//------------------------------------------------
-		#define Key(y,x)  (Matrix_scanArray[y * rr + x].curState == KeyState_Press ? 1 : 0)
-
-		//int d = Key(5,0) - Key(3,0);  // F12+ F11-
-		//int d = Key(4,0) - Key(2,0);  // Ent+ \-
-		//int d = Key(2,2) - Key(0,2);  // End+ Hom-
-		int d = Key(2,1) - Key(0,1);  // PgDn+ PgUp-
-		if (d)
-		{	demo += d;  if (demo < 0) demo = D_All-1;
-			if (demo >= D_All) demo = D_None;
-		}
-
-		d = Key(0,6) - Key(2,6);  // Add+ Ent-
-		if (d)
-			text = (text + d + 4) % 4;
-
-		//if (K(0,1))
-		//	key = 1 - key;
-		/*
-			-|  0    1     2    3  4    5  6    7
-			0        PgUp  Hom  U  ^    R  +    E
-			1   Bck  ->    <-   Y  Del  T       F3
-			2   \    PgDn  End  J  v    F  Ent  D
-			3   F11  Del.  Spc  H  Ins  G  Up   F4
-			4   Ent  *     Num  M  /    V       C
-			5   F12  -          N       B
-		*/
-
-		//  demo keys
-		int k = Key(1,1) - Key(1,2),  // ->  <-  next
-			e = Key(0,4) - Key(2,4);  // Up+ Dn-  speed
-		demos.KeyPress((EDemo)demo, k, e, Key(3,4), Key(5,1));  // ins ct, - inf
-
-
-		//  keyboard send
-		//------------------------------------------------
-		if (key)
-		{
-			//int u = 0;
-			for (uint c=2; c < Matrix_colsNum; ++c)
-			for (uint r=0; r < Matrix_rowsNum; ++r)
-			{
-				int id = rr * r + c;
-				const KeyState& k = Matrix_scanArray[id];
-				if (k.curState == KeyState_Press)
-				{	Keyboard.press(KEY_A + id);
-					Keyboard.send_now();
-				}
-				else if (k.curState == KeyState_Release)
-				{	Keyboard.release(KEY_A + id);
-					Keyboard.send_now();
-				}
-			}
-		}
 
 		if (text || demo > D_None)
-			tft.display();  // 58 Fps, 15ms @144MHz, 20ms @72MHz
+		{
+			tft.display();
+			// 58 Fps, 15ms @144MHz, 20ms @72MHz
+		}
 	}
 }
