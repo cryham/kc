@@ -25,7 +25,7 @@ uint frm_cnt = 0;   // frame counter
 //#define pin 6
 
 //  tim
-uint tim_cnt = 0, tim_fq = 0;  // scan counter, freq
+uint tim_cnt = 0, tim_freq = 0;  // scan counter, freq
 const static int rr = Matrix_colsNum;
 
 uint8_t v = LOW;  // pin
@@ -33,8 +33,8 @@ uint32_t us_scan = 0, ms_scan = 0;
 
 
 //  gui
-int text = 1, key = 1;
-int demo = D_Plasma;
+int text = 2, keys = 1;
+int demo = D_None; //D_Plasma;
 
 Demos demos;
 
@@ -49,7 +49,7 @@ void main_periodic()
 	if (ms_diff >= 1000)  // 1s
 	{
 		ms_scan = ms;
-		tim_fq = tim_cnt;  // Hz
+		tim_freq = tim_cnt;  // Hz
 		tim_cnt = 0;
 	}
 	++tim_cnt;
@@ -64,43 +64,45 @@ void main_periodic()
 
 	//  kbd  gui
 	//------------------------------------------------
-	#define Key(y,x)  (Matrix_scanArray[y * rr + x].curState == KeyState_Press ? 1 : 0)
+	#define Key(y,x)  (Matrix_scanArray[y * rr + x].state == KeyState_Press ? 1 : 0)
 
-	if (Key(5,0))  key = 1-key;
-	//int d = Key(5,0) - Key(3,0);  // F12+ F11-
-	//int d = Key(4,0) - Key(2,0);  // Ent+ \-
-	//int d = Key(2,2) - Key(0,2);  // End+ Hom-
-	int d = Key(2,1) - Key(0,1);  // PgDn+ PgUp-
-	if (d)
-	{	demo += d;  if (demo < 0) demo = D_All-1;
-		if (demo >= D_All) demo = D_None;
+	if (Key(5,0))  keys = 1-keys;
+	if (!keys)
+	{
+		//int d = Key(5,0) - Key(3,0);  // F12+ F11-
+		//int d = Key(4,0) - Key(2,0);  // Ent+ \-
+		//int d = Key(2,2) - Key(0,2);  // End+ Hom-
+		int d = Key(2,1) - Key(0,1);  // PgDn+ PgUp-
+		if (d)
+		{	demo += d;  if (demo < 0) demo = D_All-1;
+			if (demo >= D_All) demo = D_None;
+		}
+
+		d = Key(0,6) - Key(2,6);  // Add+ Ent-
+		if (d)
+			text = (text + d + 4) % 4;
+
+		//if (K(0,1))
+		//	key = 1 - key;
+		/*
+			-|  0    1     2    3  4    5  6    7
+			0        PgUp  Hom  U  ^    R  +    E
+			1   Bck  ->    <-   Y  Del  T       F3
+			2   \    PgDn  End  J  v    F  Ent  D
+			3   F11  Del.  Spc  H  Ins  G  Up   F4
+			4   Ent  *     Num  M  /    V       C
+			5   F12  -          N       B
+		*/
+
+		//  demo keys
+		int k = Key(1,1) - Key(1,2),  // ->  <-  next
+			e = Key(0,4) - Key(2,4);  // Up+ Dn-  speed
+		demos.KeyPress((EDemo)demo, k, e, Key(3,4), Key(5,1));  // ins ct, - inf
 	}
-
-	d = Key(0,6) - Key(2,6);  // Add+ Ent-
-	if (d)
-		text = (text + d + 4) % 4;
-
-	//if (K(0,1))
-	//	key = 1 - key;
-	/*
-		-|  0    1     2    3  4    5  6    7
-		0        PgUp  Hom  U  ^    R  +    E
-		1   Bck  ->    <-   Y  Del  T       F3
-		2   \    PgDn  End  J  v    F  Ent  D
-		3   F11  Del.  Spc  H  Ins  G  Up   F4
-		4   Ent  *     Num  M  /    V       C
-		5   F12  -          N       B
-	*/
-
-	//  demo keys
-	int k = Key(1,1) - Key(1,2),  // ->  <-  next
-		e = Key(0,4) - Key(2,4);  // Up+ Dn-  speed
-	demos.KeyPress((EDemo)demo, k, e, Key(3,4), Key(5,1));  // ins ct, - inf
-
 
 	//  keyboard send
 	//------------------------------------------------
-	if (key)
+	if (keys)
 	{
 		//int u = 0;
 		for (uint c=0; c < Matrix_colsNum; ++c)
@@ -108,19 +110,23 @@ void main_periodic()
 		{
 			int id = rr * r + c;
 			const KeyState& k = Matrix_scanArray[id];
-			if (k.curState == KeyState_Press)
-			{	Keyboard.press(KEY_A + id);
+			uint kk = (r==3 && c==1) ? MODIFIERKEY_SHIFT : KEY_A + id;
+
+			if (k.state == KeyState_Press)
+			{
+				Keyboard.press(kk);
 				Keyboard.send_now();
 			}
-			else if (k.curState == KeyState_Release)
-			{	Keyboard.release(KEY_A + id);
+			else if (k.state == KeyState_Release)
+			{
+				Keyboard.release(kk);
 				Keyboard.send_now();
 			}
 		}
 	}
 
 	us_scan = micros() - us;
-	// 115 us,  90 us w/o strobe delay
+	// 131 us del 3,  115 us del 2,  90 us del 0
 }
 
 //------------------------------------------------------------------------------------
@@ -187,7 +193,7 @@ int main()
 				int x = 0, y = 0;
 				for (int i=0; i < numKeys; ++i)
 				{
-					const SKey& k = keys[i];
+					const SKey& k = drawKeys[i];
 					if (k.x >=0)  x = k.x;  else  x -= k.x;
 					if (k.y > 0)  y = k.y + 60; /*Y*/  else  y -= k.y;
 	
@@ -209,14 +215,18 @@ int main()
 			for (uint c=0; c < Matrix_colsNum; ++c)
 			for (uint r=0; r < Matrix_rowsNum; ++r)
 			{
-				tft.setCursor(c*12, 48 + r*8);
+				tft.setCursor(c*8, 64 + r*8);
 				const KeyState& k = Matrix_scanArray[Matrix_colsNum * r + c];
-				if (k.curState == KeyState_Off)
+
+				if (k.state == KeyState_Off)
 				{	sprintf(a,".");
-					tft.setTextColor(RGB(12,20,26));
+					if (col_ghost[c] || row_ghost[r])
+						tft.setTextColor(RGB(31,26,12));
+					else
+						tft.setTextColor(RGB(12,20,26));
 				}else{
-					sprintf(a,"%d", k.curState);
-					tft.setTextColor(RGB(21,26,31));
+					sprintf(a,"%d", k.state);
+					tft.setTextColor(RGB(24,28,31));
 				}
 				tft.print(a);
 			}
@@ -229,7 +239,7 @@ int main()
 			float fr = 1000.f / (ti - oldti);
 			int ff = fr;
 
-			sprintf(a,"%d %lu %u %lu", ff, tdemo, tim_fq, us_scan);
+			sprintf(a,"%d %lu", ff, tdemo);
 			tft.print(a);
 			oldti = ti;
 
@@ -238,18 +248,32 @@ int main()
 			{
 				tm = rtc_get();
 				int h = tm/3600%24, m = tm/60%60, s = tm%60;
-				tft.setCursor(0,8);
+				tft.setCursor(0,H-8);
 
 				sprintf(a,"%2d:%02d:%02d  %d", h,m,s, frm_cnt);
 				tft.print(a);
 			}
 
-			//  keys
+			//  keys  ---
 			if (text == 2)
 			{
-				tft.setCursor(0,20);
-				sprintf(a,"P %d  R %d  H %d", cnt_press, cnt_rel, cnt_hold);
+				tft.setCursor(0,16);
+				sprintf(a,"Scan %u Hz  t %lu us", tim_freq, us_scan);
 				tft.print(a);
+
+				tft.setCursor(0,24+4);
+				sprintf(a,"Held %d  press %d  %d", cnt_press-cnt_rel, cnt_press, cnt_hold%1000);
+				tft.print(a);
+
+				//tft.setCursor(0,32);
+				//sprintf(a,"Rele %d  Hcnt %d", cnt_rel, cnt_hold%1000);
+				tft.print(a);
+
+				tft.setCursor(0,40);
+				sprintf(a,"Ghost col %d row %d  K%d", ghost_cols, ghost_rows, keys);
+				tft.print(a);
+				// home +right  ghost?
+				//+5us strobe delay  left +del +right  extra keys bad!  >=3 keys in row
 			}
 		}
 

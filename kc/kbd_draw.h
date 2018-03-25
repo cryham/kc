@@ -31,7 +31,7 @@ clrText[Emax] = { RGB(27,29,31), RGB(31,31,21), RGB(27,29,31), RGB(28,28,31),
 
 
 const int numKeys = 94;
-SKey keys[numKeys] = {  ///  keys draw
+SKey drawKeys[numKeys] = {  ///  keys draw
 
 { 0,  9,kW,G, 'e',6}, //esc 13x
 {-13, 0,kW,G, '1',2},{X, 0,kW,G, '2',2},{X,0,kW,G, '3',2},{X,0,kW,G, '4',2},

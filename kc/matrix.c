@@ -22,6 +22,7 @@ uint16_t matrixDebugStateCounter = 0;
 uint16_t matrixMaxScans  = 0;
 uint16_t matrixCurScans  = 0;
 uint16_t matrixPrevScans = 0;
+
 int ghost_cols = 0, ghost_rows = 0;
 int cnt_press = 0, cnt_rel = 0, cnt_hold = 0;
 
@@ -433,6 +434,7 @@ void Matrix_scan( uint16_t scanNum )
 				? (!st->prev ? KeyState_Off : KeyState_Release)
 				: ( st->prev ? KeyState_Hold : KeyState_Press);
 
+			state->state = k;  // final
 			//Macro_keyState( key, k );
 
 			if (k == KeyState_Press)

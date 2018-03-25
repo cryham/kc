@@ -109,13 +109,13 @@ const static GPIO_Pin Matrix_rows[] = { T3_0, T3_1, T3_2, T3_3, T3_23, T3_22 };
 #define GHOSTING_MATRIX
 
 // Delay in microseconds before and after each strobe change during matrix scan
-#define STROBE_DELAY  2
+#define STROBE_DELAY  4  // 3 too low for >=3 in row, 4 ok
 
 #define DebounceDivThreshold_define 65535
 #define DebounceCounter uint16_t
 
 #define DebounceThrottleDiv_define 0
-#define MinDebounceTime_define 10
+#define MinDebounceTime_define 1
 
 //#define StrobeDelay_define 0
 //#define StateWordSize_define 16
@@ -130,6 +130,7 @@ typedef struct KeyState {
 	KeyPosition     prevState;
 	KeyPosition     curState;
 	uint32_t        prevDecisionTime;
+	KeyPosition     state;  // final after ghost
 } KeyState;
 
 #ifdef GHOSTING_MATRIX
@@ -146,7 +147,9 @@ inline uint8_t keyOn(/*KeyPosition*/uint8_t st)
 	return (st == KeyState_Press || st == KeyState_Hold) ? 1 : 0;
 }
 
-extern int ghost_cols, ghost_rows;  // for status info
+//  for ghost status info
+extern int ghost_cols, ghost_rows;  // ghosting if any > 0
+extern uint8_t col_ghost[Matrix_colsNum], row_ghost[Matrix_rowsNum];  // marked as having ghost if 1
 #endif
 
 extern int cnt_press, cnt_hold, cnt_rel;  // test
