@@ -1,10 +1,6 @@
 #include "demos.h"
 
 //#include "gui.h"  // menu enum, ym etc
-//extern "C" {
-//	#include <scan_loop.h>  // keys kk
-//	#include <usb_hid->h>  // key_defs
-//}
 
 //  Main
 Demos::Demos()
@@ -159,29 +155,5 @@ void Demos::KeyPress(EDemo demo, int k, int e, int ct, int kinf)
 			break;
 		}
 	}
-}
-#endif
-
-#if 0
-//  display
-void Demos::KeyGlob(D d)
-{
-	if (key(F) || keyp(PLUS))
-		fps = 1-fps;
-
-	if (key(SPACE) || key(D))
-	{
-		dim = 1-dim;
-		d->dim(dim);
-	}
-}
-
-void Demos::Reset(D d)
-{
-	d->begin(SSD1306_SWITCHCAPVCC);
-	d->clearDisplay();
-	d->dim(dim);
-	d->display();
-	d->setTextColor(WHITE);
 }
 #endif

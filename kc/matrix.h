@@ -149,6 +149,7 @@ inline uint8_t keyOn(/*KeyPosition*/uint8_t st)
 
 //  for ghost status info
 extern int ghost_cols, ghost_rows;  // ghosting if any > 0
+extern uint8_t col_use[Matrix_colsNum], row_use[Matrix_rowsNum];  // used count
 extern uint8_t col_ghost[Matrix_colsNum], row_ghost[Matrix_rowsNum];  // marked as having ghost if 1
 #endif
 

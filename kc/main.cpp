@@ -36,6 +36,7 @@ uint32_t us_scan = 0, ms_scan = 0;
 int text = 2, keys = 1;
 int demo = D_None; //D_Plasma;
 
+//Gui gui;
 Demos demos;
 
 
@@ -145,9 +146,11 @@ int main()
 	#endif
 	char a[128];
 
-
+	//gui.Init();
 	demos.Init(&tft);
 
+
+	//  kbd
 	Matrix_setup();
 
 	// Setup periodic timer function
@@ -210,7 +213,9 @@ int main()
 			}
 			tft.setTextColor(0xFFFF);
 
+
 			//  matrix  -------
+			bool ghost = false;
 			if (text == 2)
 			for (uint c=0; c < Matrix_colsNum; ++c)
 			for (uint r=0; r < Matrix_rowsNum; ++r)
@@ -218,19 +223,55 @@ int main()
 				tft.setCursor(c*8, 64 + r*8);
 				const KeyState& k = Matrix_scanArray[Matrix_colsNum * r + c];
 
+				#define CGh(b)  tft.setTextColor(b ? RGB(31,26,12) : RGB(12,20,26))
+
 				if (k.state == KeyState_Off)
 				{	sprintf(a,".");
-					if (col_ghost[c] || row_ghost[r])
-						tft.setTextColor(RGB(31,26,12));
-					else
-						tft.setTextColor(RGB(12,20,26));
+					bool gh = col_ghost[c] || row_ghost[r];
+					CGh(gh);
+					ghost |= gh;
 				}else{
 					sprintf(a,"%d", k.state);
 					tft.setTextColor(RGB(24,28,31));
 				}
 				tft.print(a);
 			}
-			tft.setTextColor(RGB(24,28,31));
+
+			//  keys  ---
+			if (text == 2)
+			{
+				tft.setCursor(0,16);
+				tft.setTextColor(RGB(16,21,26));
+				sprintf(a,"Scan %u Hz  t %lu us", tim_freq, us_scan);
+				tft.print(a);
+				tft.setTextColor(RGB(24,28,31));
+
+				tft.setCursor(0,24+4);
+				sprintf(a,"Held %d  press %d", cnt_press-cnt_rel, cnt_press);//, cnt_hold % 1000);
+				tft.print(a);
+
+				//  ghosting
+				tft.setCursor(0,40);
+				tft.setTextColor(ghost ? RGB(31,26,12) : RGB(16,21,26));
+				sprintf(a,"Ghost col %d row %d  K%d", ghost_cols, ghost_rows, keys);
+				tft.print(a);
+
+				//  gho col,row use
+				for (uint c=0; c < Matrix_colsNum; ++c)
+				{
+					CGh(col_ghost[c]);
+					tft.setCursor(c*8, 64 - 1*8);
+					sprintf(a,"%d", col_use[c]);
+					tft.print(a);
+				}
+				for (uint r=0; r < Matrix_rowsNum; ++r)
+				{
+					CGh(row_ghost[r]);
+					tft.setCursor(W/2-8, 64 + r*8);
+					sprintf(a,"%d", row_use[r]);
+					tft.print(a);
+				}
+			}
 
 
 			//  fps  ---------
@@ -240,43 +281,22 @@ int main()
 			int ff = fr;
 
 			sprintf(a,"%d %lu", ff, tdemo);
+			tft.setTextColor(RGB(24,28,31));
 			tft.print(a);
 			oldti = ti;
+
 
 			//  time  ---
 			if (text == 3)
 			{
 				tm = rtc_get();
 				int h = tm/3600%24, m = tm/60%60, s = tm%60;
-				tft.setCursor(0,H-8);
+				tft.setCursor(0,3*8);
 
 				sprintf(a,"%2d:%02d:%02d  %d", h,m,s, frm_cnt);
 				tft.print(a);
 			}
-
-			//  keys  ---
-			if (text == 2)
-			{
-				tft.setCursor(0,16);
-				sprintf(a,"Scan %u Hz  t %lu us", tim_freq, us_scan);
-				tft.print(a);
-
-				tft.setCursor(0,24+4);
-				sprintf(a,"Held %d  press %d  %d", cnt_press-cnt_rel, cnt_press, cnt_hold%1000);
-				tft.print(a);
-
-				//tft.setCursor(0,32);
-				//sprintf(a,"Rele %d  Hcnt %d", cnt_rel, cnt_hold%1000);
-				tft.print(a);
-
-				tft.setCursor(0,40);
-				sprintf(a,"Ghost col %d row %d  K%d", ghost_cols, ghost_rows, keys);
-				tft.print(a);
-				// home +right  ghost?
-				//+5us strobe delay  left +del +right  extra keys bad!  >=3 keys in row
-			}
 		}
-
 		++frm_cnt;
 
 
