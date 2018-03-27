@@ -1,14 +1,15 @@
 #pragma once
-//#include <stdint.h>
 #include "WProgram.h"
 #include "Ada4_ST7735.h"
 
 #define DEMOS  // if not, only keyboard Gui
 
+
 #define W 160  // area
 #define H 128
 
-#define RGB(r,g,b) ((r<<11)+ ((g)<<6) +b)	// R F800  G 07E0  B 001F  R 32 G 64 B 32
+//  R F800  G 07E0  B 001F  R 32 G 64 B 32  565
+#define RGB(r,g,b) ((r<<11)+ ((g)<<6/*<<5*/) +b)
 
 
 //  sinus table  ----
@@ -71,7 +72,6 @@ struct Demos
 	//  Balls  --------
 //	const static int sMax = 10, bMax = 10, dMax = 10;
 	const static int sMax = 240, bMax = 300, dMax = 550;  // 76%  50k
-//	const static int sMax = 240, bMax = 300, dMax = 1350;  // 90% ram
 
 	int sCnt, sVel;  // stars: count, velocity
 	int bCnt, bSpd, bSpRnd, bRad;  // balls: count, speed, radius max

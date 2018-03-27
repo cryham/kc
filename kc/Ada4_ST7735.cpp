@@ -74,6 +74,13 @@ void Ada4_ST7735::print(const char* str)
 	}
 }
 
+void Ada4_ST7735::println(const char* str)
+{
+	print(str);
+	cursor_x = 0;
+	cursor_y += 8;
+}
+
 void Ada4_ST7735::print(char c)
 {
 	write(c);

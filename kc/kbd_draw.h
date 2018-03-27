@@ -65,3 +65,44 @@ SKey drawKeys[numKeys] = {  ///  keys draw
 {NX,56,kW*2,kH,'_',6},{-kW*2,0,kW,kH,'.',6}, //ins del
 };
 
+
+#if 0
+///  string from usb hid code
+const int strALL = 0x73;
+const char str[strALL][6] = { ".",".",".",".", /*04*/"A","B","C","D",
+/*08*/"E","F","G","H","I","J","K","L", /*10*/"M","N","O","P","Q","R","S","T",
+/*18*/"U","V","W","X","Y","Z","1","2", /*20*/"3","4","5","6","7","8","9","0",
+/*28*/"Ent","Esc","Bck","Tab","Spc",
+/*2D*/"-","=","[","]","\\", /*32*/"NUM-",";","\"","`",",",".", "/","CapsL",
+/*3A*/"F1","F2","F3","F4", "F5", "F6",
+/*40*/"F7","F8","F9","F10","F11","F12", /*46*/"PtrSc","ScrL","Pause",
+/*49*/"Ins","Home","PgUp", "Del","End","PgDn", //*4F*/"Right","Left","Down","Up",
+/*4F*/{26,0},{27,0},{25,0},{24,0},
+/*53*/"NumL","P/","P*","P-","P+","PEnt",
+/*59*/"P1","P2","P3","P4","P5","P6","P7","P8","P9","P0","P.",
+/*68*/"F13","F14","F15","F16","F17","F18","F19","F20","F21","F22","F23","F24"};
+/*..*/
+const char mod[0x08][6] = {
+/*E0*/"Ct","Sh","Al","Gui", //L
+/*E4*/"Ct","Sh","Al","Gui", //R
+};
+
+//  key to string  // wait, delay symbols,  modifiers, key
+#define STR(k)  (k==2 ? "\xB1" : k==1 ? "\xB0" : \
+				 k >= 0xE0 ? mod[k-0xE0] : \
+				 k <= strALL ? str[k] : "()")
+
+///  Key for sequence  - update after ck4layer2.kll change
+const char csSeqKey[Gui::iSlots][5] = {
+#if 0  // ck4
+	"1","2","3", "Q","W",
+	"E",";","'", "/","\\",
+	"Home","Left", "End","Ins","A",
+	"S","D","Z","X","C"  };
+#else  // ck3
+	"1","2","3", "Q","W",
+	"E","\\","Back", "Home","Ent",
+	"Left", ";", "'","/","A",
+	"S","D","Z","X","C"  };
+#endif
+#endif

@@ -17,29 +17,29 @@ case "$2" in
 	exit 1
 esac
 
-#  Calculates the total flash/ram used
+#  Calculate total flash/ram used
 TOTAL="$4"
 PERCENTAGE=$((USED * 100 / TOTAL))
 
-#  Size Colours
-if (( PERCENTAGE > 95 )); then
-	COLOR="\e[5;31m"
-elif (( PERCENTAGE > 90 )); then
-	COLOR="\e[31m"
-elif (( PERCENTAGE > 80 )); then
-	COLOR="\e[38;5;202m"
-elif (( PERCENTAGE > 70 )); then
-	COLOR="\e[38;5;220m"
-elif (( PERCENTAGE > 60 )); then
-	COLOR="\e[38;5;154m"
-elif (( PERCENTAGE > 50 )); then
-	COLOR="\e[33m"
-else
-	COLOR="\e[32m"
+#  Size Colors
+  if (( PERCENTAGE > 95 )); then	COLOR="\e[5;31m"
+elif (( PERCENTAGE > 90 )); then	COLOR="\e[38;5;196m"
+elif (( PERCENTAGE > 85 )); then	COLOR="\e[38;5;202m"
+elif (( PERCENTAGE > 80 )); then	COLOR="\e[38;5;214m"
+elif (( PERCENTAGE > 75 )); then	COLOR="\e[38;5;220m"
+elif (( PERCENTAGE > 70 )); then	COLOR="\e[38;5;226m"
+elif (( PERCENTAGE > 60 )); then	COLOR="\e[38;5;154m"
+elif (( PERCENTAGE > 50 )); then	COLOR="\e[38;5;82m"
+elif (( PERCENTAGE > 40 )); then	COLOR="\e[38;5;40m"
+elif (( PERCENTAGE > 30 )); then	COLOR="\e[32m"
+else	COLOR="\e[38;5;32m"
 fi
 
-#  Displays Results
+#  Display Results
 NAME="$5"
 echo -e " \e[38;5;253m ${NAME}\e[m: ${COLOR}${PERCENTAGE}% \e[m ${USED} / ${TOTAL} B"
+
+#  Test all clr
+#echo -e "\e[5;31m 95 \e[38;5;196m 90 \e[38;5;202m 85 \e[38;5;214m 80 \e[38;5;220m 75 \e[38;5;226m 70 \e[38;5;154m 60 \e[38;5;82m 50 \e[38;5;40m 40 \e[32m 30 \e[38;5;32m 20"
 
 exit 0
