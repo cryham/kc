@@ -21,25 +21,27 @@
 
 #pragma once
 
-// ----- Defines -----
-
-// ----- Includes -----
-
 // System Includes
 #include <stdint.h>
 
+
+#ifdef	__cplusplus
+extern "C"
+{
+#endif
 
 
 // ----- Structs -----
 typedef void (*per_func)(void);
 
-// ----- Variables -----
-
 // ----- Functions -----
-
 void Periodic_init( uint32_t cycles );
 void Periodic_function( per_func func );
 void Periodic_enable();
 void Periodic_disable();
 uint32_t Periodic_cycles();
 
+
+#ifdef	__cplusplus
+}
+#endif

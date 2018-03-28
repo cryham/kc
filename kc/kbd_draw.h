@@ -14,7 +14,7 @@ const static int8_t Emax = 9, kW = 8, kH = 9, X = -kW, G = 6, NX = 127;  // add 
 //const int16_t  W = 8, X = -W,  H = 9, G = 6,  NX = 127;  // add x, size
 
 
-#define RGB(r,g,b) ((r<<11)+ ((g)<<6) +b)	// R F800  G 07E0  B 001F  R 32 G 64 B 32
+//#define RGB(r,g,b) ((r<<11)+ ((g)<<6) +b)	// R F800  G 07E0  B 001F  R 32 G 64 B 32
 
 const uint16_t  // [colors]
 	// 0 letters,  1 numbers,   2 func,   3 symbols,

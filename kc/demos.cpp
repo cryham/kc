@@ -1,6 +1,6 @@
 #include "demos.h"
+#include "Ada4_ST7735.h"
 
-//#include "gui.h"  // menu enum, ym etc
 
 //  Main
 Demos::Demos()
@@ -10,9 +10,10 @@ Demos::Demos()
 //....................................................................................
 void Demos::Init(Ada4_ST7735* tft)
 {
+	d = tft;  if (d)  data = d->getBuffer();
+
 	fps = 0;
 	ti = 0;  oti = 0;
-	d = tft;  if (d)  data = d->getBuffer();
 	
 #ifdef DEMOS
 	iPrev = -1;  // params

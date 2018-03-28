@@ -1,15 +1,6 @@
 #pragma once
 #include "WProgram.h"
-#include "Ada4_ST7735.h"
-
-#define DEMOS  // if not, only keyboard Gui
-
-
-#define W 160  // area
-#define H 128
-
-//  R F800  G 07E0  B 001F  R 32 G 64 B 32  565
-#define RGB(r,g,b) ((r<<11)+ ((g)<<6/*<<5*/) +b)
+#include "def.h"
 
 
 //  sinus table  ----
@@ -22,26 +13,19 @@
 extern const int16_t sint[SX];
 
 
-enum EDemo
-{
-	D_None=0, D_Space, D_Balls, D_Rain, D_Fountain,
-	D_Ngons, D_Hedrons, D_CK_Logo, D_Fonts, D_Chars,
-	D_Plasma, D_Wave, D_All
-};
+class Ada4_ST7735;
 
 struct Demos
 {
 	//  main  ----
 	Demos();
+	void Init(Ada4_ST7735* tft);
 
 	Ada4_ST7735* d;
 	uint16_t* data = 0;  // buffer
 
-	void Init(Ada4_ST7735* tft);  //, Reset(D d), KeyGlob(D d);
-//	void Draw(D d, int8_t menu, int8_t ym, int8_t ym2);
-
 	int8_t fps;  // show frames per second, 1 on, 0 off
-	uint32_t ti, oti;  // fps: time us, old
+	uint32_t ti, oti;  // fps: time ms, old
 
 	void Font_ver(bool st);  // ver, date, st - in status or demo
 

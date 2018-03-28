@@ -1,4 +1,5 @@
 #include "demos.h"
+#include "Ada4_ST7735.h"
 
 #ifdef DEMOS
 

@@ -2,40 +2,23 @@
 
 #include "usb_keyboard.h"
 #include "matrix.h"
-
-#ifdef	__cplusplus
-extern "C"
-{
-#endif
 #include "periodic.h"
-#ifdef	__cplusplus
-}
-#endif
-
-#include "gui.h"
-#include "demos.h"
 
 #include "Ada4_ST7735.h"
 
-//  vars
-unsigned long tm;
-uint32_t oldti = 0;  // dt
-uint frm_cnt = 0;   // frame counter
+#include "gui.h"
 
-//  tim
-uint tim_cnt = 0, tim_freq = 0;  // scan counter, freq
+
+//  scan counter, freq
 const static int rr = Matrix_colsNum;
-
+uint scan_cnt = 0, scan_freq = 0;
 uint32_t us_scan = 0, ms_scan = 0;
 
 
 //  gui
 int text = 1, keys = 0;
-int demo = D_None;
-//int demo = D_Plasma;
 
 Gui gui;
-Demos demos;
 
 
 //  kbd  timer event,  scan, send
@@ -50,10 +33,10 @@ void main_periodic()
 	if (ms_diff >= 1000)  // 1s
 	{
 		ms_scan = ms;
-		tim_freq = tim_cnt;  // Hz
-		tim_cnt = 0;
+		scan_freq = scan_cnt;  // Hz
+		scan_cnt = 0;
 	}
-	++tim_cnt;
+	++scan_cnt;
 
 
 	//  kbd scan
@@ -67,21 +50,17 @@ void main_periodic()
 	if (Key(5,0))  keys = 1-keys;
 	if (!keys)
 	{
-		int right = Key(1,1) - Key(1,2),  // ->  <-  next
-			up = Key(0,4) - Key(2,4);  // Up+ Dn-  speed
+		int8_t right = Key(1,1) - Key(1,2),  // ->  <-  next
+			up = Key(0,4) - Key(2,4),    // Up+ Dn-  speed
+			pgup = Key(2,1) - Key(0,1),  // PgDn+ PgUp-
+			add = Key(0,6) - Key(2,6);  // Add+ Ent-
 
-		//int d = Key(5,0) - Key(3,0);  // F12+ F11-
-		//int d = Key(4,0) - Key(2,0);  // Ent+ \-
-		//int d = Key(2,2) - Key(0,2);  // End+ Hom-
-		int d = Key(2,1) - Key(0,1);  // PgDn+ PgUp-
-		if (d)
-		{	demo += d;  if (demo < 0) demo = D_All-1;
-			if (demo >= D_All) demo = D_None;
-		}
+		//d = Key(5,0) - Key(3,0);  // F12+ F11-
+		//d = Key(4,0) - Key(2,0);  // Ent+ \-
+		//d = Key(2,2) - Key(0,2);  // End+ Hom-
 
-		d = Key(0,6) - Key(2,6);  // Add+ Ent-
-		if (d)
-			text = (text + d + 4) % 4;
+		//if (add)
+		//	text = (text + add + 4) % 4;
 
 		/*	    0    1     2    3  4    5  6    7
 			0        PgUp  Hom  U  ^    R  +    E
@@ -91,11 +70,7 @@ void main_periodic()
 			4   Ent  *     Num  M  /    V       C
 			5   F12  -          N       B			*/
 
-		//  demo keys
-		if (demo > D_None)
-			demos.KeyPress((EDemo)demo, right, up, Key(3,4), Key(5,1));  // ins ct, - inf
-		else
-			gui.KeyPress(right, up);
+		gui.KeyPress(right, up, pgup, add);
 	}
 
 	//  keyboard send
@@ -127,25 +102,19 @@ void main_periodic()
 	// 131 us del 3,  115 us del 2,  90 us del 0
 }
 
+
 //------------------------------------------------------------------------------------
 int main()
 {
 	Ada4_ST7735 tft;
 	tft.begin();
 
-	tm = rtc_get();
-
-	char a[128];
-
-	gui.Init();
-	demos.Init(&tft);
+	gui.Init(&tft);
 
 
 	//  kbd
 	Matrix_setup();
 
-	// Setup periodic timer function
-	// 30000  1.6kHz  d:47fps
 	// 40000  1.2kHz  d:50fps
 	// 50000  960Hz  d:52fps
 	Periodic_init( 50000 );
@@ -154,70 +123,9 @@ int main()
 
 	while(1)
 	{
-		//------------------------------------------------
-		if (demo != D_Rain)
-			tft.clear();
 
-		uint32_t oti1 = millis();
+		gui.Draw();
 
-//		if (gui.mlevel==1 && gui.)
-		switch (demo)
-		{
-		case D_Plasma:   demos.Plasma();  break;  // clr 55, 40 ms
-		case D_Wave:     demos.Wave();  break;
-		case D_Hedrons:  demos.Hedrons();  break;  // 5-9ms
-		case D_None:  break;
-
-		case D_Space:    demos.Space();  break;
-		case D_Balls:    demos.Balls();  break;
-		case D_Rain:     demos.Rain();  break;
-		case D_Fountain: demos.Fountain();  break;
-
-		case D_Ngons:    demos.Ngons();  break;  // 12 8ms 14 10ms
-		case D_CK_Logo:  demos.CK_logo();  break;  // 7
-		case D_Fonts:	 demos.Font_ver(false);  break;
-		case D_Chars:    demos.Chars();  break;
-		}
-		uint32_t tdemo = millis() - oti1;
-
-
-		gui.Draw(tft);
-
-
-		// txt
-		//------------------------------------------------
-		if (text)
-		{
-
-			//  fps  ---------
-			uint32_t ti = millis();
-			tft.setCursor(W-6*6,0);
-			float fr = 1000.f / (ti - oldti);
-			int ff = fr;
-
-			sprintf(a,"%d %lu", ff, tdemo);
-			tft.setTextColor(RGB(24,28,31));
-			tft.print(a);
-			oldti = ti;
-
-
-			//  time  ---
-			if (text == 3)
-			{
-				tm = rtc_get();
-				int h = tm/3600%24, m = tm/60%60, s = tm%60;
-				tft.setCursor(0,3*8);
-
-				sprintf(a,"%2d:%02d:%02d  %d", h,m,s, frm_cnt);
-				tft.print(a);
-			}
-		}
-		++frm_cnt;
-
-
-		if (text || demo > D_None)
-		{
-			tft.display();  // 58 Fps, 15ms @144MHz
-		}
+		gui.DrawEnd();
 	}
 }
