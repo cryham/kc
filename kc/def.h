@@ -16,6 +16,7 @@ enum EMainMenu  //  main menu entries, level0
 	M_Testing=0, M_Mappings, M_Sequences,
 	M_Display, M_Demos,	/*M_Game,*/ M_All
 };
+
 enum EDemo  // Demos, level1
 {
 	D_Plasma=0, D_Wave, D_Hedrons, D_CK_Logo,
@@ -23,6 +24,7 @@ enum EDemo  // Demos, level1
 	D_Ngons, D_Fonts,
 	D_All, D_Next = D_CK_Logo,  // next column
 };
+
 enum ETest  // Testing kbd
 {
 	T_ScanSetup, T_Matrix, T_Pressed, T_Mouse, T_All

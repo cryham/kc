@@ -1,14 +1,9 @@
 #include "demos.h"
 #include "Ada4_ST7735.h"
+#include "FreeSans9pt7b.h"  // 2k flash, 1%
+
 
 #ifdef DEMOS
-
-
-//#include "gui.h"  // menu enum, ym etc
-#define PROGMEM
-#include "FreeSans9pt7b.h"  // 2k flash, 1%
-//#include "FreeSans12pt7b.h"  // 3k, 1%
-
 
 //  regular polygons with diagonals
 //....................................................................................
@@ -21,7 +16,7 @@ void Demos::Ngons()
 
 	switch (ngRot)
 	{
-	case 0: c = -e*2 * tm;  s = 0.65 + 0.75 * tm;  break;
+	case 0: c = -e*2 * tm;  s = 0.85 + 0.75 * tm;  break;
 	case 1: c = -e * tm;  s = 1.0;  break;
 	case 2: c = 0.0;  s = 0.8 + 0.6 * tm;  break;
 	case 3: c = 0.0;  s = 1.0;  break;
@@ -36,7 +31,7 @@ void Demos::Ngons()
 		{
 			float xa = xx + sy*cos(a+c), ya = yy - sy*sin(a+c);
 			if (a != b)
-				d->drawLine(xb, yb, xa, ya, 0xFF00 + 0x1*cc);
+				d->drawLine(xb, yb, xa, ya, RGB(31,(cc/4)%32,(cc*2)%32));
 			++cc;
 		}
 	}
@@ -46,14 +41,13 @@ void Demos::Ngons()
 
 	if (iInfo > 0)
 	{
-		d->setCursor(0,8);
+		d->setCursor(0,0);
+		d->setTextColor(RGB(29,29,20));
 		d->print("An ");  d->println(ngRot);
 
 		d->setCursor(0, H-8);
 		d->println(ngCur);  // n sides
 	}
-
-	//delay(ngMax - ngCur + 1);
 }
 
 
@@ -89,64 +83,98 @@ void Demos::Rain()
 	}	}
 	if (iInfo > 0)
 	{
-		d->setCursor(0,8);
+		d->setCursor(0,0);
 		d->print("Int ");  d->println(rCur ? r2Int : r1Int);
 		d->print("Size "); d->println(s);
 		d->print("Cur ");  d->println(rCur);
 	}
-	//delay(8);
 }
 #endif
 
 
-//  text fonts
+//  Fonts
 //....................................................................................
-void Demos::Font_ver(bool st)
+void Demos::Fonts()
 {
-	if (!st)  // demo
-	{	d->setCursor(0,20);  // logo
+	switch (fntCur)
+	{
+	case 0:
+	{	d->setCursor(0,18);  // logo
 		d->setFont(&FreeSans9pt7b);
-		d->setTextColor(RGB(22,31,31));
-		d->print("CrystaL");
+		d->setTextColor(RGB(1,28,28));
+		d->println("CrystaL");
 
-		d->setCursor(36,42);
-//		d->setFont(&FreeSans12pt7b);
-		d->setTextColor(RGB(31,26,21));
+		d->setCursor(36,40);
+		d->setTextColor(RGB(22,16,31));
 		d->print("Keyboard");
 		d->setFont(0);
+
+		d->setCursor(0,70);
+		d->setTextColor(RGB(12,21,31));
+		d->print("K.C. \"Kacey\" Controller");
+
+		d->setCursor(0,H-23);
+		d->setTextColor(RGB(16,25,31));
+		d->print("ver 0.75");  /// version text
+
 		d->setTextColor(RGB(21,26,31));
+		d->setCursor(0, H-8);
+		const char* a={__DATE__}, *m={__TIME__};
+		const char dt[] = {  //  build date, time   format yyyy-mmm-dd hh:mm
+			a[7],a[8],a[9],a[10],' ',a[0],a[1],a[2],' ',a[4],a[5],' ',' ',m[0],m[1],':',m[3],m[4],0};
+		d->print(dt);
+	}	break;
+
+	case 1:  // big chars ..
+	{	uint x=0, y=0, yw=18;
+		d->setFont(&FreeSans9pt7b);
+		d->setTextColor(RGB(21,18,31));
+		d->setCursor(x,y); y+=yw;
+		d->println("ABCDEFGHIJKLM");
+		d->setCursor(x,y); y+=yw;
+		d->println("NOPQRSTUVWXYZ");
+
+		d->setTextColor(RGB(11,22,31));
+		d->setCursor(x+22,y); y+=yw;
+		d->println("abcdefghijklm");  d->setCursor(x,y); y+=yw;
+		d->println("nopqrstuvwxyz");  d->setCursor(x+22,y); y+=yw;
+
+		d->setTextColor(RGB(30,25,10));
+		d->println("0123456789");	d->setCursor(x,y); y+=yw;
+		d->setTextColor(RGB(14,27,11));
+		d->println("!\"#$%&\'()*+,-./:;");  d->setCursor(x,y); y+=yw;
+		d->println("<=>?@[\\]^_`{|}~");
+
+		d->setFont(0);
+		d->setTextColor(RGB(21,26,31));
+
+	}	break;
+
+	case 2:  // small chars
+	{
+		d->setCursor(6,8);
+		d->setTextColor(RGB(21,26,31));
+
+		for (int i=1; i < 256; i++)
+		{
+			if (i == '\n') continue;
+			d->write(i);
+
+			if (i % 24 == 0)
+			{	d->print('\n');
+				d->moveCursor(0, 1);
+			}else
+			if (i % 8 == 0)
+				d->moveCursor(2, 0);
+			if ((i % 24) % 4 == 0)
+				d->moveCursor(0, 2);
+		}
+	}	break;
 	}
-	if (st)
-	{	d->setCursor(0, H-3-2*8);
-		d->print("Ver");
-		d->setCursor(6*5, H-3-2*8);
-	}else
-		d->setCursor(96, 0);
-	
-	d->print("KC 0.71");  /// version text
-	
-	d->setCursor(0, H-8);
-	const char* a={__DATE__}, *m={__TIME__};
-	const char dt[] = {
-		//  build date, time  format yyyy-mmm-dd hh:mm
-		a[7],a[8],a[9],a[10],' ',a[0],a[1],a[2],' ',a[4],a[5],' ',' ',m[0],m[1],':',m[3],m[4],0};
-	d->print(dt);
 }
+
 
 #ifdef DEMOS
-//  text all chars
-void Demos::Chars()
-{
-	d->setCursor(0,16);
-
-	for (int i=0; i < 256; i++)
-	{	if (i == '\n') continue;
-		d->write(i);
-		if (i > 0 && (i % 24 == 0))
-		  d->print('\n');
-	}
-}
-
 
 //  Balls
 //....................................................................................
@@ -161,7 +189,8 @@ void Demos::BallsInit()
 		b.y = (random(H - b.r*2) + b.r) *bDet;
 		b.vx = random(v1) + v0;
 		b.vy = random(v1) + v0;
-		b.c = ((random(32))<<11)+((random(22)+10)<<6)+(random(12)+20);
+
+		b.c = RGB(random(32), random(32), random(32));
 		if (random(2))  b.vx = -b.vx;
 		if (random(2))  b.vy = -b.vy;
 	}
@@ -187,13 +216,12 @@ void Demos::Balls()
 
 	if (iInfo > 0)
 	{
-		d->setCursor(0,8);
+		d->setCursor(0,0);
 		d->print("Cnt ");  d->println(bCnt);
 		d->print("Spd ");  d->println(bSpd);
 		d->print("Rnd ");  d->println(bSpRnd);
 		d->print("Rad ");  d->println(bRad);
 	}
-	//delay(3);
 }
 
 
@@ -202,22 +230,34 @@ void Demos::Balls()
 void Demos::SpaceInit()
 {
 	for (int i=0; i<sCnt; i++)
-		Star(i);
+		StarNew(i);
 	einit = ISpace;
 }
-#define sRng 5000  //300 init range
+#define sRng 7000  //300 init range
 #define sDet 4  // detail
 
 const static int
-	sNear = sDet*200, sFar = sDet*1150;  //750 range: cut off, new appear
+	sNear = sDet*200, sFar = sDet*1350;  //750 range: cut off, new appear
 
-void Demos::Star(int i)
+void Demos::StarNew(int i)
 {
 	star[i].x = (random(W*sRng) -W*sRng/2) * sDet;
 	star[i].y = (random(H*sRng) -H*sRng/2) * sDet;
 	star[i].z = random(sFar) + sNear;   // depth
 	star[i].v = random(sDet*sVel/2) + sDet*sVel/4;  // speed
-	star[i].c = random(0xFF) * 0x100 + 0xFF;
+	//  clr
+	int8_t r=31,g=31,b=31;  // white
+	switch(random(8))
+	{
+	case 0:
+	case 1:  r= 31;  g = random(25)+6, b = random(24);  break;  // yellow
+	case 2:
+	case 3:
+	case 4:  r= random(10)+11;  g = random(10)+21;  b = 31;  break;  // cyan
+	case 5:  r= random(20)+11;  g = random(15)+6;  b = random(5);  break;  // red
+	case 6:  r= 11;  g = random(15)+16;  b = 31;  break;  // blue
+	}
+	star[i].c = RGB(r, g, b);
 }
 void Demos::Space()
 {
@@ -236,16 +276,15 @@ void Demos::Space()
 			y < 0 || y > H ||  // outside
 			star[i].z < sNear)  // too close
 		{
-			Star(i);  star[i].z = sNear+sFar;
+			StarNew(i);  star[i].z = sNear+sFar;
 		}
 	}
 	if (iInfo > 0)
 	{
-		d->setCursor(0,8);
+		d->setCursor(0,0);
 		d->print("Cnt ");  d->println(sCnt);
 		d->print("Vel ");  d->println(sVel);
 	}
-	//delay(3);  // ms, limit fps
 }
 
 
@@ -296,22 +335,22 @@ void Demos::Fountain()
 				py =   40 + 40 * Sin(t*53)/SY * Cos(t*39)/SY;
 			o.vx = random(rx+1)-rx/2 + px;
 			o.vy = -random(70) - 320 + py;
-			o.c = 0xFF00 + random(0xFF);
+
+			int c = random(32);
+			o.c = RGB(min(31, c/2+10), min(31, c+18), 31);
 		}
 	}
 
 	if (iInfo > 0)
 	{
-		d->setCursor(0,8);
+		d->setCursor(0,0);
 		d->print("Int ");  d->println(fInt);
 		d->print("Spd ");  d->println(fWave);
 
 		d->setCursor(0, H-8);
 		d->println(io);  // drops used
 	}
-
 	t += fWave;
-	//delay(3);
 }
 
 #endif

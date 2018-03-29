@@ -79,7 +79,7 @@ typedef struct GPIO_Pin {
 
 
 //  ----***  Matrix  ***----
-//  7 x 6
+//  8 x 6
 //c| 2:19  4:16  8:18  9:14  10:15  11:17  12:20  13:21
 //r- 3:0  4:1  5:2  6:3  7:23  8:22
 const static GPIO_Pin

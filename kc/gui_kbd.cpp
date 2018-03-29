@@ -1,5 +1,4 @@
 #include "gui.h"
-
 #include "Ada4_ST7735.h"
 #include "FreeSans9pt7b.h"
 
@@ -14,9 +13,6 @@ extern uint32_t us_scan;
 #include "kbd_draw.h"
 
 
-char a[128];  // temp str
-
-
 //  Testing
 //....................................................................................
 void Gui::DrawTesting()
@@ -26,7 +22,7 @@ void Gui::DrawTesting()
 		d->print(strMain[ym]);  d->setFont(0);
 
 		//  menu
-		DrawMenu(T_All, strTest, 10);
+		DrawMenu(T_All,strTest,2);
 
 		return;
 	}
@@ -108,22 +104,20 @@ void Gui::DrawTesting()
 		//d->print("Protocol: ");  //d->println(USBKeys_Protocol == 1 ? " NKRO" : " Boot");
 		//d->moveCursor(0,4);
 
+		sprintf(a,"Strobe delay: %d us", STROBE_DELAY);
+		d->println(a);  d->moveCursor(0,4);
+
 		//DebounceThrottleDiv_define-
 		sprintf(a,"Debounce: %d ms", MinDebounceTime_define);
-		d->println(a);  d->moveCursor(0,4);
-
-		sprintf(a,"Strobe delay: %d us", STROBE_DELAY);
 		d->println(a);  d->moveCursor(0,8);
 
-		sprintf(a,"Matrix %d x %d", NumCols, NumRows);
-		d->println(a);  d->moveCursor(0,4);
+		sprintf(a,"Matrix: %d x %d", NumCols, NumRows);
+		d->println(a);  d->moveCursor(0,2);
 
 		sprintf(a,"Max keys: %d", MaxKeys);
-		d->println(a);  d->moveCursor(0,4);
+		d->println(a);  d->moveCursor(0,2);
 
-		d->println(CKname);  d->moveCursor(0,4);
-
-		sprintf(a,"Num keys: %d", numKeys);
+		sprintf(a,"Num keys: %d  %s", numKeys, CKname);
 		d->println(a);  d->moveCursor(0,4);
 
 	}	break;
@@ -160,18 +154,22 @@ void Gui::DrawTesting()
 
 		//  keys  - - - -
 		d->print("Keys: ");
+		d->setTextColor(RGB(24,28,31));
 		int c = 0;
-		for (int i = 0; i < MaxKeys; ++i)
+		for (uint i = 0; i < MaxKeys; ++i)
 		{
 			const KeyState& k = Matrix_scanArray[i];
 			if (k.state == KeyState_Hold)
 			{
-				d->print(i);  d->print(" ");  ++c;
+				sprintf(a,"%d ",i);
+				d->print(a);  ++c;
 			}  //STR(i)
 		}
 		//  count
 		d->setCursor(W-1 -(c > 9 ? 2*6 : 6), H-1-8);
-		d->print(c);
+		d->setTextColor(RGB(min(31,26+c),min(31,21+c),15+c));
+		sprintf(a,"%d",c);
+		d->print(a);
 
 		#if 0
 		if (ghost_cols /*|| ghost_rows*/)
@@ -210,24 +208,26 @@ void Gui::DrawMapping()
 {
 	d->print(strMain[ym]);  d->setFont(0);
 
-	//  kbd draw, layout
+	//  kbd draw   Layout  * * * *
 	int x = 0, y = 0;
 	for (int i=0; i < numKeys; ++i)
 	{
 		const SKey& k = drawKeys[i];
 		if (k.x >=0)  x = k.x;  else  x -= k.x;
-		if (k.y > 0)  y = k.y + 60; /*Y*/  else  y -= k.y;
+		if (k.y > 0)  y = k.y + 62; /*Y*/  else  y -= k.y;
 
-		d->drawRect(x, y, k.w+1, k.h+1, clrRect[k.o]);
+		d->drawRect(x, y-2, k.w+1, k.h+1, clrRect[k.o]);
+
 		d->setCursor(
 			k.o==5 || k.o==7 ? x + k.w - 6 :  // right align
-					k.o==3 ? x+1 : x+1,
+					k.o==3 ? x+1 : x+2,
 			k.h < H ? y :  // short, symb 3
-					k.o==3 ? y+3 : y+4);
+					k.o==3 ? y-2 : y+1);
 
-		d->setTextColor(clrText[k.o]);  //<def
+		d->setTextColor(clrText[k.o]);  //<def *
 		sprintf(a,"%c", k.c);
 		d->print(a);
+		d->drawRect(0,0, W-1,H-1, RGB(10,15,21));
 	}
 
 	// todo: cursor [] ..

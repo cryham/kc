@@ -7,6 +7,7 @@ const char* strMain[M_All] =
 	"Testing", "Mappings", "Sequences",
 	"Display", /*"Clock",*/ "Demos", /*"Game",*/ //"Help", F1
 };
+
 //  Demos
 const char* strDemo[D_All] =
 {
@@ -14,6 +15,7 @@ const char* strDemo[D_All] =
 	"Space", "Balls", "Rain", "Fountain",
 	"N-gons", "Fonts",
 };
+
 //  Testing kbd
 const char* strTest[T_All] =
 {
@@ -23,10 +25,10 @@ const char* strTest[T_All] =
 //  sub pages
 const uint8_t YM2[M_All] =
 {
-	T_All, //M_Testing=0,
-	1, //M_Mappings,
-	1, //M_Sequences,
+	T_All,  //M_Testing=0,
+	1,  //M_Mappings,
+	1,  //M_Sequences,
 
-	1, //M_Display,
-	D_All, // M_Demos,
+	1,  //M_Display,
+	D_All,  // M_Demos,
 };

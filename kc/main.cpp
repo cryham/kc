@@ -51,7 +51,8 @@ void main_periodic()
 		int8_t right = Key(1,1) - Key(1,2),  // ->  <-  next
 			up = Key(0,4) - Key(2,4),    // Up+ Dn-  speed
 			pgup = Key(2,1) - Key(0,1),  // PgDn+ PgUp-
-			add = Key(0,6) - Key(2,6);  // Add+ Ent-
+			back = Key(0,6) - Key(2,6),  // Add+ Ent-
+			inf = Key(5,1);  // Sub-
 
 		//d = Key(5,0) - Key(3,0);  // F12+ F11-
 		//d = Key(4,0) - Key(2,0);  // Ent+ \-
@@ -68,7 +69,7 @@ void main_periodic()
 		4   Ent  *     Num  M  /    V       C
 		5   F12  -          N       B			*/
 
-		gui.KeyPress(right, up, pgup, add);
+		gui.KeyPress(right, up, pgup, back, inf);
 	}
 
 	//  keyboard send

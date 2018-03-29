@@ -3,19 +3,6 @@
 #include "demos.h"
 
 
-//  main menu entries, level1
-enum EMenu
-{
-	M_Testing=0,
-	M_Mappings,
-	M_Sequences,
-
-	M_Display,
-	M_Demos,
-	//M_Game,
-	M_All
-};
-
 struct Gui
 {
 	Demos demos;
@@ -25,22 +12,27 @@ struct Gui
 	Gui();
 	void Init(Ada4_ST7735* tft);
 	void Draw(), DrawEnd();
-	void KeyPress(int8_t right, int8_t up, int8_t pgup, int8_t esc);
 
+	void KeyPress(int8_t right, int8_t up, int8_t pgup, int8_t back, int8_t inf);
 
-	//  menu entries on level2, for each level1
-	const static uint8_t YM2[M_All];
+	//  util
+	void DrawTesting(), DrawMapping(), DrawSequences();
+
+	void DrawMenu(int cnt, const char** str, int8_t clrId=0,
+				int16_t yadd=10, int16_t nextCol=-1, int16_t numGap=-1);
 
 	//  vars
 	//int8_t menu;    // 0 off, 1 in menu
 	int8_t mlevel;  // 0 main, 1 level2
 
-	int8_t ym;      // EMenu main, y cursor
+	int8_t ym;      // 0 main y cursor
 	int8_t ym2[M_All];  // level2 page,  cursor for submenu
+	int8_t yy;      // = ym2[ym]  level2 y cursor
 
-	// time
+	//  time
 	unsigned long tm;
 	uint32_t oldti, tdemo;  // demo time ms
 
 	//	int16_t tInfo, infType, memSize;  // info text vars
+	char a[128];  // temp str
 };

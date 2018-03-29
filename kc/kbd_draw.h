@@ -17,14 +17,14 @@ const uint16_t  // _colors types_
 	// 0 letters,  1 numbers,   2 func,   3 symbols,
 	// 4 modif L,  5 modif R,   6 enter,  7 enter R,   8 arrows
 clrRect[Omax] = {
-	RGB( 6, 6, 9), RGB(11,11, 8), RGB( 8,14,19), RGB(23,23,26),
+	RGB(12,12,12), RGB(13,13,10), RGB( 8,14,19), RGB(23,23,26),
 	RGB(12,19,19), RGB(12,19,19), RGB( 9,21,12), RGB( 9,21,12), RGB(21,16,12) },
 clrText[Omax] = {
-	RGB(25,28,31), RGB(28,28,23), RGB(18,25,31), RGB(28,28,31),
-	RGB( 6,26,26), RGB( 6,26,26), RGB(13,31,16), RGB(13,31,16), RGB(31,26,21) };
+	RGB(25,28,31), RGB(28,28,23), RGB(18,25,31), RGB(25,25,31),
+	RGB( 6,26,26), RGB( 6,26,26), RGB(13,29,16), RGB(13,29,16), RGB(31,26,21) };
 
 //  ------------  CK3  ------------------------------------------------
-const char* CKname = "CK3";
+const char* CKname = "CK3";		// < x1B 27  > x1A 26  ^ x18 24  v x19 25
 const int numKeys = 94;
 SKey drawKeys[numKeys] = {  ///  keys draw
 		//todo + menu key binds ..
@@ -46,7 +46,7 @@ SKey drawKeys[numKeys] = {  ///  keys draw
 { 0,38,15,kH, ' ',6,NO}, //caps
 {-15,0,kW,kH, 'A',0,NO},{X, 0,kW,kH, 'S',0,NO},{X,0,kW,kH, 'D',0,NO},{X,0,kW,kH, 'F',0,NO},{X,0,kW,kH, 'G',0,NO},
 { X, 0,kW,kH, 'H',0,NO},{X, 0,kW,kH, 'J',0,NO},{X,0,kW,kH, 'K',0,NO},{X,0,kW,kH, 'L',0,NO},{X,0,kW,kH, ';',3,NO},
-{ X, 0,kW,kH,'\'',3,NO},{X, 0,14,kH, '|',7,NO}, //ent 13x
+{ X, 0,kW,kH,'\'',3,NO},{X, 0,14,kH, ent,7,NO}, //ent 13x
 
 { 0,47,18,kH, 's',4,NO}, //L Sh
 {-18,0,kW,kH, 'Z',0,NO},{X, 0,kW,kH, 'X',0,NO},{X,0,kW,kH, 'C',0,NO},{X,0,kW,kH, 'V',0,NO},{X,0,kW,kH, 'B',0,NO},
@@ -59,9 +59,9 @@ SKey drawKeys[numKeys] = {  ///  keys draw
 
 //numpad: 20x
 {NX,20,kW,kH, ' ',6,NO},{X, 0,kW,kH, '/',3,NO},{X,0,kW,kH, '*',3,NO},{X,0,kW,kH, '-',3,NO},
-{NX,29,kW,kH, '7',1,NO},{X, 0,kW,kH, '^',8,NO},{X,0,kW,kH, '9',1,NO},{X,0,kW,kH*2, '+',3,NO},
-{NX,38,kW,kH, '<',8,NO},{X, 0,kW,kH, '.',6,NO},{X,0,kW,kH, '>',8,NO},
-{NX,47,kW,kH, '1',1,NO},{X, 0,kW,kH, 'v',8,NO},{X,0,kW,kH, '3',1,NO},{X,0,kW,kH*2, '|',6,NO}, //ent
+{NX,29,kW,kH, '7',8,NO},{X, 0,kW,kH, 24 ,8,NO},{X,0,kW,kH, '9',8,NO},{X,0,kW,kH*2, '+',3,NO},
+{NX,38,kW,kH, 27 ,8,NO},{X, 0,kW,kH,  7 ,6,NO},{X,0,kW,kH, 26 ,8,NO},
+{NX,47,kW,kH, '1',8,NO},{X, 0,kW,kH, 25 ,8,NO},{X,0,kW,kH, '3',8,NO},{X,0,kW,kH*2, ent,6,NO}, //ent
 {NX,56,kW*2,kH,'_',6,NO},{-kW*2,0,kW,kH,'.',6,NO}, //ins del
 };
 

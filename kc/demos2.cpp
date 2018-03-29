@@ -42,7 +42,7 @@ void Demos::CK_logo()
 {
 	#define K 1024  // wave																		// scale ofs
 	#define CX(x) {  x = w-cx;  x = ( (x*(K +ax*Cos(8*w      +tt[0])/SY*Sin(7*w      +tt[1])/SY) /K) +cx)/7 +11;  }
-	#define CY(y) {  y = w-cy;  y = ( (y*(K +ay*Cos(9*w+ x*73+tt[2])/SY*Sin(6*w+ x*52+tt[3])/SY) /K) +cy)/8 +29;  }
+	#define CY(y) {  y = w-cy;  y = ( (y*(K +ay*Cos(9*w+ x*73+tt[2])/SY*Sin(6*w+ x*52+tt[3])/SY) /K) +cy)/8 +(w2? 31 :24);  }
 
 	const uint tt[4] = {t*7,t*5,t*8,t*5};
 	for (int w2=0; w2<2; ++w2)
@@ -63,20 +63,20 @@ void Demos::CK_logo()
 				case 1:  y1=y;  CY(y)  i=2;  break;  }
 
 			if (i==2)
-			{	i=0;  d->drawLine(x1,y1, x,y, 31 + ((a/3)<<6) + ((a/2)<<11));  }
+			{	i=0;  d->drawLine(x1,y1, x,y,
+				w2 ? RGB(max(6, 31-a/3), max(2, 31-a/2), 31)
+				   : RGB(max(2, 31-a/2), max(6, 31-a/3), 31));  }
 		}
 		while (w >= 0);
 	}
 
 	if (iInfo > 0)
 	{
-		d->setCursor(0,8);
+		d->setCursor(0,0);
 		d->print("Cur ");  d->println(ckCur);
 		d->print("Spd ");  d->println(ckSpeed);
 	}
-
 	t += ckSpeed;
-	delay(6);
 }
 //....................................................................................
 
@@ -445,13 +445,12 @@ void Demos::Hedrons()
 
 	if (iInfo > 0)
 	{
-		d->setCursor(0,8);
+		d->setCursor(0,0);
 		d->print("Cur ");  d->println(hdCur);
 		d->print("Rot ");  d->println(hdRot);
 		//if (hdtOn)  d->println("On");
 	}
 	++t;
-//	delay(6);
 }
 
 #endif

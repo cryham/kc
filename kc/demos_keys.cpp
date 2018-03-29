@@ -88,17 +88,48 @@ void Demos::KeyPress(EDemo demo, int k, int e, int ct, int kinf)
 
 		switch (demo)
 		{
+		//  full  --------
+		case D_Plasma:
+			if (k){  plasma += k; if (plasma < 0) plasma = num_plasma-1;  if (plasma >= num_plasma) plasma = 0;  }
+			if (e)  PlasmaT(e);
+			break;
+
+		case D_Wave:
+			if (k)  twv += k;
+			if (e)  twv += e*10;
+			break;
+
+		case D_Hedrons:  // 3d
+			if (k)
+			{	hdtOn = 0;  // manual
+				hdCur = (hdCur + k + hdA) % hdA;  }
+			if (e)
+				hdRot = (hdRot + e + hdRotMax) % hdRotMax;
+			break;
+
+		case D_Ngons:
+			if (k)
+			{	ngtOn = 0;  // manual
+				ngCur += k;
+				if (ngCur < ngMin)  ngCur = ngMax;
+				if (ngCur > ngMax)  ngCur = ngMin;  }
+			if (e)
+			{	++ngRot;
+				if (ngRot >= ngRotMax)  ngRot = 0;  }
+			break;
+
+		//  old  --------
 		case D_Space:
 			if (k){  sCnt += k*sp;  sCnt = max(0, min(sMax, sCnt));  einit = INone;  }
-			if (e){  sVel += e;  sVel = max(0, min(40, sVel));  einit = INone;  }
+			if (e){  sVel += e;     sVel = max(0, min(40, sVel));  einit = INone;  }
 			break;
 			
 		case D_Balls:
 			if (ct)
-			{	if (k){  bRad += k;  bRad = max(1, min(5, bRad));  einit = INone;  }
+			{	if (k){  bRad += k;      bRad = max(1, min(5, bRad));  einit = INone;  }
 				if (e){  bSpRnd += e;  bSpRnd = max(0, min(bSpRMax, bSpRnd));  einit = INone;  }
 			}else
-			{	if (k){  bCnt += k*sp;  bCnt = max(0, min(bMax, bCnt));  einit = INone;  }
+			{	if (k){  bCnt += k*sp;    bCnt = max(0, min(bMax, bCnt));  einit = INone;  }
 				if (e){  bSpd += e*sp*2;  bSpd = max(0, min(400, bSpd));  einit = INone;  }
 			}break;
 
@@ -118,38 +149,14 @@ void Demos::KeyPress(EDemo demo, int k, int e, int ct, int kinf)
 			if (e)  fWave += e;
 			break;
 
-		case D_Ngons:
-			if (k)
-			{	ngtOn = 0;  // manual
-				ngCur += k;
-				if (ngCur < ngMin)  ngCur = ngMax;
-				if (ngCur > ngMax)  ngCur = ngMin;  }
-			if (e)
-			{	++ngRot;
-				if (ngRot >= ngRotMax)  ngRot = 0;  }
-			break;
-			
-		case D_Hedrons:
-			if (k)
-			{	hdtOn = 0;  // manual
-				hdCur = (hdCur + k + hdA) % hdA;  }
-			if (e)
-				hdRot = (hdRot + e + hdRotMax) % hdRotMax;
-			break;
-
+		//  txt	 --------
 		case D_CK_Logo:
 			if (k)  ckSpeed += k;
 			if (e)  ckCur = (ckCur + e + ckMax) % ckMax;
 			break;
 
-		case D_Plasma:
-			if (k){  plasma += k; if (plasma < 0) plasma = num_plasma-1;  if (plasma >= num_plasma) plasma = 0;  }
-			if (e)  PlasmaT(e);
-			break;
-
-		case D_Wave:
-			if (k)  twv += k;
-			if (e)  twv += e*10;
+		case D_Fonts:
+			if (k)  fntCur = (fntCur + k + fntMax) % fntMax;
 			break;
 
 		default:

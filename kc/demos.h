@@ -13,13 +13,11 @@
 extern const int16_t sint[SX];
 
 
-class Ada4_ST7735;
-
 struct Demos
 {
 	//  main  ----
 	Demos();
-	void Init(Ada4_ST7735* tft);
+	void Init(class Ada4_ST7735* tft);
 
 	Ada4_ST7735* d;
 	uint16_t* data = 0;  // buffer
@@ -27,7 +25,9 @@ struct Demos
 	int8_t fps;  // show frames per second, 1 on, 0 off
 	uint32_t ti, oti;  // fps: time ms, old
 
-	void Font_ver(bool st);  // ver, date, st - in status or demo
+	int8_t fntCur;
+	const static int8_t fntMax = 3;
+	void Fonts();  // ver, date, chars
 
 #ifdef DEMOS
 	int8_t iPrev;   // prev demo, for init
@@ -85,12 +85,11 @@ struct Demos
 	const static int8_t ckMax = 2;
 	int8_t ckCur, ckSpeed;
 	void CK_logo();
-	void Chars();
 
 
 	//  Space
 	void SpaceInit();
-	void Star(int i);  // new
+	void StarNew(int i);  // new
 	void Space();
 
 	//  Fountain, drops  ----
@@ -101,7 +100,7 @@ struct Demos
 
 	//  Ngons 2D
 	int16_t ngt;  int8_t ngCur,  ngtOn, ngRot;
-	const static int8_t ngMin = 5, ngMax = 14, ngRotMax = 4;
+	const static int8_t ngMin = 5, ngMax = 18, ngRotMax = 4;
 	void Ngons();
 
 	//  Polyhedrons 3D  ----

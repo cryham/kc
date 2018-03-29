@@ -2,19 +2,6 @@
 #include "def.h"
 
 
-//  sub pages
-///-----------------  //par
-const uint8_t Gui::YM2[M_All] =
-{
-	4, //M_Testing=0,
-	1, //M_Mappings,
-	1, //M_Sequences,
-
-	1, //M_Display,
-	D_All, // M_Demos,
-};
-
-
 //  Main  ----
 Gui::Gui() : d(0)
 {
