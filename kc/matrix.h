@@ -1,31 +1,28 @@
 #pragma once
 #include <stdint.h>
 
-// ----- Enums -----
-
+//  ----- Enums -----
 typedef enum Port {
 	Port_A = 0,	Port_B = 1,	Port_C = 2,	Port_D = 3,	Port_E = 4,
 } Port;
 
 typedef enum Pin {
-	Pin_0  = 0,	Pin_1  = 1,	Pin_2  = 2,	Pin_3  = 3,	Pin_4  = 4,	Pin_5  = 5,	Pin_6  = 6,	Pin_7  = 7,
-	Pin_8  = 8,	Pin_9  = 9,	Pin_10 = 10,	Pin_11 = 11,	Pin_12 = 12,	Pin_13 = 13,	Pin_14 = 14,
-	Pin_15 = 15,	Pin_16 = 16,	Pin_17 = 17,	Pin_18 = 18,	Pin_19 = 19,	Pin_20 = 20,	Pin_21 = 21,
-	Pin_22 = 22,	Pin_23 = 23,	Pin_24 = 24,	Pin_25 = 25,	Pin_26 = 26,	Pin_27 = 27,	Pin_28 = 28,
-	Pin_29 = 29,	Pin_30 = 30,	Pin_31 = 31,
+	Pin_0  = 0, Pin_1   = 1,  Pin_2  = 2,  Pin_3  = 3,  Pin_4  = 4,  Pin_5  = 5,  Pin_6  = 6,  Pin_7  = 7,
+	Pin_8  = 8, Pin_9   = 9,  Pin_10 = 10, Pin_11 = 11, Pin_12 = 12, Pin_13 = 13, Pin_14 = 14, Pin_15 = 15,
+	Pin_16 = 16, Pin_17 = 17, Pin_18 = 18, Pin_19 = 19, Pin_20 = 20, Pin_21 = 21, Pin_22 = 22, Pin_23 = 23,
+	Pin_24 = 24, Pin_25 = 25, Pin_26 = 26, Pin_27 = 27, Pin_28 = 28, Pin_29 = 29, Pin_30 = 30, Pin_31 = 31,
 } Pin;
 
-// Type of pin
-typedef enum Type {
+typedef enum Type {  //  Type of pin
 	Type_StrobeOn,	Type_StrobeOff,	Type_StrobeSetup,	Type_Sense,	Type_SenseSetup,
 } Type;
 
-// Sense/Strobe configuration
+//  Sense/Strobe config
 typedef enum Config {
 	Config_Pullup,  Config_Pulldown,  Config_Opendrain,
 } Config;
 
-// Keypress States
+//  Keypress States
 typedef enum KeyPosition {
 	KeyState_Off     = 0,
 	KeyState_Press   = 1,
@@ -35,17 +32,15 @@ typedef enum KeyPosition {
 } KeyPosition;
 
 
-// ----- Structs -----
-
-// Struct container for defining Rows (Sense) and Columns (Strobes)
+//  Struct for defining Rows- (Sense) and Columns| (Strobes)
 typedef struct GPIO_Pin {
 	Port port;  Pin  pin;
 } GPIO_Pin;
 
-#define gpio( port, pin ) { Port_##port, Pin_##pin }
+#define gpio(port, pin)  { Port_##port, Pin_##pin }
 
 
-//  ----  pinout  ----
+//  ---- Pinout ----
 #define T3_0  gpio(B,16)
 #define T3_1  gpio(B,17)
 #define T3_2  gpio(D,0 )
@@ -83,48 +78,38 @@ typedef struct GPIO_Pin {
 #define T3_40 gpio(A,14) //dac
 
 
-//  ----***  matrix  ***----
-// 4 x 2
-//const static GPIO_Pin Matrix_cols[] = { T3_14, T3_15, T3_18, T3_19 };
-//const static GPIO_Pin Matrix_rows[] = { T3_16, T3_17 };
-// 7 x 6
-//| 2:19  4:16  8:18  9:14  10:15  11:17  12:20  13:21
-//- 3:0  4:1  5:2  6:3  7:23  8:22
-const static GPIO_Pin Matrix_cols[] = { T3_19, T3_16, T3_18, T3_14, T3_15, T3_17, T3_20, T3_21 };
-const static GPIO_Pin Matrix_rows[] = { T3_0, T3_1, T3_2, T3_3, T3_23, T3_22 };
-// 3 x 3
-//const static GPIO_Pin Matrix_cols[] = { T3_16, T3_18, T3_15 };
-//const static GPIO_Pin Matrix_rows[] = { T3_0, T3_1, T3_2 };
+//  ----***  Matrix  ***----
+//  7 x 6
+//c| 2:19  4:16  8:18  9:14  10:15  11:17  12:20  13:21
+//r- 3:0  4:1  5:2  6:3  7:23  8:22
+const static GPIO_Pin
+	Matrix_cols[] = { T3_19, T3_16, T3_18, T3_14, T3_15, T3_17, T3_20, T3_21 },
+	Matrix_rows[] = { T3_0, T3_1, T3_2, T3_3, T3_23, T3_22 };
 
 
-#define Matrix_colsNum  sizeof( Matrix_cols ) / sizeof( GPIO_Pin )
-#define Matrix_rowsNum  sizeof( Matrix_rows ) / sizeof( GPIO_Pin )
-#define Matrix_maxKeys  sizeof( Matrix_scanArray ) / sizeof( KeyState )
+#define NumCols  sizeof( Matrix_cols ) / sizeof( GPIO_Pin )
+#define NumRows  sizeof( Matrix_rows ) / sizeof( GPIO_Pin )
+#define MaxKeys  sizeof( Matrix_scanArray ) / sizeof( KeyState )
 
 
-// Define type of scan matrix
+//  Type of scan matrix
 #define /*Config*/ Matrix_type Config_Pullup
 
 
-// This will enable the anti-ghosting code
+//  Enable anti-ghosting code
 #define GHOSTING_MATRIX
 
-// Delay in microseconds before and after each strobe change during matrix scan
-#define STROBE_DELAY  4  // 3 too low for >=3 in row, 4 ok
+//  Delay in microseconds before and after each strobe change during matrix scan
+extern int STROBE_DELAY;  // 3 too low for >=3 in row, 4 ok
 
 #define DebounceDivThreshold_define 65535
 #define DebounceCounter uint16_t
 
 #define DebounceThrottleDiv_define 0
-#define MinDebounceTime_define 1
+#define MinDebounceTime_define 1  // 5 ??..
 
-//#define StrobeDelay_define 0
-//#define StateWordSize_define 16
-//#define IndexWordSize_define 16
-//#define KeyboardLocale_define 0
-//#define USBProtocol_define 1
 
-// Debounce Element
+//  Debounce Element
 typedef struct KeyState {
 	DebounceCounter activeCount;
 	DebounceCounter inactiveCount;
@@ -135,29 +120,30 @@ typedef struct KeyState {
 } KeyState;
 
 #ifdef GHOSTING_MATRIX
-// Ghost Element, after ghost detection/cancelation
+//  Ghost Element, after ghost detection/cancelation
 typedef struct KeyGhost {
 	KeyPosition     prev;
 	KeyPosition     cur;
 	KeyPosition     saved;  // state before ghosting
 } KeyGhost;
 
-// utility
+
+//  utility
 inline uint8_t keyOn(/*KeyPosition*/uint8_t st)
 {
 	return (st == KeyState_Press || st == KeyState_Hold) ? 1 : 0;
 }
 
-//  for ghost status info
+//  Ghost status info
 extern int ghost_cols, ghost_rows;  // ghosting if any > 0
-extern uint8_t col_use[Matrix_colsNum], row_use[Matrix_rowsNum];  // used count
-extern uint8_t col_ghost[Matrix_colsNum], row_ghost[Matrix_rowsNum];  // marked as having ghost if 1
+extern uint8_t col_use[NumCols], row_use[NumRows];  // used count
+extern uint8_t col_ghost[NumCols], row_ghost[NumRows];  // marked as having ghost if 1
 #endif
 
-extern int cnt_press, cnt_hold, cnt_rel;  // test
+extern int cnt_press, cnt_hold, cnt_rel;  // testing
 
 
-// ----- Functions -----
+//  ----- Functions -----
 #ifdef	__cplusplus
 extern "C"
 {
@@ -166,8 +152,7 @@ extern "C"
 extern void Matrix_setup();
 extern void Matrix_scan( uint16_t scanNum );
 
-extern KeyState Matrix_scanArray[ Matrix_colsNum * Matrix_rowsNum ];
-
+extern KeyState Matrix_scanArray[ NumCols * NumRows ];
 
 #ifdef	__cplusplus
 }

@@ -10,7 +10,7 @@
 
 
 extern uint scan_freq;  // scan counter, freq
-const static int rr = Matrix_colsNum;
+const static int rr = NumCols;
 extern uint32_t us_scan;
 
 #include "kbd_draw.h"
@@ -176,11 +176,11 @@ void Gui::Draw()
 			const static int16_t x1 = 12, y1 = 64;
 
 			bool ghost = false;
-			for (uint c=0; c < Matrix_colsNum; ++c)
-			for (uint r=0; r < Matrix_rowsNum; ++r)
+			for (uint c=0; c < NumCols; ++c)
+			for (uint r=0; r < NumRows; ++r)
 			{
 				d->setCursor(x1 + c*8, y1 + r*8);
-				const KeyState& k = Matrix_scanArray[Matrix_colsNum * r + c];
+				const KeyState& k = Matrix_scanArray[NumCols * r + c];
 
 				#define CGh(b)  d->setTextColor(b ? RGB(31,26,12) : RGB(12,20,26))
 
@@ -210,14 +210,14 @@ void Gui::Draw()
 			d->print(a);
 
 			//  col| row- use
-			for (uint c=0; c < Matrix_colsNum; ++c)
+			for (uint c=0; c < NumCols; ++c)
 			{
 				CGh(col_ghost[c]);
 				d->setCursor(x1 + c*8, y1 - 1*8);
 				sprintf(a,"%d", col_use[c]);
 				d->print(a);
 			}
-			for (uint r=0; r < Matrix_rowsNum; ++r)
+			for (uint r=0; r < NumRows; ++r)
 			{
 				CGh(row_ghost[r]);
 				d->setCursor(0, y1 + r*8);

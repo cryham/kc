@@ -5,18 +5,16 @@
 #include "periodic.h"
 
 #include "Ada4_ST7735.h"
-
 #include "gui.h"
 
 
+const static int rr = NumCols;
+
 //  scan counter, freq
-const static int rr = Matrix_colsNum;
 uint scan_cnt = 0, scan_freq = 0;
 uint32_t us_scan = 0, ms_scan = 0;
 
-
-//  gui
-int text = 1, keys = 0;
+int keys = 0;
 
 Gui gui;
 
@@ -62,13 +60,13 @@ void main_periodic()
 		//if (add)
 		//	text = (text + add + 4) % 4;
 
-		/*	    0    1     2    3  4    5  6    7
-			0        PgUp  Hom  U  ^    R  +    E
-			1   Bck  ->    <-   Y  Del  T       F3
-			2   \    PgDn  End  J  v    F  Ent  D
-			3   F11  Del.  Spc  H  Ins  G  Up   F4
-			4   Ent  *     Num  M  /    V       C
-			5   F12  -          N       B			*/
+	/*	    0    1     2    3  4    5  6    7
+		0        PgUp  Hom  U  ^    R  +    E
+		1   Bck  ->    <-   Y  Del  T       F3
+		2   \    PgDn  End  J  v    F  Ent  D
+		3   F11  Del.  Spc  H  Ins  G  Up   F4
+		4   Ent  *     Num  M  /    V       C
+		5   F12  -          N       B			*/
 
 		gui.KeyPress(right, up, pgup, add);
 	}
@@ -78,8 +76,8 @@ void main_periodic()
 	if (keys)
 	{
 		//int u = 0;
-		for (uint c=0; c < Matrix_colsNum; ++c)
-		for (uint r=0; r < Matrix_rowsNum; ++r)
+		for (uint c=0; c < NumCols; ++c)
+		for (uint r=0; r < NumRows; ++r)
 		{
 			int id = rr * r + c;
 			const KeyState& k = Matrix_scanArray[id];
@@ -98,12 +96,13 @@ void main_periodic()
 		}
 	}
 
+	//  147 us: strobe del 4  131: 3  115: 2  90: 0
 	us_scan = micros() - us;
-	// 131 us del 3,  115 us del 2,  90 us del 0
 }
 
 
-//------------------------------------------------------------------------------------
+//  main
+//-------------------------------------------------------------------------
 int main()
 {
 	Ada4_ST7735 tft;
@@ -115,15 +114,14 @@ int main()
 	//  kbd
 	Matrix_setup();
 
-	// 40000  1.2kHz  d:50fps
-	// 50000  960Hz  d:52fps
+	//  40000  1.2 kHz  d: 50 fps
+	//  50000  960 Hz   d: 52 fps
 	Periodic_init( 50000 );
 	Periodic_function( &main_periodic );
 
 
 	while(1)
 	{
-
 		gui.Draw();
 
 		gui.DrawEnd();

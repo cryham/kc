@@ -3,17 +3,18 @@
 
 
 // Debounce Array
-KeyState Matrix_scanArray[ Matrix_colsNum * Matrix_rowsNum ];
+KeyState Matrix_scanArray[ NumCols * NumRows ];
 
 // Ghost Arrays
 #ifdef GHOSTING_MATRIX
-KeyGhost Matrix_ghostArray[ Matrix_colsNum * Matrix_rowsNum ];
+KeyGhost Matrix_ghostArray[ NumCols * NumRows ];
 
-uint8_t col_use[Matrix_colsNum], row_use[Matrix_rowsNum];  // used count
-uint8_t col_ghost[Matrix_colsNum], row_ghost[Matrix_rowsNum];  // marked as having ghost if 1
-uint8_t col_ghost_old[Matrix_colsNum], row_ghost_old[Matrix_rowsNum];  // old ghost state
+uint8_t col_use[NumCols], row_use[NumRows];  // used count
+uint8_t col_ghost[NumCols], row_ghost[NumRows];  // marked as having ghost if 1
+uint8_t col_ghost_old[NumCols], row_ghost_old[NumRows];  // old ghost state
 #endif
 
+int STROBE_DELAY = 4;  // par
 
 // Matrix State Table Debug Counter - If non-zero display state table after every matrix scan
 uint16_t matrixDebugStateCounter = 0;
@@ -136,7 +137,7 @@ uint8_t Matrix_pin( GPIO_Pin gpio, Type type )
 void Matrix_setup()
 {
 	// Setup Strobe Pins
-	for ( uint8_t pin = 0; pin < Matrix_colsNum; pin++ )
+	for ( uint8_t pin = 0; pin < NumCols; pin++ )
 	{
 		Matrix_pin( Matrix_cols[ pin ], Type_StrobeSetup );
 		#ifdef GHOSTING_MATRIX
@@ -147,7 +148,7 @@ void Matrix_setup()
 	}
 
 	// Setup Sense Pins
-	for ( uint8_t pin = 0; pin < Matrix_rowsNum; pin++ )
+	for ( uint8_t pin = 0; pin < NumRows; pin++ )
 	{
 		Matrix_pin( Matrix_rows[ pin ], Type_SenseSetup );
 		#ifdef GHOSTING_MATRIX
@@ -158,7 +159,7 @@ void Matrix_setup()
 	}
 
 	// Clear out Debounce Array
-	for ( uint8_t item = 0; item < Matrix_maxKeys; item++ )
+	for ( uint8_t item = 0; item < MaxKeys; item++ )
 	{
 		Matrix_scanArray[ item ].prevState        = KeyState_Off;
 		Matrix_scanArray[ item ].curState         = KeyState_Off;
@@ -210,26 +211,26 @@ void Matrix_scan( uint16_t scanNum )
 	uint8_t currentTime = (uint8_t)systick_millis_count;
 
 	// For each strobe, scan each of the sense pins
-	for ( uint8_t strobe = 0; strobe < Matrix_colsNum; strobe++ )
+	for ( uint8_t strobe = 0; strobe < NumCols; strobe++ )
 	{
-		#ifdef STROBE_DELAY
+
 		uint32_t start = micros();
-		while ((micros() - start) < STROBE_DELAY);
-		#endif
+		if (STROBE_DELAY > 0)
+			while ((micros() - start) < STROBE_DELAY);
 
 		// Strobe Pin
 		Matrix_pin( Matrix_cols[ strobe ], Type_StrobeOn );
 
-		#ifdef STROBE_DELAY
 		start = micros();
-		while ((micros() - start) < STROBE_DELAY);
-		#endif
+		if (STROBE_DELAY > 0)
+			while ((micros() - start) < STROBE_DELAY);
+
 
 		// Scan each of the sense pins
-		for ( uint8_t sense = 0; sense < Matrix_rowsNum; sense++ )
+		for ( uint8_t sense = 0; sense < NumRows; sense++ )
 		{
 			// Key position
-			uint8_t key = Matrix_colsNum * sense + strobe;
+			uint8_t key = NumCols * sense + strobe;
 			KeyState *state = &Matrix_scanArray[ key ];
 
 			// If first scan, reset state
@@ -277,9 +278,7 @@ void Matrix_scan( uint16_t scanNum )
 				case KeyState_Press:
 				case KeyState_Hold:
 					if ( state->activeCount > state->inactiveCount )
-					{
 						state->curState = KeyState_Hold;
-					}
 					else
 					{
 						// If not enough time has passed since Hold
@@ -290,7 +289,6 @@ void Matrix_scan( uint16_t scanNum )
 							state->curState = state->prevState;
 							continue;
 						}
-
 						state->curState = KeyState_Release;
 					}
 					break;
@@ -307,18 +305,14 @@ void Matrix_scan( uint16_t scanNum )
 							state->curState = state->prevState;
 							continue;
 						}
-
 						state->curState = KeyState_Press;
-					}
-					else
-					{
+					}else
 						state->curState = KeyState_Off;
-					}
 					break;
 
 				case KeyState_Invalid:
 				default:
-					//erro_print("Matrix scan bug!! Report me!");
+					// Matrix scan bug
 					break;
 				}
 
@@ -351,12 +345,12 @@ void Matrix_scan( uint16_t scanNum )
 	// strobe = column, sense = row
 
 	// Count (rows) use for columns
-	for ( uint8_t col = 0; col < Matrix_colsNum; col++ )
+	for ( uint8_t col = 0; col < NumCols; col++ )
 	{
 		uint8_t used = 0;
-		for ( uint8_t row = 0; row < Matrix_rowsNum; row++ )
+		for ( uint8_t row = 0; row < NumRows; row++ )
 		{
-			uint8_t key = Matrix_colsNum * row + col;
+			uint8_t key = NumCols * row + col;
 			KeyState *state = &Matrix_scanArray[ key ];
 			if ( keyOn(state->curState) )
 				used++;
@@ -367,12 +361,12 @@ void Matrix_scan( uint16_t scanNum )
 	}
 
 	// Count (columns) use for rows
-	for ( uint8_t row = 0; row < Matrix_rowsNum; row++ )
+	for ( uint8_t row = 0; row < NumRows; row++ )
 	{
 		uint8_t used = 0;
-		for ( uint8_t col = 0; col < Matrix_colsNum; col++ )
+		for ( uint8_t col = 0; col < NumCols; col++ )
 		{
-			uint8_t key = Matrix_colsNum * row + col;
+			uint8_t key = NumCols * row + col;
 			KeyState *state = &Matrix_scanArray[ key ];
 			if ( keyOn(state->curState) )
 				used++;
@@ -384,11 +378,11 @@ void Matrix_scan( uint16_t scanNum )
 
 	// Check if matrix has ghost
 	// Happens when key is pressed and some other key is pressed in same row and another in same column
-	for ( uint8_t col = 0; col < Matrix_colsNum; col++ )
+	for ( uint8_t col = 0; col < NumCols; col++ )
 	{
-		for ( uint8_t row = 0; row < Matrix_rowsNum; row++ )
+		for ( uint8_t row = 0; row < NumRows; row++ )
 		{
-			uint8_t key = Matrix_colsNum * row + col;
+			uint8_t key = NumCols * row + col;
 			KeyState *state = &Matrix_scanArray[ key ];
 			if ( keyOn(state->curState) && col_use[col] >= 2 && row_use[row] >= 2 )
 			{
@@ -400,19 +394,19 @@ void Matrix_scan( uint16_t scanNum )
 	}
 
 	int gh_cols = 0, gh_rows = 0;
-	for ( uint8_t col = 0; col < Matrix_colsNum; col++ )
+	for ( uint8_t col = 0; col < NumCols; col++ )
 		if (col_ghost[col])  ++gh_cols;
-	for ( uint8_t row = 0; row < Matrix_rowsNum; row++ )
+	for ( uint8_t row = 0; row < NumRows; row++ )
 		if (row_ghost[row])  ++gh_rows;
 	ghost_cols = gh_cols;
 	ghost_rows = gh_rows;
 
 	// Send keys
-	for ( uint8_t col = 0; col < Matrix_colsNum; col++ )
+	for ( uint8_t col = 0; col < NumCols; col++ )
 	{
-		for ( uint8_t row = 0; row < Matrix_rowsNum; row++ )
+		for ( uint8_t row = 0; row < NumRows; row++ )
 		{
-			uint8_t key = Matrix_colsNum * row + col;
+			uint8_t key = NumCols * row + col;
 			KeyState *state = &Matrix_scanArray[ key ];
 			KeyGhost *st = &Matrix_ghostArray[ key ];
 
