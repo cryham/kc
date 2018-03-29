@@ -174,8 +174,8 @@ void Gui::DrawTesting()
 			}  //STR(i) todo: map to key name
 		}
 		//  count
-		d->setCursor(W-1 -(c > 9 ? 2*6 : 6), H-1-8);
-		d->setTextColor(RGB(31, min(31,24+c), 16+c));
+		d->setCursor(0, H-1-2*8);
+		d->setTextColor(RGB(16+c, min(31,24+c), 31));
 		sprintf(a,"%d",c);
 		d->print(a);
 
@@ -210,11 +210,20 @@ void Gui::DrawTesting()
 	}
 }
 
+
 //  Mappings kbd
 //....................................................................................
 void Gui::DrawMapping()
 {
 	d->print(strMain[ym]);  d->setFont(0);
+
+	//  kc
+	/*d->setCursor(0,32);
+	for (uint i=0; i < kc.data.size(); ++i)
+	{
+		sprintf(a,"%d ", kc.data[i]);
+		d->print(a);
+	}*/
 
 	//  kbd draw   Layout  * * * *
 	int x = 0, y = 0;

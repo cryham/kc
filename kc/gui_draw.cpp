@@ -1,12 +1,15 @@
 #include "gui.h"
 #include "Ada4_ST7735.h"
 #include "FreeSans9pt7b.h"
+//#include "kc_data.h"
+
+//extern KC_Key kc;
 
 
 //  menu draw  util
 //------------------------------------------------------
 const int8_t Cl = 4,  // 0 main  1 demos  2 test
-	Rclr[Cl] = {16,27,31,10}, Gclr[Cl] = {26,26,23,10}, Bclr[Cl] = {31,31,31,10},
+	Rclr[Cl] = {16,27,31,10}, Gclr[Cl] = {26,26,25,10}, Bclr[Cl] = {31,31,31,10},
 	Rmul[Cl] = {3, 2, 3, 1 }, Gmul[Cl] = {2, 3, 5, 1 }, Bmul[Cl] = {0, 1, 2, 1 };
 
 void Gui::DrawMenu(int cnt, const char** str, int8_t q, // clrId
@@ -44,10 +47,12 @@ void Gui::DrawMenu(int cnt, const char** str, int8_t q, // clrId
 //....................................................................................
 void Gui::Draw()
 {
-	yy = ym2[ym];
+	yy = ym1[ym];
 
 	//  Clear  if not rain
+	#ifdef DEMOS
 	if (ym != M_Demos || mlevel != 2 || yy != D_Rain)
+	#endif
 		d->clear();
 
 	d->setFont(&FreeSans9pt7b);
@@ -72,6 +77,7 @@ void Gui::Draw()
 
 	//  Demos
 	//------------------------------------------------------
+	#ifdef DEMOS
 	if (ym == M_Demos)
 	{
 		if (mlevel == 2)
@@ -103,6 +109,7 @@ void Gui::Draw()
 		}
 		return;
 	}
+	#endif
 
 	//  Testing, Mappings,  kbd
 	//------------------------------------------------------
@@ -111,7 +118,7 @@ void Gui::Draw()
 		DrawTesting();  return;
 	}
 
-	if (ym == M_Mappings)
+	if (ym == M_Mapping)
 	{
 		DrawMapping();  return;
 	}
@@ -146,6 +153,7 @@ void Gui::Draw()
 void Gui::DrawEnd()
 {
 
+	#ifdef DEMOS
 	//  fps  ---------
 	if (mlevel == 2 && ym == M_Demos)
 	{
@@ -164,6 +172,7 @@ void Gui::DrawEnd()
 		sprintf(a,"%lu", tdemo);
 		d->print(a);
 	}
+	#endif
 
 	//if (!offDisp)
 		d->display();  // 58 Fps, 15ms @144MHz

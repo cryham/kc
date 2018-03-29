@@ -1,12 +1,16 @@
 #pragma once
 #include <stdint.h>
+#include "def.h"
 #include "demos.h"
+#include "kc_data.h"
 
 
 struct Gui
 {
 	Demos demos;
 	class Ada4_ST7735* d;
+
+	KC_Key kc;
 
 	//  main
 	Gui();
@@ -22,12 +26,12 @@ struct Gui
 				int16_t yadd=10, int16_t nextCol=-1, int16_t numGap=-1);
 
 	//  vars
-	//int8_t menu;    // 0 off, 1 in menu
-	int8_t mlevel;  // 0 main, 1 level2
+	//int8_t menu;  // 0 off, 1 in menu
+	int8_t mlevel;  // 0 main, 1 level1, 2 level2
 
 	int8_t ym;      // 0 main y cursor
-	int8_t ym2[M_All];  // level2 page,  cursor for submenu
-	int8_t yy;      // = ym2[ym]  level2 y cursor
+	int8_t ym1[M_All];  // 1 y cursor for all main menu entries
+	int8_t yy;      // = ym1[ym]  level1 y cursor
 
 	//  time
 	unsigned long tm;

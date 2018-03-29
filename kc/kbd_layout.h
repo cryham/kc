@@ -16,15 +16,14 @@ struct SKey
 #define NO 255  // no scan code
 
 
-const static int8_t Omax = 9,
-	kW = 8, kH = 9, kF = 6,  // size
-	X = -kW, XN = 127;  // pos
+const static int8_t Omax = 9;
+extern const int8_t kW, kH, kF, X, XN;
 
 extern const uint16_t clrRect[Omax], clrText[Omax];  // colors types
 
 
 //  CK3  layout
-const static char* CKname = "CK3";
+extern const char* CKname;
 const static int numKeys = 94;
 extern SKey drawKeys[numKeys];
 

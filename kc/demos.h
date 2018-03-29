@@ -2,7 +2,7 @@
 #include "WProgram.h"
 #include "def.h"
 
-
+#ifdef DEMOS
 //  sinus table  ----
 #define SX  8192   // 8192  mem size 16kB
 //#define SX  16384
@@ -11,6 +11,7 @@
 #define Sin(x)  sint[      (x) %SX]
 
 extern const int16_t sint[SX];
+#endif
 
 
 struct Demos

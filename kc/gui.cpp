@@ -16,9 +16,11 @@ void Gui::Init(Ada4_ST7735* tft)
 
 	ym = 0;
 	for (int i=0; i < M_All; ++i)
-		ym2[i]=0;
+		ym1[i]=0;
 	
 	oldti = 0;
 	tdemo = 0;
+#ifdef DEMOS
 	demos.Init(d);
+#endif
 }

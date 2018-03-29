@@ -2,6 +2,10 @@
 #include <stdint.h>
 
 #define DEMOS
+/* SRAM: 78%  51572  B  with + 7k
+  Flash: 61%  161644 B       + 41k
+   SRAM: 67%  44252  B  w/o
+  Flash: 45%  120556 B  */
 
 //  display dim
 #define W 160
@@ -13,10 +17,15 @@
 
 enum EMainMenu  //  main menu entries, level0
 {
-	M_Testing=0, M_Mappings, M_Sequences,
-	M_Display, M_Demos,	/*M_Game,*/ M_All
+	M_Testing=0, M_Mapping, M_Sequences,
+	M_Display, //M_Clock
+#ifdef DEMOS
+	M_Demos,
+#endif
+	/*M_Game,*/ M_All
 };
 
+#ifdef DEMOS
 enum EDemo  // Demos, level1
 {
 	D_Plasma=0, D_Wave, D_Hedrons, D_CK_Logo,
@@ -24,15 +33,16 @@ enum EDemo  // Demos, level1
 	D_Ngons, D_Fonts,
 	D_All, D_Next = D_CK_Logo,  // next column
 };
+extern const char *strDemo[D_All];
+#endif
 
-enum ETest  // Testing kbd
+enum ETest  // Testing kbd, level1
 {
 	T_ScanSetup, T_Matrix, T_Pressed, T_Mouse, T_All
 };
 
 //  string names for all above ^
-extern const char
-	*strMain[M_All], *strDemo[D_All], *strTest[T_All];
+extern const char *strMain[M_All], *strTest[T_All];
 
-//  sub pages  inside each main menu entry
-extern const uint8_t YM2[M_All];
+//  sub page counts, inside each main menu entry
+extern const uint8_t YM1[M_All];

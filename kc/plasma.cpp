@@ -1,6 +1,7 @@
 #include "WProgram.h"
 #include "demos.h"
 
+#ifdef DEMOS
 
 //  sin
 const int16_t sint[SX] =
@@ -342,3 +343,4 @@ void Demos::Plasma4()  // tiny
 		yy[6]+=393; yy[7]+=256; yy[8]+=413; yy[9]+=249; yy[10]+=521; yy[11]+=352;
 	}	t+=tadd[6];
 }
+#endif

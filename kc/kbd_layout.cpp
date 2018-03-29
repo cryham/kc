@@ -1,17 +1,18 @@
 #include "kbd_layout.h"
 #include "def.h"
 
-const uint16_t  // _colors types_
-	// 0 letters,  1 numbers,   2 func,   3 symbols,
-	// 4 modif L,  5 modif R,   6 enter,  7 enter R,   8 arrows
+const uint16_t  // _colors for key types_
+//  0 letters  1 digits       2 func F1      3 symbols ,.   4 modifiers L  5 modif R      6 ent,tab      7 ent R        8 arrows
 clrRect[Omax] = {
-	RGB(12,12,12), RGB(13,13,10), RGB( 8,14,19), RGB(23,23,26),
-	RGB(12,19,19), RGB(12,19,19), RGB( 9,21,12), RGB( 9,21,12), RGB(21,16,12) },
+RGB(12,12,12), RGB(13,13,10), RGB( 8,14,19), RGB(21,21,12),	RGB(12,19,19), RGB(12,19,19), RGB( 9,21,12), RGB( 9,21,12), RGB(20,16,11) },
 clrText[Omax] = {
-	RGB(25,28,31), RGB(28,28,23), RGB(18,25,31), RGB(25,25,31),
-	RGB( 6,26,26), RGB( 6,26,26), RGB(13,29,16), RGB(13,29,16), RGB(31,26,21) };
+RGB(25,28,31), RGB(28,28,23), RGB(20,26,30), RGB(29,29,16),	RGB( 9,26,26), RGB( 9,26,26), RGB(13,28,16), RGB(13,28,16), RGB(29,24,17) };
+
 
 //  ------------  CK3  ------------------------------------------------
+const char* CKname = "CK3";
+const int8_t  kW = 8, kH = 9, kF = 6, /* size */  X = -kW, XN = 127;  // pos
+
 SKey drawKeys[numKeys] = {  //  Layout draw
 
 { 0, 9,kW,kF, 'e',6,NO}, //Esc 13x
@@ -44,14 +45,14 @@ SKey drawKeys[numKeys] = {  //  Layout draw
 {-45,0,10,kH, 'a',5,NO},{-10,0,8,kH,  9 ,6,NO},{-8,0, 9,kH,254,5,NO},{-9, 0,13,kH,'c',5,NO}, //R Ct 8x
 
 //numpad: 20x
-{XN,20,kW,kH, 250,6,34},{X, 0,kW,kH, '/',3,36},{X,0,kW,kH, '*',3,33},{X,0,kW,kH,  '-',3,41},
+{XN,20,kW,kH, 250,6,34},{X, 0,kW,kH, '/',3,36},{X,0,kW,kH, 'x',3,33},{X,0,kW,kH,  '-',3,41},
 {XN,29,kW,kH, '7',8, 2},{X, 0,kW,kH, 24 ,8, 4},{X,0,kW,kH, '9',8, 1},{X,0,kW,kH*2,'+',3, 6},
 {XN,38,kW,kH, 27 ,8,10},{X, 0,kW,kH,  7 ,6,12},{X,0,kW,kH, 26 ,8, 9},
 {XN,47,kW,kH, '1',8,18},{X, 0,kW,kH, 25 ,8,20},{X,0,kW,kH, '3',8,17},{X,0,kW,kH*2, 217,6,22}, //Ent
 {XN,56,kW*2,kH,'_',6,28},{-kW*2,0,kW,kH,'.',6,25}, //Ins Del
-};  //symbols: `240=  248 deg  249. 250,  7 cir  9 dot`
-// < x1B 27  > x1A 26  ^ x18 24  v x19 25
-
+};
+//symbols: `240=  248 deg  249. 250,  7 cir  9 dot`
+	// < x1B 27  > x1A 26  ^ x18 24  v x19 25
 
 #if 0
 ///  string from usb hid code
