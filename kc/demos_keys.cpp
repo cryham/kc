@@ -28,11 +28,11 @@ void Demos::Init(Ada4_ST7735* tft)
 	
 	fInt = 5;  fWave = 1;  // fountain
 
-	ngt = 0;  ngCur = ngMin;  ngRot = 0;  // ngons
+	ngt = 0;  ngCur = ngMin+3;  ngRot = 0;  // ngons
 	hdtOn = 1;
 	hdt = 0;  hdCur = hdA-1;  hdRot = 0;  // hedrons
 
-	ckCur = 0;	ckSpeed = 6;  // logo
+	ckCur = 0;	ckSpeed = 5;  // logo
 
 	plasma = 1;  t = 131210;
 	for (int i=0; i < num_plasma; ++i)
@@ -53,8 +53,8 @@ void Demos::Draw(D d, int8_t menu, int8_t y, int8_t y2)
 		--iInfo;
 #endif
 
-
 #ifdef DEMOS
+
 //  Key Press  demo params
 //....................................................................................
 void Demos::KeyPress(EDemo demo, int k, int e, int ct, int kinf)
