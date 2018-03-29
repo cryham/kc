@@ -3,11 +3,11 @@
 
 
 // Debounce Array
-KeyState Matrix_scanArray[ NumCols * NumRows ];
+KeyState Matrix_scanArray[MaxKeys];
 
 // Ghost Arrays
 #ifdef GHOSTING_MATRIX
-KeyGhost Matrix_ghostArray[ NumCols * NumRows ];
+KeyGhost Matrix_ghostArray[MaxKeys];
 
 uint8_t col_use[NumCols], row_use[NumRows];  // used count
 uint8_t col_ghost[NumCols], row_ghost[NumRows];  // marked as having ghost if 1

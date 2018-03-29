@@ -89,7 +89,7 @@ const static GPIO_Pin
 
 #define NumCols  sizeof( Matrix_cols ) / sizeof( GPIO_Pin )
 #define NumRows  sizeof( Matrix_rows ) / sizeof( GPIO_Pin )
-#define MaxKeys  sizeof( Matrix_scanArray ) / sizeof( KeyState )
+#define MaxKeys  (NumCols * NumRows)  // sizeof( Matrix_scanArray ) / sizeof( KeyState )
 
 
 //  Type of scan matrix
@@ -106,7 +106,7 @@ extern int STROBE_DELAY;  // 3 too low for >=3 in row, 4 ok
 #define DebounceCounter uint16_t
 
 #define DebounceThrottleDiv_define 0
-#define MinDebounceTime_define 1  // 5 ??..
+#define MinDebounceTime_define 1  // todo 5 ??..
 
 
 //  Debounce Element
@@ -150,9 +150,9 @@ extern "C"
 #endif
 
 extern void Matrix_setup();
-extern void Matrix_scan( uint16_t scanNum );
+extern void Matrix_scan( uint16_t scanNum );  // todo ??..
 
-extern KeyState Matrix_scanArray[ NumCols * NumRows ];
+extern KeyState Matrix_scanArray[MaxKeys];
 
 #ifdef	__cplusplus
 }
