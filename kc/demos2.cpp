@@ -49,11 +49,11 @@ void Demos::CK_logo()
 	{
 		const int cx = cw[ckCur][w2], cy = cw[ckCur][2+w2],
 				ax = cw[ckCur][4+w2], ay = cw[ckCur][6+w2];
-		int a=0,w, i=0,rst=1,
+		int a=0,w, i=0,rst=1, n=0,
 			x1=0,y1=0,x=0,y=0;
 		do
 		{	w = w2 ? word2[a++] : word1[a++];
-			if (w<=0) {  rst=1;  i=0;  }
+			if (w<=0) {  rst=1;  i=0;  ++n;  }
 			else
 			if (rst)  switch(i)
 			{	case 0:  CX(x)  ++i;  break;
@@ -64,8 +64,8 @@ void Demos::CK_logo()
 
 			if (i==2)
 			{	i=0;  d->drawLine(x1,y1, x,y,
-				w2 ? RGB(max(6, 31-a/3), max(2, 31-a/2), 31)
-				   : RGB(max(2, 31-a/2), max(6, 31-a/3), 31));  }
+				w2 ? RGB(max(8, 31-n*1-a%6), max(4, 31-n*2-a%8), 31)
+				   : RGB(max(4, 31-n*2-a%9), max(8, 31-n*1-a%7), 31));  }
 		}
 		while (w >= 0);
 	}

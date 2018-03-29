@@ -125,7 +125,7 @@ void Demos::Fonts()
 		d->print(dt);
 	}	break;
 
-	case 1:  // big chars ..
+	case 1:  // big chars todo
 	{	uint x=0, y=0, yw=18;
 		d->setFont(&FreeSans9pt7b);
 		d->setTextColor(RGB(21,18,31));
@@ -150,24 +150,30 @@ void Demos::Fonts()
 
 	}	break;
 
-	case 2:  // small chars
+	case 2:  // small all chars
 	{
 		d->setCursor(6,8);
 		d->setTextColor(RGB(21,26,31));
 
-		for (int i=1; i < 256; i++)
+		for (int i=0; i < 256; i++)
 		{
 			if (i == '\n') continue;
 			d->write(i);
 
 			if (i % 24 == 0)
-			{	d->print('\n');
-				d->moveCursor(0, 1);
-			}else
-			if (i % 8 == 0)
+			{	if (i > 0)
+				{	d->print('\n');
+					d->moveCursor(0, 1);  }
+				d->setTextColor(RGB(21,26,31));
+
+				int ii = i / 24;
+				if (ii % 4 == 0)
+					d->moveCursor(0, 3);
+				if (ii % 2 == 0)
+					d->setTextColor(RGB(26,29,31));
+			}
+			if (i % 8 == 0 && i > 0)
 				d->moveCursor(2, 0);
-			if ((i % 24) % 4 == 0)
-				d->moveCursor(0, 2);
 		}
 	}	break;
 	}

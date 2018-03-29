@@ -6,8 +6,8 @@
 //  menu draw  util
 //------------------------------------------------------
 const int8_t Cl = 4,  // 0 main  1 demos  2 test
-	Rclr[Cl] = {16,27,31,10}, Gclr[Cl] = {26,26,21,10}, Bclr[Cl] = {31,31,19,10},
-	Rmul[Cl] = {3, 2, 1, 1 }, Gmul[Cl] = {2, 3, 3, 1 }, Bmul[Cl] = {0, 1, 6, 1 };
+	Rclr[Cl] = {16,27,31,10}, Gclr[Cl] = {26,26,23,10}, Bclr[Cl] = {31,31,31,10},
+	Rmul[Cl] = {3, 2, 3, 1 }, Gmul[Cl] = {2, 3, 5, 1 }, Bmul[Cl] = {0, 1, 2, 1 };
 
 void Gui::DrawMenu(int cnt, const char** str, int8_t q, // clrId
 					int16_t yadd, int16_t nextCol, int16_t numGap)
@@ -20,9 +20,9 @@ void Gui::DrawMenu(int cnt, const char** str, int8_t q, // clrId
 	{
 		d->setCursor(x,y);
 		d->setTextColor(RGB(18,18,31));
-		d->print(i==my ? " \x10 ":"   ");
+		d->print(i == my ? " \x10 ":"   ");
 
-		c = abs(i-my);  // dist dim
+		c = abs(i - my);  // dist dim
 		d->setTextColor(RGB(
 			max(0, Rclr[q] - c * Rmul[q]),
 			max(0, Gclr[q] - c * Gmul[q]),
@@ -32,8 +32,7 @@ void Gui::DrawMenu(int cnt, const char** str, int8_t q, // clrId
 		//  next, extras
 		y += yadd;
 
-		if (i == numGap)
-			y += 4;
+		if (i == numGap)  y += 4;
 
 		if (i == nextCol)
 		{	x += xw;  y = y1;  }
