@@ -497,12 +497,8 @@ uint16_t TFT_ST7735::colorInterpolation(uint16_t color1,uint16_t color2,uint16_t
 	  interpolate 2 r,g,b colors
 	  return a 16bit mixed color between the two
 	  Parameters:
-	  r1.
-	  g1:
-	  b1:
-	  r2:
-	  g2:
-	  b2:
+	  r1.  g1:  b1:
+	  r2:  g2:  b2:
 	  pos:0...div (mix percentage) (0:color1, div:color2)
 	  div:divisions between color1 and color 2
 	  From my RA8875 library
