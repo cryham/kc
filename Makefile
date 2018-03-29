@@ -48,7 +48,7 @@ CXXFLAGS = $(WARN) $(OPT) $(ARCH) -std=gnu++14 -felide-constructors -fno-excepti
 
 # linker options
 LDFLAGS = -Os -Wl,--gc-sections,--defsym=__rtc_localtime=0 --specs=nano.specs -mcpu=$(CPUARCH) -mthumb -T$(MCU_LD)
-LIBS = -lm
+LIBS = -lm -lstdc++
 
 
 #  compiler programs

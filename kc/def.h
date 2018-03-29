@@ -1,11 +1,7 @@
 #pragma once
 #include <stdint.h>
 
-#define DEMOS
-/* SRAM: 78%  51572  B  with + 7k
-  Flash: 61%  161644 B       + 41k
-   SRAM: 67%  44252  B  w/o
-  Flash: 45%  120556 B  */
+#define DEMOS  // with  7k 11% ram, 41k 16% flash
 
 //  display dim
 #define W 160

@@ -31,10 +31,10 @@ struct Demos
 	void Fonts();  // ver, date, chars
 
 #ifdef DEMOS
-	int8_t iPrev;   // prev demo, for init
+	//int8_t iPrev;   // prev demo, for init
 	int16_t iInfo;
-	int8_t iInfoOff;  // params info text
-	const static int8_t iOff = 2;
+	//int8_t iInfoOff;  // params info text
+	//const static int8_t iOff = 2;
 	void KeyPress(EDemo demo, int k, int e, int ct, int kinf);
 
 
@@ -103,6 +103,7 @@ struct Demos
 	int16_t ngt;  int8_t ngCur,  ngtOn, ngRot;
 	const static int8_t ngMin = 5, ngMax = 18, ngRotMax = 4;
 	void Ngons();
+
 
 	//  Polyhedrons 3D  ----
 	const static int8_t hdA = 11, hdRotMax = 4;  // all presets

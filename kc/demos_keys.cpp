@@ -16,8 +16,8 @@ void Demos::Init(Ada4_ST7735* tft)
 	ti = 0;  oti = 0;
 	
 #ifdef DEMOS
-	iPrev = -1;  // params
-	iInfo = 0;  iInfoOff = 1;
+	//iPrev = -1;  // params
+	iInfo = 0;  //iInfoOff = 1;
 
 	einit = INone;
 	sCnt = sMax/2;  sVel = 10;  //16 stars

@@ -217,13 +217,13 @@ void Gui::DrawMapping()
 {
 	d->print(strMain[ym]);  d->setFont(0);
 
-	//  kc
-	/*d->setCursor(0,32);
+	//  kc todo
+	d->setCursor(0,32);
 	for (uint i=0; i < kc.data.size(); ++i)
 	{
 		sprintf(a,"%d ", kc.data[i]);
 		d->print(a);
-	}*/
+	}
 
 	//  kbd draw   Layout  * * * *
 	int x = 0, y = 0;

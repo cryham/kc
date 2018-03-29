@@ -4,9 +4,9 @@
 const uint16_t  // _colors for key types_
 //  0 letters  1 digits       2 func F1      3 symbols ,.   4 modifiers L  5 modif R      6 ent,tab      7 ent R        8 arrows
 clrRect[Omax] = {
-RGB(12,12,12), RGB(13,13,10), RGB( 8,14,19), RGB(21,21,12),	RGB(12,19,19), RGB(12,19,19), RGB( 9,21,12), RGB( 9,21,12), RGB(20,16,11) },
+RGB(12,12,12), RGB(13,13,10), RGB( 8,14,19), RGB(21,21,12),	RGB(12,19,19), RGB(12,19,19), RGB( 9,21,12), RGB( 9,21,12), RGB(1,20,20) },
 clrText[Omax] = {
-RGB(25,28,31), RGB(28,28,23), RGB(20,26,30), RGB(29,29,16),	RGB( 9,26,26), RGB( 9,26,26), RGB(13,28,16), RGB(13,28,16), RGB(29,24,17) };
+RGB(25,28,31), RGB(28,28,23), RGB(20,26,30), RGB(29,29,16),	RGB( 9,26,26), RGB( 9,26,26), RGB(13,28,16), RGB(13,28,16), RGB(2,28,28) };
 
 
 //  ------------  CK3  ------------------------------------------------

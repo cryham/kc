@@ -12,9 +12,9 @@ void Gui::Init(Ada4_ST7735* tft)
 {
 	d = tft;
 	//menu = 1;
-	mlevel = 0;
+	mlevel = 1;
 
-	ym = 0;
+	ym = 1;
 	for (int i=0; i < M_All; ++i)
 		ym1[i]=0;
 	

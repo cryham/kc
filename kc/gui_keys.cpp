@@ -23,12 +23,12 @@ void Gui::KeyPress(int8_t right, int8_t up, int8_t pgup, int8_t back, int8_t inf
 
 
 	//  level 1  ---------
-	/*if (mlevel == 1 && ym == M_Mapping)
+	if (mlevel == 1 && ym == M_Mapping)
 	{
 		if (up > 0) {  kc.data.push_back(random(100));  }
 		if (up < 0) {  if (!kc.data.empty())  kc.data.pop_back();  }
 		return;
-	}*/
+	}/**/
 
 	if (mlevel == 1)
 	{
