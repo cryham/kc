@@ -11,16 +11,13 @@ Demos::Demos()
 void Demos::Init(Ada4_ST7735* tft)
 {
 	d = tft;  if (d)  data = d->getBuffer();
-
-	fps = 0;
 	ti = 0;  oti = 0;
 	
-#ifdef DEMOS
-	//iPrev = -1;  // params
-	iInfo = 0;  //iInfoOff = 1;
+#ifdef DEMOS  // params
+	iFps = 0;  iInfo = 0;  //iPrev = -1;  iInfoOff = 1;
 
 	einit = INone;
-	sCnt = sMax/2;  sVel = 10;  //16 stars
+	sCnt = 3*sMax/4;  sVel = 10;  //16 stars
 	bCnt = min(200,bMax);  bSpd = 100;  bSpRnd = 1;  bRad = 3;  // balls
 
 	r1Int = 2;  r1Size = 2;  // rain
@@ -30,15 +27,16 @@ void Demos::Init(Ada4_ST7735* tft)
 
 	ngt = 0;  ngCur = ngMin+3;  ngRot = 0;  // ngons
 	hdtOn = 1;
-	hdt = 0;  hdCur = hdA-1;  hdRot = 0;  // hedrons
+	hdt = 0;  hdCur = hdA-4;  hdRot = 0;  // hedrons
 
-	ckCur = 0;	ckSpeed = 5;  // logo
+	ckCur = 0;	ckSpeed = 6;  // logo
 
 	plasma = 1;  t = 131210;
 	for (int i=0; i < num_plasma; ++i)
 		tadd[i]=5;
+	tadd[3]=3;
 
-	twv = 7;
+	twv = 7;  // wave
 #endif
 }
 
@@ -57,22 +55,18 @@ void Demos::Draw(D d, int8_t menu, int8_t y, int8_t y2)
 
 //  Key Press  demo params
 //....................................................................................
-void Demos::KeyPress(EDemo demo, int k, int e, int ct, int kinf)
+void Demos::KeyPress(EDemo demo, int8_t k, int8_t e,  int8_t ct,  int8_t inf, int8_t fps)
 {
 	int sh = 0; //, ct = 0;
 	int sp = sh ? 2 : 10;
 
-	//  change
-//	if (key(PAGE_UP  ))  k = -1;
-//	if (key(HOME))  e = -1;
-
 	//  global
-//	if (key(R))
-//	{	Init(0);  return;  }  // reset all
+	//if (key(R)){  Init(0);  return;  }  // reset all
 
-	//  info txt
-	if (kinf)
-		iInfo = 1 - iInfo;
+	//  fps, info txt
+	if (inf){  iInfo = 1 - iInfo;  return;  }
+	if (fps){  iFps = 1 - iFps;   return;  }
+
 	/*if (ct)
 		iInfoOff = (iInfoOff + 1) % (iOff+1);  // mode,off
 	else
@@ -83,9 +77,8 @@ void Demos::KeyPress(EDemo demo, int k, int e, int ct, int kinf)
 		return;  //  show/hide
 	}*/
 	
-	if (/*demo &&*/ (k || e))
+	if (k || e)
 	{	//iInfo = -1;
-
 		switch (demo)
 		{
 		//  full  --------

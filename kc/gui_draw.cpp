@@ -155,7 +155,7 @@ void Gui::DrawEnd()
 
 	#ifdef DEMOS
 	//  fps  ---------
-	if (mlevel == 2 && ym == M_Demos)
+	if (demos.iFps && mlevel == 2 && ym == M_Demos)
 	{
 		uint32_t ti = millis();
 		float fr = 1000.f / (ti - oldti);

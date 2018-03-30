@@ -1,65 +1,70 @@
 #include "gui.h"
+#include "matrix.h"
 
 
 //  Key press
 //....................................................................................
-void Gui::KeyPress(int8_t right, int8_t up, int8_t pgup, int8_t back, int8_t inf)
+void Gui::KeyPress()
 {
+	int8_t right = Key(1,1) - Key(1,2),  // ->  <-
+		up = Key(2,4) - Key(0,4);    // Dn  Up
+		//pgup = Key(2,1) - Key(0,1);  // PgDn  PgUp
+		//f12 = Key(5,0) - Key(3,0);  // F12  F11
+		//ent = Key(4,0) - Key(2,0);  // Ent  \|
+		//end = Key(2,2) - Key(0,2);  // End  Hom
 
-	//  global  ---------
-	if (back > 0)
-		mlevel = max(0, mlevel-1);  // <back global
+/*	    0    1     2    3  4    5  6    7
+	0        PgUp  Hom  U  ^    R  +    E
+	1   Bck  ->    <-   Y  Del  T       F3
+	2   \    PgDn  End  J  v    F  Ent  D
+	3   F11  Del.  Spc  H  Ins  G  Up   F4
+	4   Ent  *     Num  M  /    V       C
+	5   F12  -          N       B			*/
 
+	if (Key(0,6))  // Add+  <back global
+		mlevel = max(0, mlevel-1);
 
-	//  level 0  ---------
 	if (mlevel == 0)  //  main
 	{
-		if (up < 0){  ++ym;  if (ym >= M_All)  ym = 0;  }
-		if (up > 0){  --ym;  if (ym < 0)  ym = M_All-1;  }
-		
+		if (up){  ym += up;  if (ym >= M_All)  ym = 0;  if (ym < 0)  ym = M_All-1;  }
 		if (right > 0)  mlevel = 1;  // enter>
 		return;
 	}
 
-
-	//  level 1  ---------
 	if (mlevel == 1 && ym == M_Mapping)
-	{
-		if (up > 0) {  kc.data.push_back(random(100));  }
-		if (up < 0) {  if (!kc.data.empty())  kc.data.pop_back();  }
+	{	// kc todo ..
+		if (up < 0) {  kc.data.push_back(random(100));  }
+		if (up > 0) {  if (!kc.data.empty())  kc.data.pop_back();  }
 		return;
 	}/**/
 
-	if (mlevel == 1)
-	{
+	if (mlevel == 1)  //  sub menu
+	{	//  navigate
 		if (right < 0)	mlevel = 0;  // <back
 		if (right > 0)	mlevel = 2;  // enter>
-
-		//  navigate
-		if (up < 0){  ++ym1[ym];  if (ym1[ym] >= YM1[ym])  ym1[ym] = 0;  }
-		if (up > 0){  --ym1[ym];  if (ym1[ym] < 0)  ym1[ym] = YM1[ym]-1;  }
+		if (up){  ym1[ym] += up;  Chk_y1();  }
 		return;
 	}
 
-
-	//  level 2  ---------
 	if (mlevel == 2 && ym == M_Testing)
 	{
-
 	}
 
 	#ifdef DEMOS
 	if (mlevel == 2 && ym == M_Demos)
 	{
-//		demo += pgup;  if (demo < 0) demo = D_All-1;
-//			if (demo >= D_All) demo = D_None;
-		demos.KeyPress((EDemo)ym1[ym], right, up, pgup, inf);  //Key(3,4), Key(5,1));  // ins ct, - inf
+		//if (pgup){  ym1[ym] += pgup;  Chk_y1();  einit demos.Init(); mthr-  }
+
+		demos.KeyPress((EDemo)ym1[ym], right, -up,
+		//  Ins Ctrl  Sub- inf  Mul* fps
+			Key(3,4), Key(5,1), Key(4,1));
 		return;
 	}
 	#endif
+}
 
-//	if (pgup)
-//	{	demo += pgup;  if (demo < 0) demo = D_All-1;
-//		if (demo >= D_All) demo = D_None;
-//	}
+void Gui::Chk_y1()
+{
+	if (ym1[ym] >= YM1[ym])  ym1[ym] = 0;
+	if (ym1[ym] < 0)  ym1[ym] = YM1[ym]-1;
 }

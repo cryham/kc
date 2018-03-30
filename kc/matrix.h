@@ -128,7 +128,10 @@ typedef struct KeyGhost {
 } KeyGhost;
 
 
-//  utility
+//  -----  utility  -----
+
+#define Key(y,x)  (Matrix_scanArray[y * NumCols + x].state == KeyState_Press ? 1 : 0)
+
 inline uint8_t keyOn(/*KeyPosition*/uint8_t st)
 {
 	return (st == KeyState_Press || st == KeyState_Hold) ? 1 : 0;

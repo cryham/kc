@@ -25,13 +25,7 @@ void Demos::Plasma()
 
 void Demos::PlasmaT(int8_t dt)
 {
-		 if (plasma == 0)  tadd[5] += dt;
-	else if (plasma == 1)  tadd[2] += dt;
-	else if (plasma == 2)  tadd[2] += dt;
-	else if (plasma == 3)  tadd[0] += dt;
-	else if (plasma == 4)  tadd[1] += dt;
-	else if (plasma == 5)  tadd[3] += dt;
-	else if (plasma == 6)  tadd[4] += dt;
+	tadd[plasma] += dt;
 }
 
 static int yw[W];

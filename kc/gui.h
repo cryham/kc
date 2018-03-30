@@ -16,11 +16,10 @@ struct Gui
 	Gui();
 	void Init(Ada4_ST7735* tft);
 	void Draw(), DrawEnd();
-
-	void KeyPress(int8_t right, int8_t up, int8_t pgup, int8_t back, int8_t inf);
+	void KeyPress();
 
 	//  util
-	void DrawTesting(), DrawMapping(), DrawSequences();
+	void DrawTesting(), DrawMapping(), DrawSequences(), Chk_y1();
 
 	void DrawMenu(int cnt, const char** str, int8_t clrId=0,
 				int16_t yadd=10, int16_t nextCol=-1, int16_t numGap=-1);

@@ -217,7 +217,7 @@ void Gui::DrawMapping()
 {
 	d->print(strMain[ym]);  d->setFont(0);
 
-	//  kc todo
+	//  kc todo ..
 	d->setCursor(0,32);
 	for (uint i=0; i < kc.data.size(); ++i)
 	{

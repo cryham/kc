@@ -23,7 +23,7 @@ struct Demos
 	Ada4_ST7735* d;
 	uint16_t* data = 0;  // buffer
 
-	int8_t fps;  // show frames per second, 1 on, 0 off
+	int8_t iFps;  // show frames per second, 1 on, 0 off
 	uint32_t ti, oti;  // fps: time ms, old
 
 	int8_t fntCur;
@@ -31,11 +31,11 @@ struct Demos
 	void Fonts();  // ver, date, chars
 
 #ifdef DEMOS
+	int8_t iInfo;
 	//int8_t iPrev;   // prev demo, for init
-	int16_t iInfo;
 	//int8_t iInfoOff;  // params info text
 	//const static int8_t iOff = 2;
-	void KeyPress(EDemo demo, int k, int e, int ct, int kinf);
+	void KeyPress(EDemo demo, int8_t k, int8_t e,  int8_t ct,  int8_t inf, int8_t fps);
 
 
 	//  Plasma  ~~~~
@@ -101,7 +101,7 @@ struct Demos
 
 	//  Ngons 2D
 	int16_t ngt;  int8_t ngCur,  ngtOn, ngRot;
-	const static int8_t ngMin = 5, ngMax = 18, ngRotMax = 4;
+	const static int8_t ngMin = 5, ngMax = 21, ngRotMax = 4;
 	void Ngons();
 
 

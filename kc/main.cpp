@@ -8,13 +8,11 @@
 #include "gui.h"
 
 
-const static int rr = NumCols;
-
 //  scan counter, freq
 uint scan_cnt = 0, scan_freq = 0;
 uint32_t us_scan = 0, ms_scan = 0;
 
-int keys = 0;
+int keys = 0;  // send usb
 
 Gui gui;
 
@@ -43,36 +41,13 @@ void main_periodic()
 
 	//  kbd  gui
 	//------------------------------------------------
-	#define Key(y,x)  (Matrix_scanArray[y * rr + x].state == KeyState_Press ? 1 : 0)
-
 	if (Key(5,0))  keys = 1-keys;
 	if (!keys)
 	{
-		int8_t right = Key(1,1) - Key(1,2),  // ->  <-  next
-			up = Key(0,4) - Key(2,4),    // Up+ Dn-  speed
-			pgup = Key(2,1) - Key(0,1),  // PgDn+ PgUp-
-			back = Key(0,6) - Key(2,6),  // Add+ Ent-
-			inf = Key(5,1);  // Sub-
-
-		//d = Key(5,0) - Key(3,0);  // F12+ F11-
-		//d = Key(4,0) - Key(2,0);  // Ent+ \-
-		//d = Key(2,2) - Key(0,2);  // End+ Hom-
-
-		//if (add)
-		//	text = (text + add + 4) % 4;
-
-	/*	    0    1     2    3  4    5  6    7
-		0        PgUp  Hom  U  ^    R  +    E
-		1   Bck  ->    <-   Y  Del  T       F3
-		2   \    PgDn  End  J  v    F  Ent  D
-		3   F11  Del.  Spc  H  Ins  G  Up   F4
-		4   Ent  *     Num  M  /    V       C
-		5   F12  -          N       B			*/
-
-		gui.KeyPress(right, up, pgup, back, inf);
+		gui.KeyPress();
 	}
 
-	//  keyboard send
+	//  keyboard send  todo..
 	//------------------------------------------------
 	if (keys)
 	{
@@ -80,7 +55,7 @@ void main_periodic()
 		for (uint c=0; c < NumCols; ++c)
 		for (uint r=0; r < NumRows; ++r)
 		{
-			int id = rr * r + c;
+			int id = NumCols * r + c;
 			const KeyState& k = Matrix_scanArray[id];
 			uint kk = (r==3 && c==1) ? MODIFIERKEY_SHIFT : KEY_A + id;
 
