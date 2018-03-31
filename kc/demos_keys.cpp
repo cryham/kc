@@ -21,20 +21,18 @@ void Demos::Init(Ada4_ST7735* tft)
 	bCnt = min(200,bMax);  bSpd = 100;  bSpRnd = 1;  bRad = 3;  // balls
 
 	r1Int = 2;  r1Size = 2;  // rain
-	r2Int = 3;  r2Size = 3;  rCur = 0;
+	r2Int = -1;  r2Size = 2;  rCur = 1;
 	
 	fInt = 5;  fWave = 1;  // fountain
 
-	ngt = 0;  ngCur = ngMin+3;  ngRot = 0;  // ngons
+	ngt = 0;  ngCur = 12;  ngRot = 0;  // ngons
 	hdtOn = 1;
 	hdt = 0;  hdCur = hdA-4;  hdRot = 0;  // hedrons
 
 	ckCur = 0;	ckSpeed = 6;  // logo
 
 	plasma = 1;  t = 131210;
-	for (int i=0; i < num_plasma; ++i)
-		tadd[i]=5;
-	tadd[3]=3;
+	tadd[0]=7; tadd[1]=5; tadd[2]=8; tadd[3]=4; tadd[4]=6; tadd[5]=9;  tadd[6]=8;
 
 	twv = 7;  // wave
 #endif

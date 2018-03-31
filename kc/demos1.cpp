@@ -31,19 +31,19 @@ void Demos::Ngons()
 		{
 			float xa = xx + sy*cos(a+c), ya = yy - sy*sin(a+c);
 			if (a != b)
-				d->drawLine(xb, yb, xa, ya, RGB(31,(cc/4)%32,(cc*2)%32));
+				d->drawLine(xb, yb, xa, ya, RGB(31-cc/20,(cc/4)%32,(cc*2)%32));
 			++cc;
 		}
 	}
 	++ngt;
 	if (ngt > ngtM) {  ngt = 0;
-		if (ngtOn)	{	++ngCur;  if (ngCur > ngMax)  ngCur = ngMin;  }  }
+		if (ngtOn) {  ++ngCur;  if (ngCur > ngMax)  ngCur = ngMin;  }  }
 
 	if (iInfo > 0)
 	{
 		d->setCursor(0,0);
 		d->setTextColor(RGB(29,29,20));
-		d->print("An ");  d->println(ngRot);
+		d->print("An");  d->println(ngRot);
 
 		d->setCursor(0, H-8);
 		d->println(ngCur);  // n sides
@@ -56,7 +56,7 @@ void Demos::Ngons()
 void Demos::Rain()
 {
 	int x,y,r,i, s = rCur ? r2Size : r1Size;
-	#define RClr  random(0xAF) * 0x100 + 0xFF
+	#define RClr  RGB(random(12)+5, random(20)+8, random(5)+25)
 	if (!rCur)  // 0
 	{		x=random(W); y=random(H);  r= random(26);  d->drawCircle(x,y,r,0);
 			x=random(W); y=random(H);  r= random(24);  d->drawCircle(x,y,r,0);
@@ -125,7 +125,7 @@ void Demos::Fonts()
 		d->print(dt);
 	}	break;
 
-	case 1:  // big chars todo
+	case 1:  // big chars
 	{	uint x=0, y=0, yw=18;
 		d->setFont(&FreeSans9pt7b);
 		d->setTextColor(RGB(21,18,31));
@@ -253,15 +253,15 @@ void Demos::StarNew(int i)
 	star[i].v = random(sDet*sVel/2) + sDet*sVel/4;  // speed
 	//  clr
 	int8_t r=31,g=31,b=31;  // white
-	switch(random(8))
+	switch(random(10))
 	{
 	case 0:
-	case 1:  r= 31;  g = random(25)+6, b = random(24);  break;  // yellow
-	case 2:
-	case 3:
+	case 1:  r= 31;  g = random(5)+26, b = random(15)+10;  break;  // yellow
+	case 2: case 3:
 	case 4:  r= random(10)+11;  g = random(10)+21;  b = 31;  break;  // cyan
-	case 5:  r= random(20)+11;  g = random(15)+6;  b = random(5);  break;  // red
+	case 5:
 	case 6:  r= 11;  g = random(15)+16;  b = 31;  break;  // blue
+	case 7:  r= random(20)+11;  g = random(10)+6;  b = random(5);  break;  // red
 	}
 	star[i].c = RGB(r, g, b);
 }

@@ -1,5 +1,6 @@
 #include "WProgram.h"
 #include "demos.h"
+#include "Ada4_ST7735.h"
 
 #ifdef DEMOS
 
@@ -21,6 +22,12 @@ void Demos::Plasma()
 	else if (plasma == 4)  Plasma2();  // 17 blue
 	else if (plasma == 5)  Plasma3();  // 16 orng small
 	else if (plasma == 6)  Plasma4();  // 16 tiny
+
+	if (iInfo > 0)
+	{
+		d->setCursor(0,0);
+		d->println(tadd[plasma]);
+	}
 }
 
 void Demos::PlasmaT(int8_t dt)
@@ -69,6 +76,11 @@ void Demos::Wave()
 		}
 	}
 	t+=twv;
+	if (iInfo > 0)
+	{
+		d->setCursor(0,0);
+		d->println(twv);
+	}
 }
 
 

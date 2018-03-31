@@ -1,9 +1,6 @@
 #include "gui.h"
 #include "Ada4_ST7735.h"
 #include "FreeSans9pt7b.h"
-//#include "kc_data.h"
-
-//extern KC_Key kc;
 
 
 //  menu draw  util
