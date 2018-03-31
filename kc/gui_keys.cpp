@@ -1,14 +1,51 @@
 #include "gui.h"
 #include "matrix.h"
+#include "kbd_layout.h"
 
+
+//  todo key auto repeat,  row, col, ms
+int8_t Gui::kr(int8_t c, int8_t r, uint16_t dt)
+{
+	int i = c * NumCols + r;
+	KeyPosition st = Matrix_scanArray[i].state;
+	int16_t& m = Matrix_autoRepeat[i];
+
+	if (st == KeyState_Press)
+	{
+		m = -1;  // start delay
+		return 1;
+	}
+	else if (st == KeyState_Hold)
+	{
+		if (m < 0)
+		{	m -= dt;
+			if (m < -250)  // delay ms
+			{	m = 0;  return 1;  }
+		}else
+		{	m += dt;
+			if (m > 100)  // repeat freq
+			{	m = 0;  return 1;  }
+		}
+	}
+	return 0;
+}
 
 //  Key press
 //....................................................................................
 void Gui::KeyPress()
 {
+	uint32_t ti = millis();
+	uint16_t dt = ti - oldti_kr;
+	oldti_kr = ti;
+
+#if 1
+	int8_t right = kr(1,1,dt) - kr(1,2,dt),  // ->  <-
+		up = kr(2,4,dt) - kr(0,4,dt),    // Dn  Up
+		pgup = kr(2,1,dt) - kr(0,1,dt);  // PgDn  PgUp
+#else
 	int8_t right = Key(1,1) - Key(1,2),  // ->  <-
-		up = Key(2,4) - Key(0,4);    // Dn  Up
-		//pgup = Key(2,1) - Key(0,1);  // PgDn  PgUp
+		up = Key(2,4) - Key(0,4),    // Dn  Up
+		pgup = Key(2,1) - Key(0,1);  // PgDn  PgUp
 		//f12 = Key(5,0) - Key(3,0);  // F12  F11
 		//ent = Key(4,0) - Key(2,0);  // Ent  \|
 		//end = Key(2,2) - Key(0,2);  // End  Hom

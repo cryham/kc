@@ -15,6 +15,7 @@ uint32_t us_scan = 0, ms_scan = 0;
 int keys = 0;  // send usb
 
 Gui gui;
+KC_Setup kc;
 
 
 //  kbd  timer event,  scan, send
@@ -47,7 +48,7 @@ void main_periodic()
 		gui.KeyPress();
 	}
 
-	//  keyboard send  todo..
+	//  todo  keyboard send  use kc
 	//------------------------------------------------
 	if (keys)
 	{

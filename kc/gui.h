@@ -8,9 +8,7 @@
 struct Gui
 {
 	Demos demos;
-	class Ada4_ST7735* d;
-
-	KC_Key kc;
+	Ada4_ST7735* d=0;
 
 	//  main
 	Gui();
@@ -35,6 +33,11 @@ struct Gui
 	//  time
 	unsigned long tm;
 	uint32_t oldti, tdemo;  // demo time ms
+
+	uint32_t oldti_kr;
+	int8_t kr(int8_t y, int8_t x, uint16_t dt);
+
+
 
 	//	int16_t tInfo, infType, memSize;  // info text vars
 	char a[128];  // temp str

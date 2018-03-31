@@ -106,7 +106,7 @@ extern int STROBE_DELAY;  // 3 too low for >=3 in row, 4 ok
 #define DebounceCounter uint16_t
 
 #define DebounceThrottleDiv_define 0
-#define MinDebounceTime_define 1  // todo 5 ??..
+#define MinDebounceTime_define 1  // todo ? 5..
 
 
 //  Debounce Element
@@ -153,9 +153,10 @@ extern "C"
 #endif
 
 extern void Matrix_setup();
-extern void Matrix_scan( uint16_t scanNum );  // todo ??..
+extern void Matrix_scan( uint16_t scanNum );  // todo ? ..
 
 extern KeyState Matrix_scanArray[MaxKeys];
+extern int16_t Matrix_autoRepeat[MaxKeys];  // auto repeat, press time, for gui
 
 #ifdef	__cplusplus
 }

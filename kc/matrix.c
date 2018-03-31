@@ -4,6 +4,7 @@
 
 // Debounce Array
 KeyState Matrix_scanArray[MaxKeys];
+int16_t Matrix_autoRepeat[MaxKeys];  // auto repeat, press time, for gui
 
 // Ghost Arrays
 #ifdef GHOSTING_MATRIX
@@ -161,6 +162,7 @@ void Matrix_setup()
 	// Clear out Debounce Array
 	for ( uint8_t item = 0; item < MaxKeys; item++ )
 	{
+		Matrix_autoRepeat[item] = 0;
 		Matrix_scanArray[ item ].prevState        = KeyState_Off;
 		Matrix_scanArray[ item ].curState         = KeyState_Off;
 		Matrix_scanArray[ item ].activeCount      = 0;
