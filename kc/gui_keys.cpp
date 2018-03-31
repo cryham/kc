@@ -49,6 +49,27 @@ void Gui::KeyPress()
 		//f12 = Key(5,0) - Key(3,0);  // F12  F11
 		//ent = Key(4,0) - Key(2,0);  // Ent  \|
 		//end = Key(2,2) - Key(0,2);  // End  Hom
+#endif
+
+	//  mapping  press key ..
+	if (pressKey)
+	{
+		int c = 0, ii = -1;
+		for (uint i=0; i < MaxKeys; ++i)
+		{	if (Matrix_scanArray[i].state != KeyState_Off)  ++c;
+			if (Matrix_scanArray[i].state == KeyState_Press)  ii = i;
+		}
+		if (pressKey == 1)
+		{	// wait until all keys are off
+			if (c == 0)
+				pressKey = 2;
+		}
+		else if (pressKey == 2 && ii != -1)
+		{	// pick
+			pressKey = 0;  scId = ii;
+		}
+		return;
+	}
 
 /*	    0    1     2    3  4    5  6    7
 	0        PgUp  Hom  U  ^    R  +    E
@@ -68,10 +89,44 @@ void Gui::KeyPress()
 		return;
 	}
 
+	//  mapping edit  ----
 	if (mlevel == 1 && ym == M_Mapping)
-	{	// kc todo ..
-		if (up < 0) {  kc.data.push_back(random(100));  }
-		if (up > 0) {  if (!kc.data.empty())  kc.data.pop_back();  }
+	{
+		// todo kc keyboard mapping ...
+		#define ADD(v,a,ma,mi)  {  v+=a;  if (v >= ma)  v = mi;  if (v < mi)  v = ma-1;  }
+
+		if (up)  // menu up,dn
+			ADD(ym1[ym], up, YM1[ym], 0)
+
+		if (yy == 0 && right > 0)
+			pressKey = 1;  // pick..
+		else
+		if (pgup)  // adj val
+		{
+			switch (yy)
+			{
+			case 1: ADD(nLay, pgup, 8,0);  break;
+			case 2: ADD(scId, pgup, int16_t(MaxKeys),-1);  break;
+			case 3: ADD(drawId, pgup, numKeys,-1);  break;
+			case 4: ADD(keyCode, pgup, 255,0);  break;
+			}
+			// update
+			//keyCode = -1;
+		}
+
+	/*	TODO BIG mapping modes: ..
+			*press key to pick
+			*browse all list (+by draw id, -by scan) up,dn,x4,16,
+			=move [] cursor to pick from layout
+			-pick
+			..auto repeat keys
+		display:
+			layer change, or all
+		layout keys colored by:
+			1 bound cnt /or not, 2 sequence id, 3 layer use
+		status page:
+			cnt all mapped, unmapped scan codes, duplicates
+	*/
 		return;
 	}/**/
 

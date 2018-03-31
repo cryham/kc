@@ -23,4 +23,7 @@ void Gui::Init(Ada4_ST7735* tft)
 #ifdef DEMOS
 	demos.Init(d);
 #endif
+
+	nLay=0;  scId=0;  drawId=-1;
+	keyCode=0;  pressKey=0;
 }

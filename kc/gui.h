@@ -38,6 +38,10 @@ struct Gui
 	int8_t kr(int8_t y, int8_t x, uint16_t dt);
 
 
+	//  Mapping  - - - -
+	int16_t nLay=0, scId=0, drawId=-1,
+			keyCode=0, pressKey=0;
+
 
 	//	int16_t tInfo, infType, memSize;  // info text vars
 	char a[128];  // temp str
