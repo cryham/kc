@@ -10,7 +10,7 @@ struct SKey
 
 	uint8_t o;  // color type
 	uint8_t sc;  // scan code for cur matrix
-	//todo + menu key binds ..
+	uint8_t code;  // byte code, translated to usb
 };
 
 #define NO 255  // no scan code
@@ -24,15 +24,11 @@ extern const uint16_t clrRect[Omax], clrText[Omax];  // colors types
 
 //  CK3  layout
 extern const char* CKname;
-const static int numKeys = 94;
-extern SKey drawKeys[numKeys];
+const static int numKeys = 91;
+extern const SKey drawKeys[numKeys];
 
 
 #if 0
-///  string from usb hid code
-const static int strALL = 0x73;
-extern const char str[strALL][6];
-
 extern const char mod[0x08][6];
 
 //  key to string  // wait, delay symbols,  modifiers, key
