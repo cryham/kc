@@ -1,26 +1,38 @@
 #pragma once
 #include <stdint.h>
 #include <vector>
+#include <vector>
 
 
-enum KC_Info
+enum KC_Info  // data purpose
 {
-	KC_1Key,  // single key,  code in data
-	KC_Seq,   // sequence,  id in data
-	KC_Layer, // layer key,  num in data
+	KC_1Key=0,// single key, code in data
+	KC_Seq,   // sequence,   id in data
+	KC_Layer, // layer hold, num in data
 	KC_Func,  // special,
+	KC_InfAll
 };
+
+const uint8_t KC_MaxLayers = 8;
 
 struct KC_Key
 {
 	KC_Info info;
-	uint8_t layUse;
-	std::vector<uint8_t> data; // [KC_MaxLayers];
+	uint8_t layUse;  // KC_MaxLayers x 1bit
+	std::vector<uint8_t> data;
 
 	KC_Key()
 		:info(KC_1Key)
 		,layUse(0)  // nothing
+	{  }
+
+	uint8_t get(int lay)  // get data for layer, if any
 	{
+		// layUse  1101..
+		// eg. lay 0123..  data id =
+		if (lay == 0 && (layUse & 0x1) && !data.empty())
+			return data[0];
+		return 0;  // KEY_NONE
 	}
 };
 
@@ -30,14 +42,23 @@ struct KC_Sequence
 	std::vector<uint8_t> data;
 };
 
-struct KC_Data
+struct KC_Setup
 {
 	uint8_t kk, ver;  // header
-	uint16_t maxKeys;  // rows * cols, matrix
+	//  rows * cols = maxKeys,  matrix setup
+	uint8_t rows, cols, maxKeys;
+	// ver num or date saved-
 
 	std::vector<KC_Key> keys;
 	std::vector<KC_Sequence> seqs;
 
+	int nkeys(){  return keys.size();  }
+	int nseqs(){  return seqs.size();  }
+
+	KC_Setup();
+	void Clear(), InitCK1_8x6();
+
+	int8_t minLay, layUsed;  // stats
 	// ram
 	//uint16_t adr[maxKeys];  // offset starts, if data^ was variable size
 	//uint8_t lay[sc];  //layers used
@@ -60,16 +81,8 @@ struct KC_Data
 	int8_t edit;   // seq 0 view / 1 edit
 	int8_t edins;  // 1 ins 0 overwrite
 	int8_t slot, page, edpos;  // edit vars
-	int seqId();
 	void SeqClear(int8_t q);
 	uint8_t tBlnk;  // cur blink anim
 	uint8_t seql[iSlots];  // lengths of each seq, 0 empty
 	uint8_t seq[iSlots][iSeqLen];  // sequence data
-	
-	//  for copy
-	uint8_t sql;
-	uint8_t sq[iSeqLen];
-
-	void Clear();  // ram
-	void Load(), Save();  // eeprom
 #endif
