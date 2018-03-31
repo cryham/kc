@@ -10,6 +10,8 @@
 //  R F800  G 07E0  B 001F  R 32 G 64 B 32  565
 #define RGB(r,g,b) ( ((r)<<11)+ ((g)<<6/*<<5*/) +b)
 
+class Ada4_ST7735;
+
 
 enum EMainMenu  //  main menu entries, level0
 {
@@ -32,7 +34,7 @@ enum EDemo  // Demos, level1
 extern const char *strDemo[D_All];
 #endif
 
-enum ETest  // Testing kbd, level1
+enum ETesting  // Testing kbd, level1
 {
 	T_ScanSetup, T_Matrix, T_Pressed, T_Mouse, T_All
 };

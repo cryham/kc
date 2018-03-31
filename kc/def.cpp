@@ -4,7 +4,7 @@
 //  Main Menu
 const char* strMain[M_All] =
 {
-	"Testing", "Mappings", "Sequences",
+	"Testing", "Mapping", "Sequences",
 	"Display", //"Clock",
 #ifdef DEMOS
 	"Demos",
@@ -25,14 +25,14 @@ const char* strDemo[D_All] =
 //  Testing kbd
 const char* strTest[T_All] =
 {
-	"Scan Setup", "Test Matrix", "Pressed", "Mouse",
+	"Scan Setup", "Test Matrix", "Pressed", "Mouse-",
 };
 
 //  sub pages
 const uint8_t YM1[M_All] =
 {
 	T_All,  //M_Testing=0,
-	1,  //M_Mapping,
+	5,  //M_Mapping,
 	1,  //M_Sequences,
 
 	1,  //M_Display,

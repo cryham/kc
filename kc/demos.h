@@ -101,7 +101,7 @@ struct Demos
 
 	//  Ngons 2D
 	int16_t ngt;  int8_t ngCur,  ngtOn, ngRot;
-	const static int8_t ngMin = 5, ngMax = 21, ngRotMax = 4;
+	const static int8_t ngMin = 5, ngMax = 25, ngRotMax = 4;
 	void Ngons();
 
 
