@@ -3,6 +3,7 @@
 #include "usb_keyboard.h"
 #include "matrix.h"
 #include "periodic.h"
+#include "keys_usb.h"
 
 #include "Ada4_ST7735.h"
 #include "gui.h"
@@ -50,25 +51,35 @@ void main_periodic()
 
 	//  todo  keyboard send  use kc
 	//------------------------------------------------
-	if (keys)
+	if (keys && kc.nkeys() >= int(ScanKeys))
 	{
-		//int u = 0;
 		for (uint c=0; c < NumCols; ++c)
 		for (uint r=0; r < NumRows; ++r)
 		{
-			int id = NumCols * r + c;
+			uint id = NumCols * r + c;  // scan id
 			const KeyState& k = Matrix_scanArray[id];
-			uint kk = (r==3 && c==1) ? MODIFIERKEY_SHIFT : KEY_A + id;
+			//  state
+			bool on = k.state == KeyState_Press;
+			bool off = k.state == KeyState_Release;
+			if (on || off)
+			{
+				//  get from kc
+				uint8_t code = kc.keys[id].get(0);  // curLayer
+				if (code != KEY_NONE)
+				{
+					uint usb = usbKey[code];
 
-			if (k.state == KeyState_Press)
-			{
-				Keyboard.press(kk);
-				Keyboard.send_now();
-			}
-			else if (k.state == KeyState_Release)
-			{
-				Keyboard.release(kk);
-				Keyboard.send_now();
+					if (on)
+					{
+						Keyboard.press(usb);
+						Keyboard.send_now();
+					}
+					else if (off)
+					{
+						Keyboard.release(usb);
+						Keyboard.send_now();
+					}
+				}
 			}
 		}
 	}

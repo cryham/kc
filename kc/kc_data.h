@@ -1,15 +1,15 @@
 #pragma once
 #include <stdint.h>
 #include <vector>
-#include <vector>
+#include "keys_usb.h"
 
 
 enum KC_Info  // data purpose
 {
-	KC_1Key=0,// single key, code in data
-	KC_Seq,   // sequence,   id in data
-	KC_Layer, // layer hold, num in data
-	KC_Func,  // special,
+	KC_1Key=0, // single key, code in data
+	KC_Seq,    // sequence,   id in data
+	KC_Layer,  // layer hold, num in data
+	KC_Func,   // special,
 	KC_InfAll
 };
 
@@ -32,7 +32,7 @@ struct KC_Key
 		// eg. lay 0123..  data id =
 		if (lay == 0 && (layUse & 0x1) && !data.empty())
 			return data[0];
-		return 0;  // KEY_NONE
+		return KEY_NONE;
 	}
 };
 
@@ -45,11 +45,12 @@ struct KC_Sequence
 struct KC_Setup
 {
 	uint8_t kk, ver;  // header
-	//  rows * cols = maxKeys,  matrix setup
-	uint8_t rows, cols, maxKeys;
+
+	//  rows * cols = scanKeys,  matrix setup
+	uint8_t rows, cols, scanKeys;
 	// ver num or date saved-
 
-	std::vector<KC_Key> keys;
+	std::vector<KC_Key> keys;  // size scanKeys
 	std::vector<KC_Sequence> seqs;
 
 	int nkeys(){  return keys.size();  }
@@ -68,12 +69,14 @@ struct KC_Setup
 #if 0
   - all in ram  > eeprom 32kB
 
-  > syntax 	18x8 = 144 x 3B = 432B = sc
+  > syntax 	18x8 = 144 =ca
 	1st ca: L layer occupancy 8bits per key, 8lay max
-	2nd ca/var: 2-8 bytes: I, K x times used layers, from L
+
+	2nd var: 2-8 bytes: I, K x times used layers, from L
 	  I bits: if single key K, or seq id in K
 	  K (or I): extra codes for: layer keys, menu or const, mouse,
 	  ^add ram arr[sc] for offset starts
+
 	3rd var: byte seq num, word seq starts adr, len auto
 	  then var seq bytes: keys or cmd eg. delay, modif dn,up?
 

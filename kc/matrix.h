@@ -89,7 +89,7 @@ const static GPIO_Pin
 
 #define NumCols  sizeof( Matrix_cols ) / sizeof( GPIO_Pin )
 #define NumRows  sizeof( Matrix_rows ) / sizeof( GPIO_Pin )
-#define MaxKeys  (NumCols * NumRows)  // sizeof( Matrix_scanArray ) / sizeof( KeyState )
+#define ScanKeys  (NumCols * NumRows)  // sizeof( Matrix_scanArray ) / sizeof( KeyState )
 
 
 //  Type of scan matrix
@@ -155,8 +155,8 @@ extern "C"
 extern void Matrix_setup();
 extern void Matrix_scan( uint16_t scanNum );  // todo ? ..
 
-extern KeyState Matrix_scanArray[MaxKeys];
-extern int16_t Matrix_autoRepeat[MaxKeys];  // auto repeat, press time, for gui
+extern KeyState Matrix_scanArray[ScanKeys];
+extern int16_t Matrix_autoRepeat[ScanKeys];  // auto repeat, press time, for gui
 
 #ifdef	__cplusplus
 }

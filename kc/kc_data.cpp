@@ -13,15 +13,16 @@ KC_Setup::KC_Setup()
 void KC_Setup::InitCK1_8x6()
 {
 	Clear();
-	rows = 6;  cols = 8;  maxKeys = rows * cols;
+	rows = 6;  cols = 8;  scanKeys = rows * cols;
 
 	int i;
 	KC_Key k;
-	for (i=0; i < maxKeys; ++i)
+	for (i=0; i < scanKeys; ++i)
 		keys.push_back(k);
 
+
 	//  from draw layout
-	for (i=0; i < numKeys; ++i)
+	for (i=0; i < nDrawKeys; ++i)
 	{
 		const SKey& dk = drawKeys[i];
 		if (dk.sc != NO)
@@ -29,17 +30,17 @@ void KC_Setup::InitCK1_8x6()
 			KC_Key& kk = keys[dk.sc];
 			kk.layUse = 1;
 			kk.data.clear();
-			kk.data.push_back(dk.code);  //-
-		}
-	}
+			kk.data.push_back(dk.code);  //+
+	}	}
 }
 
 //  clear evth
 void KC_Setup::Clear()
 {
 	kk='k';  ver = 1;  // header
-	//  rows * cols = maxKeys,  matrix setup
-	rows = 8;  cols = 18;  maxKeys = rows * cols;
+
+	//  default  matrix setup
+	rows = 8;  cols = 18;  scanKeys = rows * cols;
 	// ver num or date saved-
 
 	keys.clear();

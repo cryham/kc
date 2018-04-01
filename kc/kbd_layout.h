@@ -9,8 +9,8 @@ struct SKey
 	char c;  // caption char
 
 	uint8_t o;  // color type
-	uint8_t sc;  // scan code for cur matrix
-	uint8_t code;  // byte code, translated to usb
+	uint8_t sc;  // NO or scan code for matrix
+	uint8_t code;  // byte code, translated to usb key
 };
 
 #define NO 255  // no scan code
@@ -24,8 +24,8 @@ extern const uint16_t clrRect[Omax], clrText[Omax];  // colors types
 
 //  CK3  layout
 extern const char* CKname;
-const static int numKeys = 91;
-extern const SKey drawKeys[numKeys];
+const static int nDrawKeys = 91;
+extern const SKey drawKeys[nDrawKeys];
 
 
 #if 0

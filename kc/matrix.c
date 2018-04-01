@@ -3,12 +3,12 @@
 
 
 // Debounce Array
-KeyState Matrix_scanArray[MaxKeys];
-int16_t Matrix_autoRepeat[MaxKeys];  // auto repeat, press time, for gui
+KeyState Matrix_scanArray[ScanKeys];
+int16_t Matrix_autoRepeat[ScanKeys];  // auto repeat, press time, for gui
 
 // Ghost Arrays
 #ifdef GHOSTING_MATRIX
-KeyGhost Matrix_ghostArray[MaxKeys];
+KeyGhost Matrix_ghostArray[ScanKeys];
 
 uint8_t col_use[NumCols], row_use[NumRows];  // used count
 uint8_t col_ghost[NumCols], row_ghost[NumRows];  // marked as having ghost if 1
@@ -160,7 +160,7 @@ void Matrix_setup()
 	}
 
 	// Clear out Debounce Array
-	for ( uint8_t item = 0; item < MaxKeys; item++ )
+	for ( uint8_t item = 0; item < ScanKeys; item++ )
 	{
 		Matrix_autoRepeat[item] = 0;
 		Matrix_scanArray[ item ].prevState        = KeyState_Off;
