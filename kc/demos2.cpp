@@ -34,15 +34,17 @@ const static int word2[] = {
 /*D*/717,363, 796,400, 861,432, 805,479, 761,504, 726,543,
 	749,501, 795,445, 776,411, 717,363, 0, -100};
 
-const static int  cw[2][8] = {  // centers xw1,xw2, yw1,yw2,  amplitudes same
-	{496,402, 130,180,  222,262, 362,282},
-	{496,502,  50,320,  222,312, 482,342}};
+const static int  cw[3/*set*/][8] = {  /* centers, amplitudes
+  cx w1,w2   cy w1,w2   ax w1,w2   ay w1,w2  */
+{ 496, 402,  130, 180,  222, 262,  362, 282 },
+{ 396, 302,  250, 320,  222, 312,  482, 342 },
+{ 696, 672,  320, 320,  342, 242,  442, 542 }};
 	
 void Demos::CK_logo()
 {
 	#define K 1024  // wave																		// scale ofs
-	#define CX(x) {  x = w-cx;  x = ( (x*(K +ax*Cos(8*w      +tt[0])/SY*Sin(7*w      +tt[1])/SY) /K) +cx)/7 +11;  }
-	#define CY(y) {  y = w-cy;  y = ( (y*(K +ay*Cos(9*w+ x*73+tt[2])/SY*Sin(6*w+ x*52+tt[3])/SY) /K) +cy)/8 +(w2? 31 :24);  }
+	#define CX(x) {  x= w-cx;  x=( (x*(K +ax*Cos(8*w      +tt[0])/SY*Sin(7*w      +tt[1])/SY) /K) +cx)/7 +13;  }
+	#define CY(y) {  y= w-cy;  y=( (y*(K +ay*Cos(9*w+ x*73+tt[2])/SY*Sin(6*w+ x*52+tt[3])/SY) /K) +cy)/6 +(w2 ? 16 :7);  }
 
 	const uint tt[4] = {t*7,t*5,t*8,t*5};
 	for (int w2=0; w2<2; ++w2)
@@ -424,6 +426,22 @@ void Demos::Hedrons()
 			d->fillTriangle( px[f0],py[f0], px[f1],py[f1], px[f2],py[f2], cl[f0]);
 	}
 
+	//  big clr mess inside, diagonal to all  xX
+	switch (hdDiag) {
+	case 1:
+		for (a=0; a < NP/2; ++a)
+		for (i=0; i < a && i < NP; ++i)
+			d->drawLine( px[a],py[a], px[i],py[i], RGB(10+(i+a)/4, 5+a/2, 10+i));  break;
+	case 2:
+		for (a=0; a < NP; ++a)
+		for (i=0; i < a && i < NP; i+=2)
+			d->drawLine( px[a],py[a], px[i],py[i], RGB(10+i, 7+a, 5+(a+i)/4));  break;
+	case 3:
+		for (a=0; a < NP; ++a)
+		for (i=0; i < a && i < NP; ++i)
+			d->drawLine( px[a],py[a], px[i],py[i], RGB(10, 5+a, 10+i));  break;
+	}
+
 	//  draw near/visible edges  --
 	for (i=0,a=0; i < NE; ++i)
 	{
@@ -443,14 +461,17 @@ void Demos::Hedrons()
 			d->fillTriangle( px[f0],py[f0], px[f1],py[f1], px[f2],py[f2], cl[f0]);
 	}
 
-	if (iInfo > 0)
+	if (iInfo > 0)  // txt
 	{
 		d->setCursor(0,0);
 		d->print("Cur ");  d->println(hdCur);
 		d->print("Rot ");  d->println(hdRot);
-		//if (hdtOn)  d->println("On");
+		if (hdtOn)  d->println("On");
+		d->setCursor(0,H-1-2*8);
+		d->print("Spd ");  d->println(hdSpd);
+		d->print("Dia ");  d->println(hdDiag);
 	}
-	++t;
+	t += hdSpd;
 }
 
 #endif

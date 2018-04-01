@@ -31,7 +31,7 @@ void Demos::Ngons()
 		{
 			float xa = xx + sy*cos(a+c), ya = yy - sy*sin(a+c);
 			if (a != b)
-				d->drawLine(xb, yb, xa, ya, RGB(31-cc/20,(cc/4)%32,(cc*2)%32));
+				d->drawLine(xb, yb, xa, ya, RGB(31-cc/32,(cc/4)%32,(cc*2)%32));
 			++cc;
 		}
 	}
