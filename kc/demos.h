@@ -35,7 +35,7 @@ struct Demos
 	//int8_t iPrev;   // prev demo, for init
 	//int8_t iInfoOff;  // params info text
 	//const static int8_t iOff = 2;
-	void KeyPress(EDemo demo, int8_t k, int8_t e,  int8_t ct,  int8_t inf, int8_t fps);
+	void KeyPress(EDemo demo, struct Gui* gui);
 
 
 	//  Plasma  ~~~~
@@ -83,7 +83,7 @@ struct Demos
 	
 
 	//  CK logo, 2D lines
-	const static int8_t ckMax = 2;
+	const static int8_t ckMax = 3;
 	int8_t ckCur, ckSpeed;
 	void CK_logo();
 
@@ -106,10 +106,10 @@ struct Demos
 
 
 	//  Polyhedrons 3D  ----
-	const static int8_t hdA = 11, hdRotMax = 4;  // all presets
+	const static int8_t hdA = 11, hdRotMax = 4, hdDiagMax = 5;  // all presets
 	const static int16_t hdtMax = 100;  // cycle time
 
-	int16_t hdt;  int8_t hdCur,  hdtOn, hdRot;
+	int16_t hdt;  int8_t hdCur,  hdtOn, hdRot,  hdSpd, hdDiag;
 	void Hedrons();
 #endif
 };

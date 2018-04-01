@@ -32,7 +32,7 @@ const char* strTest[T_All] =
 const uint8_t YM1[M_All] =
 {
 	T_All,  //M_Testing=0,
-	5,  //M_Mapping,
+	4,  //M_Mapping,
 	1,  //M_Sequences,
 
 	1,  //M_Display,

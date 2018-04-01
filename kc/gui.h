@@ -35,13 +35,18 @@ struct Gui
 	uint32_t oldti, tdemo;  // demo time ms
 
 	uint32_t oldti_kr;
+	uint16_t krDelay=250, krRepeat=60;  // ms  key auto repeat
 	int8_t kr(int8_t y, int8_t x, uint16_t dt);
 
 
 	//  Mapping  - - - -
 	int16_t nLay=0, scId=0, drawId=-1,
-			keyCode=0, pressKey=0;
+		pressKey=0, moveCur=0, pickCode=0, // edit operations
+		keyCode=0;
 
+	//  keys pressed, some +-1
+	int8_t kRight=0, kUp=0,  kPgUp=0, kEnd=0,
+			kBack=0, kEnt=0,  kCtrl=0, kSh=0,  kInf=0, kFps=0;
 
 	//	int16_t tInfo, infType, memSize;  // info text vars
 	char a[128];  // temp str

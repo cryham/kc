@@ -60,7 +60,7 @@ void Gui::Draw()
 	//------------------------------------------------------
 	if (mlevel==0)
 	{
-		d->setTextColor(RGB(27,24,31));
+		d->setTextColor(RGB(25,22,30));
 		d->print("Main Menu");  d->setFont(0);
 
 		DrawMenu(M_All,strMain,0, 10, -1,2);

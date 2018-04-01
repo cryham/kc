@@ -8,7 +8,8 @@
 #define H 128
 
 //  R F800  G 07E0  B 001F  R 32 G 64 B 32  565
-#define RGB(r,g,b) ( ((r)<<11)+ ((g)<<6/*<<5*/) +b)
+#define RGB(r,g,b) ( ((r)<<11)+ ((g)<<6) +b)   // 31 31 31
+#define RGB2(r,g,b) ( ((r)<<11)+ ((g)<<5) +b)  // 31 63 31
 
 class Ada4_ST7735;
 

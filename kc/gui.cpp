@@ -25,5 +25,8 @@ void Gui::Init(Ada4_ST7735* tft)
 #endif
 
 	nLay=0;  scId=0;  drawId=-1;
-	keyCode=0;  pressKey=0;
+	keyCode=0;
+	pressKey=0;  moveCur=0;  pickCode=0;
+
+	krDelay=250;  krRepeat=80;  // ms
 }
