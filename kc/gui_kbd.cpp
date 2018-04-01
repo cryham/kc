@@ -7,17 +7,36 @@
 #include "kc_data.h"
 #include "keys_usb.h"
 
+//  extern
 extern uint scan_freq;  // scan counter, freq
 const static int rr = NumCols;
 extern uint32_t us_scan;
 
 extern KC_Setup kc;
 
+//  const
 const char* sKCinfo[KC_InfAll]={"1K","Sq","L","F"};
+const uint8_t rgb[12][2][3] = // clr rgb, mul rgb for groups
+{
+{31,20,20, 1,3,4}, // 0 none, sys
+{20,31,31, 2,1,1}, // 1 modif
+{27,29,31, 4,2,1}, // 2 letter
+{31,31,22, 1,1,3}, // 3 digits
+{23,31,23, 3,1,3}, // 4 long
+{23,26,31, 2,1,0}, // 5 func
+{26,31,29, 3,1,3}, // 6 arrows
+{28,28,29, 2,2,1}, // 7 symb
+{31,28,24, 1,2,3}, // 8 numpad
+{31,26,31, 1,3,1}, // 9 func2
+{31,21,26, 1,3,2}, // 10 media
+{27,27,27, 2,2,2}, // 11 vol
+};
 
 
 //  Mappings kbd
 //....................................................................................
+const static int pgMin = ((KEYS_ALL-12*5)/12 +1)*12;
+
 void Gui::DrawMapping()
 {
 	//d->print(strMain[ym]);  //save space
@@ -25,33 +44,43 @@ void Gui::DrawMapping()
 	int16_t x=2, y=0, c;
 
 	//  todo draw key codes list
+	//. . . . . . . . . . . . . . . . . . . . . . . . .
 	if (pickCode)
 	{
-		d->setCursor(x,y);
+		d->setCursor(x,0);
 		d->setTextColor(RGB(27,25,21));
 		d->print("Pick key..");
 
-		d->setCursor(W/2-10,y);
-		d->setTextColor(RGB(25,28,31));
-		sprintf(a,"%d/%d %s", keyCode, KEYS_ALL, strKey[keyCode]);
+		d->setCursor(0,8);
+		d->setTextColor(RGB(22,22,12));
+		sprintf(a,"%3d/%d", keyCode, KEYS_ALL);
 		d->print(a);
-		d->setTextColor(RGB(16,24,31));
 
-		int pg = max(-12*1, min(KEYS_ALL-12*3, keyCode/12*12 -12*1));
+		d->setCursor(W/2,0);
+		d->setTextColor(RGB(25,28,31));
+		d->print(strKey[keyCode]);
+
+		d->setCursor(W/2,8);
+		d->setTextColor(RGB(31,15,21));
+		d->print(grpName[keyCode]);
+
+		int pg = max(-12*1, min(pgMin, keyCode/12*12 -12*1));
 		for (int c=0; c < 4; ++c)
 		for (int i=0; i < 12; ++i)
 		{
-			x = c * 42;  y = 20 + i*8;
+			x = c * 42;  y = 28 + i*8;
 			d->setCursor(x, y);
 			int k = (pg + i + c*12 + KEYS_ALL) % KEYS_ALL;
 			int q = abs(k - keyCode);  // diff clr
+			int g = grpKey[k];
 
-			//if (!q)  d->fillRect(x,y, 40,8, RGB(8,8,10));
-			if (!q)  d->drawRect(x,y, 40,8, RGB(8,8,10));
-			if (!q)  d->setTextColor(RGB(31,28,6));
-//			else  d->setTextColor(RGB2(max(8, 27-q/3), max(12*2,29*2-q), max(20,31-q)));
-			else  d->setTextColor(RGB2(max(8, 27-q*2), max(12*2,29*2-q), max(20,31-q/2)));
-			// group clr type..
+			if (!q)  // cursor
+			{	d->fillRect(x-1,y, 41,8, RGB(10,10,9));
+				d->drawRect(x-2,y, 42,8, RGB(23,23,13));
+			}else  d->setTextColor(RGB(
+				max(9, rgb[g][0][0]-rgb[g][1][0]*q/3),
+				max(9, rgb[g][0][1]-rgb[g][1][1]*q/3),
+				max(9, rgb[g][0][2]-rgb[g][1][2]*q/3) ));
 
 			if (k >= 0 && k < KEYS_ALL)
 				d->print(strKey[k]);
@@ -59,7 +88,8 @@ void Gui::DrawMapping()
 		return;
 	}
 
-	//  menu  ----
+	//  menu
+	//. . . . . . . . . . . . . . . . . . . . . . . . .
 	int id = scId;
 	if (moveCur)
 	{	if (drawKeys[drawId].sc == NO)  id = -1;
@@ -116,13 +146,14 @@ void Gui::DrawMapping()
 		y += 10;
 	}
 
-	//  ids -
+	//  ids dbg -
 	d->setTextColor(RGB(20,24,16));
 	d->setCursor(0, 6*8);
 	sprintf(a,"scId: %d draw %d", scId, drawId);  d->print(a);
 
 
-	//  stats, data  ----
+	//  stats, data
+	//. . . . . . . . . . . . . . . . . . . . . . . . .
 	x = W-8*6, y=0;
 	d->setTextColor(RGB(25,24,12));
 	d->setCursor(x,y);
@@ -157,6 +188,7 @@ void Gui::DrawMapping()
 	{	sprintf(a,"key: no");
 		d->print(a);
 	}
+
 
 	//  kbd draw   Layout
 	// * * * * * * * * * * * * * * * * * * * * * * * *

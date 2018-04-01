@@ -15,7 +15,7 @@ void Demos::Init(Ada4_ST7735* tft)
 	ti = 0;  oti = 0;
 	
 #ifdef DEMOS  // params
-	iFps = 0;  iInfo = 0;  //iPrev = -1;  iInfoOff = 1;
+	iFps = 0;  iInfo = 0;
 
 	einit = INone;
 	sCnt = 3*sMax/4;  sVel = 10;  //16 stars
@@ -39,17 +39,6 @@ void Demos::Init(Ada4_ST7735* tft)
 	twv = 6;  // wave
 #endif
 }
-
-
-#if 0  ///--
-void Demos::Draw(D d, int8_t menu, int8_t y, int8_t y2)
-{
-	if (iInfo < 0)
-		iInfo = iInfoOff == iOff ? 0 :
-				60 + iInfoOff*60;  //par
-	if (iInfo > 0)
-		--iInfo;
-#endif
 
 #ifdef DEMOS
 

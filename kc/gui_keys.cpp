@@ -21,7 +21,7 @@ void Gui::KeyPress()
 	kEnd  = kr(2,2,dt) - kr(0,2,dt);  // End  Hom
 
 	kBack = Key(0,6);  kEnt = Key(4,0);  // Add+  Ent
-	kCtrl = Key(3,4);  kSh  = 0;  // Ins
+	kCtrl = KeyH(3,4); kSh  = 0;  // Ins
 	kInf  = Key(4,1);  kFps = Key(5,1);  // Mul*  Sub-
 
 	//kF12 = Key(5,0) - Key(3,0);  // F12  F11  //Key(2,0);  \|
@@ -38,7 +38,7 @@ void Gui::KeyPress()
 	//............................................
 	if (ym == M_Mapping && mlevel == 1)
 	{
-		if (pressKey)  // press key ..
+		if (pressKey)  // press key
 		{
 			int c = 0, ii = -1;
 			for (uint i=0; i < ScanKeys; ++i)
@@ -60,7 +60,7 @@ void Gui::KeyPress()
 			}
 			return;
 		}
-		if (moveCur)  // move cursor ..
+		if (moveCur)  // move cursor
 		{
 			if (kBack)
 			{	//  set if key exists in matrix
@@ -78,15 +78,14 @@ void Gui::KeyPress()
 			if (drawId < 0)			 drawId += nDrawKeys;
 			return;
 		}
-		if (pickCode)  // pick code ..
+		if (pickCode)  // pick code
 		{
-			if (kEnt)
-			{	//  apply in kc .. add
-				//kc.keys.data[0] = keyCode;
-				if (kc.nkeys() >= int(ScanKeys))
+			if (kBack)
+			{	//  apply in kc
+				if (scId >= 0 && scId < kc.nkeys())
 				{
 					KC_Key& k = kc.keys[scId];
-					// if not has layer, add
+					//  if has no layer, add
 					if (k.data.empty())
 						k.data.push_back(keyCode);
 					else
@@ -94,7 +93,7 @@ void Gui::KeyPress()
 				}
 				pickCode = 0;  return;
 			}
-			if (kBack)
+			if (kFps)
 			{	pickCode = 0;  return;  }
 
 			if (kRight)	keyCode += kRight * 12;

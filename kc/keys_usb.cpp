@@ -45,7 +45,7 @@ const char* strKey[KEYS_ALL]={
 	"1","2","3","4","5","6","7","8","9","0",
 
 	"Ent", "Esc", "Bck", "Tab", "Spc",
-	"-", "=", "[","]", "\\", "NN", ";", "\'", "`", ",", ".", "/",
+	"-", "=", "[","]", "\\", "NN", ";", "\'", "`", ",",".", "/",
 
 	"F1","F2","F3","F4","F5","F6","F7","F8","F9","F10","F11","F12",
 
@@ -62,4 +62,40 @@ const char* strKey[KEYS_ALL]={
 
 	"Mute", "Vol+", "Vol-",
 	"PowOff", "Sleep", "WakeUp",
+};
+
+//  key groups for color
+const uint8_t grpKey[KEYS_ALL]=
+{
+	0,  // sys
+	1, 1, 1, 1,  // mod
+	1, 1, 1, 1,
+
+	2,2,2,2,2,2,2,2,2,2,2,2,2,2, // letters
+	2,2,2,2,2,2,2,2,2,2,2,2,
+	3,3,3,3,3,3,3,3,3,3,  // digits
+
+	4, 4, 4, 4, 4,  // long
+	7, 7, 7,7, 7, 7, 7, 7, 7, 7,7, 7,  // symb
+
+	5,5,5,5,5,5,5,5,5,5,5,5,  // func
+
+	4, 4, 4, 4, 4, //Ri, Le, Dn, Up
+	6,6,6,6,6,6, 6,6,6,6,  // arrows
+
+	8, 8, 8, 8, 8,
+	8,8,8,8,8,8,8,8,8,8, 8, 5, 5,  // numpad
+
+	9,9,9,9,9,9,9,9,9,9,9,9,  // func2
+
+	10, 10, 10, 10, 10, 10, 10, 10,  // media
+	10, 10, 10, 10,
+
+	11, 11, 11,  // vol
+	0, 0, 0,  // sys
+};
+
+const char* grpName[grpMax]={
+	"system","modifier","letter","digit","long","function", //5
+	"arrows","sybmol","numpad", "function2","media","volume",
 };

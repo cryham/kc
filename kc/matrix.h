@@ -130,12 +130,11 @@ typedef struct KeyGhost {
 
 //  -----  utility  -----
 
-#define Key(y,x)  (Matrix_scanArray[y * NumCols + x].state == KeyState_Press ? 1 : 0)
+#define Key(y,x)   (Matrix_scanArray[y * NumCols + x].state == KeyState_Press ? 1 : 0)
+#define KeyH(y,x)  (Matrix_scanArray[y * NumCols + x].state == KeyState_Hold ? 1 : 0)
 
 inline uint8_t keyOn(/*KeyPosition*/uint8_t st)
-{
-	return (st == KeyState_Press || st == KeyState_Hold) ? 1 : 0;
-}
+{	return (st == KeyState_Press || st == KeyState_Hold) ? 1 : 0;  }
 
 //  Ghost status info
 extern int ghost_cols, ghost_rows;  // ghosting if any > 0

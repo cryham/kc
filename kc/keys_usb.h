@@ -40,3 +40,8 @@ extern uint16_t usbKey[KEYS_ALL];
 
 //  key names strings  for byte keys
 extern const char* strKey[KEYS_ALL];
+
+//  key groups  for color
+extern const uint8_t grpKey[KEYS_ALL];
+const uint8_t grpMax = 12;
+extern const char* grpName[grpMax];

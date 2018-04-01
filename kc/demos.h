@@ -21,27 +21,24 @@ struct Demos
 	void Init(class Ada4_ST7735* tft);
 
 	Ada4_ST7735* d;
-	uint16_t* data = 0;  // buffer
+	uint16_t* data = 0;  // scren buffer
 
 	int8_t iFps;  // show frames per second, 1 on, 0 off
 	uint32_t ti, oti;  // fps: time ms, old
 
 	int8_t fntCur;
-	const static int8_t fntMax = 3;
+	const static int8_t fntMax = 3;  // all pages
 	void Fonts();  // ver, date, chars
 
 #ifdef DEMOS
-	int8_t iInfo;
-	//int8_t iPrev;   // prev demo, for init
-	//int8_t iInfoOff;  // params info text
-	//const static int8_t iOff = 2;
+	int8_t iInfo;  // show demo params
 	void KeyPress(EDemo demo, struct Gui* gui);
 
 
 	//  Plasma  ~~~~
 	uint t;  // frame counter
 	int8_t plasma;  // cur mode
-	const static int8_t num_plasma = 7;
+	const static int8_t num_plasma = 7;  // all sets
 	int8_t tadd[num_plasma];  // speeds
 
 	void Plasma(), PlasmaT(int8_t dt);
@@ -55,8 +52,9 @@ struct Demos
 
 
 	//  Balls  --------
-//	const static int sMax = 10, bMax = 10, dMax = 10;
-	const static int sMax = 240, bMax = 300, dMax = 550;  // 76%  50k
+	const static int
+	//sMax = 10, bMax = 10, dMax = 10;  // 69%  45k ram
+	sMax = 240, bMax = 300, dMax = 550; // 79%  52k =7k
 
 	int sCnt, sVel;  // stars: count, velocity
 	int bCnt, bSpd, bSpRnd, bRad;  // balls: count, speed, radius max
@@ -101,7 +99,7 @@ struct Demos
 
 	//  Ngons 2D
 	int16_t ngt;  int8_t ngCur,  ngtOn, ngRot;
-	const static int8_t ngMin = 5, ngMax = 25, ngRotMax = 4;
+	const static int8_t ngMin = 5, ngMax = 25, ngRotMax = 4;  // all n
 	void Ngons();
 
 
