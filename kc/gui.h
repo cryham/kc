@@ -9,6 +9,7 @@ struct Gui
 {
 	Demos demos;
 	Ada4_ST7735* d=0;
+	int kbdSend = 0;  // send usb
 
 	//  main
 	Gui();
@@ -43,6 +44,7 @@ struct Gui
 	int16_t nLay=0, scId=0, drawId=-1,
 		pressKey=0, moveCur=0, pickCode=0, // edit operations
 		keyCode=0;
+	int8_t keyGroup=0, grpFilt=0;  // group filter
 
 	//  keys pressed, some +-1
 	int8_t kRight=0, kUp=0,  kPgUp=0, kEnd=0,

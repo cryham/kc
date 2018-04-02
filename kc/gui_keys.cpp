@@ -3,7 +3,7 @@
 #include "kbd_layout.h"
 #include "keys_usb.h"
 
-extern KC_Setup kc;
+extern KC_Main kc;
 
 
 //  Key press
@@ -82,9 +82,9 @@ void Gui::KeyPress()
 		{
 			if (kBack)
 			{	//  apply in kc
-				if (scId >= 0 && scId < kc.nkeys())
+				if (scId >= 0 && scId < kc.set.nkeys())
 				{
-					KC_Key& k = kc.keys[scId];
+					KC_Key& k = kc.set.keys[scId];
 					//  if has no layer, add
 					if (k.data.empty())
 						k.data.push_back(keyCode);
@@ -96,12 +96,27 @@ void Gui::KeyPress()
 			if (kFps)
 			{	pickCode = 0;  return;  }
 
-			if (kRight)	keyCode += kRight * 12;
-			if (kUp)	keyCode += kUp;
-			if (kPgUp)	keyCode += kPgUp * 4;
+			if (kRight) { // <- ->
+			if (grpFilt)
+				keyGroup += kRight;
+			else
+				keyCode += kRight * 12;
+			}
+			if (kUp)	keyCode += kUp;  else
+			if (kPgUp)	keyCode += kPgUp * 4;  else
 
-			if (keyCode >= KEYS_ALL) keyCode -= KEYS_ALL;
-			if (keyCode < 0)		 keyCode += KEYS_ALL;
+			if (kEnd < 0)  // home filter
+				grpFilt = 1-grpFilt;
+
+			//  range
+			if (keyCode < 0)			  keyCode += KEYS_ALL_EXT;
+			if (keyCode >= KEYS_ALL_EXT)  keyCode -= KEYS_ALL_EXT;
+			if (keyGroup < 0)		 keyGroup = grpMax-1;
+			if (keyGroup >= grpMax)	 keyGroup = 0;
+
+			if (grpFilt)
+				if (cKeyGrp[keyCode] != keyGroup)
+					keyCode = kc.grpStart[keyGroup];
 			return;
 		}
 	}

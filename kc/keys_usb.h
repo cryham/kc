@@ -3,6 +3,7 @@
 
 enum EKeys  // byte key codes
 {
+	//  normal usb keys ----
 	KEY_NONE=0,
 	K_LCTRL, K_LSHIFT, K_LALT, K_LGUI,
 	K_RCTRL, K_RSHIFT, K_RALT, K_RGUI,
@@ -11,18 +12,18 @@ enum EKeys  // byte key codes
 	K_O,K_P,K_Q,K_R,K_S,K_T,K_U,K_V,K_W,K_X,K_Y,K_Z,
 	K_1,K_2,K_3,K_4,K_5,K_6,K_7,K_8,K_9,K_0,
 
-	K_ENT, K_ESC, K_BACK, K_TAB, K_SPACE,
+	K_ENT, K_ESC, K_BACK, K_TAB, K_SPACE, K_MENU,
+	K_CAPS, K_PRTSCR, K_SCRL, K_PAUSE, K_NUML,
+
 	K_MINUS, K_EQUAL, K_LBRACE,K_RBRACE, K_BSLASH,
-	K_NON_US_NUM, K_SEMIC, K_QUOTE, K_TILDE, K_COMMA, K_PERIOD, K_SLASH,
+	K_NON_US_NUM, K_SEMIC, K_QUOTE, K_TILDE, K_COMMA, K_PERIOD, K_SLASH, K_NON_US_BS,
 
 	K_F1,K_F2,K_F3,K_F4,K_F5,K_F6,K_F7,K_F8,K_F9,K_F10,K_F11,K_F12,
 
-	K_CAPS, K_PRTSCR, K_SCRL, K_PAUSE, K_NUML,
 	K_INS,K_HOME,K_PGUP,K_DEL,K_END,K_PGDN,K_RIGHT,K_LEFT,K_DOWN,K_UP,
 
 	KP_DIV, KP_MUL, KP_SUB, KP_ADD, KP_ENT,
-	KP_1,KP_2,KP_3,KP_4,KP_5,KP_6,KP_7,KP_8,KP_9,KP_0,
-	KP_DOT, K_NON_US_BS, K_MENU,
+	KP_1,KP_2,KP_3,KP_4,KP_5,KP_6,KP_7,KP_8,KP_9,KP_0, KP_DOT,
 
 	K_F13,K_F14,K_F15,K_F16,K_F17,K_F18,K_F19,K_F20,K_F21,K_F22,K_F23,K_F24,
 
@@ -32,16 +33,43 @@ enum EKeys  // byte key codes
 
 	K_MEDIA_MUTE, K_MEDIA_VOLUME_INC, K_MEDIA_VOLUME_DEC,
 	KS_POWER_DOWN, KS_SLEEP, KS_WAKE_UP,
-	KEYS_ALL
+	KEYS_ALL,  // < End of normal, 137 ----
+
+	//  padding
+	//  for any forgotten usb codes
+	K_Data0, K_Data1, K_Data2, K_Data3, K_Data4, K_Data5, K_Data6, K_Data7,
+
+	//  special  ----
+	//  display, quick func
+	K_Fun0, K_Special0=K_Fun0,  // < Start
+	K_Fun1, K_Fun2, K_Fun3, K_Fun4,	K_Fun5, K_Fun6, K_Fun7, K_Fun8, K_Fun9,
+
+	//  layer switch  hold/set etc config elsewhere
+	K_Layer0, Keys_All = K_Layer0, // num of
+	K_Layer1, K_Layer2, K_Layer3, K_Layer4, K_Layer5, K_Layer6, K_Layer7,
+	K_Layer8, K_Layer9, K_Layer10, K_Layer11, K_Layer12, K_Layer13, K_Layer14, K_Layer15,
+
+	//  sequences
+	K_Seq0, K_S1,K_S2,K_S3,K_S4,K_S5,K_S6,K_S7,K_S8,K_S9,
+	K_S10,K_S11,K_S12,K_S13,K_S14,K_S15,K_S16,K_S17,K_S18,K_S19,
+	K_S20,K_S21,K_S22,K_S23,K_S24,K_S25,K_S26,K_S27,K_S28,K_S29,
+	K_S30,K_S31,K_S32,K_S33,K_S34,K_S35,K_S36,K_S37,K_S38,K_S39,
+	K_S40,K_S41,K_S42,K_S43,K_S44,K_S45,K_S46,K_S47,K_S48,K_S49,
+	K_S50,K_S51,K_S52,K_S53,K_S54,K_S55,K_S56,K_S57,K_S58,K_S59,
+	K_SeqLast = K_S59,
+	KEYS_ALL_EXT  // < End
 };
 
-//  usb codes  from byte key
-extern uint16_t usbKey[KEYS_ALL];
+//  usb codes  for byte key codes
+extern const uint16_t cKeyUsb[KEYS_ALL];
 
-//  key names strings  for byte keys
-extern const char* strKey[KEYS_ALL];
+//  key names strings  for key codes
+extern const char* cKeyStr[KEYS_ALL_EXT];
 
-//  key groups  for color
-extern const uint8_t grpKey[KEYS_ALL];
-const uint8_t grpMax = 12;
-extern const char* grpName[grpMax];
+//  key groups  color for key codes
+extern const uint8_t cKeyGrp[KEYS_ALL_EXT];
+
+//  group names and colors
+const uint8_t grpMax = 16;
+extern const char* cGrpName[grpMax];
+extern const uint8_t cGrpRgb[grpMax][2][3];

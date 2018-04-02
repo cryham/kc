@@ -12,78 +12,72 @@ extern uint scan_freq;  // scan counter, freq
 const static int rr = NumCols;
 extern uint32_t us_scan;
 
-extern KC_Setup kc;
-
-//  const
-const char* sKCinfo[KC_InfAll]={"1K","Sq","L","F"};
-const uint8_t rgb[12][2][3] = // clr rgb, mul rgb for groups
-{
-{31,20,20, 1,3,4}, // 0 none, sys
-{20,31,31, 2,1,1}, // 1 modif
-{27,29,31, 4,2,1}, // 2 letter
-{31,31,22, 1,1,3}, // 3 digits
-{23,31,23, 3,1,3}, // 4 long
-{23,26,31, 2,1,0}, // 5 func
-{26,31,29, 3,1,3}, // 6 arrows
-{28,28,29, 2,2,1}, // 7 symb
-{31,28,24, 1,2,3}, // 8 numpad
-{31,26,31, 1,3,1}, // 9 func2
-{31,21,26, 1,3,2}, // 10 media
-{27,27,27, 2,2,2}, // 11 vol
-};
+extern KC_Main kc;
 
 
 //  Mappings kbd
 //....................................................................................
-const static int pgMin = ((KEYS_ALL-12*5)/12 +1)*12;
+const static int pgMin = ((KEYS_ALL_EXT-12*3)/12 +1)*12;
 
 void Gui::DrawMapping()
 {
-	//d->print(strMain[ym]);  //save space
 	d->setFont(0);
 	int16_t x=2, y=0, c;
 
-	//  todo draw key codes list
+
+	//  key codes list
 	//. . . . . . . . . . . . . . . . . . . . . . . . .
 	if (pickCode)
 	{
 		d->setCursor(x,0);
-		d->setTextColor(RGB(27,25,21));
+		d->setTextColor(RGB(28,28,26));
 		d->print("Pick key..");
 
-		d->setCursor(0,8);
+		d->setCursor(0,10);
 		d->setTextColor(RGB(22,22,12));
-		sprintf(a,"%3d/%d", keyCode, KEYS_ALL);
+		sprintf(a,"%3d/%d", keyCode, KEYS_ALL_EXT);
 		d->print(a);
+		if (grpFilt)  d->print(" grp:");
+				else  d->print(" all");
+		d->drawFastHLine(0,20,W-1,RGB(8,8,10));
 
-		d->setCursor(W/2,0);
+		d->setCursor(W/2-1,0);
 		d->setTextColor(RGB(25,28,31));
-		d->print(strKey[keyCode]);
+		d->print(cKeyStr[keyCode]);
 
-		d->setCursor(W/2,8);
+		d->setCursor(W/2-1,10);
 		d->setTextColor(RGB(31,15,21));
-		d->print(grpName[keyCode]);
+		int gr = grpFilt ? keyGroup : cKeyGrp[keyCode];
+		gr = max(0, min(grpMax-1, gr));
+		d->print(cGrpName[gr]);
 
-		int pg = max(-12*1, min(pgMin, keyCode/12*12 -12*1));
+		//  list  3 cols, 12 rows
+		int pg = //grpFilt ? kc.grpStart[gr]-12 :
+			max(-12*1, min(pgMin, keyCode/12*12 -12*1));
+		int kmax = KEYS_ALL_EXT; //grpFilt ? kc.grpEnd[gr] : KEYS_ALL_EXT;
+
 		for (int c=0; c < 4; ++c)
 		for (int i=0; i < 12; ++i)
 		{
 			x = c * 42;  y = 28 + i*8;
 			d->setCursor(x, y);
-			int k = (pg + i + c*12 + KEYS_ALL) % KEYS_ALL;
+			int k = (pg + i + c*12 + KEYS_ALL_EXT) % KEYS_ALL_EXT;
 			int q = abs(k - keyCode);  // diff clr
-			int g = grpKey[k];
-
-			if (!q)  // cursor
-			{	d->fillRect(x-1,y, 41,8, RGB(10,10,9));
-				d->drawRect(x-2,y, 42,8, RGB(23,23,13));
-			}else  d->setTextColor(RGB(
-				max(9, rgb[g][0][0]-rgb[g][1][0]*q/3),
-				max(9, rgb[g][0][1]-rgb[g][1][1]*q/3),
-				max(9, rgb[g][0][2]-rgb[g][1][2]*q/3) ));
-
-			if (k >= 0 && k < KEYS_ALL)
-				d->print(strKey[k]);
+			int g = cKeyGrp[k];
+			//if (!grpFilt || g == keyGroup)  // todo: crash
+			{
+				if (!q)  // cursor
+				{	d->fillRect(x-1,y, 41,8, RGB(10,10,9));
+					d->drawRect(x-2,y, 42,8, RGB(23,23,13));
+				}
+				if (k >= 0 && k < kmax)
+				{	d->setTextColor(RGB(
+						max(9, cGrpRgb[g][0][0] - cGrpRgb[g][1][0] * q/3),
+						max(9, cGrpRgb[g][0][1] - cGrpRgb[g][1][1] * q/3),
+						max(9, cGrpRgb[g][0][2] - cGrpRgb[g][1][2] * q/3) ));
+					d->print(cKeyStr[k]);
+				}
+			}
 		}
 		return;
 	}
@@ -128,17 +122,17 @@ void Gui::DrawMapping()
 			d->print(a);  break;
 
 		case 3:
-			if (id < 0 || id >= kc.nkeys())
+			if (id < 0 || id >= kc.set.nkeys())
 				sprintf(a,"Key: None");
 			else
 			{
-				uint8_t u = kc.keys[id].get(nLay);
+				uint8_t u = kc.set.keys[id].get(nLay);
 					 if (u == KEY_NONE)  sprintf(a,"Key: NONE");
-				else if (u >= KEYS_ALL)  sprintf(a,"Key: OUT");
+				else if (u >= KEYS_ALL_EXT)  sprintf(a,"Key: OUT");
 				else
 				{
 					d->setTextColor(RGB(23,27,31));
-					sprintf(a,"Key: %s", strKey[u]);
+					sprintf(a,"Key: %s", cKeyStr[u]);
 				}
 			}
 			d->print(a);  break;
@@ -147,9 +141,9 @@ void Gui::DrawMapping()
 	}
 
 	//  ids dbg -
-	d->setTextColor(RGB(20,24,16));
-	d->setCursor(0, 6*8);
-	sprintf(a,"scId: %d draw %d", scId, drawId);  d->print(a);
+	d->setTextColor(RGB(16,20,12));
+	d->setCursor(0, 6*8+4);
+	sprintf(a,"scId: %d draw %d  send %d", scId, drawId, kbdSend);  d->print(a);
 
 
 	//  stats, data
@@ -157,13 +151,13 @@ void Gui::DrawMapping()
 	x = W-8*6, y=0;
 	d->setTextColor(RGB(25,24,12));
 	d->setCursor(x,y);
-	int si = kc.nkeys();
+	int si = kc.set.nkeys();
 	//sprintf(a,"all %d", si);  d->print(a);  y+=10;
 
 	d->setCursor(x,y);
 	if (id < si && id >= 0)
 	{
-		const KC_Key& k = kc.keys[id];
+		const KC_Key& k = kc.set.keys[id];
 		si = k.data.size();
 		sprintf(a,"data %d", si);
 		d->print(a);  y+=8;
@@ -173,15 +167,13 @@ void Gui::DrawMapping()
 		{
 			d->setCursor(x,y);
 			uint8_t kd = k.data[i];
-			sprintf(a,"%d: %s", i, kd < KEYS_ALL ? strKey[kd] : "ERR");
+			sprintf(a,"%d %s", i,
+				kd < KEYS_ALL_EXT ? cKeyStr[kd] : "ERR");
 			d->print(a);  y+=8;
 		}
-		d->setCursor(x,y);
-		sprintf(a,"inf %s", sKCinfo[k.info]);
-		d->print(a);  y+=8;
 
 		d->setCursor(x,y);
-		sprintf(a,"Luse %d", k.layUse);
+		sprintf(a,"Luse %lu", k.layUse);
 		d->print(a);  y+=8;
 	}
 	else
@@ -357,16 +349,11 @@ void Gui::DrawTesting()
 	case T_Pressed:
 	{
 		d->setCursor(0,32);
-		//  layers  -
+		//  layer  -
 		d->setTextColor(RGB(20,23,31));
-		d->print("Layers: ");
-		#if 0
-		for (int l=1; l < layersCnt; ++l)  // 1st is 1 in menu
-		{	d->print(layersOn[l]);  d->moveCursor(6,0);  }
-		#endif
-		d->println("");  d->moveCursor(0,2);
-
-		//Demos::Font_ver(d, true);  //*
+		sprintf(a,"Layer: %d", kc.nLayer);
+		d->print(a);
+		d->println("");  d->moveCursor(0,4);
 
 		//  locks  -
 		d->setTextColor(RGB(18,21,24));
@@ -386,10 +373,10 @@ void Gui::DrawTesting()
 		d->println("");  d->moveCursor(0,4);
 
 
-		//  scan codes  -
-		d->setTextColor(RGB(24,24,31));
+		//  scan codes  - - -
+		d->setTextColor(RGB(14,23,28));
 		d->print("Scan: ");
-		d->setTextColor(RGB(24,28,31));
+		d->setTextColor(RGB(17,26,31));
 		int c = 0;
 		for (uint i = 0; i < ScanKeys; ++i)
 		{
@@ -402,30 +389,32 @@ void Gui::DrawTesting()
 		d->println("");  d->moveCursor(0,4);
 
 		//  keys  - - - -
-		d->setTextColor(RGB(24,24,31));
+		d->setTextColor(RGB(20,25,28));
 		d->print("Keys: ");
 		d->setTextColor(RGB(24,28,31));
 		for (uint i = 0; i < ScanKeys; ++i)
 		{
 			const KeyState& k = Matrix_scanArray[i];
-			if (kc.nkeys() >= int(ScanKeys))
+			if (kc.set.nkeys() >= int(ScanKeys))
 			if (k.state == KeyState_Hold)
 			{
-				kc.keys[i].get(nLay);
-				sprintf(a,"%d ",i);  // scan code
-				d->print(a);
-		}	}  //STR(i) todo: map to key name
+				int8_t code = kc.set.keys[i].get(kc.nLayer);
+				if (code != KEY_NONE)  // layer keys
+				{	sprintf(a,"%s ",cKeyStr[code]);
+					d->print(a);
+		}	}	}
 
-		//  held count - ghost
+		//  held count
 		d->setCursor(0, H-1-20);
-		if (ghost_cols)
-		{	d->setTextColor(RGB(min(31,24+c), 16+c, 31));
-			sprintf(a,"Held: %d   Ghost: %d %d", c, ghost_cols, ghost_rows);  }
-		else
-		{	d->setTextColor(RGB(16+c, min(31,24+c), 31));
-			sprintf(a,"Held: %d", c);  }
+		d->setTextColor(RGB(16+c, min(31,24+c), 31));
+		sprintf(a,"Held: %d", c);
 		d->print(a);
 
+		if (ghost_cols)  // ghost
+		{	d->setTextColor(RGB(min(31,24+c), 18+c, 31));
+			sprintf(a,"  Ghost: %d %d", ghost_cols, ghost_rows);
+			d->print(a);
+		}
 		//  press count -
 		d->setCursor(0, H-1-8);
 		d->setTextColor(RGB(21,21,27));
