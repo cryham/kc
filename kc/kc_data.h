@@ -4,36 +4,35 @@
 #include "keys_usb.h"
 
 
-enum KC_Info  // data purpose
-{
-	KC_1Key=0, // single key, code in data
-	KC_Seq,    // sequence,   id in data
-	KC_Layer,  // layer hold, num in data
-	KC_Func,   // special,
-	KC_InfAll
-};
+const int KC_MaxLayers = 8;
 
-const uint8_t KC_MaxLayers = 8;
-
-struct KC_Key
+struct KC_Key  // for each scan code
 {
-	KC_Info info;
-	uint8_t layUse;  // KC_MaxLayers x 1bit
+	uint32_t layUse;  // KC_MaxLayers x 1bit
 	std::vector<uint8_t> data;
 
-	KC_Key()
-		:info(KC_1Key)
-		,layUse(0)  // nothing
+	KC_Key() : layUse(0)  // nothing
 	{  }
 
-	uint8_t get(int lay)  // get data for layer, if any
+	//  number of set bits
+	int numLays()
 	{
-		// layUse  1101..
-		// eg. lay 0123..  data id =
-		if (lay == 0 && (layUse & 0x1) && !data.empty())
-			return data[0];
-		return KEY_NONE;
+		uint8_t b = layUse;
+		b = b - ((b >> 1) & 0x55);
+		b = (b & 0x33) + ((b >> 2) & 0x33);
+		return (((b + (b >> 4)) & 0x0F) * 0x01);
 	}
+	//  test use bit
+	#define hasLay(n)  (layUse & (1ul << n))
+
+	//  get data for layer, if any
+	uint8_t get(uint32_t lay);
+
+	//  add data at layer
+	void add(uint8_t code, uint32_t lay);
+
+	//  remove layer data
+	void rem(uint32_t lay);
 };
 
 struct KC_Sequence
@@ -63,6 +62,19 @@ struct KC_Setup
 	// ram
 	//uint16_t adr[maxKeys];  // offset starts, if data^ was variable size
 	//uint8_t lay[sc];  //layers used
+};
+
+struct KC_Main  // state
+{
+	int nLayer = 0;
+
+	int grpStart[grpMax], grpEnd[grpMax];
+
+	KC_Setup set;
+
+	KC_Main();
+
+	void UpdLay(), Send();
 };
 
 
