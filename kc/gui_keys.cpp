@@ -60,6 +60,7 @@ void Gui::KeyPress()
 			}
 			return;
 		}
+
 		if (moveCur)  // move cursor
 		{
 			if (kBack)
@@ -78,45 +79,50 @@ void Gui::KeyPress()
 			if (drawId < 0)			 drawId += nDrawKeys;
 			return;
 		}
-		if (pickCode)  // pick code
+
+		if (pickCode)  // pick code  ----
 		{
 			if (kBack)
 			{	//  apply in kc
 				if (scId >= 0 && scId < kc.set.nkeys())
 				{
 					KC_Key& k = kc.set.keys[scId];
-					//  if has no layer, add
-					if (k.data.empty())
-						k.data.push_back(keyCode);
+					if (keyCode != KEY_NONE)
+						k.add(keyCode, nLay);
 					else
-						k.data[0] = keyCode;
+						k.rem(nLay);
 				}
 				pickCode = 0;  return;
 			}
 			if (kFps)
 			{	pickCode = 0;  return;  }
 
-			if (kRight) { // <- ->
-			if (grpFilt)
-				keyGroup += kRight;
-			else
-				keyCode += kRight * 12;
-			}
+			if (kRight)  // <- ->
+			{	if (grpFilt)
+				{	keyGroup += kRight;
+					if (keyGroup < 0)		 keyGroup = grpMax-1;
+					if (keyGroup >= grpMax)	 keyGroup = 0;
+					keyCode = kc.grpStart[keyGroup];
+				}else
+					keyCode += kRight * 12;
+			}else
 			if (kUp)	keyCode += kUp;  else
 			if (kPgUp)	keyCode += kPgUp * 4;  else
 
 			if (kEnd < 0)  // home filter
 				grpFilt = 1-grpFilt;
 
+			if (grpFilt)
+			{	if (keyCode < kc.grpStart[keyGroup])
+					keyCode = kc.grpEnd[keyGroup];
+				if (keyCode > kc.grpEnd[keyGroup])
+					keyCode = kc.grpStart[keyGroup];
+			}
+//				if (cKeyGrp[keyCode] != keyGroup)
+//					keyCode = kc.grpStart[keyGroup];
 			//  range
 			if (keyCode < 0)			  keyCode += KEYS_ALL_EXT;
 			if (keyCode >= KEYS_ALL_EXT)  keyCode -= KEYS_ALL_EXT;
-			if (keyGroup < 0)		 keyGroup = grpMax-1;
-			if (keyGroup >= grpMax)	 keyGroup = 0;
-
-			if (grpFilt)
-				if (cKeyGrp[keyCode] != keyGroup)
-					keyCode = kc.grpStart[keyGroup];
 			return;
 		}
 	}
@@ -143,12 +149,12 @@ void Gui::KeyPress()
 
 		if (kRight > 0)
 		{	//  enter modes
+			if (yy == 3)  pickCode = 1;  else
 			if (yy == 0)  pressKey = 1;  else
-			if (yy == 1)  moveCur = 1;  else
-			if (yy == 3)  pickCode = 1;
-		}else
-		if (kPgUp && yy == 2)  // adj val
-			ADD(nLay, kPgUp, 8,0)
+			if (yy == 1)  moveCur = 1;
+		}
+		if (kRight)  // chg lay
+			if (yy == 2)  ADD(nLay, kRight, 8,0)
 		return;
 	}
 	/*	BIG mapping ..

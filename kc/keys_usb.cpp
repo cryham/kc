@@ -45,7 +45,7 @@ const char* cKeyStr[KEYS_ALL_EXT]={
 	"1","2","3","4","5","6","7","8","9","0",
 
 	"Ent", "Esc", "Bck", "Tab", "Spc", "Menu",
-	"CapsL", "PtSc", "ScrL", "Break", "NumL",
+	"CapsL", "PtScr", "ScrL", "Break", "NumL",
 	"-", "=", "[","]", "\\", "N\\", ";", "\'", "`", ",",".", "/", "O\\",
 
 	"F1","F2","F3","F4","F5","F6","F7","F8","F9","F10","F11","F12",
@@ -58,18 +58,18 @@ const char* cKeyStr[KEYS_ALL_EXT]={
 	"F13","F14","F15","F16","F17","F18","F19","F20","F21","F22","F23","F24",
 
 	"Play", "Pause", "Rec", "Forw", "Rew", "Next", "Prev", "Stop",
-	"Ejct", "Rand", "PlPau", "PlSkp",
+	"Eject", "Randm", "PlPau", "PlSkp",
 
 	"Mute", "Vol+", "Vol-",
-	"PowOff", "Sleep", "WakeUp",
+	"Power", "Sleep", "Wake",
 
 	"All",  // ext
 	"D0", "D1", "D2", "D3", "D4", "D5", "D6", "D7",
 
 	"Fun0", "Fun1", "Fun2", "Fun3", "Fun4",	"Fun5", "Fun6", "Fun7", "Fun8", "Fun9",
 
-	"L0", "L1", "L2", "L3", "L4", "L5", "L6", "L7",
-	"L8", "L9", "L10", "L11", "L12", "L13", "L14", "L15",
+	"L1", "L2", "L3", "L4", "L5", "L6", "L7", "L8",
+	"L9", "L10", "L11", "L12", "L13", "L14", "L15", "L16",
 
 	"S0","S1","S2","S3","S4","S5","S6","S7","S8","S9",
 	"S10","S11","S12","S13","S14","S15","S16","S17","S18","S19",
@@ -127,7 +127,7 @@ const uint8_t cKeyGrp[KEYS_ALL_EXT]=
 const char* cGrpName[grpMax]={
 	"None","Modifier","Letter","Digit","Long","Function", // 5
 	"Arrows","Sybmol","Numpad", "Function2","Media", "Volume,System", // 12
-	"padding", "Display funct", "Layer", "Sequence", // 15
+	"padding-", "Display funct", "Layer", "Sequence", // 15
 };
 
 //  group colors  r,g,b and mul rgb fade

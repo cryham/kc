@@ -3,7 +3,11 @@
 #include <vector>
 #include "keys_usb.h"
 
-
+/*  size:
+  18x8 = 144  x 16L = 2304B max
+  60 seq * 20 = 1200B  E=3500 big /ram
+  144 *1+2L = 432B + 10seq *15  E=600B
+*/
 const int KC_MaxLayers = 8;
 
 struct KC_Key  // for each scan code
@@ -64,7 +68,7 @@ struct KC_Setup
 	//uint8_t lay[sc];  //layers used
 };
 
-struct KC_Main  // state
+struct KC_Main  // main, state
 {
 	int nLayer = 0;
 
@@ -81,14 +85,6 @@ struct KC_Main  // state
 #if 0
   - all in ram  > eeprom 32kB
 
-  > syntax 	18x8 = 144 =ca
-	1st ca: L layer occupancy 8bits per key, 8lay max
-
-	2nd var: 2-8 bytes: I, K x times used layers, from L
-	  I bits: if single key K, or seq id in K
-	  K (or I): extra codes for: layer keys, menu or const, mouse,
-	  ^add ram arr[sc] for offset starts
-
 	3rd var: byte seq num, word seq starts adr, len auto
 	  then var seq bytes: keys or cmd eg. delay, modif dn,up?
 
@@ -96,8 +92,4 @@ struct KC_Main  // state
 	int8_t edit;   // seq 0 view / 1 edit
 	int8_t edins;  // 1 ins 0 overwrite
 	int8_t slot, page, edpos;  // edit vars
-	void SeqClear(int8_t q);
-	uint8_t tBlnk;  // cur blink anim
-	uint8_t seql[iSlots];  // lengths of each seq, 0 empty
-	uint8_t seq[iSlots][iSeqLen];  // sequence data
 #endif

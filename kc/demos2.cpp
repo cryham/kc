@@ -38,12 +38,12 @@ const static int  cw[3/*set*/][8] = {  /* centers, amplitudes
   cx w1,w2   cy w1,w2   ax w1,w2   ay w1,w2  */
 { 496, 402,  130, 180,  222, 262,  362, 282 },
 { 396, 302,  250, 320,  222, 312,  482, 342 },
-{ 696, 672,  320, 320,  342, 242,  442, 542 }};
-	
+{ 756, 472,   10, 620,  322, 402,  402, 542 }};
+
 void Demos::CK_logo()
 {
 	#define K 1024  // wave																		// scale ofs
-	#define CX(x) {  x= w-cx;  x=( (x*(K +ax*Cos(8*w      +tt[0])/SY*Sin(7*w      +tt[1])/SY) /K) +cx)/7 +13;  }
+	#define CX(x) {  x= w-cx;  x=( (x*(K +ax*Cos(8*w      +tt[0])/SY*Sin(7*w      +tt[1])/SY) /K) +cx)/7 +14;  }
 	#define CY(y) {  y= w-cy;  y=( (y*(K +ay*Cos(9*w+ x*73+tt[2])/SY*Sin(6*w+ x*52+tt[3])/SY) /K) +cy)/6 +(w2 ? 16 :7);  }
 
 	const uint tt[4] = {t*7,t*5,t*8,t*5};
@@ -435,11 +435,11 @@ void Demos::Hedrons()
 	case 2:
 		for (a=0; a < NP; ++a)
 		for (i=0; i < a && i < NP; i+=2)
-			d->drawLine( px[a],py[a], px[i],py[i], RGB(10+i, 7+a, 5+(a+i)/4));  break;
+			d->drawLine( px[a],py[a], px[i],py[i], RGB(5+i, 5+a, 5+(a+i)/4));  break;
 	case 3:
-		for (a=0; a < NP; ++a)
+		for (a=0; a < NP; a+=2)
 		for (i=0; i < a && i < NP; ++i)
-			d->drawLine( px[a],py[a], px[i],py[i], RGB(10, 5+a, 10+i));  break;
+			d->drawLine( px[a],py[a], px[i],py[i], RGB((a+i)/3, a/2, i+5));  break;
 	}
 
 	//  draw near/visible edges  --

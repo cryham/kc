@@ -25,10 +25,10 @@ void KC_Main::UpdLay()
 			//  get from kc
 			uint8_t code = set.keys[id].get(/*nLayer*/0);
 
-			if (code >= K_Layer0 && code <= K_Layer7)  //15
+			if (code >= K_Layer1 && code <= K_Layer15)  //7 16-
 			{
 				//  set layer, hold  todo
-				if (on)   nLayer = code - K_Layer0;
+				if (on)   nLayer = code - K_Layer1 + 1;
 				else
 				if (off)  nLayer = 0;  // defLay par
 
@@ -99,7 +99,7 @@ uint8_t KC_Key::get(uint32_t lay)
 	return KEY_NONE;
 }
 
-//  add data at layer
+//  add data at layer,  code > KEY_NONE
 void KC_Key::add(uint8_t code, uint32_t lay)
 {
 	layUse |= 1ul << lay;  // set use bit

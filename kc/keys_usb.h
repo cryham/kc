@@ -45,9 +45,8 @@ enum EKeys  // byte key codes
 	K_Fun1, K_Fun2, K_Fun3, K_Fun4,	K_Fun5, K_Fun6, K_Fun7, K_Fun8, K_Fun9,
 
 	//  layer switch  hold/set etc config elsewhere
-	K_Layer0, Keys_All = K_Layer0, // num of
-	K_Layer1, K_Layer2, K_Layer3, K_Layer4, K_Layer5, K_Layer6, K_Layer7,
-	K_Layer8, K_Layer9, K_Layer10, K_Layer11, K_Layer12, K_Layer13, K_Layer14, K_Layer15,
+	K_Layer1, K_Layer2, K_Layer3, K_Layer4, K_Layer5, K_Layer6, K_Layer7, K_Layer8,
+	K_Layer9, K_Layer10, K_Layer11, K_Layer12, K_Layer13, K_Layer14, K_Layer15, K_Layer16,
 
 	//  sequences
 	K_Seq0, K_S1,K_S2,K_S3,K_S4,K_S5,K_S6,K_S7,K_S8,K_S9,
