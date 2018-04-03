@@ -43,6 +43,8 @@ enum EKeys  // byte key codes
 	//  display, quick func
 	K_Fun0, K_Special0=K_Fun0,  // < Start
 	K_Fun1, K_Fun2, K_Fun3, K_Fun4,	K_Fun5, K_Fun6, K_Fun7, K_Fun8, K_Fun9,
+	//  todo mouse
+	//M_LMB, M_RMB, M_MMB, M_Left, M_Right, M_Up, M_Dn,
 
 	//  layer switch  hold/set etc config elsewhere
 	K_Layer1, K_Layer2, K_Layer3, K_Layer4, K_Layer5, K_Layer6, K_Layer7, K_Layer8,

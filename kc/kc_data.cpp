@@ -27,10 +27,10 @@ void KC_Main::UpdLay()
 
 			if (code >= K_Layer1 && code <= K_Layer15)  //7 16-
 			{
-				//  set layer, hold  todo
+				//  set layer, hold
 				if (on)   nLayer = code - K_Layer1 + 1;
 				else
-				if (off)  nLayer = 0;  // defLay par
+				if (off)  nLayer = 0;  // todo defLay par
 
 				if (nLayer >= KC_MaxLayers-1)
 					nLayer = KC_MaxLayers-1;
@@ -51,26 +51,31 @@ void KC_Main::Send()
 	for (r=0; r < NumRows; ++r)
 	{
 		id = NumCols * r + c;  // scan id
-		const KeyState& k = Matrix_scanArray[id];
+		KeyState& k = Matrix_scanArray[id];
 		//  state
 		bool on = k.state == KeyState_Press;
 		bool off = k.state == KeyState_Release;
 		if (on || off)
 		if (id < set.nkeys())
 		{
-			//  get from kc
-			uint8_t code = set.keys[id].get(nLayer);
-
-			if (code > KEY_NONE && code < KEYS_ALL)
-			{
-				//  send 1 key
-				uint usb = cKeyUsb[code];
-				if (on)
+			if (on)
+			{	//  get code for current layer
+				uint8_t code = set.keys[id].get(nLayer);
+				if (code > KEY_NONE && code < KEYS_ALL)
 				{
-					Keyboard.press(usb);
-					Keyboard.send_now();
+					//  if 1 key, send
+					uint usb = cKeyUsb[code];
+					if (on)
+					{	//  save layer of press
+						k.layerOn = nLayer;
+						Keyboard.press(usb);
+						Keyboard.send_now();
+					}
 				}
-				else if (off)
+			}else if (off)
+			{	//  send for layer it was pressed on
+				uint8_t code = set.keys[id].get(k.layerOn);
+				uint usb = cKeyUsb[code];
 				{
 					Keyboard.release(usb);
 					Keyboard.send_now();

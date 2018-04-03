@@ -253,6 +253,6 @@ void Gui::DrawSequences()
 {
 	d->print(strMain[ym]);  d->setFont(0);
 
-	// todo ..
+	// todo seqs ..
 //	for ()
 }

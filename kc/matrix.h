@@ -116,7 +116,9 @@ typedef struct KeyState {
 	KeyPosition     prevState;
 	KeyPosition     curState;
 	uint32_t        prevDecisionTime;
-	KeyPosition     state;  // final after ghost
+	KeyPosition  state;  // final after ghost
+	int16_t  autoRepeat;  // auto repeat, press time, for gui
+	int8_t       layerOn;  // layer on which key was pressed
 } KeyState;
 
 #ifdef GHOSTING_MATRIX
@@ -155,7 +157,6 @@ extern void Matrix_setup();
 extern void Matrix_scan( uint16_t scanNum );  // todo ? ..
 
 extern KeyState Matrix_scanArray[ScanKeys];
-extern int16_t Matrix_autoRepeat[ScanKeys];  // auto repeat, press time, for gui
 
 #ifdef	__cplusplus
 }

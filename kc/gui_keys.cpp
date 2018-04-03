@@ -199,7 +199,7 @@ int8_t Gui::kr(int8_t c, int8_t r, uint16_t dt)
 {
 	int i = c * NumCols + r;
 	KeyPosition st = Matrix_scanArray[i].state;
-	int16_t& m = Matrix_autoRepeat[i];
+	int16_t& m = Matrix_scanArray[i].autoRepeat;
 
 	if (st == KeyState_Press)
 	{

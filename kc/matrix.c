@@ -4,7 +4,6 @@
 
 // Debounce Array
 KeyState Matrix_scanArray[ScanKeys];
-int16_t Matrix_autoRepeat[ScanKeys];  // auto repeat, press time, for gui
 
 // Ghost Arrays
 #ifdef GHOSTING_MATRIX
@@ -162,12 +161,15 @@ void Matrix_setup()
 	// Clear out Debounce Array
 	for ( uint8_t item = 0; item < ScanKeys; item++ )
 	{
-		Matrix_autoRepeat[item] = 0;
 		Matrix_scanArray[ item ].prevState        = KeyState_Off;
 		Matrix_scanArray[ item ].curState         = KeyState_Off;
 		Matrix_scanArray[ item ].activeCount      = 0;
 		Matrix_scanArray[ item ].inactiveCount    = DebounceDivThreshold_define; // Start at 'off' steady state
 		Matrix_scanArray[ item ].prevDecisionTime = 0;
+
+		Matrix_scanArray[ item ].state = KeyState_Off;
+		Matrix_scanArray[ item ].autoRepeat = 0;
+		Matrix_scanArray[ item ].layerOn = 0;
 		#ifdef GHOSTING_MATRIX
 		Matrix_ghostArray[ item ].prev            = KeyState_Off;
 		Matrix_ghostArray[ item ].cur             = KeyState_Off;
