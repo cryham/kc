@@ -50,8 +50,17 @@ struct Gui
 	int8_t kRight=0, kUp=0,  kPgUp=0, kEnd=0,
 			kBack=0, kEnt=0,  kCtrl=0, kSh=0,  kInf=0, kFps=0;
 
+
 	//  Sequences  - - - -
-	int8_t editSeq=0, seqId=0;
+	int8_t editSeq=0;
+	int8_t edit = 0;   // seq 0 view / 1 edit
+	int8_t edins = 0;  // 1 ins 0 overwrite
+	int8_t slot, page, edpos;  // edit vars
+	int seqId()
+	{	return slot + page*iPage;  }
+
+	int8_t tBlnk = 0;
+	const int8_t cBlnk = 200, iPage = 10, iSlots = 60;
 
 	//	int16_t tInfo, infType, memSize;  // info text vars
 	char a[128];  // temp str

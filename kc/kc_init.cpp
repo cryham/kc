@@ -53,7 +53,8 @@ void KC_Setup::InitCK1_8x6()
 			KC_Key& kk = keys[dk.sc];
 			kk.add(dk.code, 0);
 
-			//  manual override
+
+			//  override  --*
 			if (dk.code == K_INS)
 				kk.add(K_Layer1, 0);
 			else
@@ -87,4 +88,29 @@ void KC_Setup::Clear()
 
 	keys.clear();
 	seqs.clear();
+
+	KC_Sequence sq;  // empty
+	//  const size
+	for (int i=0; i < /*iSlots*/60; ++i)
+		seqs.push_back(sq);
+
+
+	//  examples  --*
+	sq.data.push_back(K_A);
+	sq.data.push_back(K_B);
+	sq.data.push_back(K_C);
+	seqs[2] = sq;
+
+	sq.data.clear();
+	sq.data.push_back(K_1);
+	sq.data.push_back(K_2);
+	seqs[5] = sq;
+
+	sq.data.clear();
+	sq.data.push_back(K_Q);
+	sq.data.push_back(K_E);
+	sq.data.push_back(K_LSHIFT);
+	sq.data.push_back(K_F);
+	sq.data.push_back(K_G);
+	seqs[7] = sq;
 }

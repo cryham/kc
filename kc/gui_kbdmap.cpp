@@ -245,14 +245,3 @@ void Gui::DrawMapping()
 		d->print(a);
 	}
 }
-
-
-//  Sequences kbd view, edit
-//....................................................................................
-void Gui::DrawSequences()
-{
-	d->print(strMain[ym]);  d->setFont(0);
-
-	// todo seqs ..
-//	for ()
-}

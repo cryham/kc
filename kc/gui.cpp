@@ -15,7 +15,7 @@ void Gui::Init(Ada4_ST7735* tft)
 	//menu = 1;
 	mlevel = 1;
 
-	ym = 1;
+	ym = 2;
 	for (int i=0; i < M_All; ++i)
 		ym1[i]=0;
 	
@@ -30,4 +30,7 @@ void Gui::Init(Ada4_ST7735* tft)
 	pressKey=0;  moveCur=0;  pickCode=0;
 
 	krDelay=250;  krRepeat=80;  // ms
+
+	edit = 0;  edins = 1;
+	slot=0; page=0; edpos=0;
 }

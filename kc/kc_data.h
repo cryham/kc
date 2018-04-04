@@ -6,7 +6,7 @@
 /*  size:
   18x8 = 144  x 16L = 2304B max
   60 seq * 20 = 1200B  E=3500 big /ram
-  144 *1+2L = 432B + 10seq *15  E=600B
+  144 *1+2L = 432B + 10seq *15  E=600B small
 */
 const int KC_MaxLayers = 8;
 
@@ -43,6 +43,7 @@ struct KC_Sequence
 {
 	//  var length
 	std::vector<uint8_t> data;
+	int len() {  return int(data.size());  }
 };
 
 struct KC_Setup
@@ -80,16 +81,3 @@ struct KC_Main  // main, state
 
 	void UpdLay(), Send();
 };
-
-
-#if 0
-  - all in ram  > eeprom 32kB
-
-	3rd var: byte seq num, word seq starts adr, len auto
-	  then var seq bytes: keys or cmd eg. delay, modif dn,up?
-
-	//  MSeq  ----  seq edit vars
-	int8_t edit;   // seq 0 view / 1 edit
-	int8_t edins;  // 1 ins 0 overwrite
-	int8_t slot, page, edpos;  // edit vars
-#endif

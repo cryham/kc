@@ -127,6 +127,7 @@ void Gui::KeyPress()
 	}
 	//............................................
 
+
 	//  Add+  <back global
 	if (kBack && mlevel > 0)
 		--mlevel;
@@ -138,7 +139,129 @@ void Gui::KeyPress()
 		return;
 	}
 
+
+	//  sequence list
+	//--------------------------------------------
+	if (mlevel == 1 && ym == M_Sequences)
+	{
+		int q = seqId();
+		int len = kc.set.seqs[q].len();
+		std::vector<uint8_t>& dt = kc.set.seqs[q].data;
+
+		if (edit)
+		{			//  edit sequence  ----
+			uint8_t edkey = 0;  // none
+			//if (lay2)
+			{	//  move cursor
+				if (kPgUp > 0)  edpos = 0;
+				if (kPgUp < 0)  edpos = len;
+
+				if (kUp > 0)  if (edpos > 0)  --edpos;
+				if (kUp < 0)  if (edpos < len)  ++edpos;
+
+				/*if (key(DELETE) || keyp(5))
+				if (seql[q] > 0)
+				{
+				#if 0
+					int i = edpos;  // del>
+				#else
+					int i = max(0, edpos-1);  // <del
+					edpos = i;  //
+				#endif
+					for (; i < seql[q]; ++i)
+						seq[q][i] = seq[q][i+1];
+					--seql[q];
+					if (edpos > seql[q])
+						edpos = seql[q];
+				}*/
+				if (kCtrl) //key(INSERT) || keyp(PLUS))
+					edins = 1 - edins;  // ins/ovr
+				//if (kEnt)  SeqClear(q);  // erase
+
+				//if (key(F1))  edkey = 1;  // set delay cmd
+				//if (key(F2))  edkey = 2;  // wait cmd
+			}
+			if (edkey > 0)
+			{
+				//  find key, if none
+				/*uint8_t k = 3;
+				while (edkey==0 && k < 0xF0)
+				{
+					if (kk[k] && !kko[k] && k != KEY_EDIT)
+						edkey = k;
+					else  ++k;
+				}
+				//  add key to sequence
+				if (edkey > 0 && edpos < iSeqLen-1)
+				if (edpos == seql[q])  // at end
+				{
+					seq[q][edpos] = edkey;
+					edpos++;  seql[q]++;
+				}else
+				if (edins)  // insert
+				{
+					for (int i=seql[q]; i > edpos; --i)
+						seq[q][i] = seq[q][i-1];
+					seq[q][edpos] = edkey;
+					edpos++;  seql[q]++;
+				}
+				else  // overwrite
+				{	seq[q][edpos] = edkey;
+					if (edpos < seql[q])  ++edpos;
+				}*/
+			}
+		}else
+		{	/*if (key(S) || key(INSERT))  // save
+			{	Save();  tInfo = -1;
+			}
+			if (key(BACKSPACE))  // load
+			{	Load();  tInfo = -1;
+			}*/
+
+			if (kUp > 0)  // move
+			{	++slot;  if (slot >= iPage) {  slot = 0;
+				++page;  if (page >= iSlots/iPage)  page = 0;
+			}	}
+			if (kUp < 0)
+			{	--slot;  if (slot < 0) {  slot = iPage-1;
+				--page;  if (page < 0)  page = iSlots/iPage-1;
+			}	}
+			if (kPgUp > 0)  // page
+			{	++page;  if (page >= iSlots/iPage)  page = 0;
+			}
+			if (kPgUp < 0)
+			{	--page;  if (page < 0)  page = iSlots/iPage-1;
+			}
+
+			/*if (key(C))  // copy
+			{	sql = seql[q];
+				for (int i=0; i < sql; ++i)  sq[i] = seq[q][i];
+				infType = 3;  tInfo = -1;
+			}
+			//  paste, set
+			if (key(Z) || key(V))
+			if (sql < iSeqLen)
+			{	seql[q] = sql;
+				for (int i=0; i < sql; ++i)  seq[q][i] = sq[i];
+				infType = 4;  tInfo = -1;
+			}*/
+		}
+
+		if (kEnt)  //  toggle edit  ----
+		{
+			edit = 1-edit;
+			if (edit)  // enter edit
+			{
+				//if (edpos > len)  // if
+				edpos = len;  // end
+			}
+		}
+		return;
+	}
+
+
 	//  mapping edit  ----
+	//............................................
 	if (mlevel == 1 && ym == M_Mapping)
 	{
 		#define ADD(v,a,ma,mi)  {  v+=a;  if (v >= ma)  v = mi;  if (v < mi)  v = ma-1;  }
@@ -156,14 +279,6 @@ void Gui::KeyPress()
 			if (yy == 2)  ADD(nLay, kRight, 8,0)
 		return;
 	}
-	/*	BIG mapping ..
-		display:
-			layer change, or all
-		layout keys colored by:
-			1 bound cnt /or not, 2 sequence id, 3 layer use
-		status page:
-			cnt all mapped, unmapped scan codes, duplicates
-	*/
 
 
 	if (mlevel == 1)  //  sub menu
@@ -183,7 +298,6 @@ void Gui::KeyPress()
 	#endif
 }
 //....................................................................................
-
 
 
 //  utils
