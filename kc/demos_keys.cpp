@@ -16,6 +16,7 @@ void Demos::Init(Ada4_ST7735* tft)
 	
 #ifdef DEMOS  // params
 	iFps = 0;  iInfo = 0;
+	fntCur = 0;
 
 	einit = INone;
 	sCnt = 3*sMax/4;  sVel = 10;  //16 stars
@@ -26,10 +27,12 @@ void Demos::Init(Ada4_ST7735* tft)
 	
 	fInt = 5;  fWave = 1;  // fountain
 
-	ngt = 0;  ngCur = 12;  ngRot = 0;  // ngons
-	hdtOn = 1;
+	ngtOn = 1;  // ngons
+	ngt = 0;  ngCur = 12;  ngRot = 0;
+
+	hdtOn = 1;  // hedrons
 	hdt = 0;  hdCur = hdA-5;  hdRot = 0;
-	hdSpd = 1;  hdDiag = 1;  // hedrons
+	hdSpd = 1;  hdDiag = 1;
 
 	ckCur = 0;  ckSpeed = 6;  // logo
 

@@ -109,18 +109,17 @@ void Gui::KeyPress()
 			if (kUp)	keyCode += kUp;  else
 			if (kPgUp)	keyCode += kPgUp * 4;  else
 
-			if (kEnd < 0)  // home filter
+			if (kEnd < 0)  // home  filter
 				grpFilt = 1-grpFilt;
 
+			//  grp range
 			if (grpFilt)
 			{	if (keyCode < kc.grpStart[keyGroup])
 					keyCode = kc.grpEnd[keyGroup];
 				if (keyCode > kc.grpEnd[keyGroup])
 					keyCode = kc.grpStart[keyGroup];
 			}
-//				if (cKeyGrp[keyCode] != keyGroup)
-//					keyCode = kc.grpStart[keyGroup];
-			//  range
+			//  all range
 			if (keyCode < 0)			  keyCode += KEYS_ALL_EXT;
 			if (keyCode >= KEYS_ALL_EXT)  keyCode -= KEYS_ALL_EXT;
 			return;

@@ -41,14 +41,17 @@ struct Gui
 
 
 	//  Mapping  - - - -
-	int16_t nLay=0, scId=0, drawId=-1,
+	int16_t keyCode=0;
+	int8_t nLay=0, scId=0, drawId=-1,
 		pressKey=0, moveCur=0, pickCode=0, // edit operations
-		keyCode=0;
-	int8_t keyGroup=0, grpFilt=0;  // group filter
+		keyGroup=0, grpFilt=0;  // group filter
 
 	//  keys pressed, some +-1
 	int8_t kRight=0, kUp=0,  kPgUp=0, kEnd=0,
 			kBack=0, kEnt=0,  kCtrl=0, kSh=0,  kInf=0, kFps=0;
+
+	//  Sequences  - - - -
+	int8_t editSeq=0, seqId=0;
 
 	//	int16_t tInfo, infType, memSize;  // info text vars
 	char a[128];  // temp str
