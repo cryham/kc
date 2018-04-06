@@ -41,14 +41,14 @@ typedef struct GPIO_Pin {
 
 
 //  ---- Pinout ----
-#define T3_0  gpio(B,16)
-#define T3_1  gpio(B,17)
-#define T3_2  gpio(D,0 )
-#define T3_3  gpio(A,12)
-#define T3_4  gpio(A,13)
-#define T3_5  gpio(D,7 )
-#define T3_6  gpio(D,4 )
-#define T3_7  gpio(D,2 )
+#define T3_0  gpio(B,16) //-1
+#define T3_1  gpio(B,17) //-2
+#define T3_2  gpio(D,0 ) //-3
+#define T3_3  gpio(A,12) //-4
+#define T3_4  gpio(A,13) //-5
+#define T3_5  gpio(D,7 ) //-6
+#define T3_6  gpio(D,4 ) //-7
+#define T3_7  gpio(D,2 ) //-8
 #define T3_8  gpio(D,3 )
 #define T3_9  gpio(C,3 ) //spi
 #define T3_10 gpio(C,4 ) //spi
@@ -57,25 +57,25 @@ typedef struct GPIO_Pin {
 #define T3_13 gpio(C,5 ) //spi
 #define T3_14 gpio(D,1 )
 #define T3_15 gpio(C,0 )
-#define T3_16 gpio(B,0 )
-#define T3_17 gpio(B,1 )
-#define T3_18 gpio(B,3 )
-#define T3_19 gpio(B,2 )
-#define T3_20 gpio(D,5 )
-#define T3_21 gpio(D,6 )
-#define T3_22 gpio(C,1 )
-#define T3_23 gpio(C,2 )
-#define T3_24 gpio(A,5 )
-#define T3_25 gpio(B,19)
-#define T3_26 gpio(E,1 )
-#define T3_27 gpio(C,9 )
-#define T3_28 gpio(C,8 )
-#define T3_29 gpio(C,10)
-#define T3_30 gpio(C,11)
-#define T3_31 gpio(E,0 )
-#define T3_32 gpio(B,18)
-#define T3_33 gpio(A,4 )
-#define T3_40 gpio(A,14) //dac
+#define T3_16 gpio(B,0 ) //|1
+#define T3_17 gpio(B,1 ) //|2
+#define T3_18 gpio(B,3 ) //|3
+#define T3_19 gpio(B,2 ) //|4
+#define T3_20 gpio(D,5 ) //|5
+#define T3_21 gpio(D,6 ) //|6
+#define T3_22 gpio(C,1 ) //|7
+#define T3_23 gpio(C,2 ) //|8
+#define T3_24 gpio(A,5 ) //|9
+#define T3_25 gpio(B,19) //|10
+#define T3_26 gpio(E,1 ) //|11
+#define T3_27 gpio(C,9 ) //|12
+#define T3_28 gpio(C,8 ) //|13
+#define T3_29 gpio(C,10) //|14
+#define T3_30 gpio(C,11) //|15
+#define T3_31 gpio(E,0 ) //|16
+#define T3_32 gpio(B,18) //|17
+#define T3_33 gpio(A,4 ) //|18
+#define T3_40 gpio(A,14) //dac todo led
 
 
 //  ----***  Matrix  ***----

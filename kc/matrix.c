@@ -133,7 +133,9 @@ uint8_t Matrix_pin( GPIO_Pin gpio, Type type )
 	return 0;
 }
 
-// Setup GPIO pins for matrix scanning
+
+//  Setup  GPIO pins for matrix scanning
+// . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
 void Matrix_setup()
 {
 	// Setup Strobe Pins
@@ -159,21 +161,24 @@ void Matrix_setup()
 	}
 
 	// Clear out Debounce Array
-	for ( uint8_t item = 0; item < ScanKeys; item++ )
+	for (uint8_t i = 0; i < ScanKeys; ++i)
 	{
-		Matrix_scanArray[ item ].prevState        = KeyState_Off;
-		Matrix_scanArray[ item ].curState         = KeyState_Off;
-		Matrix_scanArray[ item ].activeCount      = 0;
-		Matrix_scanArray[ item ].inactiveCount    = DebounceDivThreshold_define; // Start at 'off' steady state
-		Matrix_scanArray[ item ].prevDecisionTime = 0;
+		#define mk Matrix_scanArray[i]
+		mk.prevState        = KeyState_Off;
+		mk.curState         = KeyState_Off;
+		mk.activeCount      = 0;
+		mk.inactiveCount    = DebounceDivThreshold_define; // Start at 'off' steady state
+		mk.prevDecisionTime = 0;
 
-		Matrix_scanArray[ item ].state = KeyState_Off;
-		Matrix_scanArray[ item ].autoRepeat = 0;
-		Matrix_scanArray[ item ].layerOn = 0;
+		mk.state = KeyState_Off;
+		mk.autoRepeat = 0;
+		mk.layerOn = 0;
+
 		#ifdef GHOSTING_MATRIX
-		Matrix_ghostArray[ item ].prev            = KeyState_Off;
-		Matrix_ghostArray[ item ].cur             = KeyState_Off;
-		Matrix_ghostArray[ item ].saved           = KeyState_Off;
+		#define mg Matrix_ghostArray[i]
+		mg.prev  = KeyState_Off;
+		mg.cur   = KeyState_Off;
+		mg.saved = KeyState_Off;
 		#endif
 	}
 
@@ -186,7 +191,8 @@ void Matrix_setup()
 }
 
 
-// Scan the matrix for keypresses
+//  Scan  the matrix for keypresses
+// . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
 // NOTE: scanNum should be reset to 0 after a USB send (to reset all the counters)
 void Matrix_scan( uint16_t scanNum )
 {
@@ -444,5 +450,4 @@ void Matrix_scan( uint16_t scanNum )
 		}
 	}
 #endif
-	// . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
 }

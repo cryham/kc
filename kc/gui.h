@@ -48,7 +48,8 @@ struct Gui
 
 	//  keys pressed, some +-1
 	int8_t kRight=0, kUp=0,  kPgUp=0, kEnd=0,
-			kBack=0, kEnt=0,  kCtrl=0, kSh=0,  kInf=0, kFps=0;
+			kBack=0, kEnt=0,  kCtrl=0, kSh=0,  kInf=0, kFps=0,
+			kIns=0, kDel=0;
 
 
 	//  Sequences  - - - -

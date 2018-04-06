@@ -23,6 +23,7 @@ void Gui::KeyPress()
 	kBack = Key(0,6);  kEnt = Key(4,0);  // Add+  Ent
 	kCtrl = KeyH(3,4); kSh  = 0;  // Ins
 	kInf  = Key(4,1);  kFps = Key(5,1);  // Mul*  Sub-
+	kIns = Key(3,4);   kDel = Key(1,4);  // edit seq
 
 	//kF12 = Key(5,0) - Key(3,0);  // F12  F11  //Key(2,0);  \|
 
@@ -151,15 +152,15 @@ void Gui::KeyPress()
 		if (edit)
 		{			//  edit sequence  ----
 			uint8_t edkey = 0;  // none
-			//if (lay2)
+			//if (lay2)  //` switch..
 			{	//  move cursor
 				if (kPgUp > 0)  edpos = 0;
 				if (kPgUp < 0)  edpos = len;
 
-				if (kUp > 0)  if (edpos > 0)  --edpos;
-				if (kUp < 0)  if (edpos < len)  ++edpos;
+				if (kRight > 0)  if (edpos > 0)  --edpos;
+				if (kRight < 0)  if (edpos < len)  ++edpos;
 
-				/*if (key(DELETE) || keyp(5))
+				/*if (kDel)
 				if (seql[q] > 0)
 				{
 				#if 0
@@ -174,7 +175,7 @@ void Gui::KeyPress()
 					if (edpos > seql[q])
 						edpos = seql[q];
 				}*/
-				if (kCtrl) //key(INSERT) || keyp(PLUS))
+				if (kIns)
 					edins = 1 - edins;  // ins/ovr
 				//if (kEnt)  SeqClear(q);  // erase
 
