@@ -54,8 +54,9 @@ struct KC_Setup
 	uint8_t rows, cols, scanKeys;
 	// ver num or date saved-
 
-	std::vector<KC_Key> keys;  // size scanKeys
+	std::vector<KC_Key> keys;  // size scanKeys, maps scan to byte codes
 	std::vector<KC_Sequence> seqs;
+	KC_Sequence copy;  // for paste, swap
 
 	int nkeys(){  return keys.size();  }
 	int nseqs(){  return seqs.size();  }
@@ -71,13 +72,14 @@ struct KC_Setup
 
 struct KC_Main  // main, state
 {
-	int nLayer = 0;
+	int8_t nLayer = 0;
+	int8_t inSeq = -1;  // seq id running
 
-	int grpStart[grpMax], grpEnd[grpMax];
+	uint8_t grpStart[grpMax], grpEnd[grpMax];
 
 	KC_Setup set;
 
 	KC_Main();
 
-	void UpdLay(), Send();
+	void UpdLay(), Send(uint32_t ms);
 };

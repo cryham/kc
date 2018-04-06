@@ -52,7 +52,7 @@ void main_periodic()
 	kc.UpdLay();
 
 	if (gui.kbdSend)
-		kc.Send();
+		kc.Send(ms);
 
 
 	//  147 us: strobe del 4  131: 3  115: 2  90: 0

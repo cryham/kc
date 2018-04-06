@@ -16,22 +16,27 @@ void Gui::DrawSequences()
 {
 	//d->print(strMain[ym]);  d->setFont(0);
 
-	if (!edit)
+	if (!edit)  //  View  ----------
 	{
 		d->setTextColor(RGB(20,27,27));
 		d->print("View");  d->setFont(0);
 		d->setTextColor(RGB(20,25,30));
 
 		//  list slots
-		int s = page * iPage, i,n, xm;
+		int s = page * iPage, i,n, xm, y;
 		for (i=0; i < iPage && s < iSlots; ++i,++s)
 		{
-			d->setCursor(0, 28 + i*9);  //16 + i*8
-			//d->print(i==slot ? "\x10":" ");   d->print(s);  d->print(": ");
-			sprintf(a,"%2d",s);
-			d->setTextColor(RGB(15,25,20));
-			d->print(a);  d->print(i==slot ? "\x10 ":"  ");
-			d->setTextColor(RGB(20,25,30));
+			y = 28 + i*9;
+			d->setCursor(0, y);
+			d->setTextColor(RGB(20,30,25));
+			sprintf(a,"%2d",s);  d->print(a);
+			d->setTextColor(RGB(31,31,20));
+			if (i == slot)  d->print("\x10");
+			d->setTextColor(RGB(20,31,31));
+			d->setCursor(2*6, y);
+			if (s == cpId)  d->print("\x7");
+			d->setCursor(4*6, y);
+			int q = abs(i - slot);
 
 			//  write sequence  ---
 			n=0;  xm=1;
@@ -39,6 +44,9 @@ void Gui::DrawSequences()
 			{
 				uint8_t z = kc.set.seqs[s].data[n];
 				const char* st = cKeyStr[z];
+				int g = cKeyGrp[z];
+				FadeClr(&cGrpRgb[g][0][0], &cGrpRgb[g][1][0], 9, q, 3);
+
 				if (d->getCursorX() + 6*strlen(st) >= W -6*2)  // outside
 				{	d->print(".");  d->moveCursor(-3,0);
 					d->print(".");  xm = 0;  // more sign
@@ -49,73 +57,80 @@ void Gui::DrawSequences()
 			}	}
 		}
 		//  page, center   /
-		d->setCursor(W/2, 4);
-		sprintf(a,"%2d/%d", page+1,iSlots/iPage);
-		d->print(a);
+		d->setCursor(W/2 -2*6, 4);
+		sprintf(a,"%2d/%d", page+1,iSlots/iPage);  d->print(a);
 
 		///  seq key
 		/*if (tInfo == 0)
 		{	int q = seqId();
-			int l = strlen(csSeqKey[q]);
+			int l = strlen(cSeqKey[q]);
 			d->setCursor(W-1 -l*8, 4);
 			d->print(csSeqKey[q]);
 		}*/
 	}
-	else
+	else  //  Edit  ----------
 	{
 		d->setTextColor(RGB(23,23,27));
 		d->print("Edit");  d->setFont(0);
 		d->setTextColor(RGB(22,26,30));
 
 		int q = seqId();
-		d->setCursor(W-1 -2*6, 4);  d->print(q);
-		d->setCursor(W/2-6, 4);  d->print(edins ? "ins" : "ovr");
-		//d->setCursor(W-1 -2*6, H-8);  d->print(edpos);
+		d->setCursor(W-1 -2*6, 4);  sprintf(a,"%2d", q);  d->print(a);
+		d->setCursor(W/2 -2*6, 4);  d->print(edins ? "Ins" : "Ovr");
+		//d->setCursor(W/2 -3*6, 12);
+		//sprintf(a,"%d %d", edpos,l);  d->print(a);
 
 		//  write sequence  ---
-		d->setCursor(0, 22);
+		int16_t x = 1, y = 32, xx=0;
 		int n, l = kc.set.seqs[q].len();
 		for (n=0; n <= l; ++n)  // +1 for cursor
 		{
-			int16_t x = d->getCursorX(), y = d->getCursorY();
+			xx = 0;
 			if (n < l)
 			{
 				uint8_t z = kc.set.seqs[q].data[n];
-				d->print(cKeyStr[z]);  //d->print(" ");
-				d->moveCursor(z<=1 ? 0 : 2, 0);
+				int g = cKeyGrp[z];  // clr
+				int q = abs(n - edpos);
+				FadeClr(&cGrpRgb[g][0][0], &cGrpRgb[g][1][0], 9, q, 4);
+
+				xx = strlen(cKeyStr[z]) * 6 +2;
+				if (x + xx > W-1)
+				{	x = 1;  y += 8+4;  }
+
+				d->setCursor(x,y);
+				d->print(cKeyStr[z]);
 			}
 			if (n == edpos)  // show cursor
 			{
 				int16_t b = 8 - 8 * tBlnk / cBlnk;
 				if (edins)  // ins |
-					d->drawFastVLine(x, y-1-b+8, b+1, 0xFFFF);
+					d->drawFastVLine(x-1, y-1-b+8, b+1, 0xFFFF);
 				else  // ovr _
-					d->drawFastHLine(x, y+8, b+1, 0xFFFF);
+					d->drawFastHLine(x-1, y+8, b+1, 0xFFFF);
 			}
+			x += xx;  // z<=1 ? 0 : 2;  // fun delay-
 		}
 		++tBlnk;  // blink cur
 		if (tBlnk > cBlnk)  tBlnk = 0;
 	}
 
 
-	#if 0
+	//  Info operation  ----------
 	if (tInfo < 0)  // trigger
-		tInfo = 400;  // par
+		tInfo = 100;  // par
 
-	if (tInfo > 0)  //  info eeprom
+	if (tInfo > 0)
 	{	--tInfo;
-		int x = 90;
+		int x = W/2 + 6*4;
 
 		d->setFont(0);
-		d->setCursor(x, 0);
+		d->setCursor(x, 2);
 		const static char* strInf[5] = {
 			"Reset", "Loaded", "Saved:", "Copied", "Pasted" };
 		d->print(strInf[infType]);
 		if (infType == 1 || infType == 2)
 		{
-			d->setCursor(x+6, 8);
+			d->setCursor(x+6, 8+4);
 			d->print(memSize);  d->print(" B");
 	}	}
-	#endif
-
 }

@@ -43,7 +43,7 @@ void KC_Main::UpdLay()
 
 //  keyboard send
 //------------------------------------------------
-void KC_Main::Send()
+void KC_Main::Send(uint32_t ms)
 {
 	//  all matrix scan codes
 	uint c,r;  int id;
@@ -71,6 +71,11 @@ void KC_Main::Send()
 						Keyboard.press(usb);
 						Keyboard.send_now();
 					}
+				}else  // special
+				if (code >= K_Seq0 && code <= K_SeqLast
+					&& inSeq < 0)
+				{
+					inSeq = code - K_Seq0;
 				}
 			}else if (off)
 			{	//  send for layer it was pressed on

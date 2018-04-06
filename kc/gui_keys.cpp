@@ -21,11 +21,14 @@ void Gui::KeyPress()
 	kEnd  = kr(2,2,dt) - kr(0,2,dt);  // End  Hom
 
 	kBack = Key(0,6);  kEnt = Key(4,0);  // Add+  Ent
-	kCtrl = KeyH(3,4); kSh  = 0;  // Ins
+	kCtrl = KeyH(3,4); kSh  = KeyH(2,0);  // Ins  \|
 	kInf  = Key(4,1);  kFps = Key(5,1);  // Mul*  Sub-
-	kIns = Key(3,4);   kDel = Key(1,4);  // edit seq
+	//  edit seq
+	kIns = Key(3,4);   kDel = kr(1,4,dt);  kBckSp = kr(1,0,dt);
+	kCopy = Key(4,7);  kPaste =  Key(4,5);  kSwap = Key(5,5);  // C V B
+	kLoad = Key(1,7);  kSave = Key(3,7);  // F3  F4
 
-	//kF12 = Key(5,0) - Key(3,0);  // F12  F11  //Key(2,0);  \|
+	//kF12 = Key(5,0) - Key(3,0);  // F12  F11
 
 	/*	    0    1     2    3  4    5  6    7
 		0        PgUp  Hom  U  ^    R  +    E
@@ -129,95 +132,101 @@ void Gui::KeyPress()
 	//............................................
 
 
-	//  Add+  <back global
-	if (kBack && mlevel > 0)
-		--mlevel;
-
-	if (mlevel == 0)  //  main
-	{
-		if (kUp){  ym += kUp;  if (ym >= M_All)  ym = 0;  if (ym < 0)  ym = M_All-1;  }
-		if (kRight > 0)  mlevel = 1;  // enter>
-		return;
-	}
-
-
 	//  sequence list
-	//--------------------------------------------
+	//-------------------------------------------------------------------------------
 	if (mlevel == 1 && ym == M_Sequences)
 	{
+		bool lay2 = kc.nLayer == 2;
 		int q = seqId();
 		int len = kc.set.seqs[q].len();
 		std::vector<uint8_t>& dt = kc.set.seqs[q].data;
 
+		//  toggle edit  ----
+		if (kEnt && (!edit || lay2))
+		{
+			edit = 1-edit;
+			if (edit)  // enter edit
+			{
+				//if (edpos > len)  // if
+				edpos = len;  // end
+			}
+			return;
+		}
+
 		if (edit)
 		{			//  edit sequence  ----
-			uint8_t edkey = 0;  // none
-			//if (lay2)  //` switch..
+			//uint8_t fun = 0;  // none
+			if (lay2)  //` switch..
 			{	//  move cursor
-				if (kPgUp > 0)  edpos = 0;
-				if (kPgUp < 0)  edpos = len;
+				if (kEnd < 0)  edpos = 0;
+				if (kEnd > 0)  edpos = len;
 
-				if (kRight > 0)  if (edpos > 0)  --edpos;
-				if (kRight < 0)  if (edpos < len)  ++edpos;
+				if (kRight < 0)  if (edpos > 0)  --edpos;
+				if (kRight > 0)  if (edpos < len)  ++edpos;
 
-				/*if (kDel)
-				if (seql[q] > 0)
+				if ((kDel || kBckSp) && len > 0)
 				{
-				#if 0
 					int i = edpos;  // del>
-				#else
-					int i = max(0, edpos-1);  // <del
-					edpos = i;  //
-				#endif
-					for (; i < seql[q]; ++i)
-						seq[q][i] = seq[q][i+1];
-					--seql[q];
-					if (edpos > seql[q])
-						edpos = seql[q];
-				}*/
+					if (kBckSp)
+					{	i = max(0, edpos-1);  // <del
+						edpos = i;  //
+					}
+					for (; i < len-1; ++i)
+						dt[i] = dt[i+1];
+					dt.pop_back();
+					--len;
+					if (edpos > len)
+						edpos = len;
+				}
 				if (kIns)
 					edins = 1 - edins;  // ins/ovr
 				//if (kEnt)  SeqClear(q);  // erase
 
-				//if (key(F1))  edkey = 1;  // set delay cmd
-				//if (key(F2))  edkey = 2;  // wait cmd
+				//if (key(F1))  fun = 1;  // set delay cmd
+				//if (key(F2))  fun = 2;  // wait cmd
 			}
-			if (edkey > 0)
+			if (!lay2)  // || fun > 0)
 			{
+				// todo manual pick list?
 				//  find key, if none
-				/*uint8_t k = 3;
-				while (edkey==0 && k < 0xF0)
+				int ii = -1;
+				for (uint i=0; i < ScanKeys; ++i)
 				{
-					if (kk[k] && !kko[k] && k != KEY_EDIT)
-						edkey = k;
-					else  ++k;
+					if (Matrix_scanArray[i].state == KeyState_Press
+						&& int(i) < kc.set.nkeys())
+					{
+						ii = kc.set.keys[i].get(kc.nLayer);  //0.
+						if (ii == KEY_NONE || ii >= KEYS_ALL)  ii = -1;  // norm only
+						break;
+					}
 				}
 				//  add key to sequence
-				if (edkey > 0 && edpos < iSeqLen-1)
-				if (edpos == seql[q])  // at end
+				if (ii >= 0) {  // && edpos < iSeqLen-1)
+				if (edpos >= len)  // at end
 				{
-					seq[q][edpos] = edkey;
-					edpos++;  seql[q]++;
+					dt.push_back(ii);
+					edpos++;  //len++;
 				}else
 				if (edins)  // insert
 				{
-					for (int i=seql[q]; i > edpos; --i)
-						seq[q][i] = seq[q][i-1];
-					seq[q][edpos] = edkey;
-					edpos++;  seql[q]++;
+					dt.push_back(0);  ++len;
+					for (int i=len-1; i > edpos; --i)
+						dt[i] = dt[i-1];
+					dt[edpos] = ii;
+					edpos++;  //len++;
 				}
 				else  // overwrite
-				{	seq[q][edpos] = edkey;
-					if (edpos < seql[q])  ++edpos;
-				}*/
-			}
+				{	dt[edpos] = ii;
+					if (edpos < len)  ++edpos;
+				}
+			}	}
 		}else
-		{	/*if (key(S) || key(INSERT))  // save
-			{	Save();  tInfo = -1;
+		{	if (kSave)  // save
+			{	/*Save();*/  tInfo = -1;
 			}
-			if (key(BACKSPACE))  // load
-			{	Load();  tInfo = -1;
-			}*/
+			if (kLoad)  // load
+			{	/*Load();*/  tInfo = -1;
+			}
 
 			if (kUp > 0)  // move
 			{	++slot;  if (slot >= iPage) {  slot = 0;
@@ -234,29 +243,37 @@ void Gui::KeyPress()
 			{	--page;  if (page < 0)  page = iSlots/iPage-1;
 			}
 
-			/*if (key(C))  // copy
-			{	sql = seql[q];
-				for (int i=0; i < sql; ++i)  sq[i] = seq[q][i];
+			if (kCopy)  // copy
+			{	kc.set.copy.data = dt;  cpId = q;
 				infType = 3;  tInfo = -1;
 			}
 			//  paste, set
-			if (key(Z) || key(V))
-			if (sql < iSeqLen)
-			{	seql[q] = sql;
-				for (int i=0; i < sql; ++i)  seq[q][i] = sq[i];
+			if (kPaste)
+			{	dt = kc.set.copy.data;
 				infType = 4;  tInfo = -1;
-			}*/
-		}
-
-		if (kEnt)  //  toggle edit  ----
-		{
-			edit = 1-edit;
-			if (edit)  // enter edit
-			{
-				//if (edpos > len)  // if
-				edpos = len;  // end
 			}
+			//  swap, xchg
+			if (kSwap && cpId != -1)
+			{
+				KC_Sequence cp = kc.set.seqs[cpId];
+				kc.set.seqs[cpId] = kc.set.seqs[q];
+				kc.set.seqs[q] = cp;
+			}
+			if (kBack)
+				--mlevel;
 		}
+		return;
+	}
+
+
+	//  Add+  <back global
+	if (kBack && mlevel > 0)
+		--mlevel;
+
+	if (mlevel == 0)  //  main
+	{
+		if (kUp){  ym += kUp;  if (ym >= M_All)  ym = 0;  if (ym < 0)  ym = M_All-1;  }
+		if (kRight > 0)  mlevel = 1;  // enter>
 		return;
 	}
 
