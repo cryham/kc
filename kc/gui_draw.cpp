@@ -5,9 +5,11 @@
 
 //  menu draw  util
 //------------------------------------------------------
-const int8_t Cl = 4,  // 0 main  1 demos  2 test
-	Rclr[Cl] = {16,27,31,10}, Gclr[Cl] = {26,26,25,10}, Bclr[Cl] = {31,31,31,10},
-	Rmul[Cl] = {3, 2, 3, 1 }, Gmul[Cl] = {2, 3, 5, 1 }, Bmul[Cl] = {0, 1, 2, 1 };
+const uint8_t Cl = 3,  // 0 main  1 demos  2 test
+	Mclr[Cl][2][3] = {
+	{{16,26,31},{3,2,0}},
+	{{27,26,31},{2,3,1}},
+	{{31,25,31},{3,5,2}}};
 
 void Gui::DrawMenu(int cnt, const char** str, int8_t q, // clrId
 					int16_t yadd, int16_t nextCol, int16_t numGap)
@@ -23,10 +25,7 @@ void Gui::DrawMenu(int cnt, const char** str, int8_t q, // clrId
 		d->print(i == my ? " \x10 ":"   ");
 
 		c = abs(i - my);  // dist dim
-		d->setTextColor(RGB(
-			max(0, Rclr[q] - c * Rmul[q]),
-			max(0, Gclr[q] - c * Gmul[q]),
-			max(0, Bclr[q] - c * Bmul[q]) ));
+		FadeClr(&Mclr[q][0][0], &Mclr[q][1][0], 4, c, 1);
 		d->print(str[i]);
 
 		//  next, extras
@@ -39,6 +38,14 @@ void Gui::DrawMenu(int cnt, const char** str, int8_t q, // clrId
 	}
 }
 
+void Gui::FadeClr(const uint8_t* clrRGB, const uint8_t* mulRGB,
+					const uint8_t minRGB, const uint8_t mul, const uint8_t div)
+{
+	d->setTextColor(RGB(
+		max(minRGB, clrRGB[0] - mulRGB[0] * mul / div),
+		max(minRGB, clrRGB[1] - mulRGB[1] * mul / div),
+		max(minRGB, clrRGB[2] - mulRGB[2] * mul / div) ));
+}
 
 //  Draw  main
 //....................................................................................

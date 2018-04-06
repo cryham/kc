@@ -62,10 +62,7 @@ void Gui::DrawMapping()
 				{	d->fillRect(x-1,y, 41,8, RGB(10,10,9));
 					d->drawRect(x-2,y, 42,8, RGB(23,23,13));
 				}
-				d->setTextColor(RGB(
-					max(9, cGrpRgb[g][0][0] - cGrpRgb[g][1][0] * q/3),
-					max(9, cGrpRgb[g][0][1] - cGrpRgb[g][1][1] * q/3),
-					max(9, cGrpRgb[g][0][2] - cGrpRgb[g][1][2] * q/3) ));
+				FadeClr(&cGrpRgb[g][0][0], &cGrpRgb[g][1][0], 9, q, 3);
 				d->print(cKeyStr[k]);
 
 				++k;
@@ -92,10 +89,7 @@ void Gui::DrawMapping()
 				{	d->fillRect(x-1,y, 41,8, RGB(10,10,9));
 					d->drawRect(x-2,y, 42,8, RGB(23,23,13));
 				}
-				d->setTextColor(RGB(
-					max(9, cGrpRgb[g][0][0] - cGrpRgb[g][1][0] * q/3),
-					max(9, cGrpRgb[g][0][1] - cGrpRgb[g][1][1] * q/3),
-					max(9, cGrpRgb[g][0][2] - cGrpRgb[g][1][2] * q/3) ));
+				FadeClr(&cGrpRgb[g][0][0], &cGrpRgb[g][1][0], 9, q, 3);
 				d->print(cKeyStr[k]);
 			}
 		}

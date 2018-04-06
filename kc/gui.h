@@ -22,6 +22,8 @@ struct Gui
 
 	void DrawMenu(int cnt, const char** str, int8_t clrId=0,
 				int16_t yadd=10, int16_t nextCol=-1, int16_t numGap=-1);
+	void FadeClr(const uint8_t* clrRGB, const uint8_t* mulRGB,
+				const uint8_t minRGB, const uint8_t mul, const uint8_t div);
 
 	//  vars
 	//int8_t menu;  // 0 off, 1 in menu
@@ -49,7 +51,8 @@ struct Gui
 	//  keys pressed, some +-1
 	int8_t kRight=0, kUp=0,  kPgUp=0, kEnd=0,
 			kBack=0, kEnt=0,  kCtrl=0, kSh=0,  kInf=0, kFps=0,
-			kIns=0, kDel=0;
+	/*seq*/	kBckSp=0, kIns=0, kDel=0,  kCopy=0, kPaste=0, kSwap=0,
+			kLoad=0, kSave=0;
 
 
 	//  Sequences  - - - -
@@ -59,10 +62,11 @@ struct Gui
 	int8_t slot, page, edpos;  // edit vars
 	int seqId()
 	{	return slot + page*iPage;  }
+	int8_t cpId = -1;  // copy/swap from
 
 	int8_t tBlnk = 0;
-	const int8_t cBlnk = 200, iPage = 10, iSlots = 60;
+	const int8_t iPage = 10, iSlots = 60, cBlnk = 35;
+	int16_t tInfo=0, infType=0, memSize=0;  // info text vars
 
-	//	int16_t tInfo, infType, memSize;  // info text vars
 	char a[128];  // temp str
 };
