@@ -45,14 +45,31 @@ void KC_Main::UpdLay()
 //------------------------------------------------
 void KC_Main::Send(uint32_t ms)
 {
-	//  in sequence
-	if (inSeq != -1 && (ms - tiSeq > 20 || ms < tiSeq))  // par
+	//  in sequence  ***
+	if (inSeq >= 0 && (ms - tiSeq > 20 || ms < tiSeq))  // par
 	{
 		tiSeq = ms;
-		KC_Sequence sq = set.seqs[inSeq];
+		const KC_Sequence& sq = set.seqs[inSeq];
 		uint8_t code = sq.data[seqPos];
 		uint usb = cKeyUsb[code];
-		if (seqRel == 0)
+
+		//  modifiers
+		if (code > KEY_NONE && code <= K_ModLast)
+		{
+			if (seqMod[code] == 0)
+			{
+				Keyboard.press(usb);
+				Keyboard.send_now();
+				seqMod[code] = 1;
+			}else
+			{	Keyboard.release(usb);
+				Keyboard.send_now();
+				seqMod[code] = 0;
+			}
+			seqRel = 2;  // next
+		}
+		//  keys
+		else if (seqRel == 0)
 		{
 			Keyboard.press(usb);
 			Keyboard.send_now();
@@ -64,14 +81,22 @@ void KC_Main::Send(uint32_t ms)
 			Keyboard.send_now();
 			++seqRel;
 		}
-		else if (seqRel >= 2)
+		//  both
+		if (seqRel >= 2)
 		{
 			seqRel = 0;
 			++seqPos;  // next seq byte
 			if (seqPos >= sq.len())
+			{
+				Keyboard.releaseAll();
+				SeqModClear();
 				inSeq = -1;  // end
+			}
 		}
 	}
+	//  deny keys during seq
+	//if (inSeq >= 0)
+	//	return;
 
 	//  all matrix scan codes
 	uint c,r;  int id;
@@ -104,13 +129,14 @@ void KC_Main::Send(uint32_t ms)
 				if (code >= K_Seq0 && code <= K_SeqLast
 					&& inSeq < 0)
 				{
-					inSeq = code - K_Seq0;
-					if (set.nseqs() > code - K_Seq0
-					&& set.seqs[inSeq].len() > 0)
+					int8_t sq = code - K_Seq0;
+					if (set.nseqs() > sq &&
+						set.seqs[sq].len() > 0)
 					{
-						//  start seq
-						tiSeq = ms;
+						//  start seq  ***
 						Keyboard.releaseAll();
+						SeqModClear();
+						inSeq = sq;  tiSeq = ms;
 						seqPos = 0;  seqRel = 0;
 					}
 					else  inSeq = -1;

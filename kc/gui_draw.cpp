@@ -5,11 +5,12 @@
 
 //  menu draw  util
 //------------------------------------------------------
-const uint8_t Cl = 3,  // 0 main  1 demos  2 test
-	Mclr[Cl][2][3] = {
+const uint8_t  // 0 main  1 demos  2 test  3 seqs
+	Gui::Mclr[Gui::Cl][2][3] = {
 	{{16,26,31},{3,2,0}},
 	{{27,26,31},{2,3,1}},
-	{{31,25,31},{3,5,2}}};
+	{{31,25,31},{3,5,2}},
+	{{20,31,25},{3,3,3}}};
 
 void Gui::DrawMenu(int cnt, const char** str, int8_t q, // clrId
 					int16_t yadd, int16_t nextCol, int16_t numGap)

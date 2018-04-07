@@ -23,20 +23,22 @@ void Gui::DrawSequences()
 		d->setTextColor(RGB(20,25,30));
 
 		//  list slots
-		int s = page * iPage, i,n, xm, y;
+		int s = page * iPage, i,n, xm, y, q;
 		for (i=0; i < iPage && s < iSlots; ++i,++s)
 		{
 			y = 28 + i*9;
 			d->setCursor(0, y);
 			d->setTextColor(RGB(20,30,25));
+			q = abs(i - slot);
+			FadeClr(&Mclr[3][0][0], &Mclr[3][1][0], 4, q, 2);
 			sprintf(a,"%2d",s);  d->print(a);
+
 			d->setTextColor(RGB(31,31,20));
-			if (i == slot)  d->print("\x10");
+			if (!q)  d->print("\x10");
 			d->setTextColor(RGB(20,31,31));
 			d->setCursor(2*6, y);
 			if (s == cpId)  d->print("\x7");
 			d->setCursor(4*6, y);
-			int q = abs(i - slot);
 
 			//  write sequence  ---
 			n=0;  xm=1;

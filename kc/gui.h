@@ -24,6 +24,8 @@ struct Gui
 				int16_t yadd=10, int16_t nextCol=-1, int16_t numGap=-1);
 	void FadeClr(const uint8_t* clrRGB, const uint8_t* mulRGB,
 				const uint8_t minRGB, const uint8_t mul, const uint8_t div);
+	const static uint8_t Cl = 4;  // menu colors
+	const static uint8_t Mclr[Cl][2][3];
 
 	//  vars
 	//int8_t menu;  // 0 off, 1 in menu

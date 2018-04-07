@@ -7,8 +7,17 @@
 
 //  ctor init
 //------------------------------------------------
+void KC_Main::SeqModClear()
+{
+	//  clear modif
+	for (int i=0; i <= K_ModLast; ++i)
+		seqMod[i] = 0;
+}
+
 KC_Main::KC_Main()
 {
+	SeqModClear();
+
 	//  init grp Start and End
 	for (int g=0; g < grpMax; ++g)
 	{
@@ -48,7 +57,8 @@ void KC_Setup::InitCK1_8x6()
 	for (i=0; i < nDrawKeys; ++i)
 	{
 		const SKey& dk = drawKeys[i];
-		if (dk.sc != NO)
+		if (dk.sc != NO
+			&& dk.code != K_F12) //
 		{
 			KC_Key& kk = keys[dk.sc];
 			kk.add(dk.code, 0);
@@ -62,10 +72,10 @@ void KC_Setup::InitCK1_8x6()
 				kk.add(K_Layer2, 0);
 			else
 			if (dk.code == K_T)
-				kk.add(K_S2, 2);
+				kk.add(K_Seq0, 2);
 			else
 			if (dk.code == K_H)
-				kk.add(K_S5, 1);
+				kk.add(K_S2, 2);
 			else
 			if (dk.code < K_Z && i % 3 == 0)
 			{
@@ -105,14 +115,18 @@ void KC_Setup::Clear()
 	#if 1
 	//  examples  --*
 	sq.data.push_back(K_A);
+	sq.data.push_back(K_LSHIFT);
 	sq.data.push_back(K_B);
+	sq.data.push_back(K_LSHIFT);
 	sq.data.push_back(K_C);
 	seqs[0] = sq;
 
 	sq.data.clear();
-	sq.data.push_back(K_X);
-	sq.data.push_back(K_Y);
-	sq.data.push_back(K_Z);
+	sq.data.push_back(K_RCTRL);
+	sq.data.push_back(K_RSHIFT);
+	sq.data.push_back(K_LEFT);
+	sq.data.push_back(K_LEFT);
+	sq.data.push_back(K_LEFT);
 	seqs[2] = sq;
 
 	sq.data.clear();

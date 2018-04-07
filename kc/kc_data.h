@@ -19,7 +19,7 @@ struct KC_Key  // for each scan code
 	{  }
 
 	//  number of set bits
-	int numLays()
+	int numLays() const
 	{
 		uint8_t b = layUse;
 		b = b - ((b >> 1) & 0x55);
@@ -43,7 +43,7 @@ struct KC_Sequence
 {
 	//  var length
 	std::vector<uint8_t> data;
-	int len() {  return int(data.size());  }
+	const int len() const {  return int(data.size());  }
 };
 
 struct KC_Setup
@@ -58,8 +58,8 @@ struct KC_Setup
 	std::vector<KC_Sequence> seqs;
 	KC_Sequence copy;  // for paste, swap
 
-	int nkeys(){  return keys.size();  }
-	int nseqs(){  return seqs.size();  }
+	const int nkeys() const {  return keys.size();  }
+	const int nseqs() const {  return seqs.size();  }
 
 	KC_Setup();
 	void Clear(), InitCK1_8x6();
@@ -75,10 +75,12 @@ struct KC_Main  // main, state
 	int8_t nLayer = 0;
 
 	//  sequence running vars
-	int8_t inSeq = -1, // id run, -1 none
+	int8_t inSeq = -1,  // id run, -1 none
 		seqPos = 0,  // code id in seq data
 		seqRel = 0;  // pressed / released
+	int8_t seqMod[K_ModLast+1];  // modifs state
 	uint32_t tiSeq = 0;
+	void SeqModClear();
 
 	uint8_t grpStart[grpMax], grpEnd[grpMax];
 
