@@ -18,14 +18,6 @@ struct KC_Key  // for each scan code
 	KC_Key() : layUse(0)  // nothing
 	{  }
 
-	//  number of set bits
-	int numLays() const
-	{
-		uint8_t b = layUse;
-		b = b - ((b >> 1) & 0x55);
-		b = (b & 0x33) + ((b >> 2) & 0x33);
-		return (((b + (b >> 4)) & 0x0F) * 0x01);
-	}
 	//  test use bit
 	#define hasLay(n)  (layUse & (1ul << n))
 
@@ -72,6 +64,7 @@ struct KC_Setup
 
 struct KC_Main  // main, state
 {
+	//  current layer, by keys
 	int8_t nLayer = 0;
 
 	//  sequence running vars
@@ -82,6 +75,10 @@ struct KC_Main  // main, state
 	uint32_t tiSeq = 0;
 	void SeqModClear();
 
+	int8_t setDac = 1;
+	int16_t valDac = 3900;
+
+	//  const from grp
 	uint8_t grpStart[grpMax], grpEnd[grpMax];
 
 	KC_Setup set;

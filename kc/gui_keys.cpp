@@ -38,6 +38,17 @@ void Gui::KeyPress()
 		4   Ent  *     Num  M  /    V       C
 		5   F12  -          N       B			*/
 
+
+	//  Mapping  edit modes
+	//............................................
+	if (ym == M_Display && mlevel == 1)
+	{
+		if (kUp)
+		{	kc.valDac += kUp * 10;  kc.setDac = 1;  }
+		if (kPgUp)
+		{	kc.valDac += kPgUp * 40;  kc.setDac = 1;  }
+	}
+
 	//  Mapping  edit modes
 	//............................................
 	if (ym == M_Mapping && mlevel == 1)

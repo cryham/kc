@@ -3,12 +3,22 @@
 #include "usb_keyboard.h"
 #include "matrix.h"
 #include "keys_usb.h"
+#include "WProgram.h"
 
 
 //  update layer
 //------------------------------------------------
 void KC_Main::UpdLay()
 {
+	//  dac led
+	if (setDac)
+	{	setDac = 0;
+		if (valDac > 4095)
+			valDac = 4095;
+		//analogWrite(A14, val);
+		analogWriteDAC0(valDac);
+	}
+
 	//  all matrix scan codes
 	uint c,r;  int id;
 	for (c=0; c < NumCols; ++c)

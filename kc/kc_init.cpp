@@ -16,6 +16,9 @@ void KC_Main::SeqModClear()
 
 KC_Main::KC_Main()
 {
+	setDac = 1;
+	valDac = 3980;  // default
+
 	SeqModClear();
 
 	//  init grp Start and End

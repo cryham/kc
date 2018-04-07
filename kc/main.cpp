@@ -64,10 +64,16 @@ void main_periodic()
 //-------------------------------------------------------------------------
 int main()
 {
+	//  dac for tft led
+	analogWriteRes(12);
+	analogWriteDAC0(0);  // dark
+
 	Ada4_ST7735 tft;
 	tft.begin();
 
 	gui.Init(&tft);
+	tft.clear();
+	tft.display();  // black
 
 
 	//  kbd
@@ -75,7 +81,7 @@ int main()
 
 	//  40000  1.2 kHz  d: 50 fps
 	//  50000  960 Hz   d: 52 fps
-	Periodic_init( 50000 );
+	Periodic_init( 50000 );  // par
 	Periodic_function( &main_periodic );
 
 

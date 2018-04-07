@@ -2,6 +2,7 @@
 #include "Ada4_ST7735.h"
 #include "FreeSans9pt7b.h"
 
+extern KC_Main kc;
 
 //  menu draw  util
 //------------------------------------------------------
@@ -144,10 +145,22 @@ void Gui::Draw()
 		tm = rtc_get();
 		int h = tm/3600%24, m = tm/60%60, s = tm%60;
 
-		d->setCursor(0, 32);
+		d->setCursor(W/2, 0);
 		d->setTextColor(RGB(10,28,18));
 
 		sprintf(a,"%2d:%02d:%02d", h,m,s);
+		d->print(a);
+
+		d->setFont(0);
+
+		//  brightness, dac  ---
+		d->setCursor(0, 32);
+		d->setTextColor(RGB(31,31,12));
+
+		sprintf(a,"Brightness: %d  %d %%",
+			kc.valDac-3595, 100*(kc.valDac-3600)/(4095-3600));
+		//todo
+		// fade time, fade to brightness
 		d->print(a);
 	}
 }
