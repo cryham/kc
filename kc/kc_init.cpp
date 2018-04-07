@@ -53,13 +53,19 @@ void KC_Setup::InitCK1_8x6()
 			KC_Key& kk = keys[dk.sc];
 			kk.add(dk.code, 0);
 
-
+			#if 1
 			//  override  --*
 			if (dk.code == K_INS)
 				kk.add(K_Layer1, 0);
 			else
 			if (dk.code == K_SPACE)
 				kk.add(K_Layer2, 0);
+			else
+			if (dk.code == K_T)
+				kk.add(K_S2, 2);
+			else
+			if (dk.code == K_H)
+				kk.add(K_S5, 1);
 			else
 			if (dk.code < K_Z && i % 3 == 0)
 			{
@@ -73,7 +79,8 @@ void KC_Setup::InitCK1_8x6()
 			if (dk.code < K_UP && i % 3 == 1)
 			{
 				kk.add(dk.code+1, 1);
-			}/**/
+			}
+			#endif
 	}	}
 }
 
@@ -95,15 +102,24 @@ void KC_Setup::Clear()
 		seqs.push_back(sq);
 
 
+	#if 1
 	//  examples  --*
 	sq.data.push_back(K_A);
 	sq.data.push_back(K_B);
 	sq.data.push_back(K_C);
+	seqs[0] = sq;
+
+	sq.data.clear();
+	sq.data.push_back(K_X);
+	sq.data.push_back(K_Y);
+	sq.data.push_back(K_Z);
 	seqs[2] = sq;
 
 	sq.data.clear();
 	sq.data.push_back(K_1);
 	sq.data.push_back(K_2);
+	sq.data.push_back(K_3);
+	sq.data.push_back(K_4);
 	seqs[5] = sq;
 
 	sq.data.clear();
@@ -113,4 +129,5 @@ void KC_Setup::Clear()
 	sq.data.push_back(K_F);
 	sq.data.push_back(K_G);
 	seqs[7] = sq;
+	#endif
 }

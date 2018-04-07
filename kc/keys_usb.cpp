@@ -37,8 +37,8 @@ const uint16_t cKeyUsb[KEYS_ALL]={
 //  key names strings
 const char* cKeyStr[KEYS_ALL_EXT]={
 	"None",
-	"L Ct", "L Sh", "L Al", "L Gui",
-	"R Ct", "R Sh", "R Al", "R Gui",
+	"CtrL", "ShL", "AltL", "GuiL",
+	"CtrR", "ShR", "AltR", "GuiR",
 
 	"A","B","C","D","E","F","G","H","I","J","K","L","M","N",
 	"O","P","Q","R","S","T","U","V","W","X","Y","Z",

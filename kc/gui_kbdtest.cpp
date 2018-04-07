@@ -53,13 +53,18 @@ void Gui::DrawTesting()
 		//  modifiers  -
 		d->setTextColor(RGB(18,21,24));
 		d->print("Modif:  ");
-		#if 0
-		for (int i=KEY_LCTRL; i<=KEY_RGUI; ++i)
-		if (kk[i])
-		{	d->print(i >= KEY_RCTRL ? "R" : "L");
-			d->print(mod[i-KEY_LCTRL]);  d->print(" ");
-		}
-		#endif
+		d->setTextColor(RGB(20,25,28));
+		for (uint i = 0; i < ScanKeys; ++i)
+		{
+			const KeyState& k = Matrix_scanArray[i];
+			if (kc.set.nkeys() >= int(ScanKeys))
+			if (k.state == KeyState_Hold)
+			{
+				int8_t code = kc.set.keys[i].get(kc.nLayer);
+				if (code > KEY_NONE && code <= K_ModLast)
+				{	sprintf(a,"%s ",cKeyStr[code]);
+					d->print(a);
+		}	}	}
 		d->println("");  d->moveCursor(0,4);
 
 
@@ -89,7 +94,7 @@ void Gui::DrawTesting()
 			if (k.state == KeyState_Hold)
 			{
 				int8_t code = kc.set.keys[i].get(kc.nLayer);
-				if (code > KEY_NONE && code < KEYS_ALL)
+				if (code > K_ModLast && code < KEYS_ALL)
 				{	sprintf(a,"%s ",cKeyStr[code]);
 					d->print(a);
 		}	}	}

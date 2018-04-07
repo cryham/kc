@@ -6,7 +6,7 @@ enum EKeys  // byte key codes
 	//  normal usb keys ----
 	KEY_NONE=0,
 	K_LCTRL, K_LSHIFT, K_LALT, K_LGUI,
-	K_RCTRL, K_RSHIFT, K_RALT, K_RGUI,
+	K_RCTRL, K_RSHIFT, K_RALT, K_RGUI, K_ModLast = K_RGUI,
 
 	K_A,K_B,K_C,K_D,K_E,K_F,K_G,K_H,K_I,K_J,K_K,K_L,K_M,K_N,
 	K_O,K_P,K_Q,K_R,K_S,K_T,K_U,K_V,K_W,K_X,K_Y,K_Z,

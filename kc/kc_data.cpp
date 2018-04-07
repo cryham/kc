@@ -45,6 +45,34 @@ void KC_Main::UpdLay()
 //------------------------------------------------
 void KC_Main::Send(uint32_t ms)
 {
+	//  in sequence
+	if (inSeq != -1 && (ms - tiSeq > 20 || ms < tiSeq))  // par
+	{
+		tiSeq = ms;
+		KC_Sequence sq = set.seqs[inSeq];
+		uint8_t code = sq.data[seqPos];
+		uint usb = cKeyUsb[code];
+		if (seqRel == 0)
+		{
+			Keyboard.press(usb);
+			Keyboard.send_now();
+			++seqRel;
+		}
+		else if (seqRel == 1)
+		{
+			Keyboard.release(usb);
+			Keyboard.send_now();
+			++seqRel;
+		}
+		else if (seqRel >= 2)
+		{
+			seqRel = 0;
+			++seqPos;  // next seq byte
+			if (seqPos >= sq.len())
+				inSeq = -1;  // end
+		}
+	}
+
 	//  all matrix scan codes
 	uint c,r;  int id;
 	for (c=0; c < NumCols; ++c)
@@ -55,6 +83,7 @@ void KC_Main::Send(uint32_t ms)
 		//  state
 		bool on = k.state == KeyState_Press;
 		bool off = k.state == KeyState_Release;
+
 		if (on || off)
 		if (id < set.nkeys())
 		{
@@ -76,8 +105,18 @@ void KC_Main::Send(uint32_t ms)
 					&& inSeq < 0)
 				{
 					inSeq = code - K_Seq0;
+					if (set.nseqs() > code - K_Seq0
+					&& set.seqs[inSeq].len() > 0)
+					{
+						//  start seq
+						tiSeq = ms;
+						Keyboard.releaseAll();
+						seqPos = 0;  seqRel = 0;
+					}
+					else  inSeq = -1;
 				}
-			}else if (off)
+			}
+			else if (off)
 			{	//  send for layer it was pressed on
 				uint8_t code = set.keys[id].get(k.layerOn);
 				uint usb = cKeyUsb[code];

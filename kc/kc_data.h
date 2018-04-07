@@ -73,7 +73,12 @@ struct KC_Setup
 struct KC_Main  // main, state
 {
 	int8_t nLayer = 0;
-	int8_t inSeq = -1;  // seq id running
+
+	//  sequence running vars
+	int8_t inSeq = -1, // id run, -1 none
+		seqPos = 0,  // code id in seq data
+		seqRel = 0;  // pressed / released
+	uint32_t tiSeq = 0;
 
 	uint8_t grpStart[grpMax], grpEnd[grpMax];
 
@@ -81,5 +86,6 @@ struct KC_Main  // main, state
 
 	KC_Main();
 
-	void UpdLay(), Send(uint32_t ms);
+	void UpdLay();
+	void Send(uint32_t ms);
 };
