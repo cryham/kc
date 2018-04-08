@@ -51,10 +51,10 @@ void Gui::DrawMapping()
 			const int g = keyGroup;
 			d->print(cGrpName[g]);
 
-			int k = kc.grpStart[g], y = y0, x = xw;
+			int k = grpStart[g], y = y0, x = xw;
 			k += (keyCode - k)/12*12;
 
-			while (k <= kc.grpEnd[g] && x < W-5*6)
+			while (k <= grpEnd[g] && x < W-5*6)
 			{
 				d->setCursor(x, y);
 				int q = abs(k - keyCode);  // diff clr
@@ -226,7 +226,7 @@ void Gui::DrawMapping()
 
 		//  darken  if draw has NO scId
 		if (moveCur && k.sc == NO)
-		{	cR = RGB(9,9,9);  if (!f)  cT = RGB(17,17,17);  }
+		{	cR = RGB(9,9,9);  /*if (!f)  cT = RGB(17,17,17);*/  }
 
 		d->drawRect(x, y-2, k.w+1, k.h+1, cR);
 

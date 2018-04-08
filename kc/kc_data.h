@@ -8,7 +8,7 @@
   60 seq * 20 = 1200B  E=3500 big /ram
   144 *1+2L = 432B + 10seq *15  E=600B small
 */
-const int KC_MaxLayers = 8;
+const int KC_MaxLayers = 8;  //16
 
 struct KC_Key  // for each scan code
 {
@@ -40,11 +40,15 @@ struct KC_Sequence
 
 struct KC_Setup
 {
-	uint8_t kk, ver;  // header
+	//  const
+	uint8_t h1,h2, ver;  // header
 
 	//  rows * cols = scanKeys,  matrix setup
-	uint8_t rows, cols, scanKeys;
+	uint8_t rows, cols, scanKeys, iSlots;  // max seqs
 	// ver num or date saved-
+	// todo
+	// debounce 1 ms, strobe_delay 4 us, scan_freq 1khz..
+	// mouse accel, etc..
 
 	std::vector<KC_Key> keys;  // size scanKeys, maps scan to byte codes
 	std::vector<KC_Sequence> seqs;
@@ -56,29 +60,35 @@ struct KC_Setup
 	KC_Setup();
 	void Clear(), InitCK1_8x6();
 
-	int8_t minLay, layUsed;  // stats
+	//int8_t minLay, layUsed;  // stats
 };
 
 struct KC_Main  // main, state
 {
-	//  current layer, by keys
+	//  current layer, set by keys
 	int8_t nLayer = 0;
 
 	//  sequence running vars
 	int8_t inSeq = -1,  // id run, -1 none
-		seqPos = 0,  // code id in seq data
+		seqPos = 0,  // index in seq data
 		seqRel = 0;  // pressed / released
-	int8_t seqMod[K_ModLast+1];  // modifs state
-	uint32_t tiSeq = 0;
+	uint32_t tiSeq = 0;  // ms time delay
+
+	int8_t seqMod[K_ModLast+1];  // modifiers state
 	void SeqModClear();
+
+
+	//  params  ----
+	//const int8_t iSlots = 60;  // max seqs
+	// ms  key auto repeat
+	uint16_t krDelay = 250, krRepeat = 60;
 
 	//  brightnes, dac
 	int8_t setDac = 1;
-	int16_t valDac = 3900;
+	int16_t valDac = 4000;
 
-	//  const from grp
-	uint8_t grpStart[grpMax], grpEnd[grpMax];
 
+	//  main  ----
 	KC_Setup set;
 
 	KC_Main();
@@ -86,6 +96,9 @@ struct KC_Main  // main, state
 	void UpdLay();
 	void Send(uint32_t ms);
 
+	//  eeprom  ----
 	void //GetSize(),
-		Load(),Save();  // eeprom
+		Load(),Save();
+
+	char err[64];  // error string
 };

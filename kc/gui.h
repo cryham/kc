@@ -3,6 +3,7 @@
 #include "def.h"
 #include "demos.h"
 #include "kc_data.h"
+#include "keys_usb.h"
 
 
 struct Gui
@@ -40,7 +41,6 @@ struct Gui
 	uint32_t oldti, tdemo;  // demo time ms
 
 	uint32_t oldti_kr;
-	uint16_t krDelay=250, krRepeat=60;  // ms  key auto repeat
 	int8_t kr(int8_t y, int8_t x, uint16_t dt);
 
 
@@ -67,8 +67,11 @@ struct Gui
 	int8_t cpId = -1;  // copy/swap from
 
 	int8_t tBlnk = 0;
-	const int8_t iPage = 10, iSlots = 60, cBlnk = 35;
+	const int8_t iPage = 10, cBlnk = 35;  // par -
 	int16_t tInfo=0, infType=0, memSize=0;  // info text vars
+
+	//  const from grp
+	uint8_t grpStart[grpMax], grpEnd[grpMax];
 
 	char a[128];  // temp str
 };

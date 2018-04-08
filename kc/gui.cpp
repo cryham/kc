@@ -31,8 +31,22 @@ void Gui::Init(Ada4_ST7735* tft)
 	keyCode=0;
 	pressKey=0;  moveCur=0;  pickCode=0;
 
-	krDelay=250;  krRepeat=80;  // ms
-
 	edit = 0;  edins = 1;
 	slot=0; page=0; edpos=0;
+
+
+	//  init Group Starts and Ends
+	for (int g=0; g < grpMax; ++g)
+	{
+		grpStart[g] = 0;  // all
+		grpEnd[g] = KEYS_ALL_EXT;
+
+		//  find first and last key, for this group
+		for (int i=0; i < KEYS_ALL_EXT; ++i)
+			if (cKeyGrp[i] == g)
+			{
+				if (grpStart[g] == 0)  grpStart[g] = i;
+				grpEnd[g] = i;
+			}
+	}
 }

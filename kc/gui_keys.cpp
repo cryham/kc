@@ -117,7 +117,7 @@ void Gui::KeyPress()
 				{	keyGroup += kRight;
 					if (keyGroup < 0)		 keyGroup = grpMax-1;
 					if (keyGroup >= grpMax)	 keyGroup = 0;
-					keyCode = kc.grpStart[keyGroup];
+					keyCode = grpStart[keyGroup];
 				}else
 					keyCode += kRight * 12;
 			}else
@@ -129,10 +129,10 @@ void Gui::KeyPress()
 
 			//  grp range
 			if (grpFilt)
-			{	if (keyCode < kc.grpStart[keyGroup])
-					keyCode = kc.grpEnd[keyGroup];
-				if (keyCode > kc.grpEnd[keyGroup])
-					keyCode = kc.grpStart[keyGroup];
+			{	if (keyCode < grpStart[keyGroup])
+					keyCode = grpEnd[keyGroup];
+				if (keyCode > grpEnd[keyGroup])
+					keyCode = grpStart[keyGroup];
 			}
 			//  all range
 			if (keyCode < 0)			  keyCode += KEYS_ALL_EXT;
@@ -241,17 +241,17 @@ void Gui::KeyPress()
 
 			if (kUp > 0)  // move
 			{	++slot;  if (slot >= iPage) {  slot = 0;
-				++page;  if (page >= iSlots/iPage)  page = 0;
+				++page;  if (page >= kc.set.iSlots/iPage)  page = 0;
 			}	}
 			if (kUp < 0)
 			{	--slot;  if (slot < 0) {  slot = iPage-1;
-				--page;  if (page < 0)  page = iSlots/iPage-1;
+				--page;  if (page < 0)  page = kc.set.iSlots/iPage-1;
 			}	}
 			if (kPgUp > 0)  // page
-			{	++page;  if (page >= iSlots/iPage)  page = 0;
+			{	++page;  if (page >= kc.set.iSlots/iPage)  page = 0;
 			}
 			if (kPgUp < 0)
-			{	--page;  if (page < 0)  page = iSlots/iPage-1;
+			{	--page;  if (page < 0)  page = kc.set.iSlots/iPage-1;
 			}
 
 			if (kCopy)  // copy
@@ -352,11 +352,11 @@ int8_t Gui::kr(int8_t c, int8_t r, uint16_t dt)
 	{
 		if (m < 0)
 		{	m -= dt;
-			if (m < -krDelay)  // delay ms
+			if (m < -kc.krDelay)  // delay ms
 			{	m = 0;  return 1;  }
 		}else
 		{	m += dt;
-			if (m > krRepeat)  // repeat freq
+			if (m > kc.krRepeat)  // repeat freq
 			{	m = 0;  return 1;  }
 		}
 	}
