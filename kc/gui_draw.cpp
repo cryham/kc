@@ -161,6 +161,7 @@ void Gui::Draw()
 			kc.valDac-3595, 100*(kc.valDac-3600)/(4095-3600));
 		//todo
 		// fade time, fade to brightness
+		// key auto repeat, delay
 		d->print(a);
 	}
 }

@@ -127,12 +127,19 @@ void Gui::DrawSequences()
 
 		d->setFont(0);
 		d->setCursor(x, 2);
+		d->setTextColor(RGB(27,29,31));
+
 		const static char* strInf[5] = {
 			"Reset", "Loaded", "Saved:", "Copied", "Pasted" };
 		d->print(strInf[infType]);
+
 		if (infType == 1 || infType == 2)
 		{
 			d->setCursor(x+6, 8+4);
-			d->print(memSize);  d->print(" B");
+			sprintf(a,"%d B", kc.memSize);  d->print(a);
+
+			d->setTextColor(RGB(31,22,21));
+			d->setCursor(W/2-6*4, 8+4);
+			d->print(kc.err);
 	}	}
 }

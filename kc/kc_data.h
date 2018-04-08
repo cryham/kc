@@ -98,7 +98,8 @@ struct KC_Main  // main, state
 
 	//  eeprom  ----
 	void //GetSize(),
-		Load(),Save();
+		Load(), Save();
+	uint16_t memSize = 0;
 
 	char err[64];  // error string
 };

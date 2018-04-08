@@ -233,10 +233,10 @@ void Gui::KeyPress()
 			}	}
 		}else
 		{	if (kSave)  // save
-			{	/*Save();*/  tInfo = -1;
+			{	kc.Save();  infType = 2;  tInfo = -1;
 			}
 			if (kLoad)  // load
-			{	/*Load();*/  tInfo = -1;
+			{	kc.Load();  infType = 1;  tInfo = -1;
 			}
 
 			if (kUp > 0)  // move

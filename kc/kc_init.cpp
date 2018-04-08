@@ -17,6 +17,8 @@ void KC_Main::SeqModClear()
 
 KC_Main::KC_Main()
 {
+	err[0]=0;  memSize = 0;
+
 	//  default params  ----
 	setDac = 1;  valDac = 4000;
 

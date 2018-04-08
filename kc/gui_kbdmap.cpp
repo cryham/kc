@@ -242,6 +242,7 @@ void Gui::DrawMapping()
 	#else
 		if (k.sc != NO && k.sc < kc.set.nkeys())
 		{
+			// todo layer use vis..
 			uint8_t dt = kc.set.keys[k.sc].get(nLay);
 			if (dt != KEY_NONE)
 			{
