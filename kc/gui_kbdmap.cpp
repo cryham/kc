@@ -6,6 +6,7 @@
 #include "kbd_layout.h"
 #include "kc_data.h"
 #include "keys_usb.h"
+#include "TomThumb.h"
 
 extern KC_Main kc;
 
@@ -155,9 +156,9 @@ void Gui::DrawMapping()
 	}
 
 	//  ids dbg -
-	d->setTextColor(RGB(16,20,12));
+	/*d->setTextColor(RGB(16,20,12));
 	d->setCursor(0, 6*8+4);
-	sprintf(a,"scId: %d draw %d  send %d", scId, drawId, kbdSend);  d->print(a);
+	sprintf(a,"scId: %d draw %d  send %d", scId, drawId, kbdSend);  d->print(a);*/
 
 
 	//  stats, data
@@ -220,8 +221,8 @@ void Gui::DrawMapping()
 			d->fillRect(x+1, y-1, k.w-1, k.h-1, clrRect[k.o]);
 
 		uint16_t  // clr
-			cR = f==2 ? RGB(31,30,29) : f==1 ? RGB(28,28,29) : clrRect[k.o],
-			cT = f==2 ? RGB(31,30,29) : f==1 ? RGB(31,31,31) : clrText[k.o];  //<def
+			cR = f==2 ? RGB(31,30,29) : f==1 ? RGB(28,28,29) : clrRect[k.o]/*,
+			cT = f==2 ? RGB(31,30,29) : f==1 ? RGB(31,31,31) : clrText[k.o]*/;  //<def
 
 		//  darken  if draw has NO scId
 		if (moveCur && k.sc == NO)
@@ -234,8 +235,28 @@ void Gui::DrawMapping()
 			(k.o==3 ? x+1 : x+2),  // symb 3
 			k.h == kF ? y-2 : y-1);  // short
 
+	#if 0
 		d->setTextColor(cT);
 		sprintf(a,"%c", k.c);
 		d->print(a);
+	#else
+		if (k.sc != NO && k.sc < kc.set.nkeys())
+		{
+			uint8_t dt = kc.set.keys[k.sc].get(nLay);
+			if (dt != KEY_NONE)
+			{
+				const uint8_t* c = &cGrpRgb[cKeyGrp[dt]][0][0];
+				const char* ch = cKeySh[dt];
+				int le = strlen(ch);
+				d->setFont(le == 2 ? &TomThumb : 0);  // 3x5
+				if (le == 2)
+					d->moveCursor(-1,2);
+
+				d->setTextColor(RGB(c[0],c[1],c[2]));
+				//sprintf(a,"%s", );
+				d->print(ch);
+		}	}
+	#endif
 	}
+	d->setFont(0);
 }

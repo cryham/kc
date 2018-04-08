@@ -95,8 +95,10 @@ void Gui::DrawTesting()
 			{
 				int8_t code = kc.set.keys[i].get(kc.nLayer);
 				if (code > K_ModLast && code < KEYS_ALL)
-				{	sprintf(a,"%s ",cKeyStr[code]);
-					d->print(a);
+				{
+					const uint8_t* c = &cGrpRgb[cKeyGrp[code]][0][0];
+					d->setTextColor(RGB(c[0],c[1],c[2]));
+					d->print(cKeyStr[code]);  d->print(" ");
 		}	}	}
 
 		//  held count

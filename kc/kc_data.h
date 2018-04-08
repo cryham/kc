@@ -57,9 +57,6 @@ struct KC_Setup
 	void Clear(), InitCK1_8x6();
 
 	int8_t minLay, layUsed;  // stats
-	// ram
-	//uint16_t adr[maxKeys];  // offset starts, if data^ was variable size
-	//uint8_t lay[sc];  //layers used
 };
 
 struct KC_Main  // main, state
@@ -75,6 +72,7 @@ struct KC_Main  // main, state
 	uint32_t tiSeq = 0;
 	void SeqModClear();
 
+	//  brightnes, dac
 	int8_t setDac = 1;
 	int16_t valDac = 3900;
 
@@ -87,4 +85,7 @@ struct KC_Main  // main, state
 
 	void UpdLay();
 	void Send(uint32_t ms);
+
+	void //GetSize(),
+		Load(),Save();  // eeprom
 };

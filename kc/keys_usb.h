@@ -66,6 +66,8 @@ extern const uint16_t cKeyUsb[KEYS_ALL];
 
 //  key names strings  for key codes
 extern const char* cKeyStr[KEYS_ALL_EXT];
+//  short key names
+extern const char* cKeySh[KEYS_ALL_EXT];
 
 //  key groups  color for key codes
 extern const uint8_t cKeyGrp[KEYS_ALL_EXT];
