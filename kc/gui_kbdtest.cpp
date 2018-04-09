@@ -5,6 +5,7 @@
 #include "kbd_layout.h"
 #include "kc_data.h"
 #include "keys_usb.h"
+#include "usb_mouse.h"
 
 //  extern
 extern uint scan_freq;  // scan counter, freq
@@ -218,20 +219,20 @@ void Gui::DrawTesting()
 	//-----------------------------------------------------
 	case T_Mouse:
 	{
-		///  dbg  mouse speed  --
-		d->setCursor(0,32);
-		//const int16_t y1 = H-1-2*8, y2 = H-1-1*8;
-		d->print("hold  delay  speed");
-		#if 0
-		d->setCursor(0, y1);  d->print(mx_holdtime);
-		d->setCursor(0, y2);  d->print(my_holdtime);
+		///  dbg  mouse accel  --
+		const int16_t y0 = 32, y1 = y0+10, y2 = y1+10;
+		d->setCursor(0, y0);     d->print("hold");
+		d->setCursor(W/3, y0);   d->print("delay");
+		d->setCursor(2*W/3, y0); d->print("speed");
 
-		d->setCursor(W/3, y1);  d->print(mx_delay);
-		d->setCursor(W/3, y2);  d->print(my_delay);
+		d->setCursor(0, y1);  sprintf(a,"%d", int(100.f*mx_holdtime));  d->print(a);
+		d->setCursor(0, y2);  sprintf(a,"%d", int(100.f*my_holdtime));  d->print(a);
 
-		d->setCursor(2*W/3, y1);  d->print(mx_speed);
-		d->setCursor(2*W/3, y2);  d->print(my_speed);
-		#endif
+		d->setCursor(W/3, y1);  sprintf(a,"%d", mx_delay);  d->print(a);
+		d->setCursor(W/3, y2);  sprintf(a,"%d", my_delay);  d->print(a);
+
+		d->setCursor(2*W/3, y1);  sprintf(a,"%d", mx_speed);  d->print(a);
+		d->setCursor(2*W/3, y2);  sprintf(a,"%d", my_speed);  d->print(a);
 	}	break;
 	}
 }
