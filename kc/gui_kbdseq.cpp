@@ -24,7 +24,7 @@ void Gui::DrawSequences()
 
 		//  list slots
 		int s = page * iPage, i,n, xm, y, q;
-		for (i=0; i < iPage && s < kc.set.iSlots; ++i,++s)
+		for (i=0; i < iPage && s < kc.set.seqSlots; ++i,++s)
 		{
 			y = 28 + i*9;
 			d->setCursor(0, y);
@@ -60,7 +60,7 @@ void Gui::DrawSequences()
 		}
 		//  page, center   /
 		d->setCursor(W/2 -2*6, 4);
-		sprintf(a,"%2d/%d", page+1, kc.set.iSlots/iPage);  d->print(a);
+		sprintf(a,"%2d/%d", page+1, kc.set.seqSlots/iPage);  d->print(a);
 
 		///  seq key
 		/*if (tInfo == 0)

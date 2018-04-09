@@ -39,7 +39,7 @@ void KC_Setup::InitCK1_8x6()
 {
 	Clear();
 	rows = 6;  cols = 8;  scanKeys = rows * cols;
-	iSlots = 60;
+	seqSlots = 60;
 
 	int i;
 	KC_Key k;
@@ -75,23 +75,20 @@ void KC_Setup::InitCK1_8x6()
 
 	#if 1  //  examples  --*
 	KC_Sequence sq;
-	sq.data.push_back(K_A);  sq.data.push_back(K_LSHIFT);
-	sq.data.push_back(K_B);  sq.data.push_back(K_LSHIFT);
-	sq.data.push_back(K_C);
+	sq.add(K_A);  sq.add(K_LSHIFT);
+	sq.add(K_B);  sq.add(K_LSHIFT);  sq.add(K_C);
 	seqs[0] = sq;  sq.data.clear();
 
-	sq.data.push_back(K_RCTRL);  sq.data.push_back(K_RSHIFT);
-	sq.data.push_back(K_LEFT);  sq.data.push_back(K_LEFT);
-	sq.data.push_back(K_LEFT);
+	sq.add(K_RCTRL);  sq.add(K_RSHIFT);
+	sq.add(K_LEFT);  sq.add(K_LEFT);  sq.add(K_LEFT);
 	seqs[2] = sq;  sq.data.clear();
 
-	sq.data.push_back(K_1);  sq.data.push_back(K_2);
-	sq.data.push_back(K_3);  sq.data.push_back(K_4);
+	sq.add(K_1);  sq.add(K_2);
+	sq.add(K_3);  sq.add(K_4);
 	seqs[5] = sq;  sq.data.clear();
 
-	sq.data.push_back(K_Q);  sq.data.push_back(K_E);
-	sq.data.push_back(K_LSHIFT);
-	sq.data.push_back(K_F);  sq.data.push_back(K_G);
+	sq.add(K_Q);  sq.add(K_E);  sq.add(K_LSHIFT);
+	sq.add(K_F);  sq.add(K_G);
 	seqs[7] = sq;
 	#endif
 }
@@ -105,13 +102,13 @@ void KC_Setup::Clear()
 
 	//  default  matrix setup
 	rows = 8;  cols = 18;  scanKeys = rows * cols;
-	iSlots = 60;
+	seqSlots = 60;
 
 	keys.clear();
 	seqs.clear();
 
 	KC_Sequence sq;  // empty
 	//  const size
-	for (int i=0; i < iSlots; ++i)
+	for (int i=0; i < seqSlots; ++i)
 		seqs.push_back(sq);
 }

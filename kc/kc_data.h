@@ -35,7 +35,9 @@ struct KC_Sequence
 {
 	//  var length
 	std::vector<uint8_t> data;
+
 	const int len() const {  return int(data.size());  }
+	void add(uint8_t b) {  data.push_back(b);  }
 };
 
 struct KC_Setup
@@ -44,7 +46,7 @@ struct KC_Setup
 	uint8_t h1,h2, ver;  // header
 
 	//  rows * cols = scanKeys,  matrix setup
-	uint8_t rows, cols, scanKeys, iSlots;  // max seqs
+	uint8_t rows, cols, scanKeys, seqSlots;  // max seqs
 	// ver num or date saved-
 	// todo
 	// debounce 1 ms, strobe_delay 4 us, scan_freq 1khz..

@@ -5,8 +5,11 @@
 //.............................................
 #define EOfs 0  //  offset and max size to use
 #define ESize 2048
-#define Erd(a)    eeprom_read_byte((uint8_t*)a)
-#define Ewr(a,b)  eeprom_write_byte((uint8_t*)a, b)
+
+const char* erSize = "> Max size";
+
+#define Erd(a)    eeprom_read_byte((uint8_t*)a);      ++a;  if (a >= ESize) {  strcpy(err, erSize);  return;  }
+#define Ewr(a,b)  eeprom_write_byte((uint8_t*)a, b);  ++a;  if (a >= ESize) {  strcpy(err, erSize);  return;  }
 
 
 //  Load
@@ -15,50 +18,56 @@ void KC_Main::Load()
 {
 	err[0]=0;
 	//set.Clear();
-	//KC_Setup s;  // load into temp !crash
 
 	int a = 0, i, n;  uint8_t b;
 	//  header
-	set.h1 = Erd(a);  if (set.h1 != 'k') {  strcpy(err, "Hdr1 !k");  return;  }  ++a;
-	set.h2 = Erd(a);  if (set.h2 != 'c') {  strcpy(err, "Hdr2 !c");  return;  }  ++a;
-	set.ver = Erd(a);  if (set.ver > 1) {  strcpy(err, "Hdr3 ver >1");  return;  }  ++a;
+	set.h1 = Erd(a);  if (set.h1 != 'k') {  strcpy(err, "Hdr1 !k");  return;  }
+	set.h2 = Erd(a);  if (set.h2 != 'c') {  strcpy(err, "Hdr2 !c");  return;  }
+	set.ver = Erd(a);  if (set.ver > 1) {  strcpy(err, "Hdr3 ver >1");  return;  }
 
 	//  matrix
-	set.rows = Erd(a);  if (set.rows > 8) {  strcpy(err, "Scan rows >8");  return;  }  ++a;
-	set.cols = Erd(a);  if (set.cols > 18) {  strcpy(err, "Scan cols >18");  return;  }  ++a;
+	set.rows = Erd(a);  if (set.rows > 8) {  strcpy(err, "Scan rows >8");  return;  }
+	set.cols = Erd(a);  if (set.cols > 18) {  strcpy(err, "Scan cols >18");  return;  }
 	set.scanKeys = set.rows * set.cols;
-	set.iSlots = Erd(a);  if (set.iSlots > 60) {  strcpy(err, "Seq slots >60");  return;  }  ++a;
+	set.seqSlots = Erd(a);  if (set.seqSlots > 60) {  strcpy(err, "Seq slots >60");  return;  }
 
 	// inc num when saved, set ver
 	// params here, size..
 
-	//  keys
+
+	//  Keys  ---
 	for (i=0; i < set.scanKeys; ++i)
 	{
-		uint8_t len = Erd(a);  ++a;
+		uint8_t len = Erd(a);
 		if (len > KC_MaxLayers)
 		{	strcpy(err, "Key lay >8");  return;  }
+
 		KC_Key k;
 		for (n=0; n < len; ++n)
 		{
-			b = Erd(a);  ++a;
+			b = Erd(a);
 			if (b != KEY_NONE)
 				k.add(b, n);
 		}
 		set.keys[i] = k;
 	}
 
-	//  seq
-	//	KC_Sequence sq;  // empty
-/*	for (i=0; i < s.iSlots; ++i)
-	{	seqs.push_back(sq);
+	//  Seqs  ---
+	for (i=0; i < set.seqSlots; ++i)
+	{
+		uint8_t len = Erd(a);
+
+		KC_Sequence s;
+		for (n=0; n < len; ++n)
+		{
+			b = Erd(a);
+			s.add(b);
+		}
+		set.seqs[i] = s;
 	}
-*/
+
 	memSize = a;
 	strcpy(err, "ok");
-
-	//  if evth ok, full set
-	//set = s;
 }
 
 //  Save
@@ -75,28 +84,38 @@ void KC_Main::Save()
 
 	int a = 0, i, n;
 
-
 	//  header
-	Ewr(a, set.h1);  ++a;
-	Ewr(a, set.h2);  ++a;
-	Ewr(a, set.ver);  ++a;
+	Ewr(a, set.h1);
+	Ewr(a, set.h2);
+	Ewr(a, set.ver);
 
 	//  matrix
-	Ewr(a, set.rows);  ++a;
-	Ewr(a, set.cols);  ++a;
-	Ewr(a, set.iSlots);  ++a;
+	Ewr(a, set.rows);
+	Ewr(a, set.cols);
+	Ewr(a, set.seqSlots);
 
-	//  keys
+
+	//  Keys  ---
 	for (i=0; i < set.scanKeys; ++i)
 	{
 		const KC_Key& k = set.keys[i];
 		uint8_t len = k.data.size();
-		Ewr(a, len);  ++a;
+		Ewr(a, len);
+
 		for (n=0; n < len; ++n)
-		{	Ewr(a, k.data[n]);  ++a;  }
+		{	Ewr(a, k.data[n]);  }
 	}
 
-	//  seq
+	//  Seqs  ---
+	for (i=0; i < set.seqSlots; ++i)
+	{
+		const KC_Sequence& s = set.seqs[i];
+		uint8_t len = s.len();
+		Ewr(a, len);
+
+		for (n=0; n < len; ++n)
+		{	Ewr(a, s.data[n]);  }
+	}
 
 	memSize = a;
 	if (memSize >= ESize)

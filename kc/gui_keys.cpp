@@ -241,17 +241,17 @@ void Gui::KeyPress()
 
 			if (kUp > 0)  // move
 			{	++slot;  if (slot >= iPage) {  slot = 0;
-				++page;  if (page >= kc.set.iSlots/iPage)  page = 0;
+				++page;  if (page >= kc.set.seqSlots/iPage)  page = 0;
 			}	}
 			if (kUp < 0)
 			{	--slot;  if (slot < 0) {  slot = iPage-1;
-				--page;  if (page < 0)  page = kc.set.iSlots/iPage-1;
+				--page;  if (page < 0)  page = kc.set.seqSlots/iPage-1;
 			}	}
 			if (kPgUp > 0)  // page
-			{	++page;  if (page >= kc.set.iSlots/iPage)  page = 0;
+			{	++page;  if (page >= kc.set.seqSlots/iPage)  page = 0;
 			}
 			if (kPgUp < 0)
-			{	--page;  if (page < 0)  page = kc.set.iSlots/iPage-1;
+			{	--page;  if (page < 0)  page = kc.set.seqSlots/iPage-1;
 			}
 
 			if (kCopy)  // copy
