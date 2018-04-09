@@ -15,27 +15,29 @@ void KC_Main::Load()
 {
 	err[0]=0;
 	//set.Clear();
-	KC_Setup s;  // load into temp
+	//KC_Setup s;  // load into temp !crash
 
 	int a = 0, i, n;  uint8_t b;
 	//  header
-	s.h1 = Erd(a);  if (s.h1 != 'k') {  strcpy(err, "Hdr1 !k");  return;  }  ++a;
-	s.h2 = Erd(a);  if (s.h2 != 'c') {  strcpy(err, "Hdr2 !c");  return;  }  ++a;
-	s.ver = Erd(a);  if (s.ver > 1) {  strcpy(err, "Hdr3 ver >1");  return;  }  ++a;
+	set.h1 = Erd(a);  if (set.h1 != 'k') {  strcpy(err, "Hdr1 !k");  return;  }  ++a;
+	set.h2 = Erd(a);  if (set.h2 != 'c') {  strcpy(err, "Hdr2 !c");  return;  }  ++a;
+	set.ver = Erd(a);  if (set.ver > 1) {  strcpy(err, "Hdr3 ver >1");  return;  }  ++a;
 
 	//  matrix
-	s.rows = Erd(a);  if (s.rows > 8) {  strcpy(err, "Scan rows >8");  return;  }  ++a;
-	s.cols = Erd(a);  if (s.cols > 18) {  strcpy(err, "Scan cols >18");  return;  }  ++a;
-	s.scanKeys = s.rows * s.cols;
-	s.iSlots = Erd(a);  if (s.iSlots > 60) {  strcpy(err, "Seq slots >60");  return;  }  ++a;
+	set.rows = Erd(a);  if (set.rows > 8) {  strcpy(err, "Scan rows >8");  return;  }  ++a;
+	set.cols = Erd(a);  if (set.cols > 18) {  strcpy(err, "Scan cols >18");  return;  }  ++a;
+	set.scanKeys = set.rows * set.cols;
+	set.iSlots = Erd(a);  if (set.iSlots > 60) {  strcpy(err, "Seq slots >60");  return;  }  ++a;
 
 	// inc num when saved, set ver
 	// params here, size..
 
 	//  keys
-	for (i=0; i < s.scanKeys; ++i)
+	for (i=0; i < set.scanKeys; ++i)
 	{
 		uint8_t len = Erd(a);  ++a;
+		if (len > KC_MaxLayers)
+		{	strcpy(err, "Key lay >8");  return;  }
 		KC_Key k;
 		for (n=0; n < len; ++n)
 		{
@@ -43,18 +45,20 @@ void KC_Main::Load()
 			if (b != KEY_NONE)
 				k.add(b, n);
 		}
-		//..
+		set.keys[i] = k;
 	}
 
-//	KC_Sequence sq;  // empty
-	//  const size
-//	for (int i=0; i < /*iSlots*/60; ++i)
-//		seqs.push_back(sq);
-
+	//  seq
+	//	KC_Sequence sq;  // empty
+/*	for (i=0; i < s.iSlots; ++i)
+	{	seqs.push_back(sq);
+	}
+*/
 	memSize = a;
+	strcpy(err, "ok");
 
 	//  if evth ok, full set
-	set = s;
+	//set = s;
 }
 
 //  Save
