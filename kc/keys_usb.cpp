@@ -57,7 +57,7 @@ const char* cKeyStr[KEYS_ALL_EXT]={  "None",  // max [255]
 
 	"Fun0", "Fun1", "Fun2", "Fun3", "Fun4", "Fun5", "Fun6", "Fun7", "Fun8", "Fun9",  // disp fun _ext_
 	"M\x1B","M\x1A","M\x18","M\x19", "LMB","MMB","RMB",  // mouse
-	"Mwh\x18","Mwh\x19", "Mwh\x1B","Mwh\x1A", "Mbtn4","Mbtn5","Mbtn6",
+	"Mwh\x18","Mwh\x19", "Mwh\x1B","Mwh\x1A", "Mbck","Mfrw",
 
 	"L1", "L2", "L3", "L4", "L5", "L6", "L7", "L8",  // layer
 	"L9", "L10", "L11", "L12", "L13", "L14", "L15", "L16",
@@ -94,8 +94,8 @@ const char* cKeySh[KEYS_ALL_EXT]={  "no",
 	"AL",  "D0", "D1", "D2", "D3", "D4", "D5", "D6", "D7",  // padding-
 
 	"0", "1", "2", "3", "4", "5", "6", "7", "8", "9",  // disp fun _ext_
-	"\x1A","\x1B","\x19","\x18", "L","M","R",  // mouse
-	"w\x18","w\x19", "w\x1B","w\x1A", "b4","b5","b6",
+	"\x1B","\x1A","\x18","\x19", "L","M","R",  // mouse
+	"w\x18","w\x19", "w\x1B","w\x1A", "Mb","Mf",
 
 	"L1", "L2", "L3", "L4", "L5", "L6", "L7", "L8",  // layer
 	"L9", "10", "11", "12", "13", "14", "15", "16",
@@ -133,7 +133,7 @@ const uint8_t cKeyGrp[KEYS_ALL_EXT]=
 
 	13,13,13,13,13,13,13,13,13,13,  // disp fun _ext_
 	14,14,14,14,14,14,14,  // mouse
-	14,14,14,14,14,14,14,
+	14,14,14,14,14,14,
 
 	15,15,15,15,15,15,15,15,  // layer
 	15,15,15,15,15,15,15,15,

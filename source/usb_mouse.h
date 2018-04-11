@@ -54,8 +54,9 @@ extern "C"
 	extern int mx_delay, my_delay, mx_move, my_move, mx_speed, my_speed;
 	extern float mx_holdtime, my_holdtime;
 
-	extern volatile int16_t USBMouse_Relative_x;
-	extern volatile int16_t USBMouse_Relative_y;
+	extern volatile int16_t Mouse_input_x;
+	extern volatile int16_t Mouse_input_y;
+	extern uint8_t usb_mouse_buttons_update;
 
 #ifdef __cplusplus
 }
@@ -106,7 +107,8 @@ public:
 		if (buttons != usb_mouse_buttons_state)
 		{
 			usb_mouse_buttons_state = buttons;
-			usb_mouse_move(0, 0, 0, 0);
+			usb_mouse_buttons_update = 1;
+			//usb_mouse_move(0, 0, 0, 0);
 		}
 	}
 	void release(uint8_t b = MOUSE_LEFT)
@@ -115,7 +117,8 @@ public:
 		if (buttons != usb_mouse_buttons_state)
 		{
 			usb_mouse_buttons_state = buttons;
-			usb_mouse_move(0, 0, 0, 0);
+			usb_mouse_buttons_update = 1;
+			//usb_mouse_move(0, 0, 0, 0);
 		}
 	}
 	bool isPressed(uint8_t b = MOUSE_ALL)

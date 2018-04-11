@@ -7,7 +7,7 @@
 #include "WProgram.h"
 
 
-//  update layer
+//  update layers  (always)
 //------------------------------------------------
 void KC_Main::UpdLay()
 {
@@ -20,7 +20,7 @@ void KC_Main::UpdLay()
 		analogWriteDAC0(valDac);
 	}
 
-	//  all matrix scan codes
+	//  all matrix scan codes  ----
 	uint c,r;  int id;
 	for (c=0; c < NumCols; ++c)
 	for (r=0; r < NumRows; ++r)
@@ -50,19 +50,14 @@ void KC_Main::UpdLay()
 			}
 		}
 	}
-
-	//  mouse move  * * *
-	//usb_mouse_buttons(..);
-	usb_mouse_idle();
-	//usb_mouse_send();
 }
 
-//  keyboard send
+//  keyboard send  (to pc usb)
 //------------------------------------------------
 void KC_Main::Send(uint32_t ms)
 {
 	//  in sequence  ***
-	if (inSeq >= 0 && (ms - tiSeq > 20 || ms < tiSeq))  // par
+	if (inSeq >= 0 && (ms - tiSeq > dtSeq || ms < tiSeq))  // par
 	{
 		tiSeq = ms;
 		const KC_Sequence& sq = set.seqs[inSeq];
@@ -82,14 +77,14 @@ void KC_Main::Send(uint32_t ms)
 				Keyboard.send_now();
 				seqMod[code] = 0;
 			}
-			seqRel = 2;  // next
+			seqRel = 2;  // next key
 		}
 		//  keys
 		else if (seqRel == 0)
 		{
 			Keyboard.press(usb);
 			Keyboard.send_now();
-			++seqRel;
+			++seqRel;  // next step
 		}
 		else if (seqRel == 1)
 		{
@@ -114,7 +109,8 @@ void KC_Main::Send(uint32_t ms)
 	//if (inSeq >= 0)
 	//	return;
 
-	//  all matrix scan codes
+
+	//  all matrix scan codes  ----
 	uint c,r;  int id;
 	for (c=0; c < NumCols; ++c)
 	for (r=0; r < NumRows; ++r)
@@ -124,24 +120,49 @@ void KC_Main::Send(uint32_t ms)
 		//  state
 		bool on = k.state == KeyState_Press;
 		bool off = k.state == KeyState_Release;
-
 		if (on || off)
 		if (id < set.nkeys())
 		{
 			if (on)
-			{	//  get code for current layer
+			{
+				//  get code for current layer
 				uint8_t code = set.keys[id].get(nLayer);
 				if (code > KEY_NONE && code < KEYS_ALL)
 				{
-					//  if 1 key, send
+					//  if 1 key, send press
 					uint usb = cKeyUsb[code];
-					if (on)
-					{	//  save layer of press
-						k.layerOn = nLayer;
-						Keyboard.press(usb);
-						Keyboard.send_now();
+					k.layerOn = nLayer;  // save layer of press
+					Keyboard.press(usb);
+					Keyboard.send_now();
+				}
+				//  mouse  * * *
+				else
+				if (code >= KM_Left && code <= KM_Down)
+				{
+					switch (code)
+					{
+					case KM_Left:  Mouse_input_x -= 8;  break;
+					case KM_Right: Mouse_input_x += 8;  break;
+					case KM_Up:    Mouse_input_y -= 8;  break;
+					case KM_Down:  Mouse_input_y += 8;  break;
 					}
-				}else  // special
+					k.layerOn = nLayer;
+				}
+				else if (code >= KM_LMB && code <= KM_Forw)
+				{
+					uint8_t b = MOUSE_LEFT;
+					switch (code)
+					{
+					case KM_LMB:  break;
+					case KM_RMB:  b = MOUSE_RIGHT;  break;
+					case KM_MMB:  b = MOUSE_MIDDLE;  break;
+					case KM_Back:  b = MOUSE_BACK;   break;
+					case KM_Forw:  b = MOUSE_FORWARD;  break;
+					}
+					Mouse.press(b);
+					k.layerOn = nLayer;
+				}
+				else  //  sequences
 				if (code >= K_Seq0 && code <= K_SeqLast
 					&& inSeq < 0)
 				{
@@ -159,17 +180,49 @@ void KC_Main::Send(uint32_t ms)
 				}
 			}
 			else if (off)
-			{	//  send for layer it was pressed on
+			{
+				//  send for layer it was pressed on
 				uint8_t code = set.keys[id].get(k.layerOn);
-				uint usb = cKeyUsb[code];
+				if (code > KEY_NONE && code < KEYS_ALL)
 				{
+					//  release 1 key
+					uint usb = cKeyUsb[code];
 					Keyboard.release(usb);
 					Keyboard.send_now();
+				}
+				//  mouse  * * *
+				else
+				if (code >= KM_Left && code <= KM_Down)
+				{
+					switch (code)
+					{
+					case KM_Left:  Mouse_input_x += 8;  break;
+					case KM_Right: Mouse_input_x -= 8;  break;
+					case KM_Up:    Mouse_input_y += 8;  break;
+					case KM_Down:  Mouse_input_y -= 8;  break;
+					}
+				}
+				else if (code >= KM_LMB && code <= KM_Forw)
+				{
+					uint8_t b = MOUSE_LEFT;
+					switch (code)
+					{
+					case KM_LMB:  break;
+					case KM_RMB:  b = MOUSE_RIGHT;  break;
+					case KM_MMB:  b = MOUSE_MIDDLE;  break;
+					case KM_Back:  b = MOUSE_BACK;   break;
+					case KM_Forw:  b = MOUSE_FORWARD;  break;
+					}
+					Mouse.release(b);
 				}
 			}
 		}
 	}
+
+	//  mouse move and send  * * *
+	usb_mouse_idle();
 }
+
 
 // . . . . . . . . . . . . . . . . . . . . . . . .
 //  get data for layer, if any

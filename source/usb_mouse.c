@@ -41,6 +41,7 @@
 
 // which buttons are currently pressed
 uint8_t usb_mouse_buttons_state=0;
+uint8_t usb_mouse_buttons_update=0;
 
 //#define DEFAULT_XRES 640
 //#define DEFAULT_YRES 480
@@ -172,17 +173,19 @@ const static int spd_max = 48,
 volatile uint16_t USBMouse_Buttons = 0;
 
 // Relative mouse axis movement, stores pending movement
-volatile int16_t USBMouse_Relative_x = 8;
-volatile int16_t USBMouse_Relative_y = 8;
+volatile int16_t Mouse_input_x = 0;
+volatile int16_t Mouse_input_y = 0;
 int shift = 0;
 
 
+//  mouse idle update accel, speed
+//..............................................................................
 void usb_mouse_idle()
 {
 	//  update
 	ti = micros();  uint32_t dt = ti - old_ti;  old_ti = ti;
-	mx_move = USBMouse_Relative_x ? 1 : 0;
-	my_move = USBMouse_Relative_y ? 1 : 0;
+	mx_move = Mouse_input_x ? 1 : 0;
+	my_move = Mouse_input_y ? 1 : 0;
 
 	//  mouse send interval  par
 	float htx = min(hold_max, mx_holdtime);
@@ -208,23 +211,23 @@ void usb_mouse_idle()
 		if (!my_move || shift)  my_holdtime *= decay;
 	}
 
-//void usb_mouse_send()
-
 	///  mouse send
 	int mx_send = mx_speed>1 || (mx_move && ti - old_ti_mx > mx_delay) ? 1 : 0;
 	int my_send = my_speed>1 || (my_move && ti - old_ti_my > my_delay) ? 1 : 0;
 
 	//usb_mouse_buttons_state = USBMouse_Buttons;
-	int8_t x = mx_send ? USBMouse_Relative_x * (int16_t)(mx_speed) / 8 : 0;
-	int8_t y = my_send ? USBMouse_Relative_y * (int16_t)(my_speed) / 8 : 0;
+	int8_t x = mx_send ? Mouse_input_x * (int16_t)(mx_speed) / 8 : 0;
+	int8_t y = my_send ? Mouse_input_y * (int16_t)(my_speed) / 8 : 0;
 
-	if (x || y)
+	//  send
+	if (x || y || usb_mouse_buttons_update)
 		usb_mouse_move(x,y, 0,0);
 
 	// Clear status and state
-//	USBMouse_Buttons = 0;
-//	USBMouse_Relative_x = 0;
-//	USBMouse_Relative_y = 0;
+	usb_mouse_buttons_update = 0;
+	//	USBMouse_Buttons = 0;
+	//	Mouse_input_x = 0;
+	//	Mouse_input_y = 0;
 	if (mx_send) old_ti_mx = ti;
 	if (my_send) old_ti_my = ti;
 

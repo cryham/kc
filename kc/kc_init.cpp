@@ -58,7 +58,7 @@ void KC_Setup::InitCK1_8x6()
 			kk.add(dk.code, 0);
 
 			#if 1  //  override  --*
-				if (dk.code == K_INS)		kk.add(K_Layer1, 0);
+				 if (dk.code == K_INS)		kk.add(K_Layer1, 0);
 			else if (dk.code == K_SPACE)	kk.add(K_Layer2, 0);
 			else if (dk.code == K_T)		kk.add(K_Seq0, 2);
 			else if (dk.code == K_H)		kk.add(K_S2, 2);
@@ -69,7 +69,13 @@ void KC_Setup::InitCK1_8x6()
 			{	kk.add(dk.code+1, 2);
 			}else if (dk.code < K_UP && i % 3 == 1)
 			{	kk.add(dk.code+1, 1);
-			}
+			}	// mouse
+			if (dk.code == K_UP)    kk.add(KM_Up, 1);  else
+			if (dk.code == K_DOWN)  kk.add(KM_Down, 1);  else
+			if (dk.code == K_LEFT)  kk.add(KM_Left, 1);  else
+			if (dk.code == K_RIGHT) kk.add(KM_Right, 1);  else
+			if (dk.code == K_HOME)  kk.add(KM_LMB, 1);  else
+			if (dk.code == K_PGUP)  kk.add(KM_RMB, 1);
 			#endif
 	}	}
 

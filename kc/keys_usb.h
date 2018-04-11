@@ -41,7 +41,7 @@ enum EKeys  // byte key codes
 	K_Fun1, K_Fun2, K_Fun3, K_Fun4,	K_Fun5, K_Fun6, K_Fun7, K_Fun8, K_Fun9,
 	//  mouse
 	KM_Left,KM_Right,KM_Up,KM_Down, KM_LMB,KM_MMB,KM_RMB,
-	KM_WhlUp,KM_WhlDn, KM_WhlLeft,KM_WhlRight, KM_Btn4,KM_Btn5,KM_Btn6,
+	KM_WhlUp,KM_WhlDn, KM_WhlLeft,KM_WhlRight, KM_Back,KM_Forw,
 
 	//  layer switch  hold/set etc config elsewhere
 	K_Layer1, K_Layer2, K_Layer3, K_Layer4, K_Layer5, K_Layer6, K_Layer7, K_Layer8,
