@@ -4,6 +4,8 @@
 #include "keys_usb.h"
 
 extern KC_Main kc;
+extern volatile int16_t USBMouse_Relative_x;
+extern volatile int16_t USBMouse_Relative_y;
 
 
 //  Key press
@@ -29,6 +31,10 @@ void Gui::KeyPress()
 	kLoad = Key(1,7);  kSave = Key(3,7);  // F3  F4
 
 	//kF12 = Key(5,0) - Key(3,0);  // F12  F11
+
+	//  todo mouse test
+	USBMouse_Relative_x = 8 * (KeyH(1,1) - KeyH(1,2));
+	USBMouse_Relative_y = 8 * (KeyH(2,4) - KeyH(0,4));
 
 	/*	    0    1     2    3  4    5  6    7
 		0        PgUp  Hom  U  ^    R  +    E

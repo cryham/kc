@@ -233,6 +233,7 @@ void Gui::DrawTesting()
 
 		d->setCursor(2*W/3, y1);  sprintf(a,"%d", mx_speed);  d->print(a);
 		d->setCursor(2*W/3, y2);  sprintf(a,"%d", my_speed);  d->print(a);
+		d->setCursor(0, H-1-2*8);  sprintf(a,"%d %d", USBMouse_Relative_x, USBMouse_Relative_y);  d->print(a);
 	}	break;
 	}
 }

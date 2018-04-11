@@ -199,8 +199,8 @@ void usb_mouse_idle()
 	if (my_move && !shift)  my_holdtime += 0.000001f * dt;
 
 	//  decel  const freq
-	if (dt > 60000) dt = 60000;// min 16 fps
-	const uint32_t iv = 10000;// interval 100 fps
+	if (dt > 60000) dt = 60000;  // min 16 fps
+	const uint32_t iv = 10000;  // interval 100 fps
 	time += dt;
 	while (time >= iv)
 	{	time -= iv;
@@ -211,20 +211,20 @@ void usb_mouse_idle()
 //void usb_mouse_send()
 
 	///  mouse send
-	int mx_send = mx_speed>1 || mx_move && ti - old_ti_mx > mx_delay ? 1 : 0;
-	int my_send = my_speed>1 || my_move && ti - old_ti_my > my_delay ? 1 : 0;
+	int mx_send = mx_speed>1 || (mx_move && ti - old_ti_mx > mx_delay) ? 1 : 0;
+	int my_send = my_speed>1 || (my_move && ti - old_ti_my > my_delay) ? 1 : 0;
 
 	//usb_mouse_buttons_state = USBMouse_Buttons;
 	int8_t x = mx_send ? USBMouse_Relative_x * (int16_t)(mx_speed) / 8 : 0;
 	int8_t y = my_send ? USBMouse_Relative_y * (int16_t)(my_speed) / 8 : 0;
 
-	//if (x || y)
+	if (x || y)
 		usb_mouse_move(x,y, 0,0);
 
 	// Clear status and state
-	USBMouse_Buttons = 0;
-	USBMouse_Relative_x = 0;
-	USBMouse_Relative_y = 0;
+//	USBMouse_Buttons = 0;
+//	USBMouse_Relative_x = 0;
+//	USBMouse_Relative_y = 0;
 	if (mx_send) old_ti_mx = ti;
 	if (my_send) old_ti_my = ti;
 

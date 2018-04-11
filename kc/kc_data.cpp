@@ -1,6 +1,7 @@
 #include "kc_data.h"
 #include "kbd_layout.h"
 #include "usb_keyboard.h"
+#include "usb_mouse.h"
 #include "matrix.h"
 #include "keys_usb.h"
 #include "WProgram.h"
@@ -44,11 +45,16 @@ void KC_Main::UpdLay()
 
 				if (nLayer >= KC_MaxLayers-1)
 					nLayer = KC_MaxLayers-1;
-				//if (nLayer < 0)
+			//if (nLayer < 0)
 				//	nLayer = 0;
 			}
 		}
 	}
+
+	//  mouse move  * * *
+	//usb_mouse_buttons(..);
+	usb_mouse_idle();
+	//usb_mouse_send();
 }
 
 //  keyboard send
