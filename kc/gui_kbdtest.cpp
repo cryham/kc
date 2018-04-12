@@ -43,6 +43,7 @@ void Gui::DrawTesting()
 		//  layer  -
 		d->setTextColor(RGB(20,23,31));
 		sprintf(a,"Layer: %d", kc.nLayer);
+		d->setTextColor(RGB(24,27,31));
 		d->print(a);
 		d->println("");  d->moveCursor(0,4);
 
@@ -220,21 +221,26 @@ void Gui::DrawTesting()
 	case T_Mouse:
 	{
 		///  dbg  mouse accel  --
-		const int16_t y0 = 32, y1 = y0+10, y2 = y1+10;
+		const int16_t x0 = 0, x1 = W/3+6, x2 = 2*W/3+6;
+		const int16_t y0 = 32, y1 = y0+10+4, y2 = y1+10;
+
 		d->setCursor(0, y0);     d->print("hold");
 		d->setCursor(W/3, y0);   d->print("delay");
 		d->setCursor(2*W/3, y0); d->print("speed");
 
-		d->setCursor(0, y1);  sprintf(a,"%d", int(100.f*mx_holdtime));  d->print(a);
-		d->setCursor(0, y2);  sprintf(a,"%d", int(100.f*my_holdtime));  d->print(a);
+		d->setCursor(x0, y1);  dtostrf(mx_holdtime, 4,2, a);  d->print(a);
+		d->setCursor(x0, y2);  dtostrf(my_holdtime, 4,2, a);  d->print(a);
 
-		d->setCursor(W/3, y1);  sprintf(a,"%d", mx_delay);  d->print(a);
-		d->setCursor(W/3, y2);  sprintf(a,"%d", my_delay);  d->print(a);
+		d->setCursor(x1, y1);  sprintf(a,"%d", mx_delay);  d->print(a);
+		d->setCursor(x1, y2);  sprintf(a,"%d", my_delay);  d->print(a);
 
-		d->setCursor(2*W/3, y1);  sprintf(a,"%d", mx_speed);  d->print(a);
-		d->setCursor(2*W/3, y2);  sprintf(a,"%d", my_speed);  d->print(a);
-		d->setCursor(0, H-1-2*8);  sprintf(a,"x %+d y %+d  b %d",
-			Mouse_input_x/8, Mouse_input_y/8, usb_mouse_buttons_state);  d->print(a);
+		d->setCursor(x2, y1);  sprintf(a,"%d", mx_speed);  d->print(a);
+		d->setCursor(x2, y2);  sprintf(a,"%d", my_speed);  d->print(a);
+
+		d->setCursor(0, H-1-4*8);  sprintf(a,"move  x %+d  y %+d",
+			Mouse_input_x/8, Mouse_input_y/8);  d->print(a);
+		d->setCursor(0, H-1-2*8);  sprintf(a,"buttons %d",
+			usb_mouse_buttons_state);  d->print(a);
 	}	break;
 	}
 }

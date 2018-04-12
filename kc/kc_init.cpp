@@ -70,12 +70,15 @@ void KC_Setup::InitCK1_8x6()
 			}else if (dk.code < K_UP && i % 3 == 1)
 			{	kk.add(dk.code+1, 1);
 			}	// mouse
-			if (dk.code == K_UP)    kk.add(KM_Up, 1);  else
-			if (dk.code == K_DOWN)  kk.add(KM_Down, 1);  else
-			if (dk.code == K_LEFT)  kk.add(KM_Left, 1);  else
-			if (dk.code == K_RIGHT) kk.add(KM_Right, 1);  else
-			if (dk.code == K_HOME)  kk.add(KM_LMB, 1);  else
-			if (dk.code == K_PGUP)  kk.add(KM_RMB, 1);
+			if (dk.code == K_UP)    kk.add(KM_Up, 2);  else
+			if (dk.code == K_DOWN)  kk.add(KM_Down, 2);  else
+			if (dk.code == K_LEFT)  kk.add(KM_Left, 2);  else
+			if (dk.code == K_RIGHT) kk.add(KM_Right, 2);  else
+			if (dk.code == K_HOME)  kk.add(KM_LMB, 2);  else
+			if (dk.code == K_PGUP)  kk.add(KM_RMB, 2);  else
+			if (dk.code == K_DEL)   kk.add(KM_MMB, 2);  else
+			if (dk.code == K_END)   kk.add(KM_WhlUp, 2);  else
+			if (dk.code == K_PGDN)  kk.add(KM_WhlDn, 2);
 			#endif
 	}	}
 
