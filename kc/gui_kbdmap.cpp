@@ -158,7 +158,8 @@ void Gui::DrawMapping()
 	//  ids dbg -
 	/*d->setTextColor(RGB(16,20,12));
 	d->setCursor(0, 6*8+4);
-	sprintf(a,"scId: %d draw %d  send %d", scId, drawId, kbdSend);  d->print(a);*/
+	sprintf(a,"scId: %d draw %d  send %d", scId, drawId, kbdSend);  d->print(a);
+	sprintf(a,"draw %2d  x %2d y %2d", drawId, drawX, drawY);  d->print(a);*/
 
 
 	//  stats, data
@@ -204,7 +205,7 @@ void Gui::DrawMapping()
 	// * * * * * * * * * * * * * * * * * * * * * * * *
 	for (int i=0; i < nDrawKeys; ++i)
 	{
-		const SKey& k = drawKeys[i];
+		const DrawKey& k = drawKeys[i];
 
 		//  find if pressed
 		int f = k.sc != NO && !moveCur &&
@@ -214,8 +215,13 @@ void Gui::DrawMapping()
 		if (moveCur && drawId >= 0 && i == drawId)  f = 2;
 		if (!moveCur && scId >= 0 && scId == k.sc)  f = 2;
 
+		//  set coords or advance
 		if (k.x >=0)  x = k.x;  else  x -= k.x;
-		if (k.y > 0)  y = k.y + 62; /*Y*/  else  y -= k.y;
+		if (k.y > 0)  y = k.y + yPosLay;  else  y -= k.y;
+
+		if (i == drawId)  // save center for move
+		{	drawX = x + k.w/2;
+			drawY = y + k.h/2;  }
 
 		if (f)
 			d->fillRect(x+1, y-1, k.w-1, k.h-1, clrRect[k.o]);

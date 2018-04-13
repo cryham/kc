@@ -15,11 +15,13 @@ void Gui::Init(Ada4_ST7735* tft)
 	//menu = 1;
 	mlevel = 1;
 
+//	ym = M_Testing;
 	ym = M_Mapping;
 //	ym = M_Sequences;
 //	ym = M_Display;
 	for (int i=0; i < M_All; ++i)
 		ym1[i]=0;
+	ym1[M_Testing]=3;
 	
 	oldti = 0;
 	tdemo = 0;

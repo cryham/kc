@@ -45,8 +45,9 @@ struct Gui
 
 
 	//  Mapping  - - - -
-	int16_t keyCode=0;
-	int8_t nLay=0, scId=0, drawId=-1,
+	const int8_t yPosLay = 62;
+	int16_t keyCode=0, scId=0, drawId=-1, drawX=0,drawY=0;
+	int8_t nLay=0,
 		pressKey=0, moveCur=0, pickCode=0, // edit operations
 		keyGroup=0, grpFilt=0;  // group filter
 

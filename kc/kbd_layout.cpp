@@ -14,7 +14,7 @@ RGB(25,28,31), RGB(28,28,23), RGB(20,26,30), RGB(29,29,16),	RGB( 9,26,26), RGB( 
 const char* CKname = "CK1 8x6";
 const int8_t  kW = 8, kH = 9, kF = 6, /* size */  X = -kW, XN = 127;  // pos
 
-const SKey drawKeys[nDrawKeys] = {  //  Layout draw
+const DrawKey drawKeys[nDrawKeys] = {  //  Layout draw
 
 { 0, 9,kW,kF, 'e',6,NO,K_ESC}, //Esc 13x
 {-13,0,kW,kF, '1',2,NO,K_F1},{X, 0,kW,kF, '2',2,NO,K_F2}, {X,0,kW,kF, '3',2,15,K_F3}, {X,0,kW,kF, '4',2,31,K_F4},

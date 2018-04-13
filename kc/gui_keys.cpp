@@ -30,6 +30,8 @@ void Gui::KeyPress()
 
 	//kF12 = Key(5,0) - Key(3,0);  // F12  F11
 
+	// -- PgUp,Home,Up,R  test strobe delay
+
 	/*	    0    1     2    3  4    5  6    7
 		0        PgUp  Hom  U  ^    R  +    E
 		1   Bck  ->    <-   Y  Del  T       F3
@@ -86,9 +88,48 @@ void Gui::KeyPress()
 				moveCur = 0;  return;
 			}
 
-			if (kRight)	drawId += kRight;
-			if (kUp)	drawId += kUp *  // y meh-
-				(drawId < 40 ? 14 : drawId < 53 ? 13 : /*drawId < 57 ? */12 /*: 11*/);
+			//  find closest next in move direction
+			int x=2, y=0, ii = -1, B = 2000,
+				mxl = -B, mxr = B, myu = -B, myd = B, axd = B;
+
+			for (int i = 0; i < nDrawKeys; ++i)
+			{
+				const DrawKey& k = drawKeys[i];
+
+				//  set coords or advance
+				if (k.x >=0)  x = k.x;  else  x -= k.x;
+				if (k.y > 0)  y = k.y + yPosLay;  else  y -= k.y;
+
+				//  distance to cursor key center
+				int dx = x + k.w/2 - drawX,
+					dy = y + k.h/2 - drawY, ax = abs(dx);
+
+				if (i != drawId)
+				{
+					if (kRight > 0 && dx > 0 && abs(dy) < 8)  // >
+					{
+						if (dx < mxr)
+						{	mxr = dx;  ii = i;  }
+					}else
+					if (kRight < 0 && dx < 0 && abs(dy) < 8)  // <
+					{
+						if (dx > mxl)
+						{	mxl = dx;  ii = i;  }
+					}else
+					if (kUp < 0 && dy < 0 && ax < 26)  // ^
+					{
+						if (dy >= myu)
+						{	myu = dy;  ii = i;  }
+					}else
+					if (kUp > 0 && dy > 0 && ax < 6)  // v
+					{
+						if (dy <= myd && ax < axd)
+						{	myd = dy;  axd = ax;  ii = i;  }
+					}
+				}
+			}
+			if (ii != -1)
+				drawId = ii;
 
 			if (drawId >= nDrawKeys) drawId -= nDrawKeys;
 			if (drawId < 0)			 drawId += nDrawKeys;

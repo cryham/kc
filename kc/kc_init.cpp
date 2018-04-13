@@ -50,7 +50,7 @@ void KC_Setup::InitCK1_8x6()
 	//  from draw layout
 	for (i=0; i < nDrawKeys; ++i)
 	{
-		const SKey& dk = drawKeys[i];
+		const DrawKey& dk = drawKeys[i];
 		if (dk.sc != NO
 			&& dk.code != K_F12) //
 		{

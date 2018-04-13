@@ -3,7 +3,7 @@
 
 
 //  Draw Keboard, Layout, const data
-struct SKey
+struct DrawKey
 {
 	int16_t x;  int8_t y, w,h;  // pos, size
 	char c;  // caption char
@@ -25,7 +25,7 @@ extern const uint16_t clrRect[Omax], clrText[Omax];  // colors types
 //  CK3  layout
 extern const char* CKname;
 const static int nDrawKeys = 91;
-extern const SKey drawKeys[nDrawKeys];
+extern const DrawKey drawKeys[nDrawKeys];
 
 
 #if 0
