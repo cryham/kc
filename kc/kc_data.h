@@ -10,6 +10,7 @@
 */
 const int KC_MaxLayers = 8;  //16
 
+
 struct KC_Key  // for each scan code
 {
 	uint32_t layUse;  // KC_MaxLayers x 1bit
@@ -31,6 +32,7 @@ struct KC_Key  // for each scan code
 	void rem(uint32_t lay);
 };
 
+
 struct KC_Sequence
 {
 	//  var length
@@ -40,6 +42,7 @@ struct KC_Sequence
 	void add(uint8_t b) {  data.push_back(b);  }
 };
 
+
 struct KC_Setup
 {
 	//  const
@@ -47,10 +50,6 @@ struct KC_Setup
 
 	//  rows * cols = scanKeys,  matrix setup
 	uint8_t rows, cols, scanKeys, seqSlots;  // max seqs
-	// ver num or date saved-
-	// todo
-	// debounce 1 ms, strobe_delay 4 us, scan_freq 1khz..
-	// mouse accel, etc..
 
 	std::vector<KC_Key> keys;  // size scanKeys, maps scan to byte codes
 	std::vector<KC_Sequence> seqs;
@@ -65,7 +64,10 @@ struct KC_Setup
 	//int8_t minLay, layUsed;  // stats
 };
 
-struct KC_Main  // main, state
+
+//  main, state
+//--------------------------------------
+struct KC_Main
 {
 	//  current layer, set by keys
 	int8_t nLayer = 0;
@@ -81,14 +83,29 @@ struct KC_Main  // main, state
 	void SeqModClear();
 
 
-	//  params  ----
-	//const int8_t iSlots = 60;  // max seqs
-	// ms  key auto repeat
+	//  params, saved  ----
+	//--------------------------------------
+	//  scan setup
+	uint8_t debounce = 1, strobe_delay = 4;
+	uint8_t scanFreq = 50;  // mul by 1 kHz
+
+	//uint8_t offset;  // params size B
+	iunt16_t dtSeqDef = 20;  // default dt for seq keys
+
+	uint8_t verCounter = 0;  // inc on each save
+
+	//  gui key auto repeat, ms
 	uint16_t krDelay = 250, krRepeat = 60;
 
 	//  brightnes, dac
-	int8_t setDac = 1;
+	int8_t setDac = 1;  // upd
 	int16_t valDac = 4000;
+	// default screen, fade dac, time..
+	//int8_t startScr
+
+	//  mouse keys
+	uint8_t mkSpeed = 100, mkAccel = 100;
+	//--------------------------------------
 
 
 	//  main  ----
@@ -96,13 +113,13 @@ struct KC_Main  // main, state
 
 	KC_Main();
 
-	void UpdLay();
-	void Send(uint32_t ms);
+	void UpdLay();  // update
+	void Send(uint32_t ms);  // send usb
 
 	//  eeprom  ----
 	void //GetSize(),
 		Load(), Save();
-	uint16_t memSize = 0;
+	uint16_t memSize = 0;  // result B
 
 	char err[64];  // error string
 };
