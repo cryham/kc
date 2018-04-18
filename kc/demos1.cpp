@@ -115,7 +115,7 @@ void Demos::Fonts()
 
 		d->setCursor(0,H-23);
 		d->setTextColor(RGB(16,25,31));
-		d->print("ver 0.80");  /// version text
+		d->print("ver 0.90");  /// version text
 
 		d->setTextColor(RGB(21,26,31));
 		d->setCursor(0, H-8);

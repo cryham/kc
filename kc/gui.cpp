@@ -11,18 +11,24 @@ Gui::Gui() : d(0)
 void Gui::Init(Ada4_ST7735* tft)
 {
 	d = tft;
-	kbdSend = 0;
-	//menu = 1;
-	mlevel = 1;
+	kbdSend = 0;  //
 
-//	ym = M_Testing;
-	ym = M_Mapping;
-//	ym = M_Sequences;
-//	ym = M_Display;
 	for (int i=0; i < M_All; ++i)
 		ym1[i]=0;
-	ym1[M_Testing]=3;
+
+	//  todo load ee, from set
+
+	//  start screen  --
+	mlevel = 2;
+
+	ym = M_Testing;
+//	ym = M_Mapping;
+//	ym = M_Sequences;
+//	ym = M_Display;
+
+	ym1[M_Testing] = 2;  //-
 	
+
 	oldti = 0;
 	tdemo = 0;
 #ifdef DEMOS

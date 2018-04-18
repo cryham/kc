@@ -48,7 +48,7 @@ void Gui::DrawMapping()
 		//  Filtered view by group, 3 cols
 		if (grpFilt)
 		{
-			const int g = keyGroup;
+			const uint8_t g = keyGroup;
 			d->print(cGrpName[g]);
 
 			int k = grpStart[g], y = y0, x = xw;
@@ -63,7 +63,7 @@ void Gui::DrawMapping()
 				{	d->fillRect(x-1,y, 41,8, RGB(10,10,9));
 					d->drawRect(x-2,y, 42,8, RGB(23,23,13));
 				}
-				FadeClr(&cGrpRgb[g][0][0], &cGrpRgb[g][1][0], 9, q, 3);
+				FadeGrp(g, 9, q, 3);
 				d->print(cKeyStr[k]);
 
 				++k;
@@ -84,13 +84,13 @@ void Gui::DrawMapping()
 			d->setCursor(x, y);
 			int k = (pg + i + c*12 + KEYS_ALL_EXT) % KEYS_ALL_EXT;
 			int q = abs(k - keyCode);  // diff clr
-			int g = cKeyGrp[k];
+			uint8_t g = cKeyGrp[k];
 			{
 				if (!q)  // cursor [ ]
 				{	d->fillRect(x-1,y, 41,8, RGB(10,10,9));
 					d->drawRect(x-2,y, 42,8, RGB(23,23,13));
 				}
-				FadeClr(&cGrpRgb[g][0][0], &cGrpRgb[g][1][0], 9, q, 3);
+				FadeGrp(g, 9, q, 3);
 				d->print(cKeyStr[k]);
 			}
 		}
@@ -111,11 +111,8 @@ void Gui::DrawMapping()
 		d->setTextColor(RGB(31,31,11));
 		d->print(i == yy ? "\x10 ":"  ");
 
-		c = abs(i - yy);  // dist dim
-		d->setTextColor(RGB(
-			max(0, 21 - c * 5),
-			max(0, 31 - c * 2),
-			max(0, 21 - c * 5) ));
+		c = abs(i - yy);
+		FadeClr(C_Map, 4, c, 1);
 
 		switch (i)
 		{

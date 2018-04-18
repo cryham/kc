@@ -30,7 +30,7 @@ void Gui::DrawSequences()
 			d->setCursor(0, y);
 			d->setTextColor(RGB(20,30,25));
 			q = abs(i - slot);
-			FadeClr(&Mclr[3][0][0], &Mclr[3][1][0], 4, q, 2);
+			FadeClr(C_Seq, 4, q, 2);
 			sprintf(a,"%2d",s);  d->print(a);
 
 			d->setTextColor(RGB(31,31,20));
@@ -46,8 +46,8 @@ void Gui::DrawSequences()
 			{
 				uint8_t z = kc.set.seqs[s].data[n];
 				const char* st = cKeyStr[z];
-				int g = cKeyGrp[z];
-				FadeClr(&cGrpRgb[g][0][0], &cGrpRgb[g][1][0], 9, q, 3);
+				uint8_t g = cKeyGrp[z];
+				FadeGrp(g, 9, q, 3);
 
 				if (d->getCursorX() + 6*strlen(st) >= W -6*2)  // outside
 				{	d->print(".");  d->moveCursor(-3,0);
@@ -93,7 +93,7 @@ void Gui::DrawSequences()
 				uint8_t z = kc.set.seqs[q].data[n];
 				int g = cKeyGrp[z];  // clr
 				int q = abs(n - edpos);
-				FadeClr(&cGrpRgb[g][0][0], &cGrpRgb[g][1][0], 9, q, 4);
+				FadeGrp(g, 9, q, 4);
 
 				xx = strlen(cKeyStr[z]) * 6 +2;
 				if (x + xx > W-1)
@@ -123,10 +123,11 @@ void Gui::DrawSequences()
 
 	if (tInfo > 0)
 	{	--tInfo;
-		int x = W/2 + 6*4;
+		int x = W/2 + 6*3, xe = 6*5, y = 12;
 
 		d->setFont(0);
-		d->setCursor(x, 2);
+		d->setCursor(x, 2);  //  bck
+		d->fillRect(x-3, 0, W-1-(x-3), 3*12, RGB(6,6,8));
 		d->setTextColor(RGB(27,29,31));
 
 		const static char* strInf[5] = {
@@ -135,11 +136,21 @@ void Gui::DrawSequences()
 
 		if (infType == 1 || infType == 2)
 		{
-			d->setCursor(x+6, 8+4);
+			d->setTextColor(RGB(28,25,31));  // mem`
+			d->setCursor(x, y);
 			sprintf(a,"%d B", kc.memSize);  d->print(a);
 
+			d->setTextColor(RGB(24,21,28));  // cnt
+			d->setCursor(x, y+10);
+			sprintf(a,"cnt %d", par.verCounter);  d->print(a);
+
+			d->setTextColor(RGB(20,16,24));  // ver-
+			d->setCursor(x, y+20);
+			sprintf(a,"ver %d", kc.set.ver);  d->print(a);
+
+			d->fillRect(xe-3, y-2, x-(xe-3), 12, RGB(8,6,6));
 			d->setTextColor(RGB(31,22,21));
-			d->setCursor(W/2-6*4, 8+4);
+			d->setCursor(xe, y);
 			d->print(kc.err);
 	}	}
 }

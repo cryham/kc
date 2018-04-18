@@ -10,7 +10,7 @@ struct Gui
 {
 	Demos demos;
 	Ada4_ST7735* d=0;
-	int kbdSend = 0;  // send usb
+	int kbdSend = 0;  // send to usb
 
 	//  main
 	Gui();
@@ -18,15 +18,20 @@ struct Gui
 	void Draw(), DrawEnd();
 	void KeyPress();
 
+
 	//  util
 	void DrawTesting(), DrawMapping(), DrawSequences(), Chk_y1();
 
-	void DrawMenu(int cnt, const char** str, int8_t clrId=0,
-				int16_t yadd=10, int16_t nextCol=-1, int16_t numGap=-1);
-	void FadeClr(const uint8_t* clrRGB, const uint8_t* mulRGB,
-				const uint8_t minRGB, const uint8_t mul, const uint8_t div);
-	const static uint8_t Cl = 4;  // menu colors
+	//  fade color menu
+	enum EFadeClr
+	{	C_Main=0, C_Demos, C_Test, C_Map, C_Seq, C_Disp, C_Scan, Cl  };
 	const static uint8_t Mclr[Cl][2][3];
+
+	void FadeClr(EFadeClr ec, const uint8_t minRGB, const uint8_t mul, const uint8_t div);
+	void FadeGrp(uint8_t g, const uint8_t minRGB, const uint8_t mul, const uint8_t div);
+	void DrawMenu(int cnt, const char** str, EFadeClr ec,
+				int16_t yadd=10, int16_t nextCol=-1, int16_t numGap=-1);
+
 
 	//  vars
 	//int8_t menu;  // 0 off, 1 in menu
@@ -56,6 +61,10 @@ struct Gui
 			kBack=0, kEnt=0,  kCtrl=0, kSh=0,  kInf=0, kFps=0,
 	/*seq*/	kBckSp=0, kIns=0, kDel=0,  kCopy=0, kPaste=0, kSwap=0,
 			kLoad=0, kSave=0;
+
+	//  level 2 y cursor  - -
+	int8_t ym2Test = 0;  // Testing
+	int8_t ym2Disp = 0;  // Display
 
 
 	//  Sequences  - - - -
