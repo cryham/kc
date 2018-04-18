@@ -1,5 +1,6 @@
 #include "WProgram.h"
 #include "kc_data.h"
+//extern KC_Params par;
 
 //  load, save in eeprom
 //.............................................
@@ -8,9 +9,27 @@
 
 const char* erSize = "> Max size";
 
-#define Erd(a)    eeprom_read_byte((uint8_t*)a);      ++a;  if (a >= ESize) {  strcpy(err, erSize);  return;  }
-#define Ewr(a,b)  eeprom_write_byte((uint8_t*)a, b);  ++a;  if (a >= ESize) {  strcpy(err, erSize);  return;  }
+#define Erd(a)    eeprom_read_byte((uint8_t*)a);      ++a;  memSize = a;  if (a >= ESize) {  strcpy(err, erSize);  return;  }
+#define Ewr(a,b)  eeprom_write_byte((uint8_t*)a, b);  ++a;  memSize = a;  if (a >= ESize) {  strcpy(err, erSize);  return;  }
 
+
+//  default params  ----
+void ParInit()
+{
+	par.debounce = 1;  // ms?
+	par.strobe_delay = 4;
+	par.scanFreq = 50;  // mul by 1 kHz
+
+	par.valDac = 4000;
+	par.startScreen = 0;
+	par.verCounter = 0;
+
+	par.krDelay = 250/5;  par.krRepeat = 80/5;  // ms
+
+	par.mkSpeed = 100;  par.mkAccel = 100;
+
+	par.dtSeqDef = 20;
+}
 
 //  Load
 // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
@@ -23,7 +42,7 @@ void KC_Main::Load()
 	//  header
 	set.h1 = Erd(a);  if (set.h1 != 'k') {  strcpy(err, "Hdr1 !k");  return;  }
 	set.h2 = Erd(a);  if (set.h2 != 'c') {  strcpy(err, "Hdr2 !c");  return;  }
-	set.ver = Erd(a);  if (set.ver > 1) {  strcpy(err, "Hdr3 ver >1");  return;  }
+	set.ver = Erd(a);  if (set.ver > 2) {  strcpy(err, "Hdr3 ver >1");  return;  }
 
 	//  matrix
 	set.rows = Erd(a);  if (set.rows > 8) {  strcpy(err, "Scan rows >8");  return;  }
@@ -31,8 +50,12 @@ void KC_Main::Load()
 	set.scanKeys = set.rows * set.cols;
 	set.seqSlots = Erd(a);  if (set.seqSlots > 60) {  strcpy(err, "Seq slots >60");  return;  }
 
-	// inc num when saved, set ver
-	// params here, size..
+
+	//  params  ----
+	ParInit();  // defaults
+	n = Erd(a);  // size
+	eeprom_read_block((void*)&par, (void*)a, n);  a+=n;
+	if (a >= ESize) {  strcpy(err, erSize);  return;  }
 
 
 	//  Keys  ---
@@ -85,14 +108,18 @@ void KC_Main::Save()
 	int a = 0, i, n;
 
 	//  header
-	Ewr(a, set.h1);
-	Ewr(a, set.h2);
-	Ewr(a, set.ver);
+	Ewr(a, set.h1);  Ewr(a, set.h2);  Ewr(a, set.ver);
 
 	//  matrix
-	Ewr(a, set.rows);
-	Ewr(a, set.cols);
-	Ewr(a, set.seqSlots);
+	Ewr(a, set.rows);  Ewr(a, set.cols);  Ewr(a, set.seqSlots);
+
+
+	//  params  ----
+	++par.verCounter;  // inc ver
+	n = sizeof(par);
+	Ewr(a, n);  // size
+	eeprom_write_block((void*)&par, (void*)a, n);  a+=n;
+	if (a >= ESize) {  strcpy(err, erSize);  return;  }
 
 
 	//  Keys  ---

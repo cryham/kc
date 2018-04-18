@@ -1,5 +1,6 @@
 #include "WProgram.h"
 #include "matrix.h"
+#include "kc_params.h"
 
 
 // Debounce Array
@@ -13,8 +14,6 @@ uint8_t col_use[NumCols], row_use[NumRows];  // used count
 uint8_t col_ghost[NumCols], row_ghost[NumRows];  // marked as having ghost if 1
 uint8_t col_ghost_old[NumCols], row_ghost_old[NumRows];  // old ghost state
 #endif
-
-int STROBE_DELAY = 4;  // par
 
 // Matrix State Table Debug Counter - If non-zero display state table after every matrix scan
 uint16_t matrixDebugStateCounter = 0;
@@ -30,6 +29,7 @@ int cnt_press = 0, cnt_rel = 0, cnt_hold = 0;
 // System Timer used for delaying debounce decisions
 extern volatile uint32_t systick_millis_count;
 
+//extern struct KC_Params par;  // params
 
 
 // ----- Functions -----
@@ -225,15 +225,15 @@ void Matrix_scan( uint16_t scanNum )
 	{
 
 		uint32_t start = micros();
-		if (STROBE_DELAY > 0)
-			while ((micros() - start) < STROBE_DELAY);
+		if (par.strobe_delay > 0)
+			while ((micros() - start) < par.strobe_delay);
 
 		// Strobe Pin
 		Matrix_pin( Matrix_cols[ strobe ], Type_StrobeOn );
 
 		start = micros();
-		if (STROBE_DELAY > 0)
-			while ((micros() - start) < STROBE_DELAY);
+		if (par.strobe_delay > 0)
+			while ((micros() - start) < par.strobe_delay);
 
 
 		// Scan each of the sense pins
@@ -293,7 +293,7 @@ void Matrix_scan( uint16_t scanNum )
 					{
 						// If not enough time has passed since Hold
 						// Keep previous state
-						if ( lastTransition < MinDebounceTime_define )
+						if ( lastTransition < par.debounce )
 						{
 							//warn_print("FAST Release stopped");
 							state->curState = state->prevState;
@@ -309,7 +309,7 @@ void Matrix_scan( uint16_t scanNum )
 					{
 						// If not enough time has passed since Hold
 						// Keep previous state
-						if ( lastTransition < MinDebounceTime_define )
+						if ( lastTransition < par.debounce )
 						{
 							//warn_print("FAST Press stopped");
 							state->curState = state->prevState;

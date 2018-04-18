@@ -2,6 +2,8 @@
 #include "matrix.h"
 #include "kbd_layout.h"
 #include "keys_usb.h"
+#include "kc_params.h"
+#include "periodic.h"
 
 extern KC_Main kc;
 
@@ -41,18 +43,78 @@ void Gui::KeyPress()
 		5   F12  -          N       B			*/
 
 
-	//  Mapping  edit modes
-	//............................................
+	//  Testing  Scan Setup
+	//..............................................
+	if (ym == M_Testing && mlevel == 2 && ym1[M_Testing] == 2)
+	{
+		if (kUp)
+		{	ym2Test = (ym2Test + kUp + 3) % 3;  }
+		else
+		if (kRight)  // adjust values
+		switch (ym2Test)
+		{
+		case 0:
+			par.scanFreq += kRight*4;
+			if (par.scanFreq < 2)  par.scanFreq = 2;
+			if (par.scanFreq > 150)  par.scanFreq = 150;
+			Periodic_init( par.scanFreq * 1000 );  // upd
+			break;
+		case 1:
+			if (par.strobe_delay > 0  && kRight < 0)  --par.strobe_delay;  else
+			if (par.strobe_delay < 50 && kRight > 0)  ++par.strobe_delay;
+			break;
+		case 2:
+			if (par.debounce > 0  && kRight < 0)  --par.debounce;  else
+			if (par.debounce < 50 && kRight > 0)  ++par.debounce;
+			break;
+		}
+	}
+	//  Testing  Mouse
+	//..
+
+	//  Display
+	//..............................................
 	if (ym == M_Display && mlevel == 1)
 	{
 		if (kUp)
-		{	kc.valDac += kUp * 10;  kc.setDac = 1;  }
-		if (kPgUp)
-		{	kc.valDac += kPgUp * 40;  kc.setDac = 1;  }
+		{	ym2Disp = (ym2Disp + kUp + 6) % 6;  }
+		else
+		if (kRight)  // adjust values
+		switch (ym2Disp)
+		{
+		case 0:
+			par.valDac += kRight * 10;
+			if (par.valDac < 3600)  par.valDac = 3600;
+			if (par.valDac > 4095)  par.valDac = 4095;
+			kc.setDac = 1;
+			break;
+		case 1:
+			break;
+		case 2:
+			break;
+
+		case 3:
+			par.startScreen += kRight;
+			if (par.startScreen < 0)  par.startScreen = 0;  else
+			if (par.startScreen > 15)  par.startScreen = 15;
+			break;
+		case 4:
+			if (par.krDelay > 0   && kRight < 0)  --par.krDelay;  else
+			if (par.krDelay < 255 && kRight > 0)  ++par.krDelay;
+			break;
+		case 5:
+			if (par.krRepeat > 0   && kRight < 0)  --par.krRepeat;  else
+			if (par.krRepeat < 255 && kRight > 0)  ++par.krRepeat;
+			break;
+		}
+
+		if (kBack)  --mlevel;
+		return;
 	}
 
+
 	//  Mapping  edit modes
-	//............................................
+	//...............................................................................
 	if (ym == M_Mapping && mlevel == 1)
 	{
 		if (pressKey)  // press key
@@ -181,7 +243,6 @@ void Gui::KeyPress()
 			return;
 		}
 	}
-	//............................................
 
 
 	//  sequence list
@@ -354,6 +415,7 @@ void Gui::KeyPress()
 	if (mlevel == 1)  //  sub menu
 	{	//  navigate
 		if (kRight < 0)	mlevel = 0;  // <back
+		if (ym != M_Display)
 		if (kRight > 0)	mlevel = 2;  // enter>
 		if (kUp){  ym1[ym] += kUp;  Chk_y1();  }
 		return;
@@ -393,11 +455,11 @@ int8_t Gui::kr(int8_t c, int8_t r, uint16_t dt)
 	{
 		if (m < 0)
 		{	m -= dt;
-			if (m < -kc.krDelay)  // delay ms
+			if (m < -par.krDelay*5)  // delay ms
 			{	m = 0;  return 1;  }
 		}else
 		{	m += dt;
-			if (m > kc.krRepeat)  // repeat freq
+			if (m > par.krRepeat*5)  // repeat freq
 			{	m = 0;  return 1;  }
 		}
 	}

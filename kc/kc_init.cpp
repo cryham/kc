@@ -4,6 +4,7 @@
 #include "matrix.h"
 #include "keys_usb.h"
 #include "gui.h"
+#include "kc_params.h"
 
 
 //  ctor init
@@ -19,12 +20,28 @@ KC_Main::KC_Main()
 {
 	err[0]=0;  memSize = 0;
 
-	//  default params  ----
-	setDac = 1;  valDac = 4000;
-
-	krDelay = 250;  krRepeat = 80;  // ms
+	setDac = 1;
 
 	SeqModClear();
+}
+
+//  clear evth
+void KC_Setup::Clear()
+{
+	//  header  ver
+	h1='k';  h2='c';  ver = 2;  //+ up on changes
+
+	//  default  matrix
+	rows = 8;  cols = 18;  scanKeys = rows * cols;
+	seqSlots = 60;
+
+	keys.clear();
+	seqs.clear();
+
+	KC_Sequence sq;  // empty
+	//  const size
+	for (int i=0; i < seqSlots; ++i)
+		seqs.push_back(sq);
 }
 
 KC_Setup::KC_Setup()
@@ -100,24 +117,4 @@ void KC_Setup::InitCK1_8x6()
 	sq.add(K_F);  sq.add(K_G);
 	seqs[7] = sq;
 	#endif
-}
-
-
-//  clear evth
-void KC_Setup::Clear()
-{
-	//  header  ver
-	h1='k';  h2='c';  ver = 1;  //+ up on changes
-
-	//  default  matrix setup
-	rows = 8;  cols = 18;  scanKeys = rows * cols;
-	seqSlots = 60;
-
-	keys.clear();
-	seqs.clear();
-
-	KC_Sequence sq;  // empty
-	//  const size
-	for (int i=0; i < seqSlots; ++i)
-		seqs.push_back(sq);
 }

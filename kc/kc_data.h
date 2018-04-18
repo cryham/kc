@@ -2,13 +2,7 @@
 #include <stdint.h>
 #include <vector>
 #include "keys_usb.h"
-
-/*  size:
-  18x8 = 144  x 16L = 2304B max
-  60 seq * 20 = 1200B  E=3500 big /ram
-  144 *1+2L = 432B + 10seq *15  E=600B small
-*/
-const int KC_MaxLayers = 8;  //16
+#include "kc_params.h"
 
 
 struct KC_Key  // for each scan code
@@ -83,29 +77,7 @@ struct KC_Main
 	void SeqModClear();
 
 
-	//  params, saved  ----
-	//--------------------------------------
-	//  scan setup
-	uint8_t debounce = 1, strobe_delay = 4;
-	uint8_t scanFreq = 50;  // mul by 1 kHz
-
-	//uint8_t offset;  // params size B
-	iunt16_t dtSeqDef = 20;  // default dt for seq keys
-
-	uint8_t verCounter = 0;  // inc on each save
-
-	//  gui key auto repeat, ms
-	uint16_t krDelay = 250, krRepeat = 60;
-
-	//  brightnes, dac
 	int8_t setDac = 1;  // upd
-	int16_t valDac = 4000;
-	// default screen, fade dac, time..
-	//int8_t startScr
-
-	//  mouse keys
-	uint8_t mkSpeed = 100, mkAccel = 100;
-	//--------------------------------------
 
 
 	//  main  ----
@@ -117,8 +89,7 @@ struct KC_Main
 	void Send(uint32_t ms);  // send usb
 
 	//  eeprom  ----
-	void //GetSize(),
-		Load(), Save();
+	void Load(), Save();
 	uint16_t memSize = 0;  // result B
 
 	char err[64];  // error string

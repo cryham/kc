@@ -14,6 +14,7 @@ uint32_t us_scan = 0, ms_scan = 0;
 
 Gui gui;
 KC_Main kc;
+extern void ParInit();
 
 
 //  kbd  timer event,  scan, send
@@ -64,6 +65,8 @@ void main_periodic()
 //-------------------------------------------------------------------------
 int main()
 {
+	ParInit();  // par defaults
+
 	//  dac for tft led
 	analogWriteRes(12);
 	analogWriteDAC0(0);  // dark
@@ -75,13 +78,14 @@ int main()
 	tft.clear();
 	tft.display();  // black
 
+	//  load set from ee
+	//kc.Load();
 
 	//  kbd
 	Matrix_setup();
 
-	//  40000  1.2 kHz  d: 50 fps
-	//  50000  960 Hz   d: 52 fps
-	Periodic_init( 50000 );  // par
+	//  48000000/50000 = 960 Hz   d: 52 fps
+	Periodic_init( par.scanFreq * 1000 );
 	Periodic_function( &main_periodic );
 
 

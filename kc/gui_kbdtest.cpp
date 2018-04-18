@@ -24,7 +24,7 @@ void Gui::DrawTesting()
 		d->print(strMain[ym]);  d->setFont(0);
 
 		//  menu
-		DrawMenu(T_All,strTest,2);
+		DrawMenu(T_All,strTest,C_Test);
 
 		return;
 	}
@@ -192,22 +192,34 @@ void Gui::DrawTesting()
 	case T_ScanSetup:
 	{
 		d->setCursor(0,32);
-		d->setTextColor(RGB(23,26,29));
-		sprintf(a,"Scan: %u Hz  t %lu us", scan_freq, us_scan);
-		d->println(a);  d->moveCursor(0,4);
-		//d->setTextColor(RGB(24,28,31));
+		for (int i=0; i < 3; ++i)
+		{
+			int c = abs(i - ym2Test);
+			if (!c)
+			{	d->setTextColor(RGB(10,30,30));
+				d->print("\x10 ");
+			}else
+				d->print("  ");
 
-		//d->print("Protocol: ");  //d->println(USBKeys_Protocol == 1 ? " NKRO" : " Boot");
-		//d->moveCursor(0,4);
-
-		sprintf(a,"Strobe delay: %d us", STROBE_DELAY);
-		d->println(a);  d->moveCursor(0,4);
-
+			FadeClr(C_Scan, 4, c, 1);
+			switch(i)
+			{
+			case 0:
+				sprintf(a,"Scan: %u Hz", 48000/par.scanFreq);  break;
+			case 1:
+				sprintf(a,"Strobe delay: %d us", par.strobe_delay);  break;
+			case 2:
+				sprintf(a,"Debounce: %d ms", par.debounce);  break;
+			}
+			d->println(a);  d->moveCursor(0,4);
+		}
+		d->moveCursor(0,4);
 		//DebounceThrottleDiv_define-
-		sprintf(a,"Debounce: %d ms", MinDebounceTime_define);
+		d->setTextColor(RGB(20,23,23));
+		sprintf(a,"  Time: %lu us  %u Hz", us_scan, scan_freq);
 		d->println(a);  d->moveCursor(0,8);
-
 		d->setTextColor(RGB(20,23,26));
+
 		sprintf(a,"Matrix keys: %d = %d x %d", ScanKeys, NumCols, NumRows);
 		d->println(a);  d->moveCursor(0,2);
 

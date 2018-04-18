@@ -99,14 +99,10 @@ const static GPIO_Pin
 //  Enable anti-ghosting code
 #define GHOSTING_MATRIX
 
-//  Delay in microseconds before and after each strobe change during matrix scan
-extern int STROBE_DELAY;  // 3 too low for >=3 in row, 4 ok
-
 #define DebounceDivThreshold_define 65535
 #define DebounceCounter uint16_t
 
 #define DebounceThrottleDiv_define 0
-#define MinDebounceTime_define 1  // todo ? 5..
 
 
 //  Debounce Element

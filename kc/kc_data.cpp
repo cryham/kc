@@ -6,6 +6,7 @@
 #include "keys_usb.h"
 #include "WProgram.h"
 
+KC_Params par;
 
 //  update layers  (always)
 //------------------------------------------------
@@ -14,10 +15,7 @@ void KC_Main::UpdLay()
 	//  dac led
 	if (setDac)
 	{	setDac = 0;
-		if (valDac > 4095)
-			valDac = 4095;
-		//analogWrite(A14, val);
-		analogWriteDAC0(valDac);
+		analogWriteDAC0(par.valDac);
 	}
 
 	//  all matrix scan codes  ----
