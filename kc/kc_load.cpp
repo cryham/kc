@@ -56,6 +56,7 @@ void KC_Main::Load()
 	n = Erd(a);  // size
 	eeprom_read_block((void*)&par, (void*)a, n);  a+=n;
 	if (a >= ESize) {  strcpy(err, erSize);  return;  }
+	setDac = 1;  // upd
 
 
 	//  Keys  ---

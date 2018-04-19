@@ -123,11 +123,11 @@ void Gui::DrawSequences()
 
 	if (tInfo > 0)
 	{	--tInfo;
-		int x = W/2 + 6*3, xe = 6*5, y = 12;
+		int x = W-1 - 6*9, x1 = x+6, xe = 6*3, y = 12;
 
 		d->setFont(0);
-		d->setCursor(x, 2);  //  bck
-		d->fillRect(x-3, 0, W-1-(x-3), 3*12, RGB(6,6,8));
+		d->setCursor(x, 0);  //  bck
+		d->fillRect(x-3, 0, W-1-(x-3), 42, RGB(4,6,8));
 		d->setTextColor(RGB(27,29,31));
 
 		const static char* strInf[5] = {
@@ -137,18 +137,18 @@ void Gui::DrawSequences()
 		if (infType == 1 || infType == 2)
 		{
 			d->setTextColor(RGB(28,25,31));  // mem`
-			d->setCursor(x, y);
+			d->setCursor(x1, y);
 			sprintf(a,"%d B", kc.memSize);  d->print(a);
 
 			d->setTextColor(RGB(24,21,28));  // cnt
-			d->setCursor(x, y+10);
+			d->setCursor(x1, y+10);
 			sprintf(a,"cnt %d", par.verCounter);  d->print(a);
 
 			d->setTextColor(RGB(20,16,24));  // ver-
-			d->setCursor(x, y+20);
+			d->setCursor(x1, y+20);
 			sprintf(a,"ver %d", kc.set.ver);  d->print(a);
 
-			d->fillRect(xe-3, y-2, x-(xe-3), 12, RGB(8,6,6));
+			d->fillRect(xe-3, y-2, x-3-(xe-3), 12, RGB(6,4,4));
 			d->setTextColor(RGB(31,22,21));
 			d->setCursor(xe, y);
 			d->print(kc.err);
