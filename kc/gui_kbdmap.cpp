@@ -108,8 +108,8 @@ void Gui::DrawMapping()
 	for (int i=0; i < 4; ++i)
 	{
 		d->setCursor(x,y);
-		d->setTextColor(RGB(31,31,11));
-		d->print(i == yy ? "\x10 ":"  ");
+		d->setTextColor(RGB(28,28,9));
+		d->print(i == yy ? "\x10 ":"  ");  // >
 
 		c = abs(i - yy);
 		FadeClr(C_Map, 4, c, 1);

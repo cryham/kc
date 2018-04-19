@@ -21,10 +21,11 @@ void Gui::DrawTesting()
 {
 	if (mlevel == 1)
 	{
+		d->setTextColor(RGB(18,26,18));
 		d->print(strMain[ym]);  d->setFont(0);
 
 		//  menu
-		DrawMenu(T_All,strTest,C_Test);
+		DrawMenu(T_All,strTest, C_Test,RGB(22,31,14));
 
 		return;
 	}
@@ -197,7 +198,7 @@ void Gui::DrawTesting()
 			int c = abs(i - ym2Test);
 			if (!c)
 			{	d->setTextColor(RGB(10,30,30));
-				d->print("\x10 ");
+				d->print("\x10 ");  // >
 			}else
 				d->print("  ");
 

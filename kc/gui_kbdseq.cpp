@@ -18,7 +18,7 @@ void Gui::DrawSequences()
 
 	if (!edit)  //  View  ----------
 	{
-		d->setTextColor(RGB(20,27,27));
+		d->setTextColor(RGB(14,26,26));
 		d->print("View");  d->setFont(0);
 		d->setTextColor(RGB(20,25,30));
 
@@ -33,10 +33,12 @@ void Gui::DrawSequences()
 			FadeClr(C_Seq, 4, q, 2);
 			sprintf(a,"%2d",s);  d->print(a);
 
-			d->setTextColor(RGB(31,31,20));
-			if (!q)  d->print("\x10");
+			d->setTextColor(RGB(0,30,30));
+			d->moveCursor(2,0);
+			if (!q)  d->print("\x10");  // >
 			d->setTextColor(RGB(20,31,31));
-			d->setCursor(2*6, y);
+
+			d->setCursor(2*6, y);  // copy mark
 			if (s == cpId)  d->print("\x7");
 			d->setCursor(4*6, y);
 

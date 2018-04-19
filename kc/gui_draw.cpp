@@ -7,7 +7,7 @@ extern KC_Main kc;
 //  menu draw  util
 //------------------------------------------------------
 const uint8_t Gui::Mclr[Gui::Cl][2][3] = {
-	{{16,26,31},{3,2,0}},  // 0 main
+	{{16,26,31},{4,3,1}},  // 0 main
 	{{27,26,31},{2,3,1}},  // 1 demos
 	{{20,30,26},{6,3,4}},  //  2 test
 	{{22,31,18},{6,3,7}},  //  3 map
@@ -16,7 +16,7 @@ const uint8_t Gui::Mclr[Gui::Cl][2][3] = {
 	{{26,28,28},{4,3,3}},  // 6 scan, mouse-
 };
 
-void Gui::DrawMenu(int cnt, const char** str, EFadeClr ec,
+void Gui::DrawMenu(int cnt, const char** str, EFadeClr ec, uint16_t curClr,
 					int16_t yadd, int16_t nextCol, int16_t numGap)
 {
 	const int16_t my = mlevel==0 ? ym : yy;
@@ -26,8 +26,8 @@ void Gui::DrawMenu(int cnt, const char** str, EFadeClr ec,
 	for (int i=0; i < cnt; ++i)
 	{
 		d->setCursor(x,y);
-		d->setTextColor(RGB(18,18,31));
-		d->print(i == my ? " \x10 ":"   ");
+		d->setTextColor(curClr);
+		d->print(i == my ? " \x10 ":"   ");  // >
 
 		c = abs(i - my);  // dist dim
 		FadeClr(ec, 4, c, 1);
@@ -43,25 +43,25 @@ void Gui::DrawMenu(int cnt, const char** str, EFadeClr ec,
 	}
 }
 
-void Gui::FadeClr(EFadeClr ec, const uint8_t minRGB, const uint8_t mul, const uint8_t div)
+void Gui::FadeClr(EFadeClr ec, const uint8_t mi, const uint8_t mul, const uint8_t div)
 {
 	const uint8_t* clr = &Mclr[ec][0][0];
 	const uint8_t* cmu = &Mclr[ec][1][0];
 
 	d->setTextColor(RGB(
-		max(minRGB, clr[0] - cmu[0] * mul / div),
-		max(minRGB, clr[1] - cmu[1] * mul / div),
-		max(minRGB, clr[2] - cmu[2] * mul / div) ));
+		max(mi, clr[0] - cmu[0] * mul / div),
+		max(mi, clr[1] - cmu[1] * mul / div),
+		max(mi, clr[2] - cmu[2] * mul / div) ));
 }
-void Gui::FadeGrp(uint8_t g, const uint8_t minRGB, const uint8_t mul, const uint8_t div)
+void Gui::FadeGrp(uint8_t g, const uint8_t mi, const uint8_t mul, const uint8_t div)
 {
 	const uint8_t* clr = &cGrpRgb[g][0][0];
 	const uint8_t* cmu = &cGrpRgb[g][1][0];
 
 	d->setTextColor(RGB(
-		max(minRGB, clr[0] - cmu[0] * mul / div),
-		max(minRGB, clr[1] - cmu[1] * mul / div),
-		max(minRGB, clr[2] - cmu[2] * mul / div) ));
+		max(mi, clr[0] - cmu[0] * mul / div),
+		max(mi, clr[1] - cmu[1] * mul / div),
+		max(mi, clr[2] - cmu[2] * mul / div) ));
 }
 
 //  Draw  main
@@ -84,10 +84,10 @@ void Gui::Draw()
 	//------------------------------------------------------
 	if (mlevel==0)
 	{
-		d->setTextColor(RGB(25,22,30));
+		d->setTextColor(RGB(6,19,31));
 		d->print("Main Menu");  d->setFont(0);
 
-		DrawMenu(M_All,strMain,C_Main, 10, -1,2);
+		DrawMenu(M_All,strMain, C_Main,RGB(20,25,29), 10, -1,2);
 
 		//d->setCursor(W-1 -7*6, H-8);
 		//d->print("F1 Help");
@@ -124,9 +124,10 @@ void Gui::Draw()
 			tdemo = millis() - oti1;
 		}else
 		{	//  menu
+			d->setTextColor(RGB(25,16,28));
 			d->print(strMain[ym]);  d->setFont(0);
 
-			DrawMenu(D_All,strDemo,C_Demos, 10, D_Next);
+			DrawMenu(D_All,strDemo, C_Demos,RGB(27,24,30), 10, D_Next);
 		}
 		return;
 	}
@@ -154,6 +155,7 @@ void Gui::Draw()
 	//------------------------------------------------------
 	if (ym == M_Display)
 	{
+		d->setTextColor(RGB(29,23,16));
 		d->print(strMain[ym]);  //d->setFont(0);
 
 		//  time  ---
