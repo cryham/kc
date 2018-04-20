@@ -43,30 +43,30 @@ void Gui::KeyPress()
 		5   F12  -          N       B			*/
 
 
+	#define RangeAdd(v,va, a,b) \
+		if (va > 0){  if (v+va >= b)  v = b;  else  v += va; } \
+		if (va < 0){  if (v+va <= a)  v = a;  else  v += va;}
+
+
 	//  Testing  Scan Setup
 	//..............................................
-	if (ym == M_Testing && mlevel == 2 && ym1[M_Testing] == 2)
+	if (ym == M_Testing && mlevel == 2 && yy == T_ScanSetup)
 	{
 		if (kUp)
-		{	ym2Test = (ym2Test + kUp + 3) % 3;  }
+		{	ym2Test = (ym2Test + kUp + 4) % 4;  }  // y max par
 		else
 		if (kRight)  // adjust values
 		switch (ym2Test)
 		{
 		case 0:
-			par.scanFreq += kRight*4;
-			if (par.scanFreq < 2)  par.scanFreq = 2;
-			if (par.scanFreq > 150)  par.scanFreq = 150;
-			Periodic_init( par.scanFreq * 1000 );  // upd
-			break;
+			RangeAdd(par.scanFreq, kRight*4, 2, 150);
+			Periodic_init( par.scanFreq * 1000 );  break;  // upd
 		case 1:
-			if (par.strobe_delay > 0  && kRight < 0)  --par.strobe_delay;  else
-			if (par.strobe_delay < 50 && kRight > 0)  ++par.strobe_delay;
-			break;
+			RangeAdd(par.strobe_delay, kRight, 0, 50);  break;
 		case 2:
-			if (par.debounce > 0  && kRight < 0)  --par.debounce;  else
-			if (par.debounce < 50 && kRight > 0)  ++par.debounce;
-			break;
+			RangeAdd(par.debounce, kRight, 0, 50);  break;
+		case 3:
+			RangeAdd(par.dtSeqDef, kRight, 0, 250);  break;
 		}
 	}
 	//  Testing  Mouse
@@ -77,35 +77,25 @@ void Gui::KeyPress()
 	if (ym == M_Display && mlevel == 1)
 	{
 		if (kUp)
-		{	ym2Disp = (ym2Disp + kUp + 6) % 6;  }
+		{	ym2Disp = (ym2Disp + kUp + 6) % 6;  }  // y max par
 		else
 		if (kRight)  // adjust values
 		switch (ym2Disp)
 		{
 		case 0:
-			par.valDac += kRight * 10;
-			if (par.valDac < 3600)  par.valDac = 3600;
-			if (par.valDac > 4095)  par.valDac = 4095;
-			kc.setDac = 1;
-			break;
+			RangeAdd(par.valDac, kRight * 10, 3600, 4095);
+			kc.setDac = 1;  break;
 		case 1:
 			break;
 		case 2:
 			break;
 
 		case 3:
-			par.startScreen += kRight;
-			if (par.startScreen < 0)  par.startScreen = 0;  else
-			if (par.startScreen > 15)  par.startScreen = 15;
-			break;
+			RangeAdd(par.startScreen, kRight, 0, 15);  break;
 		case 4:
-			if (par.krDelay > 0   && kRight < 0)  --par.krDelay;  else
-			if (par.krDelay < 255 && kRight > 0)  ++par.krDelay;
-			break;
+			RangeAdd(par.krDelay, kRight, 0,255);  break;
 		case 5:
-			if (par.krRepeat > 0   && kRight < 0)  --par.krRepeat;  else
-			if (par.krRepeat < 255 && kRight > 0)  ++par.krRepeat;
-			break;
+			RangeAdd(par.krRepeat, kRight, 0,255);  break;
 		}
 
 		if (kBack)  --mlevel;
@@ -295,12 +285,12 @@ void Gui::KeyPress()
 					edins = 1 - edins;  // ins/ovr
 				//if (kEnt)  SeqClear(q);  // erase
 
-				//if (key(F1))  fun = 1;  // set delay cmd
+				//if (key(F1))  fun = 1;  // set delay cmd todo
 				//if (key(F2))  fun = 2;  // wait cmd
 			}
 			if (!lay2)  // || fun > 0)
 			{
-				// todo manual pick list?
+				// manual pick list?
 				//  find key, if none
 				int ii = -1;
 				for (uint i=0; i < ScanKeys; ++i)

@@ -25,7 +25,7 @@ const char* strDemo[D_All] =
 //  Testing kbd
 const char* strTest[T_All] =
 {
-	"Pressed", "Matrix", "Scan Setup", "Mouse",
+	"Pressed", "Matrix", "Layout", "Scan Setup", "Mouse",
 };
 
 //  sub pages

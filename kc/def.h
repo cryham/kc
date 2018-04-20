@@ -37,7 +37,7 @@ extern const char *strDemo[D_All];
 
 enum ETesting  // Testing kbd, level1
 {
-	T_Pressed, T_Matrix, T_ScanSetup, T_Mouse, T_All
+	T_Pressed=0, T_Matrix, T_Layout, T_ScanSetup, T_Mouse, T_All
 };
 
 //  string names for all above ^

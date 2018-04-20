@@ -19,7 +19,7 @@ void Demos::Init(Ada4_ST7735* tft)
 	fntCur = 0;
 
 	einit = INone;
-	sCnt = 3*sMax/4;  sVel = 10;  //16 stars
+	sCnt = 3*sMax/4;  sVel = 17;  // stars
 	bCnt = min(200,bMax);  bSpd = 100;  bSpRnd = 1;  bRad = 3;  // balls
 
 	r1Int = 2;  r1Size = 2;  // rain

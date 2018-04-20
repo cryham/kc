@@ -143,7 +143,7 @@ void Gui::DrawMapping()
 				else if (u >= KEYS_ALL_EXT)  sprintf(a,"Key: OUT");
 				else
 				{
-					d->setTextColor(RGB(23,27,31));
+					FadeGrp(cKeyGrp[u], 9, 0, 3);
 					sprintf(a,"Key: %s", cKeyStr[u]);
 				}
 			}
@@ -182,6 +182,8 @@ void Gui::DrawMapping()
 			uint8_t kd = k.data[i];
 			if (kd != KEY_NONE)
 			{
+				FadeGrp(cKeyGrp[kd < KEYS_ALL_EXT ? kd : 0],
+					9, 2/*fade*/, 3);
 				d->setCursor(x,y);
 				sprintf(a,"%d %s",i,
 					kd < KEYS_ALL_EXT ? cKeyStr[kd] : "OUT");
@@ -197,9 +199,18 @@ void Gui::DrawMapping()
 		d->print(a);
 	}
 
+	DrawLayout(true);
 
+	d->setFont(0);
+}
+
+
+void Gui::DrawLayout(bool edit)
+{
 	//  kbd draw   Layout
 	// * * * * * * * * * * * * * * * * * * * * * * * *
+	int16_t x=2, y=0;
+
 	for (int i=0; i < nDrawKeys; ++i)
 	{
 		const DrawKey& k = drawKeys[i];
@@ -209,8 +220,9 @@ void Gui::DrawMapping()
 				Matrix_scanArray[k.sc].state == KeyState_Hold ? 1 : 0;
 
 		//  mark  mapping edit
+		if (edit)  {
 		if (moveCur && drawId >= 0 && i == drawId)  f = 2;
-		if (!moveCur && scId >= 0 && scId == k.sc)  f = 2;
+		if (!moveCur && scId >= 0 && scId == k.sc)  f = 2;  }
 
 		//  set coords or advance
 		if (k.x >=0)  x = k.x;  else  x -= k.x;
@@ -246,7 +258,7 @@ void Gui::DrawMapping()
 		if (k.sc != NO && k.sc < kc.set.nkeys())
 		{
 			// todo layer use vis..
-			uint8_t dt = kc.set.keys[k.sc].get(nLay);
+			uint8_t dt = kc.set.keys[k.sc].get(edit ? nLay : 0);
 			if (dt != KEY_NONE)
 			{
 				const uint8_t* c = &cGrpRgb[cKeyGrp[dt]][0][0];
@@ -262,5 +274,4 @@ void Gui::DrawMapping()
 		}	}
 	#endif
 	}
-	d->setFont(0);
 }

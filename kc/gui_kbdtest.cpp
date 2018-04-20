@@ -125,6 +125,13 @@ void Gui::DrawTesting()
 
 
 	//-----------------------------------------------------
+	case T_Layout:
+	{
+		DrawLayout(false);
+	}	break;
+
+
+	//-----------------------------------------------------
 	case T_Matrix:
 	{
 		//  matrix  :::
@@ -193,7 +200,7 @@ void Gui::DrawTesting()
 	case T_ScanSetup:
 	{
 		d->setCursor(0,32);
-		for (int i=0; i < 3; ++i)
+		for (int i=0; i < 4; ++i)
 		{
 			int c = abs(i - ym2Test);
 			if (!c)
@@ -206,11 +213,13 @@ void Gui::DrawTesting()
 			switch(i)
 			{
 			case 0:
-				sprintf(a,"Scan: %u Hz", 48000/par.scanFreq);  break;
+				sprintf(a,"Scan: %u Hz", F_BUS/par.scanFreq/1000);  break;
 			case 1:
 				sprintf(a,"Strobe delay: %d us", par.strobe_delay);  break;
 			case 2:
 				sprintf(a,"Debounce: %d ms", par.debounce);  break;
+			case 3:
+				sprintf(a,"Sequence delay: %d ms", par.dtSeqDef);  break;
 			}
 			d->println(a);  d->moveCursor(0,4);
 		}
@@ -221,11 +230,13 @@ void Gui::DrawTesting()
 		d->println(a);  d->moveCursor(0,8);
 		d->setTextColor(RGB(20,23,26));
 
+		d->setCursor(0,H-20);
 		sprintf(a,"Matrix keys: %d = %d x %d", ScanKeys, NumCols, NumRows);
-		d->println(a);  d->moveCursor(0,2);
+		d->println(a);
 
+		d->setCursor(0,H-10);
 		sprintf(a,"Layout keys: %d  %s", nDrawKeys, CKname);
-		d->println(a);  d->moveCursor(0,4);
+		d->println(a);
 
 	}	break;
 
@@ -252,8 +263,8 @@ void Gui::DrawTesting()
 
 		d->setCursor(0, H-1-4*8);  sprintf(a,"move  x %+d  y %+d",
 			Mouse_input_x/8, Mouse_input_y/8);  d->print(a);
-		d->setCursor(0, H-1-2*8);  sprintf(a,"buttons %d",
-			usb_mouse_buttons_state);  d->print(a);
+		d->setCursor(0, H-1-2*8);  sprintf(a,"buttons %d  wheel x %d y %d",
+			usb_mouse_buttons_state, Mouse_wheel_x, Mouse_wheel_y);  d->print(a);
 	}	break;
 	}
 }

@@ -19,8 +19,10 @@ struct Gui
 	void KeyPress();
 
 
-	//  util
-	void DrawTesting(), DrawMapping(), DrawSequences(), Chk_y1();
+	//  draw
+	void DrawTesting(), DrawMapping(), DrawSequences(),
+		DrawLayout(bool edit), Chk_y1();
+
 
 	//  fade color menu
 	enum EFadeClr
