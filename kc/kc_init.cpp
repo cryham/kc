@@ -95,7 +95,7 @@ void KC_Setup::InitCK1_8x6()
 			if (dk.code == K_PGUP)  kk.add(KM_RMB, 2);  else
 			if (dk.code == K_DEL)   kk.add(KM_MMB, 2);  else
 			if (dk.code == K_END)   kk.add(KM_WhlUp, 2);  else
-			if (dk.code == K_PGDN)  kk.add(KM_WhlDn, 2);
+			if (dk.code == K_PGDN)  kk.add(KM_WhlDown, 2);
 			#endif
 	}	}
 

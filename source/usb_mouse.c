@@ -173,15 +173,15 @@ const static int spd_max = 48,
 volatile uint16_t USBMouse_Buttons = 0;
 
 // Relative mouse axis movement, stores pending movement
-volatile int16_t Mouse_input_x = 0;
-volatile int16_t Mouse_input_y = 0;
-int shift = 0;
+volatile int8_t Mouse_input_x = 0, Mouse_input_y = 0,
+				Mouse_wheel_x = 0, Mouse_wheel_y = 0, Mouse_shift = 0;
 
 
 //  mouse idle update accel, speed
 //..............................................................................
 void usb_mouse_idle()
 {
+	int shift = Mouse_shift;
 	//  update
 	ti = micros();  uint32_t dt = ti - old_ti;  old_ti = ti;
 	mx_move = Mouse_input_x ? 1 : 0;
@@ -202,7 +202,7 @@ void usb_mouse_idle()
 	if (my_move && !shift)  my_holdtime += 0.000001f * dt;
 
 	//  decel  const freq
-	if (dt > 60000) dt = 60000;  // min 16 fps
+	if (dt > 60000)  dt = 60000;  // min 16 fps
 	const uint32_t iv = 10000;  // interval 100 fps
 	time += dt;
 	while (time >= iv)
@@ -220,11 +220,12 @@ void usb_mouse_idle()
 	int8_t y = my_send ? Mouse_input_y * (int16_t)(my_speed) / 8 : 0;
 
 	//  send
-	if (x || y || usb_mouse_buttons_update)
-		usb_mouse_move(x,y, 0,0);
+	if (x || y || usb_mouse_buttons_update || Mouse_wheel_x || Mouse_wheel_y)
+		usb_mouse_move(x, y, Mouse_wheel_x*120, Mouse_wheel_y*60);
 
 	// Clear status and state
 	usb_mouse_buttons_update = 0;
+	Mouse_wheel_x = 0;  Mouse_wheel_y = 0;
 	//	USBMouse_Buttons = 0;
 	//	Mouse_input_x = 0;
 	//	Mouse_input_y = 0;

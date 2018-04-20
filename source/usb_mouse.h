@@ -54,8 +54,8 @@ extern "C"
 	extern int mx_delay, my_delay, mx_move, my_move, mx_speed, my_speed;
 	extern float mx_holdtime, my_holdtime;
 
-	extern volatile int16_t Mouse_input_x;
-	extern volatile int16_t Mouse_input_y;
+	extern volatile int8_t Mouse_input_x, Mouse_input_y,
+			Mouse_wheel_x, Mouse_wheel_y, Mouse_shift;
 	extern uint8_t usb_mouse_buttons_update;
 
 #ifdef __cplusplus

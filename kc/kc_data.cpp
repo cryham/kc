@@ -146,6 +146,17 @@ void KC_Main::Send(uint32_t ms)
 					}
 					k.layerOn = nLayer;
 				}
+				else if (code >= KM_WhlUp && code <= KM_WhlRight)
+				{
+					switch (code)
+					{
+					case KM_WhlLeft:  Mouse_wheel_x =-1;  break;
+					case KM_WhlRight: Mouse_wheel_x = 1;  break;
+					case KM_WhlUp:    Mouse_wheel_y =-1;  break;
+					case KM_WhlDown:  Mouse_wheel_y = 1;  break;
+					}
+					k.layerOn = nLayer;
+				}
 				else if (code >= KM_LMB && code <= KM_Forw)
 				{
 					uint8_t b = MOUSE_LEFT;
@@ -154,8 +165,8 @@ void KC_Main::Send(uint32_t ms)
 					case KM_LMB:  break;
 					case KM_RMB:  b = MOUSE_RIGHT;  break;
 					case KM_MMB:  b = MOUSE_MIDDLE;  break;
-					case KM_Back:  b = MOUSE_BACK;   break;
-					case KM_Forw:  b = MOUSE_FORWARD;  break;
+					case KM_Back: b = MOUSE_BACK;   break;
+					case KM_Forw: b = MOUSE_FORWARD;  break;
 					}
 					Mouse.press(b);
 					k.layerOn = nLayer;
@@ -173,6 +184,7 @@ void KC_Main::Send(uint32_t ms)
 						SeqModClear();
 						inSeq = sq;  tiSeq = ms;
 						seqPos = 0;  seqRel = 0;
+						dtSeq = par.dtSeqDef;
 					}
 					else  inSeq = -1;
 				}
@@ -208,8 +220,8 @@ void KC_Main::Send(uint32_t ms)
 					case KM_LMB:  break;
 					case KM_RMB:  b = MOUSE_RIGHT;  break;
 					case KM_MMB:  b = MOUSE_MIDDLE;  break;
-					case KM_Back:  b = MOUSE_BACK;   break;
-					case KM_Forw:  b = MOUSE_FORWARD;  break;
+					case KM_Back: b = MOUSE_BACK;   break;
+					case KM_Forw: b = MOUSE_FORWARD;  break;
 					}
 					Mouse.release(b);
 				}
@@ -218,6 +230,8 @@ void KC_Main::Send(uint32_t ms)
 	}
 
 	//  mouse move and send  * * *
+
+	Mouse_shift = KeyH(2,0);  // par..
 	usb_mouse_idle();
 }
 
