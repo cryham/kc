@@ -142,7 +142,7 @@ void Gui::KeyPress()
 
 			//  find closest next in move direction
 			int x=2, y=0, ii = -1, B = 2000,
-				mxl = -B, mxr = B, myu = -B, myd = B, axd = B;
+				mxl = -B, mxr = B, myu = B, myd = B, axd = B, axu = B;
 
 			for (int i = 0; i < nDrawKeys; ++i)
 			{
@@ -154,7 +154,7 @@ void Gui::KeyPress()
 
 				//  distance to cursor key center
 				int dx = x + k.w/2 - drawX,
-					dy = y + k.h/2 - drawY, ax = abs(dx);
+					dy = y + k.h/2 - drawY, ay = abs(dy), ax = abs(dx);
 
 				if (i != drawId)
 				{
@@ -168,10 +168,10 @@ void Gui::KeyPress()
 						if (dx > mxl)
 						{	mxl = dx;  ii = i;  }
 					}else
-					if (kUp < 0 && dy < 0 && ax < 26)  // ^
+					if (kUp < 0 && dy < 0 && ax < 6)  // ^
 					{
-						if (dy >= myu)
-						{	myu = dy;  ii = i;  }
+						if (ay < myu || (ay == myu && ax < axu))
+						{	myu = ay;  axu = ax;  ii = i;  }
 					}else
 					if (kUp > 0 && dy > 0 && ax < 6)  // v
 					{
