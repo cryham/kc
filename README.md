@@ -6,14 +6,14 @@ This my own USB Keyboard Controler code for Teensy 3.2 with TFT ST7735 color dis
 Called K.C. ("Kacey") for short.
 
 It features:
-* Mapping menu, for remapping USB key codes to physical keys in real time, on running keyboard.
-* Layers (max 16).
-* Sequences menu, for editing macros, passwords etc.
-* Visual keyboard drawn on display with current mappings. Layout is set in cpp file.
+* Mapping menu, for remapping USB key codes to physical keys in real time, on running keyboard
+* Layers (max 16)
+* Sequences menu, for editing macros, passwords, etc.
+* Visual keyboard drawn on display with current mappings. Layout is set in cpp file
 * Mouse keys with move acceleration
-* Anti-ghosting code, needed for foil keyboards without diodes.
-* Several color demos for display, e.g. Plasma, Wave, Polyhedrons 3D, etc.
-* Loading and saving full keyboard setup on EEPROM (parameters, mappings, sequences).
+* Anti-ghosting code, needed for foil keyboards without diodes
+* Many color demos for display, e.g. Plasma, Wave, Polyhedrons 3D, etc.
+* Loading and saving full keyboard setup on EEPROM (parameters, mappings, sequences)
 * Testing page showing pressed keys info, matrix ghosting, etc.
 * Menu for picking keys with custom group colors and filtering
 
@@ -32,7 +32,7 @@ Hardware
 The keyboard is made of:
 * Teensy 3.2 (or 3.1), overclocked, stable at 144 MHz
 * TFT LCD display ST7735, 160 x 128, 16bit color RGB565. Red PCB with SD card slot. Terribly low viewing angles.
-* NPN transistor BC550. Connection from DAC A14 output through 10k resistor to base, collector to 3v3, emitter through 100 ohm resistor to Display LED.
+* NPN transistor BC550. Connection from DAC A14 output through 4.7k resistor to base, collector to 3.3V, emitter through 47 ohm resistor to Display LED.
 
 Licensing
 ---------
