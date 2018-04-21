@@ -3,6 +3,8 @@
 #include "def.h"
 
 #ifdef DEMOS
+#ifdef DEMOS_PLASMA
+
 //  sinus table  ----
 #define SX  8192   // 8192  mem size 16kB
 //#define SX  16384
@@ -11,6 +13,7 @@
 #define Sin(x)  sint[      (x) %SX]
 
 extern const int16_t sint[SX];
+#endif
 #endif
 
 
@@ -35,8 +38,9 @@ struct Demos
 	void KeyPress(EDemo demo, struct Gui* gui);
 
 
-	//  Plasma  ~~~~
 	uint t;  // frame counter
+	//  Plasma  ~~~~
+#ifdef DEMOS_PLASMA
 	int8_t plasma;  // cur mode
 	const static int8_t num_plasma = 7;  // all sets
 	int8_t tadd[num_plasma];  // speeds
@@ -45,17 +49,23 @@ struct Demos
 	void Plasma1(),Plasma2(),Plasma3(),Plasma4(),
 		PlasmaC1(),PlasmaC2(),PlasmaC2b();
 
-
 	//void Spiral, Fire, Water..
 	int8_t twv;
 	void Wave();
 
 
+	//  CK logo, 2D lines
+	const static int8_t ckMax = 3;
+	int8_t ckCur, ckSpeed;
+	void CK_logo();
+#endif
+
 	//  Balls  --------
+#ifdef DEMOS_OLD_PAR
 	const static int
-	//sMax = 10, bMax = 10, dMax = 10;  // 71%  46k ram
+	sMax = 10, bMax = 10, dMax = 10;  // 71%  46k ram
 	//sMax = 240, bMax = 200, dMax = 250; // 78%
-	sMax = 240, bMax = 300, dMax = 550; // 80%  53k =7k
+	//sMax = 240, bMax = 300, dMax = 550; // 80%  53k =7k
 
 	int sCnt, sVel;  // stars: count, velocity
 	int bCnt, bSpd, bSpRnd, bRad;  // balls: count, speed, radius max
@@ -76,17 +86,6 @@ struct Demos
 	void Balls();
 
 
-	//  Rain
-	int8_t rCur, r1Int,r1Size, r2Int,r2Size;
-	void Rain();
-	
-
-	//  CK logo, 2D lines
-	const static int8_t ckMax = 3;
-	int8_t ckCur, ckSpeed;
-	void CK_logo();
-
-
 	//  Space
 	void SpaceInit();
 	void StarNew(int i);  // new
@@ -96,7 +95,13 @@ struct Demos
 	int fInt, fWave;
 	void FountainInit();
 	void Fountain();
+#endif
 
+
+	//  Rain
+	int8_t rCur, r1Int,r1Size, r2Int,r2Size;
+	void Rain();
+	
 
 	//  Ngons 2D
 	int16_t ngt;  int8_t ngCur,  ngtOn, ngRot;
@@ -104,11 +109,13 @@ struct Demos
 	void Ngons();
 
 
+#ifdef DEMOS_3D
 	//  Polyhedrons 3D  ----
 	const static int8_t hdA = 11, hdRotMax = 4, hdDiagMax = 5;  // all presets
 	const static int16_t hdtMax = 100;  // cycle time
 
 	int16_t hdt;  int8_t hdCur,  hdtOn, hdRot,  hdSpd, hdDiag;
 	void Hedrons();
+#endif
 #endif
 };

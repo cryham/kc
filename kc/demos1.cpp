@@ -181,6 +181,7 @@ void Demos::Fonts()
 
 
 #ifdef DEMOS
+#ifdef DEMOS_OLD_PAR
 
 //  Balls
 //....................................................................................
@@ -358,5 +359,6 @@ void Demos::Fountain()
 	}
 	t += fWave;
 }
+#endif
 
 #endif

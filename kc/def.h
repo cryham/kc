@@ -1,7 +1,17 @@
 #pragma once
 #include <stdint.h>
 
+
+//----- Setup
 #define DEMOS  // with  7k 11% ram, 41k 16% flash
+#define DEMOS_PLASMA
+//#define DEMOS_3D
+//#define DEMOS_OLD_PAR
+
+//#define CK1  // 8x6
+#define CK3  // 18x8
+//-----
+
 
 //  display dim
 #define W 160
@@ -11,7 +21,9 @@
 #define RGB(r,g,b) ( ((r)<<11)+ ((g)<<6) +(b))   // 31 31 31
 #define RGB2(r,g,b) ( ((r)<<11)+ ((g)<<5) +(b))  // 31 63 31
 
+#ifdef __cplusplus
 class Ada4_ST7735;
+#endif
 
 
 enum EMainMenu  //  main menu entries, level0
@@ -27,10 +39,19 @@ enum EMainMenu  //  main menu entries, level0
 #ifdef DEMOS
 enum EDemo  // Demos, level1
 {
-	D_Plasma=0, D_Wave, D_Hedrons, D_CK_Logo,
-	D_Space, D_Balls, D_Rain, D_Fountain,
-	D_Ngons, D_Fonts,
-	D_All, D_Next = D_CK_Logo,  // next column
+#ifdef DEMOS_PLASMA
+	D_Plasma, D_Wave,
+	D_CK_Logo,
+#endif
+#ifdef DEMOS_3D
+	D_Hedrons,
+#endif
+#ifdef DEMOS_OLD_PAR
+	D_Space, D_Balls, D_Fountain,
+#endif
+	D_Rain, D_Ngons, D_Fonts,
+	D_All,
+	D_Next = D_Rain  //D_CK_Logo,  // next column
 };
 extern const char *strDemo[D_All];
 #endif

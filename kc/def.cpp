@@ -16,8 +16,16 @@ const char* strMain[M_All] =
 #ifdef DEMOS
 const char* strDemo[D_All] =
 {
-	"Plasma", "Wave", "Hedrons", "CK Logo",
-	"Space", "Balls", "Rain", "Fountain",
+#ifdef DEMOS_PLASMA
+	"Plasma", "Wave", "CK Logo"
+#endif
+#ifdef DEMOS_3D
+	"Hedrons",
+#endif
+#ifdef DEMOS_OLD_PAR
+	"Space", "Balls", "Fountain",
+#endif
+	"Rain",
 	"N-gons", "Fonts",
 };
 #endif

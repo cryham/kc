@@ -2,6 +2,7 @@
 #include "Ada4_ST7735.h"
 
 #ifdef DEMOS
+#ifdef DEMOS_PLASMA
 
 //  CrystaL KeyboarD  logo lines
 //....................................................................................
@@ -81,7 +82,9 @@ void Demos::CK_logo()
 	t += ckSpeed;
 }
 //....................................................................................
+#endif
 
+#ifdef DEMOS_3D
 //  3D
 
 //  Pentagonal Icositetrahedron  
@@ -473,5 +476,6 @@ void Demos::Hedrons()
 	}
 	t += hdSpd;
 }
+#endif
 
 #endif

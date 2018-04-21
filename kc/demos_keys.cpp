@@ -18,28 +18,34 @@ void Demos::Init(Ada4_ST7735* tft)
 	iFps = 0;  iInfo = 0;
 	fntCur = 0;
 
+#ifdef DEMOS_OLD_PAR
 	einit = INone;
 	sCnt = 3*sMax/4;  sVel = 17;  // stars
 	bCnt = min(200,bMax);  bSpd = 100;  bSpRnd = 1;  bRad = 3;  // balls
 
+	fInt = 5;  fWave = 1;  // fountain
+#endif
+
 	r1Int = 2;  r1Size = 2;  // rain
 	r2Int = -1;  r2Size = 2;  rCur = 1;
 	
-	fInt = 5;  fWave = 1;  // fountain
-
 	ngtOn = 1;  // ngons
 	ngt = 0;  ngCur = 12;  ngRot = 0;
 
+#ifdef DEMOS_3D
 	hdtOn = 1;  // hedrons
 	hdt = 0;  hdCur = hdA-5;  hdRot = 0;
 	hdSpd = 1;  hdDiag = 1;
+#endif
 
+#ifdef DEMOS_PLASMA
 	ckCur = 0;  ckSpeed = 6;  // logo
 
 	plasma = 2;  t = 3210;
 	tadd[0]=7; tadd[1]=5; tadd[2]=8; tadd[3]=4; tadd[4]=6; tadd[5]=9;  tadd[6]=8;
 
 	twv = 6;  // wave
+#endif
 #endif
 }
 
@@ -64,6 +70,7 @@ void Demos::KeyPress(EDemo demo, Gui* gui)
 	{	//iInfo = -1;
 		switch (demo)
 		{
+	#ifdef DEMOS_PLASMA
 		//  full  --------
 		case D_Plasma:
 			if (k){  plasma += k; if (plasma < 0) plasma = num_plasma-1;  if (plasma >= num_plasma) plasma = 0;  }
@@ -75,6 +82,14 @@ void Demos::KeyPress(EDemo demo, Gui* gui)
 			if (u)  twv += u*10;
 			break;
 
+		//  txt	 --------
+		case D_CK_Logo:
+			if (k)  ckSpeed += k;
+			if (u)  ckCur = (ckCur + u + ckMax) % ckMax;
+			break;
+	#endif
+
+	#ifdef DEMOS_3D
 		case D_Hedrons:  // 3d
 			if (pgup)
 				hdDiag = (hdDiag + pgup + hdDiagMax) % hdDiagMax;
@@ -86,6 +101,7 @@ void Demos::KeyPress(EDemo demo, Gui* gui)
 			if (u)
 				hdRot = (hdRot + u + hdRotMax) % hdRotMax;
 			break;
+	#endif
 
 		case D_Ngons:
 			if (k)
@@ -99,6 +115,7 @@ void Demos::KeyPress(EDemo demo, Gui* gui)
 			break;
 
 		//  old  --------
+	#ifdef DEMOS_OLD_PAR
 		case D_Space:
 			if (k){  sCnt += k*sp;  sCnt = max(0, min(sMax, sCnt));  einit = INone;  }
 			if (u){  sVel += u;     sVel = max(0, min(40, sVel));  einit = INone;  }
@@ -113,6 +130,11 @@ void Demos::KeyPress(EDemo demo, Gui* gui)
 				if (u){  bSpd += u*sp*2;  bSpd = max(0, min(400, bSpd));  einit = INone;  }
 			}break;
 
+		case D_Fountain:
+			if (k)  fInt = (fInt + k + 12) % 12;
+			if (u)  fWave += u;
+			break;
+	#endif
 		case D_Rain:
 			if (!ct){  if (!rCur)
 			{	if (k){  r1Int += k;  if (r1Int < -6)  r1Int = -6;  }
@@ -122,17 +144,6 @@ void Demos::KeyPress(EDemo demo, Gui* gui)
 				if (u)   r2Size += u;  r2Size = max(0, min(4, r2Size));
 			}	}
 			if (ct && k)  rCur = 1-rCur;
-			break;
-
-		case D_Fountain:
-			if (k)  fInt = (fInt + k + 12) % 12;
-			if (u)  fWave += u;
-			break;
-
-		//  txt	 --------
-		case D_CK_Logo:
-			if (k)  ckSpeed += k;
-			if (u)  ckCur = (ckCur + u + ckMax) % ckMax;
 			break;
 
 		case D_Fonts:
