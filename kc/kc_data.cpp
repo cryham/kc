@@ -231,7 +231,7 @@ void KC_Main::Send(uint32_t ms)
 
 	//  mouse move and send  * * *
 
-	Mouse_shift = KeyH(2,0);  // par..
+	Mouse_shift = KeyH( 94);  // par..
 	usb_mouse_idle();
 }
 

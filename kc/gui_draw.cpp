@@ -108,17 +108,22 @@ void Gui::Draw()
 			uint32_t oti1 = millis();
 			switch (yy)
 			{
+			#ifdef DEMOS_PLASMA
 				case D_Plasma:   demos.Plasma();  break;  // clr 55, 40 ms
 				case D_Wave:     demos.Wave();  break;
-				case D_Hedrons:  demos.Hedrons();  break;  // 5-9ms
-
-				case D_Ngons:    demos.Ngons();  break;  // 12 8ms 14 10ms
 				case D_CK_Logo:  demos.CK_logo();  break;  // 7
+			#endif
+			#ifdef DEMOS_3D
+				case D_Hedrons:  demos.Hedrons();  break;  // 5-9ms
+			#endif
+				case D_Ngons:    demos.Ngons();  break;  // 12 8ms 14 10ms
 				case D_Fonts:	 demos.Fonts();  break;
 
+			#ifdef DEMOS_OLD_PAR
 				case D_Fountain: demos.Fountain();  break;
 				case D_Balls:    demos.Balls();  break;
 				case D_Space:    demos.Space();  break;
+			#endif
 				case D_Rain:     demos.Rain();  break;
 			}
 			tdemo = millis() - oti1;

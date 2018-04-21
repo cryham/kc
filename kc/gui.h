@@ -48,7 +48,7 @@ struct Gui
 	uint32_t oldti, tdemo;  // demo time ms
 
 	uint32_t oldti_kr;
-	int8_t kr(int8_t y, int8_t x, uint16_t dt);
+	int8_t kr(uint8_t sc, uint16_t dt);
 
 
 	//  Mapping  - - - -

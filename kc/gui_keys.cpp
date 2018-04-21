@@ -17,18 +17,18 @@ void Gui::KeyPress()
 	oldti_kr = ti;
 
 	//  update keys press
-	kRight= kr(1,1,dt) - kr(1,2,dt);  // ->  <-
-	kUp   = kr(2,4,dt) - kr(0,4,dt);  // Dn  Up
-	kPgUp = kr(2,1,dt) - kr(0,1,dt);  // PgDn  PgUp
-	kEnd  = kr(2,2,dt) - kr(0,2,dt);  // End  Hom
+	kRight= kr(101,dt) - kr( 99,dt);  // ->  <-
+	kUp   = kr( 64,dt) - kr( 82,dt);  // Dn  Up
+	kPgUp = kr( 65,dt) - kr( 83,dt);  // PgDn  PgUp
+	kEnd  = kr( 63,dt) - kr( 81,dt);  // End  Home
 
-	kBack = Key(0,6);  kEnt = Key(4,0);  // Add+  Ent
-	kCtrl = KeyH(3,4); kSh  = KeyH(2,0);  // Ins  \|
-	kInf  = Key(4,1);  kFps = Key(5,1);  // Mul*  Sub-
+	kBack = Key( 84);  kEnt = Key( 66);  // Add+  Ent
+	kCtrl = KeyH(128); kSh  = KeyH( 94);  //LCt LSh  -Ins  \|
+	kInf  = Key( 47);  kFps = Key( 29);  // Mul*  Sub-
 	//  edit seq
-	kIns = Key(3,4);   kDel = kr(1,4,dt);  kBckSp = kr(1,0,dt);
-	kCopy = Key(4,7);  kPaste =  Key(4,5);  kSwap = Key(5,5);  // C V B
-	kLoad = Key(1,7);  kSave = Key(3,7);  // F3  F4
+	kIns = Key( 10);   kDel = kr( 11,dt);  kBckSp = kr( 91,dt);
+	kCopy = Key( 49);  kPaste = Key( 44);  kSwap = Key( 50);  // C V B
+	kLoad = Key( 95);  kSave = Key(110);  //F5 F4  -F3  F4
 
 	//kF12 = Key(5,0) - Key(3,0);  // F12  F11
 
@@ -430,11 +430,10 @@ void Gui::Chk_y1()
 }
 
 //  key auto repeat,  row, col, ms
-int8_t Gui::kr(int8_t c, int8_t r, uint16_t dt)
+int8_t Gui::kr(uint8_t sc, uint16_t dt)
 {
-	int i = c * NumCols + r;
-	KeyPosition st = Matrix_scanArray[i].state;
-	int16_t& m = Matrix_scanArray[i].autoRepeat;
+	KeyPosition st = Matrix_scanArray[sc].state;
+	int16_t& m = Matrix_scanArray[sc].autoRepeat;
 
 	if (st == KeyState_Press)
 	{

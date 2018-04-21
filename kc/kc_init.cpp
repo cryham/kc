@@ -47,15 +47,20 @@ void KC_Setup::Clear()
 KC_Setup::KC_Setup()
 {
 	//Clear();
-	InitCK1_8x6();
+	InitCK();
 }
 
 //  Init  CK1 8x6
 //------------------------------------------------
-void KC_Setup::InitCK1_8x6()
+void KC_Setup::InitCK()
 {
 	Clear();
-	rows = 6;  cols = 8;  scanKeys = rows * cols;
+#if defined(CK1)
+	rows = 6;  cols = 8;
+#elif defined(CK3)
+	rows = 8;  cols = 18;
+#endif
+	scanKeys = rows * cols;
 	seqSlots = 60;
 
 	int i;

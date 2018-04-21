@@ -53,7 +53,7 @@ struct KC_Setup
 	const int nseqs() const {  return seqs.size();  }
 
 	KC_Setup();
-	void Clear(), InitCK1_8x6();
+	void Clear(), InitCK();
 
 	//int8_t minLay, layUsed;  // stats
 };

@@ -26,7 +26,7 @@ void Gui::Init(Ada4_ST7735* tft)
 //	ym = M_Sequences;
 //	ym = M_Display;
 
-	ym1[M_Testing] = 2;  //-
+	ym1[M_Testing] = T_Pressed;  //-
 	
 
 	oldti = 0;
