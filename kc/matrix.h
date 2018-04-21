@@ -1,5 +1,6 @@
 #pragma once
 #include <stdint.h>
+#include "def.h"
 
 //  ----- Enums -----
 typedef enum Port {
@@ -75,17 +76,26 @@ typedef struct GPIO_Pin {
 #define T3_31 gpio(E,0 ) //|16
 #define T3_32 gpio(B,18) //|17
 #define T3_33 gpio(A,4 ) //|18
-#define T3_40 gpio(A,14) //dac todo led
+#define T3_40 gpio(A,14) //dac led
 
 
 //  ----***  Matrix  ***----
-//  8 x 6
+#if defined(CK1)   //  8 x 6  CK1
 //c| 2:19  4:16  8:18  9:14  10:15  11:17  12:20  13:21
 //r- 3:0  4:1  5:2  6:3  7:23  8:22
 const static GPIO_Pin
 	Matrix_cols[] = { T3_19, T3_16, T3_18, T3_14, T3_15, T3_17, T3_20, T3_21 },
 	Matrix_rows[] = { T3_0, T3_1, T3_2, T3_3, T3_23, T3_22 };
-
+#elif defined(CK3)   //  18 x 8  CK3
+const static GPIO_Pin
+Matrix_cols[] = {
+	gpio(B,16), gpio(B,17), gpio(D,0), gpio(A,12), gpio(A,13), gpio(D,7), gpio(D,4), gpio(D,2), gpio(D,3),
+	gpio(C,2), gpio(C,1), gpio(D,6), gpio(D,5), gpio(B,2), gpio(B,3), gpio(B,1), gpio(B,0), gpio(C,0)  },
+Matrix_rows[] = {
+	gpio(C,10), gpio(C,11), gpio(B,18), gpio(A,4), gpio(A,5), gpio(B,19), gpio(C,9), gpio(C,8) };
+#else
+#error "Define keyboard in def.h"
+#endif
 
 #define NumCols  sizeof( Matrix_cols ) / sizeof( GPIO_Pin )
 #define NumRows  sizeof( Matrix_rows ) / sizeof( GPIO_Pin )
@@ -128,8 +138,8 @@ typedef struct KeyGhost {
 
 //  -----  utility  -----
 
-#define Key(y,x)   (Matrix_scanArray[y * NumCols + x].state == KeyState_Press ? 1 : 0)
-#define KeyH(y,x)  (Matrix_scanArray[y * NumCols + x].state == KeyState_Hold ? 1 : 0)
+#define Key(x)   (Matrix_scanArray[x].state == KeyState_Press ? 1 : 0)
+#define KeyH(x)  (Matrix_scanArray[x].state == KeyState_Hold ? 1 : 0)
 
 inline uint8_t keyOn(/*KeyPosition*/uint8_t st)
 {	return (st == KeyState_Press || st == KeyState_Hold) ? 1 : 0;  }

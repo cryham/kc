@@ -1,5 +1,6 @@
 #pragma once
 #include <stdint.h>
+#include "def.h"
 
 
 //  Draw Keboard, Layout, const data
@@ -22,17 +23,12 @@ extern const int8_t kW, kH, kF, X, XN;
 extern const uint16_t clrRect[Omax], clrText[Omax];  // colors types
 
 
-//  CK3  layout
+//  CK  layout
 extern const char* CKname;
+
+#if defined(CK1)   //  CK1
 const static int nDrawKeys = 91;
-extern const DrawKey drawKeys[nDrawKeys];
-
-
-#if 0
-extern const char mod[0x08][6];
-
-//  key to string  // wait, delay symbols,  modifiers, key
-#define STR(k)  (k==2 ? "\xB1" : k==1 ? "\xB0" : \
-				 k >= 0xE0 ? mod[k-0xE0] : \
-				 k <= strALL ? str[k] : "()")
+#elif defined(CK3)   //  CK3
+const static int nDrawKeys = 91;
 #endif
+extern const DrawKey drawKeys[nDrawKeys];

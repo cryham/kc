@@ -12,8 +12,8 @@
 uint scan_cnt = 0, scan_freq = 0;
 uint32_t us_scan = 0, ms_scan = 0;
 
-Gui gui;
 KC_Main kc;
+Gui gui;
 extern void ParInit();
 
 
@@ -41,7 +41,7 @@ void main_periodic()
 
 	//  kbd  gui
 	//------------------------
-	if (Key(5,0))
+	if (Key( 57))
 		gui.kbdSend = 1 - gui.kbdSend;
 
 	if (!gui.kbdSend)
