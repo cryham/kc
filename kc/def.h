@@ -2,15 +2,16 @@
 #include <stdint.h>
 
 
-//----- Setup
-#define DEMOS  // with  7k 11% ram, 41k 16% flash
-#define DEMOS_PLASMA
-//#define DEMOS_3D
-//#define DEMOS_OLD_PAR
-
+//----  Setup  ----			ram B  flash
+//   no demos			// 47820  57%
+#define DEMOS			// 47844  66%  all 7k 11% ram, 41k 16% flash
+#define DEMOS_PLASMA	// 47852  68%
+#define DEMOS_3D		// 47860  72%
+//#define DEMOS_OLD_PAR	// 48096  73%  min
+//   keyboard
 //#define CK1  // 8x6
 #define CK3  // 18x8
-//-----
+//-----------------
 
 
 //  display dim
@@ -40,9 +41,10 @@ enum EMainMenu  //  main menu entries, level0
 enum EDemo  // Demos, level1
 {
 #ifdef DEMOS_PLASMA
-	D_Plasma, D_Wave,
-	D_CK_Logo,
+	D_Plasma,
 #endif
+	D_Wave,
+	D_CK_Logo,
 #ifdef DEMOS_3D
 	D_Hedrons,
 #endif
@@ -50,8 +52,13 @@ enum EDemo  // Demos, level1
 	D_Space, D_Balls, D_Fountain,
 #endif
 	D_Rain, D_Ngons, D_Fonts,
+
 	D_All,
-	D_Next = D_Rain  //D_CK_Logo,  // next column
+#ifdef DEMOS_OLD_PAR
+	D_Next = D_Space  // next column
+#else
+	D_Next = D_Rain
+#endif
 };
 extern const char *strDemo[D_All];
 #endif

@@ -38,14 +38,13 @@ void Demos::Init(Ada4_ST7735* tft)
 	hdSpd = 1;  hdDiag = 1;
 #endif
 
-#ifdef DEMOS_PLASMA
 	ckCur = 0;  ckSpeed = 6;  // logo
-
+#ifdef DEMOS_PLASMA
 	plasma = 2;  t = 3210;
 	tadd[0]=7; tadd[1]=5; tadd[2]=8; tadd[3]=4; tadd[4]=6; tadd[5]=9;  tadd[6]=8;
-
-	twv = 6;  // wave
 #endif
+
+	waveSpd = 6;  // wave
 #endif
 }
 
@@ -64,8 +63,10 @@ void Demos::KeyPress(EDemo demo, Gui* gui)
 
 	int8_t k = gui->kRight, u = -gui->kUp,
 		pgup = gui->kPgUp, end = gui->kEnd, ct = gui->kCtrl;
+	#ifdef DEMOS_OLD_PAR
 	int sp = gui->kSh ? 2 : 10;
-	
+	#endif
+
 	if (k || u || pgup || end)
 	{	//iInfo = -1;
 		switch (demo)
@@ -76,10 +77,10 @@ void Demos::KeyPress(EDemo demo, Gui* gui)
 			if (k){  plasma += k; if (plasma < 0) plasma = num_plasma-1;  if (plasma >= num_plasma) plasma = 0;  }
 			if (u)  PlasmaT(u);
 			break;
-
+	#endif
 		case D_Wave:
-			if (k)  twv += k;
-			if (u)  twv += u*10;
+			if (k)  waveSpd += k;
+			if (u)  waveSpd += u*10;
 			break;
 
 		//  txt	 --------
@@ -87,7 +88,6 @@ void Demos::KeyPress(EDemo demo, Gui* gui)
 			if (k)  ckSpeed += k;
 			if (u)  ckCur = (ckCur + u + ckMax) % ckMax;
 			break;
-	#endif
 
 	#ifdef DEMOS_3D
 		case D_Hedrons:  // 3d

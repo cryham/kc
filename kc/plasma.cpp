@@ -5,14 +5,6 @@
 #ifdef DEMOS
 #ifdef DEMOS_PLASMA
 
-//  sin
-const int16_t sint[SX] =
-{	// flash
-	#include "sint8k.h"
-	//#include "sint16k.h"
-};
-
-
 void Demos::Plasma()
 {
 	// sint in ram 0 37fps, >2 20fps
@@ -34,54 +26,6 @@ void Demos::Plasma()
 void Demos::PlasmaT(int8_t dt)
 {
 	tadd[plasma] += dt;
-}
-
-static int yw[W];
-
-void Demos::Wave()
-{
-	uint tt[16]={t*9,t*7,t*5,t*4, t*14,t*13,t*11,t*12, t*21,t*23,t*25,t*28, t*42,t*46,t*41,t*34};
-
-	uint xx[16]={0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
-	for (uint x=0; x<W; ++x)
-	{
-		int c;
-		c =11*Sin( xx[0] +tt[0]) + 10*Cos( xx[1] +tt[1]);
-		c-=12*Sin( xx[2] +tt[2]) + 10*Cos( xx[3] +tt[3]);
-		c+= 8*Cos( xx[4] +tt[4]) +  8*Sin( xx[5] +tt[5]);
-		c-=10*Cos( xx[6] +tt[6]) +  9*Sin( xx[7] +tt[7]);
-		c+= 7*Sin( xx[8] +tt[8]) +  8*Cos( xx[9] +tt[9]);
-		c-= 8*Sin( xx[10]+tt[10])+  6*Cos( xx[11]+tt[11]);
-		c+= 5*Cos( xx[12]+tt[12])+  3*Sin( xx[13]+tt[13]);
-		c-= 4*Cos( xx[14]+tt[14])+  2*Sin( xx[15]+tt[15]);
-
-		xx[0]+=22; xx[1]+=35; xx[2]+=31; xx[3]+=45; xx[4]+=66; xx[5]+=93;
-		xx[6]+=131; xx[7]+=293; xx[8]+=458; xx[9]+=229; xx[10]+=388; xx[11]+=1256;
-		xx[12]+=633; xx[13]+=1928; xx[14]+=836; xx[15]+=3301;
-
-		//c *= 6*H/2;  c /= SY*SY;
-		c /= 80*(SY/(H/2));
-		yw[x] = c;
-		//yw[x] = Sin(SX*x/W+t)/(SY/32);
-	}
-
-	for (uint y=0; y<H; ++y)
-	{
-		uint a = y*W;
-		for (uint x=0; x<W; ++x, ++a)
-		{
-			int c = yw[x];
-			int d = y-H/2-c;  d = H/2-abs(d);  d = max(0,d);
-			c = RGB(min(31, d/3), min(31, d/2), min(31, d));
-			data[a] = c;
-		}
-	}
-	t+=twv;
-	if (iInfo > 0)
-	{
-		d->setCursor(0,0);
-		d->println(twv);
-	}
 }
 
 
