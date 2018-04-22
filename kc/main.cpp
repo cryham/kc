@@ -1,4 +1,5 @@
 #include "WProgram.h"
+#include "RamMonitor.h"
 
 #include "matrix.h"
 #include "periodic.h"
@@ -12,8 +13,9 @@
 uint scan_cnt = 0, scan_freq = 0;
 uint32_t us_scan = 0, ms_scan = 0;
 
-KC_Main kc;
+RamMonitor ram;
 Gui gui;
+KC_Main kc;
 extern void ParInit();
 
 
@@ -65,6 +67,7 @@ void main_periodic()
 //-------------------------------------------------------------------------
 int main()
 {
+	ram.initialize();
 	ParInit();  // par defaults
 
 	//  dac for tft led
@@ -78,19 +81,24 @@ int main()
 	tft.clear();
 	tft.display();  // black
 
+	gui.Draw();  // visible if crashed?
+	gui.DrawEnd();
+
 	//  load set from ee
 	//kc.Load();
 
 	//  kbd
 	Matrix_setup();
 
-	//  48000000/50000 = 960 Hz   d: 52 fps
+	//  48 MHz/50 000 = 960 Hz   d: 52 fps
 	Periodic_init( par.scanFreq * 1000 );
 	Periodic_function( &main_periodic );
 
 
 	while(1)
 	{
+		ram.run();
+
 		gui.Draw();
 
 		gui.DrawEnd();
