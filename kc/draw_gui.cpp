@@ -29,7 +29,7 @@ void Gui::Draw()
 		DrawMenu(M_All,strMain, C_Main,RGB(20,25,29), 10, -1,2);
 
 		//d->setCursor(W-1 -7*6, H-8);
-		//d->print("F1 Help");
+		//todo d->print("F1 Help");
 		return;
 	}
 	d->setTextColor(RGB(12,22,31));
@@ -51,6 +51,7 @@ void Gui::Draw()
 				case D_Plasma:   demos.Plasma();  break;  // clr 55, 40 ms
 			#endif
 				case D_Wave:     demos.Wave();  break;
+				case D_Fire:     demos.Fire();  break;
 				case D_CK_Logo:  demos.CK_logo();  break;  // 7
 			#ifdef DEMOS_3D
 				case D_Hedrons:  demos.Hedrons();  break;  // 5-9ms
@@ -147,7 +148,7 @@ void Gui::Draw()
 			case 5:
 				sprintf(a,"Key repeat: %d ms", par.krRepeat*5);  break;
 
-			//int8_t startScreen
+			//todo int8_t startScreen
 			//uint8_t mkSpeed, mkAccel;
 			}
 			d->println(a);  d->moveCursor(0,h);

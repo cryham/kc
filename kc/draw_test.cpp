@@ -49,10 +49,10 @@ void Gui::DrawTesting()
 		d->print(a);
 		d->println("");  d->moveCursor(0,4);
 
-		//  locks  -
-		d->setTextColor(RGB(18,21,24));
-		d->print("Locks: ");  // Num Caps Scrl
-		d->println("");  d->moveCursor(0,2);
+		//  todo locks  -
+		//d->setTextColor(RGB(18,21,24));
+		//d->print("Locks: ");  // Num Caps Scrl
+		//d->println("");  d->moveCursor(0,2);
 
 		//  modifiers  -
 		d->setTextColor(RGB(18,21,24));

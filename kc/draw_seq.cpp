@@ -127,17 +127,18 @@ void Gui::DrawSequences()
 	if (tInfo > 0)
 	{	--tInfo;
 		int x = W-1 - 6*9, x1 = x+6, xe = 6*3, y = 12;
+		bool h = infType == 1 || infType == 2;
 
 		d->setFont(0);
 		d->setCursor(x, 0);  //  bck
-		d->fillRect(x-3, 0, W-1-(x-3), 42, RGB(4,6,8));
+		d->fillRect(x-3, 0, W-1-(x-3), h ? 42 : 10, RGB(4,6,8));
 		d->setTextColor(RGB(27,29,31));
 
-		const static char* strInf[5] = {
-			"Reset", "Loaded", "Saved:", "Copied", "Pasted" };
+		const static char* strInf[6] = {
+			"Reset", "Loaded", "Saved:", "Copied", "Pasted", "Swapped" };
 		d->print(strInf[infType]);
 
-		if (infType == 1 || infType == 2)
+		if (h)
 		{
 			d->setTextColor(RGB(28,25,31));  // mem`
 			d->setCursor(x1, y);
