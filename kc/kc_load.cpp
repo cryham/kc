@@ -39,6 +39,27 @@ const char* KCerrStr[E_max] = {
 };
 
 
+//  get ram used
+uint16_t KC_Main::GetSize()
+{
+	uint16_t s=0;
+	s += sizeof(KC_Main);
+	s += sizeof(KC_Setup);
+	int i;
+	for (i=0; i < set.nkeys(); ++i)
+	{
+		s += sizeof(KC_Key);
+		s += set.keys[i].data.capacity();  //size();
+	}
+	for (i=0; i < set.nseqs(); ++i)
+	{
+		s += sizeof(KC_Sequence);
+		s += set.seqs[i].data.capacity();
+	}
+	return s;
+}
+
+
 //  Load
 // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
 void KC_Main::Load()

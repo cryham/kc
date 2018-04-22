@@ -148,7 +148,7 @@ void KC_Main::Send(uint32_t ms)
 				}
 				else if (code >= KM_WhlUp && code <= KM_WhlRight)
 				{
-					switch (code)
+					switch (code)  // todo wheel ?
 					{
 					case KM_WhlLeft:  Mouse_wheel_x =-1;  break;
 					case KM_WhlRight: Mouse_wheel_x = 1;  break;
@@ -231,7 +231,7 @@ void KC_Main::Send(uint32_t ms)
 
 	//  mouse move and send  * * *
 
-	Mouse_shift = KeyH( 94);  // par..
+	Mouse_shift = KeyH(gMslow);  // todo par..
 	usb_mouse_idle();
 }
 

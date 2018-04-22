@@ -10,7 +10,6 @@ struct Gui
 {
 	Demos demos;
 	Ada4_ST7735* d=0;
-	int kbdSend = 0;  // send to usb
 
 	//  main
 	Gui();
@@ -20,8 +19,9 @@ struct Gui
 
 
 	//  draw
-	void DrawTesting(), DrawMapping(), DrawSequences(),
-		DrawLayout(bool edit), Chk_y1();
+	void DrawTesting(), DrawMapping(), DrawSequences();
+	void DrawLayout(bool edit), Chk_y1();
+	int8_t KeysSeq(), KeysMap();
 
 
 	//  fade color menu
@@ -36,7 +36,7 @@ struct Gui
 
 
 	//  vars
-	//int8_t menu;  // 0 off, 1 in menu
+	int8_t kbdSend = 0;  // 1 send to usb  0 in menu
 	int8_t mlevel;  // 0 main, 1 level1, 2 level2
 
 	int8_t ym;      // 0 main y cursor
@@ -49,7 +49,7 @@ struct Gui
 
 	uint32_t oldti_kr;
 	int8_t kr(uint8_t sc, uint16_t dt);
-	int8_t iRam = 1;
+	int8_t iRam = 0;
 
 
 	//  Mapping  - - - -

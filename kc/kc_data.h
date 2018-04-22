@@ -99,6 +99,7 @@ struct KC_Main
 
 	//  eeprom  ----
 	void Load(), Save();
+	uint16_t GetSize();  // mem
 	uint16_t memSize = 0;  // result B
 	KC_Err err = E_ok;
 };
