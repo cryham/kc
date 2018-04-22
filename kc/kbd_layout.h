@@ -18,7 +18,7 @@ struct DrawKey
 
 
 const static int8_t Omax = 9;
-extern const int8_t kW, kH, kF, X, XN;
+extern const int8_t kW, kH, kF, X;
 
 extern const uint16_t clrRect[Omax], clrText[Omax];  // colors types
 
@@ -29,6 +29,12 @@ extern const char* CKname;
 #if defined(CK1)   //  CK1
 const static int nDrawKeys = 91;
 #elif defined(CK3)   //  CK3
-const static int nDrawKeys = 91;
+const static int nDrawKeys = 103;
 #endif
 extern const DrawKey drawKeys[nDrawKeys];
+
+//  scan codes for gui keys
+extern const uint8_t
+	gGui, gMslow, gLoad,gSave, gDiv,
+	gRight,gLeft, gDown,gUp, gPgUp,gPgDn, gEnd,gHome, gAdd,gEnt,
+	gCtrl,gSh, gMul,gSub, gIns,gDel,gBckSp, gC,gV,gX;

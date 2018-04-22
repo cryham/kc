@@ -19,11 +19,11 @@ const char* strDemo[D_All] =
 #ifdef DEMOS_PLASMA
 	"Plasma",
 #endif
-	"Wave",
-	"CK Logo",
+	"Wave", "Fire",
 #ifdef DEMOS_3D
 	"Hedrons",
 #endif
+	"CK Logo",
 #ifdef DEMOS_OLD_PAR
 	"Space", "Balls", "Fountain",
 #endif

@@ -17,16 +17,17 @@ void Gui::Init(Ada4_ST7735* tft)
 		ym1[i]=0;
 
 	//  todo load ee, from set
-
 	//  start screen  --
 	mlevel = 2;
 
-	ym = M_Testing;
+//	ym = M_Testing;
 //	ym = M_Mapping;
 //	ym = M_Sequences;
 //	ym = M_Display;
+	ym = M_Demos;
 
-	ym1[M_Testing] = T_Pressed;  //-
+	ym1[M_Testing] = T_Layout;
+	ym1[M_Demos] = D_Fire;
 	
 
 	oldti = 0;

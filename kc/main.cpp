@@ -41,13 +41,9 @@ void main_periodic()
 	Matrix_scan( 0 );  // K
 
 
-	//  kbd  gui
+	//  gui keys
 	//------------------------
-	if (Key( 57))
-		gui.kbdSend = 1 - gui.kbdSend;
-
-	if (!gui.kbdSend)
-		gui.KeyPress();
+	gui.KeyPress();
 
 
 	//  keyboard send
@@ -58,7 +54,9 @@ void main_periodic()
 		kc.Send(ms);
 
 
-	//  147 us: strobe del 4  131: 3  115: 2  90: 0
+	//  scan time vs strobe delay
+	// 570 us: 10,  353 us: 4  18x8
+	// 147 us: 4,  90: 0  8x6
 	us_scan = micros() - us;
 }
 

@@ -7,6 +7,7 @@
 #include "TomThumb.h"
 
 extern RamMonitor ram;
+extern KC_Main kc;
 
 
 //  menu colors
@@ -68,13 +69,7 @@ void Gui::DrawEnd()
 			d->setCursor(x, y);  y+=9;
 			sprintf(a,"stck %lu", ram.stack_free());  d->println(a);
 		}
-		/*
-		  int32_t unallocated()  // calcs space between heap and stack (current): will be negitive if heap/stack crash
-		  int32_t adj_unallocd() // calcs space between heap and "alloc'd" stack: will be negitive if heap/stack crash
-
-		  int32_t free() const  // free ram: unallocated and unused heap
-		  int32_t adj_free()    // free ram: unallocated and unused heap
-	*/}
+	}
 
 	#ifdef DEMOS
 	//  fps  ---------
@@ -128,7 +123,7 @@ void Gui::DrawMenu(int cnt, const char** str, EFadeClr ec, uint16_t curClr,
 
 		if (i == numGap)  y += 4;
 
-		if (i == nextCol)
+		if (i+1 == nextCol)
 		{	x += xw;  y = y1;  }
 	}
 }

@@ -2,8 +2,11 @@
 #include <stdint.h>
 
 
-//----  Setup  ----			ram B  flash
-//   no demos			// 47820  57%
+//----  Setup  ----		   ram B      flash
+//   no demos ck1		// 45572 69%  58%
+//  all demos ck1 max	// 52252 79%  75% ok
+
+//   no demos ck3		// 47820  57%
 #define DEMOS			// 47844  66%  all 7k 11% ram, 41k 16% flash
 #define DEMOS_PLASMA	// 47852  68%
 #define DEMOS_3D		// 47860  72%
@@ -29,36 +32,32 @@ class Ada4_ST7735;
 
 enum EMainMenu  //  main menu entries, level0
 {
-	M_Testing=0, M_Mapping, M_Sequences,
-	M_Display, //M_Clock
-#ifdef DEMOS
-	M_Demos,
-#endif
-	/*M_Game,*/ M_All
+		M_Testing=0, M_Mapping, M_Sequences,
+		M_Display, //M_Clock
+	#ifdef DEMOS
+		M_Demos,
+	#endif
+		/*M_Game,*/ M_All
 };
 
 #ifdef DEMOS
 enum EDemo  // Demos, level1
 {
-#ifdef DEMOS_PLASMA
-	D_Plasma,
-#endif
-	D_Wave,
-	D_CK_Logo,
-#ifdef DEMOS_3D
-	D_Hedrons,
-#endif
-#ifdef DEMOS_OLD_PAR
-	D_Space, D_Balls, D_Fountain,
-#endif
-	D_Rain, D_Ngons, D_Fonts,
+	#ifdef DEMOS_PLASMA
+		D_Plasma,
+	#endif
+		D_Wave, D_Fire,
+	#ifdef DEMOS_3D
+		D_Hedrons,
+	#endif
+		D_CK_Logo,
+	#ifdef DEMOS_OLD_PAR
+		D_Space, D_Balls, D_Fountain,
+	#endif
+		D_Rain, D_Ngons, D_Fonts,
 
-	D_All,
-#ifdef DEMOS_OLD_PAR
-	D_Next = D_Space  // next column
-#else
-	D_Next = D_Rain
-#endif
+		D_All,
+		D_Next = D_CK_Logo,
 };
 extern const char *strDemo[D_All];
 #endif

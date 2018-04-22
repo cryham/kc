@@ -57,8 +57,8 @@ struct Demos
 
 	//  Wave
 	int8_t waveSpd;
-	void Wave();
-	//void Spiral, Fire, Water..
+	void Wave(), Fire();
+	//Spiral, Water..
 
 
 	//  CK logo, 2D lines
@@ -70,10 +70,10 @@ struct Demos
 #ifdef DEMOS_OLD_PAR
 	//  Balls  --------
 	const static int  // _params_
-	sMax = 10, bMax = 10, dMax = 10;  // 73%  48k ram
+	//sMax = 10, bMax = 10, dMax = 10;  // 73%  48k ram
 	//sMax = 20, bMax = 20, dMax = 20;  // 74%  49k ram
 	//sMax = 240, bMax = 200, dMax = 250;  // 78%
-	//sMax = 240, bMax = 300, dMax = 550;  // 80%  53k =7k
+	sMax = 240, bMax = 300, dMax = 550;  // 80%  53k =7k
 
 	int sCnt, sVel;  // stars: count, velocity
 	int bCnt, bSpd, bSpRnd, bRad;  // balls: count, speed, radius max

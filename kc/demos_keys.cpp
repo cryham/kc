@@ -78,6 +78,7 @@ void Demos::KeyPress(EDemo demo, Gui* gui)
 			if (u)  PlasmaT(u);
 			break;
 	#endif
+		case D_Fire:
 		case D_Wave:
 			if (k)  waveSpd += k;
 			if (u)  waveSpd += u*10;
