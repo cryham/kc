@@ -98,21 +98,21 @@ const DrawKey drawKeys[nDrawKeys] = {  //  Layout draw
 {-18,0,wh, 'Z',0, 51,K_Z},{X, 0,wh, 'X',0, 50,K_X},{X,0,wh, 'C',0, 49,K_C},{X,0,wh, 'V',0, 44,K_V},
 { X, 0,wh, 'B',0, 26,K_B},{X, 0,wh, 'N',0, 25,K_N},{X,0,wh, 'M',0, 43,K_M},{X,0,wh, ',',3, 42,K_COMMA},
 { X, 0,wh, '.',3, 41,K_PERIOD},{X,0,wh, '/',3, 18,K_SLASH},
-{ X, 0,10,kH, 's',5, 58,K_RSHIFT}, {X,0,8,kH, '^',5, 58,K_UP}, //R Sh 12x
- {XR,0,wh, 's',7,120,K_RSHIFT},/*12 up  120 end*/
+{ X, 0,10,kH, 's',5, 58,K_RSHIFT}, {-10,0,8,kH, '^',5, 12,K_F15}, //R Sh 12x
+ {XR,0,wh, 's',7,120,K_RSHIFT}, // 12 up  120 end
 
  //modif:  L Ctrl, L Gui, L Alt, space, R Alt, App,K_Ss, R Gui, R Ctrl
-{ 0,56,11,kH, 'c',4,128,K_LCTRL},{-12,0,7,kH,  9 ,4,106,K_LGUI},{-12,0,7,kH,  '\\',4, 14,K_SLASH},
-{-8, 0,11,kH, 'a',4,  3,K_LALT},{-12,0,3,kH,' ',6,  9,K_SPACE}, //Space
-{-45,0, 9,kH, 'a',5, 21,K_RALT}, /*23 menu 136 ins 135 del  30 ri 27 dn  28 le */
-{-10,0, 8,kH,  9 ,6, 23,K_RGUI},{-8,0, 9,kH,254,5,136,K_MENU},{-9, 0,12,kH,'c',5,135,K_RCTRL}, //R Ct 8x
-{-9, 0,12,kH, '>',5,135,K_RIGHT},{-9, 0,12,kH,'v',5,135,K_DOWN},
+{ 0,56,11,kH, 'c',4,128,K_LCTRL},{-11,0,7,kH,  9 ,4,106,K_LGUI},{-7,0,7,kH,  '\\',4, 14,K_SLASH},
+{-7, 0,11,kH, 'a',4,  3,K_LALT}, {-11,0,34,kH,' ',6,  9,K_SPACE}, //Space
+{-34,0, 9,kH, 'a',5, 21,K_RALT}, // 23 menu 136 ins 135 del  30 ri 27 dn  28 le
+{-9, 0, 8,kH,  9 ,6, 23,K_RGUI}, {-8,0, 8,kH,254,5,136,K_MENU},{-8, 0,7,kH,'c',5,135,K_RCTRL}, //R Ct 8x
+{-7, 0, 7,kH, '>',5, 30,K_F13},  {-7, 0,7,kH,'v',5, 27,K_F14},
  {XR,0,wh, 'c',7,28,K_RCTRL},
 //numpad: 17x
 {XN,20,wh, 250,6, 45,K_NUML},{X, 0,wh, '/',3, 46,KP_DIV},{X,0,wh, 'x',3, 47,KP_MUL},{X,0,kW-2,kH,  '-',3, 29,KP_SUB},
 {XN,29,wh, '7',8, 81,K_HOME},{X, 0,wh, 24 ,8, 82,K_UP},  {X,0,wh, '9',8, 83,K_PGUP},{X,0,kW-2,kH*2,'+',3, 84,KP_ADD},
 {XN,38,wh, 27 ,8, 99,K_LEFT},{X, 0,wh,  7 ,6,100,K_DEL}, {X,0,wh, 26 ,8,101,K_RIGHT},
-{XN,47,wh, '1',8, 63,K_END}, {X, 0,wh, 25 ,8, 64,K_DOWN},{X,0,wh, '3',8, 65,K_PGDN},{X,0,kW-2,kH*2, 217,6, 66,KP_ENT}, //Ent
+{XN,47,wh, '1',8, 63,K_END}, {X, 0,wh, 25 ,8, 64,K_DOWN},{X,0,wh, '3',8, 65,K_PGDN},{X,0,kW-2,kH*2, '|',3, 66,KP_ENT}, //Ent
 {XN,56,kW*2,kH,'_',6, 10,K_INS},{-kW*2,0,wh,'.',6, 11,K_DEL}, //Ins Del
 };
 const uint8_t gGui=57, gMslow=94, gLoad=95,gSave=110,gDiv=46,

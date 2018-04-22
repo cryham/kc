@@ -15,33 +15,30 @@ const int16_t sint[SX] =
 //....................................................................................
 void Demos::Fire()
 {
-	uint tt[8]={t*4,t*5, t*9,t*8, t*14,t*13, t*21,t*23};
+	uint tt[4]={t*6,t*12, t*16,t*24};
 
-	uint yy[8]={0,0,0,0,0,0,0,0};
+	uint yy[4]={0,0,0,0};
+	int cd = SY/2;
+	uint a = 0;
 	for (uint y=0; y<H; ++y)
 	{
-		uint xx[8]={0,0,0,0,0,0,0,0};
-		uint a = y*W;
-		uint f = 256 - y;
+		uint xx[4]={0,0,0,0};
+		uint f = pow(y+32, 1.4);
 		for (uint x=0; x<W; ++x,++a)
 		{
-			//int f = Sin( xx[0] +tt[0]);
 			int c;
-			c = 5*Sin( xx[0] +tt[0] +yy[0]*f/256) + 5*Cos( xx[1] +tt[1] +yy[1]*f/256);
-			c+= 5*Sin( xx[2] +tt[2] +yy[2]*f/256) + 5*Cos( xx[3] +tt[3] +yy[3]*f/256);
-			c+= 5*Cos( xx[4] +tt[4] +yy[4]*f/256) + 5*Sin( xx[5] +tt[5] +yy[5]*f/256);
-			c+= 5*Cos( xx[6] +tt[6] +yy[6]*f/256) + 5*Sin( xx[7] +tt[7] +yy[7]*f/256);
+			c = 8*Sin((xx[0]+yy[0])*f/128 +tt[0] ) + 8*Cos((xx[1]+yy[1])*f/128 +tt[1] );
+			c+= 8*Sin( xx[2]+ yy[2]*f/128 +tt[2] ) + 8*Cos( xx[3]+ yy[3]*f/128 +tt[3] );
 
-			xx[0]+=22; xx[1]+=35; xx[2]+=31;  xx[3]+=45;
-			xx[4]+=66; xx[5]+=93; xx[6]+=131; xx[7]+=293;
+			xx[0]+=12; xx[1]+=26; xx[2]+=56; xx[3]+=121;
 
 			c = abs(c);
-			c /= SY * (H*2-y)/H /12;
-			uint16_t d = RGB(min(31, c), min(31, c/2), min(31, c/4));
+			c /= cd;
+			uint16_t d = RGB(min(31, c), min(31, c/4), c/10);
 			data[a] = d;
 		}
-		yy[0]+=11; yy[1]+=44; yy[2]+=66; yy[3]+=99;
-		yy[4]+=33; yy[5]+=55; yy[6]+=77; yy[7]+=121;
+		yy[0]+=12; yy[1]+=25; yy[2]+=41; yy[3]+=56;
+		cd -= 50;
 	}
 
 	t+=waveSpd;
