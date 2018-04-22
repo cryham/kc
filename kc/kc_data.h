@@ -59,6 +59,15 @@ struct KC_Setup
 };
 
 
+enum KC_Err {
+	E_ok=0, E_size,  E_H1, E_H2, E_ver,
+	E_rows, E_cols,  E_slots, E_lay,
+	E_rcEq, E_nkeys,  E_max
+};
+
+extern const char* KCerrStr[E_max];
+
+
 //  main, state
 //--------------------------------------
 struct KC_Main
@@ -91,6 +100,5 @@ struct KC_Main
 	//  eeprom  ----
 	void Load(), Save();
 	uint16_t memSize = 0;  // result B
-
-	char err[64];  // error string
+	KC_Err err = E_ok;
 };

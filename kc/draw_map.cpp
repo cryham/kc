@@ -1,12 +1,10 @@
 #include "gui.h"
 #include "Ada4_ST7735.h"
-#include "FreeSans9pt7b.h"
-#include "usb_keyboard.h"
+#include "TomThumb.h"
 #include "matrix.h"
 #include "kbd_layout.h"
 #include "kc_data.h"
 #include "keys_usb.h"
-#include "TomThumb.h"
 
 extern KC_Main kc;
 
@@ -17,6 +15,7 @@ const static int pgMin = ((KEYS_ALL_EXT-12*3)/12 +1)*12;
 
 void Gui::DrawMapping()
 {
+	char a[64];
 	d->setFont(0);
 	int16_t x=2, y=0, c;
 
@@ -205,10 +204,10 @@ void Gui::DrawMapping()
 }
 
 
+//  kbd draw   Layout
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 void Gui::DrawLayout(bool edit)
 {
-	//  kbd draw   Layout
-	// * * * * * * * * * * * * * * * * * * * * * * * *
 	int16_t x=2, y=0;
 
 	for (int i=0; i < nDrawKeys; ++i)
@@ -274,4 +273,5 @@ void Gui::DrawLayout(bool edit)
 		}	}
 	#endif
 	}
+	d->setFont(0);
 }

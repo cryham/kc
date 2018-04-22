@@ -14,6 +14,7 @@ extern KC_Main kc;
 //....................................................................................
 void Gui::DrawSequences()
 {
+	char a[64];
 	//d->print(strMain[ym]);  d->setFont(0);
 
 	if (!edit)  //  View  ----------
@@ -153,6 +154,6 @@ void Gui::DrawSequences()
 			d->fillRect(xe-3, y-2, x-3-(xe-3), 12, RGB(6,4,4));
 			d->setTextColor(RGB(31,22,21));
 			d->setCursor(xe, y);
-			d->print(kc.err);
+			d->print(KCerrStr[kc.err]);
 	}	}
 }

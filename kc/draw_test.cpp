@@ -29,6 +29,7 @@ void Gui::DrawTesting()
 
 		return;
 	}
+	char a[64];
 
 	//  title
 	d->print(strTest[yy]);

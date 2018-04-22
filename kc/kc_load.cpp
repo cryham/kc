@@ -9,8 +9,8 @@
 
 const char* erSize = "> Max size";
 
-#define Erd(a)    eeprom_read_byte((uint8_t*)a);      ++a;  memSize = a;  if (a >= ESize) {  strcpy(err, erSize);  return;  }
-#define Ewr(a,b)  eeprom_write_byte((uint8_t*)a, b);  ++a;  memSize = a;  if (a >= ESize) {  strcpy(err, erSize);  return;  }
+#define Erd(a)    eeprom_read_byte((uint8_t*)a);      ++a;  memSize = a;  if (a >= ESize) {  err=E_size;  return;  }
+#define Ewr(a,b)  eeprom_write_byte((uint8_t*)a, b);  ++a;  memSize = a;  if (a >= ESize) {  err=E_size;  return;  }
 
 
 //  default params  ----
@@ -31,31 +31,39 @@ void ParInit()
 	par.dtSeqDef = 20;
 }
 
+//  errors
+const char* KCerrStr[E_max] = {
+	"ok", "> Max size",  "Hdr1 !k", "Hdr2 !c", "Hdr3 ver <",
+	"Scan rows >8", "Scan cols >18",  "Seq slots >60", "Key lay >8",
+	"r * c != sc", "nkeys != sc",
+};
+
+
 //  Load
 // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
 void KC_Main::Load()
 {
-	err[0]=0;
+	err = E_ok;
 	//set.Clear();
 
 	int a = 0, i, n;  uint8_t b;
 	//  header
-	set.h1 = Erd(a);  if (set.h1 != 'k') {  strcpy(err, "Hdr1 !k");  return;  }
-	set.h2 = Erd(a);  if (set.h2 != 'c') {  strcpy(err, "Hdr2 !c");  return;  }
-	set.ver = Erd(a);  if (set.ver > 2) {  strcpy(err, "Hdr3 ver >1");  return;  }
+	set.h1 = Erd(a);  if (set.h1 != 'k') {  err=E_H1;  return;  }
+	set.h2 = Erd(a);  if (set.h2 != 'c') {  err=E_H2;  return;  }
+	set.ver = Erd(a);  if (set.ver > 2) {  err=E_ver;  return;  }
 
 	//  matrix
-	set.rows = Erd(a);  if (set.rows > 8) {  strcpy(err, "Scan rows >8");  return;  }
-	set.cols = Erd(a);  if (set.cols > 18) {  strcpy(err, "Scan cols >18");  return;  }
+	set.rows = Erd(a);  if (set.rows > 8) {  err=E_rows;  return;  }
+	set.cols = Erd(a);  if (set.cols > 18) {  err=E_cols;  return;  }
 	set.scanKeys = set.rows * set.cols;
-	set.seqSlots = Erd(a);  if (set.seqSlots > 60) {  strcpy(err, "Seq slots >60");  return;  }
+	set.seqSlots = Erd(a);  if (set.seqSlots > 60) {  err=E_slots;  return;  }
 
 
 	//  params  ----
 	ParInit();  // defaults
 	n = Erd(a);  // size
 	eeprom_read_block((void*)&par, (void*)a, n);  a+=n;
-	if (a >= ESize) {  strcpy(err, erSize);  return;  }
+	if (a >= ESize) {  err=E_size;  return;  }
 	setDac = 1;  // upd
 
 
@@ -64,7 +72,7 @@ void KC_Main::Load()
 	{
 		uint8_t len = Erd(a);
 		if (len > KC_MaxLayers)
-		{	strcpy(err, "Key lay >8");  return;  }
+		{	err=E_lay;  return;  }
 
 		KC_Key k;
 		for (n=0; n < len; ++n)
@@ -91,20 +99,19 @@ void KC_Main::Load()
 	}
 
 	memSize = a;
-	strcpy(err, "ok");
 }
 
 //  Save
 // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
 void KC_Main::Save()
 {
-	err[0]=0;
+	err = E_ok;
 	//  sth very wrong
 	if (set.rows * set.cols != set.scanKeys)
-	{	strcpy(err, "r * c != sc");  return;  }
+	{	err=E_rcEq;  return;  }
 
 	if (set.nkeys() != int(set.scanKeys))
-	{	strcpy(err, "nkeys != sc");  return;  }
+	{	err=E_nkeys;  return;  }
 
 	int a = 0, i, n;
 
@@ -120,7 +127,7 @@ void KC_Main::Save()
 	n = sizeof(par);
 	Ewr(a, n);  // size
 	eeprom_write_block((void*)&par, (void*)a, n);  a+=n;
-	if (a >= ESize) {  strcpy(err, erSize);  return;  }
+	if (a >= ESize) {  err=E_size;  return;  }
 
 
 	//  Keys  ---
@@ -146,6 +153,4 @@ void KC_Main::Save()
 	}
 
 	memSize = a;
-	if (memSize >= ESize)
-		strcpy(err, "Too BIG");
 }

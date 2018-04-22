@@ -30,6 +30,9 @@ void Gui::KeyPress()
 	kCopy = Key( 49);  kPaste = Key( 44);  kSwap = Key( 50);  // C V B
 	kLoad = Key( 95);  kSave = Key(110);  //F5 F4  -F3  F4
 
+	if (Key( 46))  // Div/
+		iRam = (iRam + 1 + 3) % 3;
+
 	//kF12 = Key(5,0) - Key(3,0);  // F12  F11
 
 	// -- PgUp,Home,Up,R  test strobe delay
@@ -418,39 +421,4 @@ void Gui::KeyPress()
 		return;
 	}
 	#endif
-}
-//....................................................................................
-
-
-//  utils
-void Gui::Chk_y1()
-{
-	if (ym1[ym] >= YM1[ym])  ym1[ym] = 0;
-	if (ym1[ym] < 0)  ym1[ym] = YM1[ym]-1;
-}
-
-//  key auto repeat,  row, col, ms
-int8_t Gui::kr(uint8_t sc, uint16_t dt)
-{
-	KeyPosition st = Matrix_scanArray[sc].state;
-	int16_t& m = Matrix_scanArray[sc].autoRepeat;
-
-	if (st == KeyState_Press)
-	{
-		m = -1;  // start delay
-		return 1;
-	}
-	else if (st == KeyState_Hold)
-	{
-		if (m < 0)
-		{	m -= dt;
-			if (m < -par.krDelay*5)  // delay ms
-			{	m = 0;  return 1;  }
-		}else
-		{	m += dt;
-			if (m > par.krRepeat*5)  // repeat freq
-			{	m = 0;  return 1;  }
-		}
-	}
-	return 0;
 }

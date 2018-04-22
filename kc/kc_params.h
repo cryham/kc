@@ -17,12 +17,13 @@ struct KC_Params
 	uint8_t debounce;  // ms
 	//  delay in microseconds before and after each strobe change during matrix scan
 	uint8_t strobe_delay;
-	uint8_t scanFreq;  // * 1000 for timer period, 50 is 960 Hz
+	//  scanFreq * 1000 = timer period, 50 is 960 Hz
+	uint8_t scanFreq;
 
-	//  brightnes, dac
+	//  brightnes, dac value, 4095 = 100%
 	int16_t valDac;
 
-	//  default screen, fade dac, time..
+	//  todo default screen
 	int8_t startScreen;
 
 	uint8_t verCounter;  // inc on each save
@@ -32,14 +33,20 @@ struct KC_Params
 	//  mouse keys
 	uint8_t mkSpeed, mkAccel;
 
-	uint8_t dtSeqDef;  // default dt for seq keys
+	//  sequences default keys dt
+	uint8_t dtSeqDef;
+
+	//  todo fade dac, time..
 };
 //  --- ADD new to END ----
+
 
 #ifdef __cplusplus
 extern "C" {
 #endif
+
 extern struct KC_Params par;
+
 #ifdef __cplusplus
 }
 #endif

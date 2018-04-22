@@ -49,6 +49,7 @@ struct Gui
 
 	uint32_t oldti_kr;
 	int8_t kr(uint8_t sc, uint16_t dt);
+	int8_t iRam = 1;
 
 
 	//  Mapping  - - - -
@@ -84,6 +85,4 @@ struct Gui
 
 	//  const from grp
 	uint8_t grpStart[grpMax], grpEnd[grpMax];
-
-	char a[128];  // temp str
 };

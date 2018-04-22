@@ -60,7 +60,7 @@ const DrawKey drawKeys[nDrawKeys] = {  //  Layout draw
 	// < x1B 27  > x1A 26  ^ x18 24  v x19 25
 
 #elif defined(CK3)   //  CK3  ------------------------------------------------
-const char* CKname = "CK1 8x6";
+const char* CKname = "CK3 18x8";
 const int8_t  kW = 8, kH = 9, kF = 6, /* size */  X = -kW, XN = 127;  // pos
 
 const DrawKey drawKeys[nDrawKeys] = {  //  Layout draw

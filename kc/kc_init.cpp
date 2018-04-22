@@ -18,7 +18,7 @@ void KC_Main::SeqModClear()
 
 KC_Main::KC_Main()
 {
-	err[0]=0;  memSize = 0;
+	err=E_ok;  memSize = 0;
 
 	setDac = 1;
 
@@ -73,17 +73,21 @@ void KC_Setup::InitCK()
 	for (i=0; i < nDrawKeys; ++i)
 	{
 		const DrawKey& dk = drawKeys[i];
-		if (dk.sc != NO
-			&& dk.code != K_F12) //
+		if (dk.sc != NO) // && dk.code != K_F12)
 		{
 			KC_Key& kk = keys[dk.sc];
 			kk.add(dk.code, 0);
 
-			#if 1  //  override  --*
+		#if 1  //  override  --*
+		#ifdef CK1
 				 if (dk.code == K_INS)		kk.add(K_Layer1, 0);
 			else if (dk.code == K_SPACE)	kk.add(K_Layer2, 0);
-			else if (dk.code == K_T)		kk.add(K_Seq0, 2);
-			else if (dk.code == K_H)		kk.add(K_S2, 2);
+		#else
+				 if (dk.code == K_RCTRL)	kk.add(K_Layer1, 0);
+			else if (dk.code == K_CAPS)		kk.add(K_Layer2, 0);
+		#endif
+			else if (dk.code == K_T)	kk.add(K_Seq0, 2);
+			else if (dk.code == K_H)	kk.add(K_S2, 2);
 			else if (dk.code < K_Z && i % 3 == 0)
 			{	kk.add(dk.code+1, 1);
 				kk.add(dk.code+2, 2);
@@ -101,7 +105,7 @@ void KC_Setup::InitCK()
 			if (dk.code == K_DEL)   kk.add(KM_MMB, 2);  else
 			if (dk.code == K_END)   kk.add(KM_WhlUp, 2);  else
 			if (dk.code == K_PGDN)  kk.add(KM_WhlDown, 2);
-			#endif
+		#endif
 	}	}
 
 	#if 1  //  examples  --*
