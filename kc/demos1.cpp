@@ -1,6 +1,7 @@
 #include "demos.h"
 #include "Ada4_ST7735.h"
 #include "FreeSans9pt7b.h"  // 2k flash, 1%
+#include "TomThumb.h"
 
 #ifdef DEMOS
 
@@ -98,8 +99,9 @@ void Demos::Fonts()
 {
 	switch (fntCur)
 	{
-	case 0:
-	{	d->setCursor(0,18);  // logo
+	case 0:  // logo, ver
+	{
+		d->setCursor(0,18);
 		d->setFont(&FreeSans9pt7b);
 		d->setTextColor(RGB(1,28,28));
 		d->println("CrystaL");
@@ -115,7 +117,8 @@ void Demos::Fonts()
 
 		d->setCursor(0,H-23);
 		d->setTextColor(RGB(16,25,31));
-		d->print("ver 0.90");  /// version text
+		d->print("ver 0.95");
+		//  version text  ^
 
 		d->setTextColor(RGB(21,26,31));
 		d->setCursor(0, H-8);
@@ -126,7 +129,8 @@ void Demos::Fonts()
 	}	break;
 
 	case 1:  // big chars
-	{	uint x=0, y=0, yw=18;
+	{
+		uint x=0, y=0, yw=18;
 		d->setFont(&FreeSans9pt7b);
 		d->setTextColor(RGB(21,18,31));
 		d->setCursor(x,y); y+=yw;
@@ -176,5 +180,34 @@ void Demos::Fonts()
 				d->moveCursor(2, 0);
 		}
 	}	break;
-	}
+
+	case 3:  // tiny all chars
+	{
+		d->setFont(&TomThumb);
+		d->setCursor(6,8);
+		d->setTextColor(RGB(21,26,31));
+
+		for (int i=0; i < 128; i++)
+		{
+			if (i == '\n') continue;
+			d->write(i);
+
+			if (i % 20 == 0)
+			{	if (i > 0)
+				{	d->print('\n');
+					d->moveCursor(0, 1);  }
+				d->setTextColor(RGB(24,27,31));
+
+				int ii = i / 20;
+				if (ii % 4 == 0)
+					d->moveCursor(0, 2);
+				if (ii % 2 == 0)
+					d->setTextColor(RGB(26,29,31));
+			}
+			if (i % 8 == 0 && i > 0)
+				d->moveCursor(2, 0);
+		}
+		d->setFont(0);
+	}	break;
+}
 }

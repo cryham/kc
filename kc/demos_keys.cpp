@@ -21,7 +21,7 @@ void Demos::Init(Ada4_ST7735* tft)
 #ifdef DEMOS_OLD_PAR
 	einit = INone;
 	sCnt = 3*sMax/4;  sVel = 17;  // stars
-	bCnt = min(200,bMax);  bSpd = 100;  bSpRnd = 1;  bRad = 3;  // balls
+	bCnt = min(200,bMax);  bSpd = 160;  bSpRnd = 1;  bRad = 3;  // balls
 
 	fInt = 5;  fWave = 1;  // fountain
 #endif
@@ -44,7 +44,7 @@ void Demos::Init(Ada4_ST7735* tft)
 	tadd[0]=7; tadd[1]=5; tadd[2]=8; tadd[3]=4; tadd[4]=6; tadd[5]=9;  tadd[6]=8;
 #endif
 
-	waveSpd = 6;  // wave
+	waveSpd = 6;  fireSpd = 12;  // wave, fire
 #endif
 }
 
@@ -78,17 +78,6 @@ void Demos::KeyPress(EDemo demo, Gui* gui)
 			if (u)  PlasmaT(u);
 			break;
 	#endif
-		case D_Fire:
-		case D_Wave:
-			if (k)  waveSpd += k;
-			if (u)  waveSpd += u*10;
-			break;
-
-		//  txt	 --------
-		case D_CK_Logo:
-			if (k)  ckSpeed += k;
-			if (u)  ckCur = (ckCur + u + ckMax) % ckMax;
-			break;
 
 	#ifdef DEMOS_3D
 		case D_Hedrons:  // 3d
@@ -103,6 +92,22 @@ void Demos::KeyPress(EDemo demo, Gui* gui)
 				hdRot = (hdRot + u + hdRotMax) % hdRotMax;
 			break;
 	#endif
+
+		case D_Fire:
+			if (k)  fireSpd += k;
+			if (u)  fireSpd += u*10;
+			break;
+
+		case D_Wave:
+			if (k)  waveSpd += k;
+			if (u)  waveSpd += u*10;
+			break;
+
+		//  txt	 --------
+		case D_CK_Logo:
+			if (k)  ckSpeed += k;
+			if (u)  ckCur = (ckCur + u + ckMax) % ckMax;
+			break;
 
 		case D_Ngons:
 			if (k)

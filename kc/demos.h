@@ -33,7 +33,7 @@ struct Demos
 
 	//  Fonts
 	int8_t fntCur;
-	const static int8_t fntMax = 3;  // all pages
+	const static int8_t fntMax = 4;  // all pages
 	void Fonts();  // ver, date, chars
 
 
@@ -56,7 +56,7 @@ struct Demos
 #endif
 
 	//  Wave
-	int8_t waveSpd;
+	int8_t waveSpd, fireSpd;
 	void Wave(), Fire();
 	//Spiral, Water..
 

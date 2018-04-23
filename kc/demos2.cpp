@@ -18,35 +18,35 @@ void Demos::Fire()
 	uint tt[4]={t*6,t*12, t*16,t*24};
 
 	uint yy[4]={0,0,0,0};
-	int cd = SY/2;
+	int cd = 5*SY/12;
 	uint a = 0;
 	for (uint y=0; y<H; ++y)
 	{
 		uint xx[4]={0,0,0,0};
-		uint f = pow(y+32, 1.4);
+		uint f = 64 + pow(y, 1.4);
 		for (uint x=0; x<W; ++x,++a)
 		{
 			int c;
-			c = 8*Sin((xx[0]+yy[0])*f/128 +tt[0] ) + 8*Cos((xx[1]+yy[1])*f/128 +tt[1] );
+			c = 8*Sin((xx[0]+yy[0])*f/196 +tt[0] ) + 8*Cos((xx[1]+yy[1])*f/212 +tt[1] );
 			c+= 8*Sin( xx[2]+ yy[2]*f/128 +tt[2] ) + 8*Cos( xx[3]+ yy[3]*f/128 +tt[3] );
 
-			xx[0]+=12; xx[1]+=26; xx[2]+=56; xx[3]+=121;
+			xx[0]+=6; xx[1]+=38; xx[2]+=124; xx[3]+=181;
 
 			c = abs(c);
 			c /= cd;
 			uint16_t d = RGB(min(31, c), min(31, c/4), c/10);
 			data[a] = d;
 		}
-		yy[0]+=12; yy[1]+=25; yy[2]+=41; yy[3]+=56;
-		cd -= 50;
+		yy[0]+=9; yy[1]+=19; yy[2]+=37; yy[3]+=53;
+		cd -= 37;
 	}
 
-	t+=waveSpd;
 	if (iInfo > 0)
 	{
 		d->setCursor(0,0);
-		d->println(waveSpd);
+		d->println(fireSpd);
 	}
+	t += fireSpd;
 }
 
 
@@ -91,12 +91,13 @@ void Demos::Wave()
 			data[a] = c;
 		}
 	}
-	t+=waveSpd;
+
 	if (iInfo > 0)
 	{
 		d->setCursor(0,0);
 		d->println(waveSpd);
 	}
+	t += waveSpd;
 }
 
 
