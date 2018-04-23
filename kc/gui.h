@@ -23,6 +23,9 @@ struct Gui
 	void DrawLayout(bool edit), Chk_y1();
 	int8_t KeysSeq(), KeysMap();
 
+	void SetScreen(int8_t start);
+	const char* StrScreen(int8_t s);
+
 
 	//  fade color menu
 	enum EFadeClr

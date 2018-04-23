@@ -11,32 +11,23 @@ Gui::Gui() : d(0)
 void Gui::Init(Ada4_ST7735* tft)
 {
 	d = tft;
-	kbdSend = 0;  //
+	kbdSend = 0;  //-
 
 	for (int i=0; i < M_All; ++i)
 		ym1[i]=0;
 
-	//  todo load ee, from set
-	//  start screen  --
-	mlevel = 2;
+	//SetScreen(ST_Map);
+	//SetScreen(ST_Seqs);
+	//SetScreen(ST_Test2 + T_Layout);
+	SetScreen(ST_Demos2 + D_Fire);
 
-//	ym = M_Testing;
-//	ym = M_Mapping;
-//	ym = M_Sequences;
-//	ym = M_Display;
-	ym = M_Demos;
-
-	ym1[M_Testing] = T_Layout;
-	ym1[M_Demos] = D_Fire;
 	
-
-	oldti = 0;
-	tdemo = 0;
+	oldti = 0;  tdemo = 0;
 #ifdef DEMOS
 	demos.Init(d);
 #endif
 
-	nLay=0;  scId=0;  drawId=-1;
+	nLay=0;  scId=0;  drawId=54;
 	keyCode=0;
 	pressKey=0;  moveCur=0;  pickCode=0;
 
@@ -58,4 +49,47 @@ void Gui::Init(Ada4_ST7735* tft)
 				grpEnd[g] = i;
 			}
 	}
+}
+
+//  start screen
+void Gui::SetScreen(int8_t s)
+{
+	if (s == ST_main0)
+	{	mlevel = 0;  ym = 0;  return;  }
+	else  mlevel = 1;
+
+	switch (s)
+	{
+	case ST_Test:  ym = M_Testing;  break;
+	case ST_Map:   ym = M_Mapping;  break;
+	case ST_Seqs:  ym = M_Sequences;  break;
+	case ST_Displ: ym = M_Display;  break;
+	case ST_Demos: ym = M_Demos;  break;
+	}
+	if (s >= ST_Demos2)
+	{	mlevel = 2;  ym = M_Demos;
+		ym1[ym] = s - ST_Demos2;
+	}
+	else if (s >= ST_Test2 && s < ST_Map)
+	{	mlevel = 2;  ym = M_Testing;
+		ym1[ym] = s - ST_Test2;
+	}
+}
+
+const char* Gui::StrScreen(int8_t s)
+{
+	switch (s)
+	{
+	case ST_main0:  return "Main";
+	case ST_Test:   return strMain[M_Testing];
+	case ST_Map:    return strMain[M_Mapping];
+	case ST_Seqs:   return strMain[M_Sequences];
+	case ST_Displ:  return strMain[M_Display];
+	case ST_Demos:  return strMain[M_Demos];
+	}
+	if (s >= ST_Demos2)
+		return strDemo[s - ST_Demos2];
+	if (s >= ST_Test2 && s < ST_Map)
+		return strTest[s - ST_Test2];
+	return "";
 }

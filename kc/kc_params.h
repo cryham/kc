@@ -20,7 +20,7 @@ const int KC_MaxSeqs = 40;  // 60
 enum EStScr  //  start screen
 {	ST_main0=0, ST_Test=1, ST_Test2=2,
 	ST_Map=10, ST_Seqs=11, ST_Displ=12,
-	ST_Demos=13, ST_Demos2=13,
+	ST_Demos=13, ST_Demos2=14,
 };
 
 //  params, saved
