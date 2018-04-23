@@ -77,9 +77,11 @@ void KC_Main::Load()
 
 	//  params  ----
 	ParInit();  // defaults
+
 	n = Erd(a);  // size
 	eeprom_read_block((void*)&par, (void*)a, n);  a+=n;
 	if (a >= ESize) {  err=E_size;  return;  }
+
 	setDac = 1;  // upd
 
 
@@ -137,6 +139,7 @@ void KC_Main::Save()
 
 	//  params  ----
 	++par.verCounter;  // inc ver
+
 	n = sizeof(par);
 	Ewr(a, n);  // size
 	eeprom_write_block((void*)&par, (void*)a, n);  a+=n;

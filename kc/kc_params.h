@@ -34,10 +34,10 @@ struct KC_Params
 	//  scanFreq * 1000 = timer period, 50 is 960 Hz
 	uint8_t scanFreq;
 
-	//  brightness led, dac value, 4095 = 100%
+	//  brightness led, 0..100%
 	uint8_t brightness, brightOff;
 
-	//  todo default screen
+	//  screen after start
 	int8_t startScreen;
 
 	uint8_t verCounter;  // inc on each save
@@ -50,7 +50,7 @@ struct KC_Params
 	//* sequences default keys dt
 	uint8_t dtSeqDef;
 
-	//  fade time
+	//  todo fade time
 	uint8_t fadeTime;
 };
 //  --- ADD new to END ----

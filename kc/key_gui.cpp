@@ -13,7 +13,7 @@ extern KC_Main kc;
 void Gui::KeyPress()
 {
 	if (Key(gGui))
-		kbdSend = 1 - kbdSend;
+	{	kbdSend = 1 - kbdSend;  kc.setDac = 1;  }
 
 	if (kbdSend)
 		return;
@@ -42,7 +42,7 @@ void Gui::KeyPress()
 
 	#define RangeAdd(v,va, a,b) \
 		if (va > 0){  if (v+va >= b)  v = b;  else  v += va; } \
-		if (va < 0){  if (v+va <= a)  v = a;  else  v += va;}
+		if (va < 0){  if (v+va <= a)  v = a;  else  v += va; }
 
 
 	//  Testing  Scan Setup
@@ -80,15 +80,17 @@ void Gui::KeyPress()
 		switch (ym2Disp)
 		{
 		case 0:
-			RangeAdd(par.valDac, kRight * 10, 3600, 4095);
+			RangeAdd(par.brightness, kRight * 2, 0, 100);
 			kc.setDac = 1;  break;
 		case 1:
+			RangeAdd(par.fadeTime, kRight * 2, 0, 100);
 			break;
 		case 2:
+			RangeAdd(par.brightOff, kRight * 2, 0, 100);
 			break;
 
 		case 3:
-			RangeAdd(par.startScreen, kRight, 0, 15);  break;
+			RangeAdd(par.startScreen, kRight, 0, ST_Demos2 + D_All-1);  break;
 		case 4:
 			RangeAdd(par.krDelay, kRight, 0,255);  break;
 		case 5:

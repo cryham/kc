@@ -17,7 +17,7 @@ const uint8_t Gui::Mclr[Gui::Cl][2][3] = {
 	{{20,30,26},{6,3,4}},  //  2 test
 	{{22,31,18},{6,3,7}},  //  3 map
 	{{17,31,31},{5,4,3}},  //  4 seqs
-	{{31,31,23},{1,2,4}},  // 5 display
+	{{31,31,21},{1,3,5}},  // 5 display
 	{{26,28,28},{4,3,3}},  // 6 scan, mouse-
 };
 
@@ -30,44 +30,44 @@ void Gui::DrawEnd()
 	//  ram info  ---------
 	if (iRam)
 	{
-		int16_t	x = W-1 - (iRam == 2 ? 18*4 : 10*6),
+		int16_t	x = W-1 - (iRam == 2 ? 18*4 : 8*6),
 				y = H-1 - (iRam == 2 ? 5*6 : 4*9);
 		d->fillRect(x-1,y-1, W-x+1,H-y+1, RGB(3,2,2));
 		d->setCursor(x,y);
+		std::vector<uint8_t> vv;
 
 		if (iRam == 2)
 		{	//  long
 			d->setTextColor(RGB(31,28,28));
 			d->setFont(&TomThumb);  // 3x5
-			sprintf(a,"ram  %s  %lu", ram.warning_crash() ? "crash" : ram.warning_lowmem() ? "low" : "ok", ram.total());
+			sprintf(a,"%s %d %d", ram.warning_crash() ? "crsh" : ram.warning_lowmem() ? "low" : "ok",
+					kc.GetSize(), sizeof(vv));
 			d->println(a);  y+=6;
 			d->setCursor(x, y);  y+=6;
-			sprintf(a,"unal  %lu %lu",
+			sprintf(a,"un  %lu %lu",   // space between heap and stack
 					ram.adj_unallocd(), ram.unallocated());  d->println(a);
 			d->setCursor(x, y);  y+=6;
-			sprintf(a,"free  %lu%%  %ld %ld",
-					100 * ram.adj_free() / ram.total(),
+			sprintf(a,"fr  %ld %ld", //100 * ram.adj_free() / ram.total(),
 					ram.adj_free(), ram.free());  d->println(a);
 			d->setCursor(x, y);  y+=6;
-			sprintf(a,"heap  %lu%%  %lu %lu",
-					100 * ram.heap_free() / ram.heap_total(),
+			sprintf(a,"hp  %lu%%  %lu %lu", 100 * ram.heap_free() / ram.heap_total(),
 					ram.heap_free(), ram.heap_total());  d->println(a);
 			d->setCursor(x, y);  y+=6;
-			sprintf(a,"stck  %lu%%  %lu %lu",
-					100 * ram.stack_free() / ram.stack_total(),
+			sprintf(a,"st  %lu%%  %lu %lu", 100 * ram.stack_free() / ram.stack_total(),
 					ram.stack_free(), ram.stack_total());  d->println(a);
 			d->setFont(0);
 		}else
 		{	//  short
 			d->setTextColor(RGB(31,23,23));
-			sprintf(a,"ram  %s", ram.warning_crash() ? "crash" : ram.warning_lowmem() ? "low" : "ok");
+			sprintf(a,"%s %d", ram.warning_crash() ? "c" : ram.warning_lowmem() ? "l" : "o",
+					kc.GetSize());
 			d->println(a);  y+=9;
 			d->setCursor(x, y);  y+=9;
-			sprintf(a,"free %ld", ram.adj_free());  d->println(a);
+			sprintf(a,"un %ld", ram.adj_unallocd());  d->println(a);
 			d->setCursor(x, y);  y+=9;
-			sprintf(a,"heap %lu", ram.heap_free());  d->println(a);
+			sprintf(a,"hp %lu", ram.heap_free());  d->println(a);
 			d->setCursor(x, y);  y+=9;
-			sprintf(a,"stck %lu", ram.stack_free());  d->println(a);
+			sprintf(a,"st %lu", ram.stack_free());  d->println(a);
 		}
 	}
 

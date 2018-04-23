@@ -72,6 +72,7 @@ int main()
 	analogWriteRes(12);
 	analogWriteDAC0(0);  // dark
 
+
 	Ada4_ST7735 tft;
 	tft.begin();
 
@@ -79,11 +80,15 @@ int main()
 	tft.clear();
 	tft.display();  // black
 
-	gui.Draw();  // visible if crashed?
-	gui.DrawEnd();
+	//gui.Draw();  // visible if crashed?
+	//gui.DrawEnd();
 
-	//  load set from ee
-	//kc.Load();
+
+	//  todo load set from ee
+//	kc.Load();
+//	gui.SetScreen(par.startScreen);
+//	gui.kbdSend = 1;  // release
+
 
 	//  kbd
 	Matrix_setup();

@@ -106,14 +106,15 @@ void Gui::Draw()
 
 		//  time  ---
 		tm = rtc_get();
-		int h = tm/3600%24, m = tm/60%60, s = tm%60;
+		if (tm)
+		{	int h = tm/3600%24, m = tm/60%60, s = tm%60;
 
-		d->setCursor(W/2, 0);
-		d->setTextColor(RGB(10,28,18));
+			d->setCursor(W/2, 0);
+			d->setTextColor(RGB(10,28,18));
 
-		sprintf(a,"%2d:%02d:%02d", h,m,s);
-		d->print(a);
-
+			sprintf(a,"%2d:%02d:%02d", h,m,s);
+			d->print(a);
+		}
 		d->setFont(0);
 
 		//  brightness, dac  ---
@@ -128,28 +129,27 @@ void Gui::Draw()
 				d->print("  ");
 
 			FadeClr(C_Disp, 4, c, 1);
-			h = 4;
+			int8_t h = 4;
 			switch(i)
 			{
 			case 0:
-				sprintf(a,"Brightness: %d  %d %%",
-					par.valDac-3595, 100*(par.valDac-3600)/(4095-3600));  break;
+				sprintf(a,"Brightness: %d %%", par.brightness);  break;
+
 			case 1:
-				sprintf(a,"Fade time: ");  h = 2;  break;
+				sprintf(a,"Fade time: %d", par.fadeTime);  h = 2;  break;
 			case 2:
-				sprintf(a,"Fade brightness: ");  break;
+				sprintf(a,"Fade bright.: %d %%", par.brightOff);  break;
 
 			case 3:
 				sprintf(a,"Start scren: %d", par.startScreen);  break;
-			//ck demo time, bright..
 
 			case 4:
 				sprintf(a,"Key delay:  %d ms", par.krDelay*5);  h = 2;  break;
 			case 5:
 				sprintf(a,"Key repeat: %d ms", par.krRepeat*5);  break;
 
-			//todo int8_t startScreen
-			//uint8_t mkSpeed, mkAccel;
+			//uint8_t mkSpeed, mkAccel;  todo scroll
+			//start demo time
 			}
 			d->println(a);  d->moveCursor(0,h);
 		}

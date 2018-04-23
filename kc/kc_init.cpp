@@ -41,7 +41,7 @@ void KC_Setup::Clear()
 		key[l][i] = KEY_NONE;
 
 	//  const size
-	for (i=0; i < seqSlots; ++i)
+	for (i=0; i < KC_MaxSeqs; ++i)
 	{	seqs[i].data.clear();
 		seqs[i].data.shrink_to_fit();  // free ram
 	}

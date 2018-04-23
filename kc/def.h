@@ -10,7 +10,7 @@
 #define DEMOS			// 47844  66%  all 7k 11% ram, 41k 16% flash
 #define DEMOS_PLASMA	// 47852  68%
 #define DEMOS_3D		// 47860  72%
-//#define DEMOS_OLD_PAR	// 48096  73%  min
+#define DEMOS_OLD_PAR	// 48096  73%  min
 //   keyboard
 //#define CK1  // 8x6
 #define CK3  // 18x8

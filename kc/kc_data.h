@@ -40,7 +40,7 @@ struct KC_Setup
 };
 
 
-enum KC_Err {
+enum KC_Err {  // load, save errors
 	E_ok=0, E_size,  E_H1, E_H2, E_ver,
 	E_rows, E_cols,  E_slots, E_lay,
 	E_rcEq, E_nkeys,  E_max

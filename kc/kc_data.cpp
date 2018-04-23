@@ -8,16 +8,20 @@
 #include "WProgram.h"
 
 KC_Params par;
+extern Gui gui;
 
 
 //  update layers  (always)
 //------------------------------------------------
 void KC_Main::UpdLay()
 {
-	//  dac led
+	//  brightness dac led  ~~~
 	if (setDac)
 	{	setDac = 0;
-		analogWriteDAC0(par.valDac);
+		int bri = gui.kbdSend ? par.brightOff : par.brightness;
+		const int minBri = 3580;
+		int val = bri == 0 ? 0 : bri * (4095 - minBri) / 100 + minBri;
+		analogWriteDAC0(val);
 	}
 
 	//  all matrix scan codes  ----
@@ -36,7 +40,7 @@ void KC_Main::UpdLay()
 			//  get from kc
 			uint8_t code = set.key[/*nLayer*/0][id];
 
-			if (code >= K_Layer1 && code <= K_Layer15)  //7 16-
+			if (code >= K_Layer1 && code < K_Layer1+KC_MaxLayers)
 			{
 				//  set layer, hold
 				if (on)   nLayer = code - K_Layer1 + 1;
@@ -176,21 +180,21 @@ void KC_Main::Send(uint32_t ms)
 						//  start seq  ***
 						Keyboard.releaseAll();
 						SeqModClear();
-						inSeq = sq;  tiSeq = ms;
-						seqPos = 0;  seqRel = 0;
+						inSeq = sq;  tiSeq = ms;  seqPos = 0;  seqRel = 0;
 						dtSeq = par.dtSeqDef;
 					}
 					else  inSeq = -1;
 				}
-				else  //  display,  internal
+				else  //  todo  display,  internal
 				if (code >= K_Fun0 && code <= K_Fun9)
 				{
 					switch (code)
 					{
-					case K_Fun0:
-						gui.kbdSend = 1-gui.kbdSend;
+					case K_Fun0:  // send
+						gui.kbdSend = 1-gui.kbdSend;  setDac = 1;
 						break;
-					case K_Fun1:
+					case K_Fun1:  // bright
+						//par.brightness;
 						break;
 					case K_Fun2:
 						break;
