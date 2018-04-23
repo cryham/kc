@@ -64,7 +64,7 @@ void Gui::DrawTesting()
 			if (kc.set.nkeys() >= int(ScanKeys))
 			if (k.state == KeyState_Hold)
 			{
-				int8_t code = kc.set.keys[i].get(kc.nLayer);
+				int8_t code = kc.set.key[kc.nLayer][i];
 				if (code > KEY_NONE && code <= K_ModLast)
 				{	sprintf(a,"%s ",cKeyStr[code]);
 					d->print(a);
@@ -97,7 +97,7 @@ void Gui::DrawTesting()
 			if (kc.set.nkeys() >= int(ScanKeys))
 			if (k.state == KeyState_Hold)
 			{
-				int8_t code = kc.set.keys[i].get(kc.nLayer);
+				int8_t code = kc.set.key[kc.nLayer][i];
 				if (code > K_ModLast && code < KEYS_ALL)
 				{
 					const uint8_t* c = &cGrpRgb[cKeyGrp[code]][0][0];

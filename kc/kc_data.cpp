@@ -4,9 +4,11 @@
 #include "usb_mouse.h"
 #include "matrix.h"
 #include "keys_usb.h"
+#include "gui.h"
 #include "WProgram.h"
 
 KC_Params par;
+
 
 //  update layers  (always)
 //------------------------------------------------
@@ -32,7 +34,7 @@ void KC_Main::UpdLay()
 		if (id < set.nkeys())
 		{
 			//  get from kc
-			uint8_t code = set.keys[id].get(/*nLayer*/0);
+			uint8_t code = set.key[/*nLayer*/0][id];
 
 			if (code >= K_Layer1 && code <= K_Layer15)  //7 16-
 			{
@@ -124,7 +126,7 @@ void KC_Main::Send(uint32_t ms)
 			if (on)
 			{
 				//  get code for current layer
-				uint8_t code = set.keys[id].get(nLayer);
+				uint8_t code = set.key[nLayer][id];
 				if (code > KEY_NONE && code < KEYS_ALL)
 				{
 					//  if 1 key, send press
@@ -136,24 +138,18 @@ void KC_Main::Send(uint32_t ms)
 				//  mouse  * * *
 				else
 				if (code >= KM_Left && code <= KM_Down)
-				{
-					switch (code)
+				{	switch (code)
 					{
-					case KM_Left:  Mouse_input_x -= 8;  break;
-					case KM_Right: Mouse_input_x += 8;  break;
-					case KM_Up:    Mouse_input_y -= 8;  break;
-					case KM_Down:  Mouse_input_y += 8;  break;
+					case KM_Left:  Mouse_input_x -= 8;  break;  case KM_Right: Mouse_input_x += 8;  break;
+					case KM_Up:    Mouse_input_y -= 8;  break;  case KM_Down:  Mouse_input_y += 8;  break;
 					}
 					k.layerOn = nLayer;
 				}
 				else if (code >= KM_WhlUp && code <= KM_WhlRight)
-				{
-					switch (code)  // todo wheel ?
+				{	switch (code)  // todo wheel ?
 					{
-					case KM_WhlLeft:  Mouse_wheel_x =-1;  break;
-					case KM_WhlRight: Mouse_wheel_x = 1;  break;
-					case KM_WhlUp:    Mouse_wheel_y =-1;  break;
-					case KM_WhlDown:  Mouse_wheel_y = 1;  break;
+					case KM_WhlLeft:  Mouse_wheel_x =-1;  break;  case KM_WhlRight: Mouse_wheel_x = 1;  break;
+					case KM_WhlUp:    Mouse_wheel_y =-1;  break;  case KM_WhlDown:  Mouse_wheel_y = 1;  break;
 					}
 					k.layerOn = nLayer;
 				}
@@ -161,23 +157,21 @@ void KC_Main::Send(uint32_t ms)
 				{
 					uint8_t b = MOUSE_LEFT;
 					switch (code)
-					{
-					case KM_LMB:  break;
-					case KM_RMB:  b = MOUSE_RIGHT;  break;
-					case KM_MMB:  b = MOUSE_MIDDLE;  break;
-					case KM_Back: b = MOUSE_BACK;   break;
-					case KM_Forw: b = MOUSE_FORWARD;  break;
+					{  case KM_LMB:  break;
+					case KM_RMB:  b = MOUSE_RIGHT;  break;  case KM_MMB:  b = MOUSE_MIDDLE;  break;
+					case KM_Back: b = MOUSE_BACK;   break;  case KM_Forw: b = MOUSE_FORWARD;  break;
 					}
 					Mouse.press(b);
 					k.layerOn = nLayer;
 				}
-				else  //  sequences
+				//  sequences  * * *
+				else
 				if (code >= K_Seq0 && code <= K_SeqLast
 					&& inSeq < 0)
 				{
 					int8_t sq = code - K_Seq0;
-					if (set.nseqs() > sq &&
-						set.seqs[sq].len() > 0)
+					if (set.nseqs() > sq && sq < KC_MaxSeqs
+						&& set.seqs[sq].len() > 0)
 					{
 						//  start seq  ***
 						Keyboard.releaseAll();
@@ -188,11 +182,25 @@ void KC_Main::Send(uint32_t ms)
 					}
 					else  inSeq = -1;
 				}
+				else  //  display,  internal
+				if (code >= K_Fun0 && code <= K_Fun9)
+				{
+					switch (code)
+					{
+					case K_Fun0:
+						gui.kbdSend = 1-gui.kbdSend;
+						break;
+					case K_Fun1:
+						break;
+					case K_Fun2:
+						break;
+					}
+				}
 			}
 			else if (off)
 			{
 				//  send for layer it was pressed on
-				uint8_t code = set.keys[id].get(k.layerOn);
+				uint8_t code = set.key[k.layerOn][id];
 				if (code > KEY_NONE && code < KEYS_ALL)
 				{
 					//  release 1 key
@@ -203,25 +211,19 @@ void KC_Main::Send(uint32_t ms)
 				//  mouse  * * *
 				else
 				if (code >= KM_Left && code <= KM_Down)
-				{
-					switch (code)
+				{	switch (code)
 					{
-					case KM_Left:  Mouse_input_x += 8;  break;
-					case KM_Right: Mouse_input_x -= 8;  break;
-					case KM_Up:    Mouse_input_y += 8;  break;
-					case KM_Down:  Mouse_input_y -= 8;  break;
+					case KM_Left:  Mouse_input_x += 8;  break;  case KM_Right: Mouse_input_x -= 8;  break;
+					case KM_Up:    Mouse_input_y += 8;  break;  case KM_Down:  Mouse_input_y -= 8;  break;
 					}
 				}
 				else if (code >= KM_LMB && code <= KM_Forw)
 				{
 					uint8_t b = MOUSE_LEFT;
 					switch (code)
-					{
-					case KM_LMB:  break;
-					case KM_RMB:  b = MOUSE_RIGHT;  break;
-					case KM_MMB:  b = MOUSE_MIDDLE;  break;
-					case KM_Back: b = MOUSE_BACK;   break;
-					case KM_Forw: b = MOUSE_FORWARD;  break;
+					{	case KM_LMB:  break;
+					case KM_RMB:  b = MOUSE_RIGHT;  break;  case KM_MMB:  b = MOUSE_MIDDLE;  break;
+					case KM_Back: b = MOUSE_BACK;   break;  case KM_Forw: b = MOUSE_FORWARD;  break;
 					}
 					Mouse.release(b);
 				}
@@ -231,53 +233,6 @@ void KC_Main::Send(uint32_t ms)
 
 	//  mouse move and send  * * *
 
-	Mouse_shift = KeyH(gMslow);  // todo par..
+	Mouse_shift = KeyH(gMslow);
 	usb_mouse_idle();
-}
-
-
-// . . . . . . . . . . . . . . . . . . . . . . . .
-//  get data for layer, if any
-uint8_t KC_Key::get(uint32_t lay)
-{
-	if (lay >= KC_MaxLayers || lay < 0)
-		return KEY_NONE;
-
-	//lay = 0;
-	//return KEY_NONE;
-	if (lay == 0 && hasLay(0) && !data.empty())
-		return data[0];
-
-	if (hasLay(lay))
-		if (lay < data.size())
-			return data[lay];
-
-	return KEY_NONE;
-}
-
-//  add data at layer,  code > KEY_NONE
-void KC_Key::add(uint8_t code, uint32_t lay)
-{
-	layUse |= 1ul << lay;  // set use bit
-
-	if (lay < data.size())
-	{	data[lay] = code;  return;  }
-
-	uint32_t i, s = data.size();
-	for (i=s; i < lay+1; ++i)
-		data.push_back(KEY_NONE);
-
-	if (lay < data.size())  // sure
-		data[lay] = code;
-}
-
-//  remove layer data
-void KC_Key::rem(uint32_t lay)
-{
-	if (!hasLay(lay))  return;
-
-	layUse &= ~(1ul << lay);  // clear use bit
-
-	data[lay] = KEY_NONE;  // disabled
-	// pop last 0s-
 }

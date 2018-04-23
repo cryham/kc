@@ -5,28 +5,6 @@
 #include "kc_params.h"
 
 
-struct KC_Key  // for each scan code
-{
-	uint32_t layUse;  // KC_MaxLayers x 1bit
-	std::vector<uint8_t> data;
-
-	KC_Key() : layUse(0)  // nothing
-	{  }
-
-	//  test use bit
-	#define hasLay(n)  (layUse & (1ul << n))
-
-	//  get data for layer, if any
-	uint8_t get(uint32_t lay);
-
-	//  add data at layer
-	void add(uint8_t code, uint32_t lay);
-
-	//  remove layer data
-	void rem(uint32_t lay);
-};
-
-
 struct KC_Sequence
 {
 	//  var length
@@ -45,12 +23,15 @@ struct KC_Setup
 	//  rows * cols = scanKeys,  matrix setup
 	uint8_t rows, cols, scanKeys, seqSlots;  // max seqs
 
-	std::vector<KC_Key> keys;  // size scanKeys, maps scan to byte codes
-	std::vector<KC_Sequence> seqs;
+	//  maps scan to byte codes
+	//  const size: layers * scanKeys
+	uint8_t key[KC_MaxLayers][KC_MaxRows * KC_MaxCols];
+
+	KC_Sequence seqs[KC_MaxSeqs];
 	KC_Sequence copy;  // for paste, swap
 
-	const int nkeys() const {  return keys.size();  }
-	const int nseqs() const {  return seqs.size();  }
+	const int nkeys() const {  return KC_MaxRows * KC_MaxCols;  }
+	const int nseqs() const {  return KC_MaxSeqs;  }
 
 	KC_Setup();
 	void Clear(), InitCK();
@@ -74,6 +55,9 @@ struct KC_Main
 {
 	//  current layer, set by keys
 	int8_t nLayer = 0;
+	// todo default layer
+
+	int8_t setDac = 1;  // update
 
 	//  sequence running vars
 	int8_t inSeq = -1,  // id run, -1 none
@@ -84,9 +68,6 @@ struct KC_Main
 
 	int8_t seqMod[K_ModLast+1];  // modifiers state
 	void SeqModClear();
-
-
-	int8_t setDac = 1;  // upd
 
 
 	//  main  ----
@@ -100,6 +81,7 @@ struct KC_Main
 	//  eeprom  ----
 	void Load(), Save();
 	uint16_t GetSize();  // mem
+
 	uint16_t memSize = 0;  // result B
 	KC_Err err = E_ok;
 };

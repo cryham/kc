@@ -137,7 +137,7 @@ void Gui::DrawMapping()
 				sprintf(a,"Key: NONE");
 			else
 			{
-				uint8_t u = kc.set.keys[id].get(nLay);
+				uint8_t u = kc.set.key[nLay][id];
 					 if (u == KEY_NONE)  sprintf(a,"Key: None");
 				else if (u >= KEYS_ALL_EXT)  sprintf(a,"Key: OUT");
 				else
@@ -169,16 +169,12 @@ void Gui::DrawMapping()
 	d->setCursor(x,y);
 	if (id >= 0 && id < si)
 	{
-		const KC_Key& k = kc.set.keys[id];
-		si = k.data.size();
-		sprintf(a,"L key");
+		sprintf(a,"L key");  // hdr
 		d->print(a);  y+=8+2;
-		//if (si>5) si=5;  // cut
-		d->setTextColor(RGB(27,27,14));
 
-		for (int i=0; i<si && y < H/2; ++i)
+		for (int i=0; i < KC_MaxLayers && y < H/2; ++i)
 		{
-			uint8_t kd = k.data[i];
+			uint8_t kd = kc.set.key[i][id];
 			if (kd != KEY_NONE)
 			{
 				FadeGrp(cKeyGrp[kd < KEYS_ALL_EXT ? kd : 0],
@@ -188,10 +184,6 @@ void Gui::DrawMapping()
 					kd < KEYS_ALL_EXT ? cKeyStr[kd] : "OUT");
 				d->print(a);  y+=8;
 		}	}
-
-		/*d->setCursor(x,y+2);
-		sprintf(a,"Luse %lu", k.layUse);
-		d->print(a);  y+=8;*/
 	}
 	else
 	{	sprintf(a,"key: no");
@@ -257,7 +249,7 @@ void Gui::DrawLayout(bool edit)
 		if (k.sc != NO && k.sc < kc.set.nkeys())
 		{
 			// todo layer use vis..
-			uint8_t dt = kc.set.keys[k.sc].get(edit ? nLay : 0);
+			uint8_t dt = kc.set.key[edit ? nLay : 0][k.sc];
 			if (dt != KEY_NONE)
 			{
 				const uint8_t* c = &cGrpRgb[cKeyGrp[dt]][0][0];

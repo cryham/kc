@@ -33,15 +33,18 @@ void KC_Setup::Clear()
 
 	//  default  matrix
 	rows = 8;  cols = 18;  scanKeys = rows * cols;
-	seqSlots = 60;
+	seqSlots = KC_MaxSeqs;
 
-	keys.clear();
-	seqs.clear();
+	int i,l;
+	for (l=0; l < KC_MaxLayers; ++l)
+	for (i=0; i < KC_MaxRows * KC_MaxCols; ++i)
+		key[l][i] = KEY_NONE;
 
-	KC_Sequence sq;  // empty
 	//  const size
-	for (int i=0; i < seqSlots; ++i)
-		seqs.push_back(sq);
+	for (i=0; i < seqSlots; ++i)
+	{	seqs[i].data.clear();
+		seqs[i].data.shrink_to_fit();  // free ram
+	}
 }
 
 KC_Setup::KC_Setup()
@@ -61,51 +64,47 @@ void KC_Setup::InitCK()
 	rows = 8;  cols = 18;
 #endif
 	scanKeys = rows * cols;
-	seqSlots = 60;
+	seqSlots = KC_MaxSeqs;
 
 	int i;
-	KC_Key k;
-	for (i=0; i < scanKeys; ++i)
-		keys.push_back(k);
-
-
 	//  from draw layout
 	for (i=0; i < nDrawKeys; ++i)
 	{
 		const DrawKey& dk = drawKeys[i];
-		if (dk.sc != NO) // && dk.code != K_F12)
+		if (dk.sc != NO)
 		{
-			KC_Key& kk = keys[dk.sc];
-			kk.add(dk.code, 0);
+			#define add(code, lay)  key[lay][dk.sc] = code
+			add(dk.code, 0);
 
 		#if 1  //  override  --*
 		#ifdef CK1
-				 if (dk.code == K_INS)		kk.add(K_Layer1, 0);
-			else if (dk.code == K_SPACE)	kk.add(K_Layer2, 0);
+				 if (dk.code == K_INS)		add(K_Layer1, 0);
+			else if (dk.code == K_SPACE)	add(K_Layer2, 0);
 		#else
-				 if (dk.code == K_RCTRL)	kk.add(K_Layer1, 0);
-			else if (dk.code == K_CAPS)		kk.add(K_Layer2, 0);
+				 if (dk.code == K_RCTRL)	add(K_Layer1, 0);
+			else if (dk.code == K_CAPS)		add(K_Layer2, 0);
 		#endif
-			else if (dk.code == K_T)	kk.add(K_Seq0, 2);
-			else if (dk.code == K_H)	kk.add(K_S2, 2);
+			else if (dk.code == K_T)	add(K_Seq0, 2);
+			else if (dk.code == K_H)	add(K_S2, 2);
 			else if (dk.code < K_Z && i % 3 == 0)
-			{	kk.add(dk.code+1, 1);
-				kk.add(dk.code+2, 2);
+			{	add(dk.code+1, 1);
+				add(dk.code+2, 2);
 			}else if (dk.code < K_Z && i % 3 == 1)
-			{	kk.add(dk.code+1, 2);
+			{	add(dk.code+1, 2);
 			}else if (dk.code < K_UP && i % 3 == 1)
-			{	kk.add(dk.code+1, 1);
+			{	add(dk.code+1, 1);
 			}	// mouse
-			if (dk.code == K_UP)    kk.add(KM_Up, 2);  else
-			if (dk.code == K_DOWN)  kk.add(KM_Down, 2);  else
-			if (dk.code == K_LEFT)  kk.add(KM_Left, 2);  else
-			if (dk.code == K_RIGHT) kk.add(KM_Right, 2);  else
-			if (dk.code == K_HOME)  kk.add(KM_LMB, 2);  else
-			if (dk.code == K_PGUP)  kk.add(KM_RMB, 2);  else
-			if (dk.code == K_DEL)   kk.add(KM_MMB, 2);  else
-			if (dk.code == K_END)   kk.add(KM_WhlUp, 2);  else
-			if (dk.code == K_PGDN)  kk.add(KM_WhlDown, 2);
+			if (dk.code == K_UP)    add(KM_Up, 2);  else
+			if (dk.code == K_DOWN)  add(KM_Down, 2);  else
+			if (dk.code == K_LEFT)  add(KM_Left, 2);  else
+			if (dk.code == K_RIGHT) add(KM_Right, 2);  else
+			if (dk.code == K_HOME)  add(KM_LMB, 2);  else
+			if (dk.code == K_PGUP)  add(KM_RMB, 2);  else
+			if (dk.code == K_DEL)   add(KM_MMB, 2);  else
+			if (dk.code == K_END)   add(KM_WhlUp, 2);  else
+			if (dk.code == K_PGDN)  add(KM_WhlDown, 2);
 		#endif
+			#undef add
 	}	}
 
 	#if 1  //  examples  --*

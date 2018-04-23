@@ -66,7 +66,7 @@ int8_t Gui::KeysSeq()
 				if (Matrix_scanArray[i].state == KeyState_Press
 					&& int(i) < kc.set.nkeys())
 				{
-					ii = kc.set.keys[i].get(kc.nLayer);  //0.
+					ii = kc.set.key[kc.nLayer][i];  //0.
 					if (ii == KEY_NONE || ii >= KEYS_ALL)  ii = -1;  // norm only
 					break;
 				}

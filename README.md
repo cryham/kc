@@ -7,7 +7,7 @@ Called K.C. ("Kacey") for short.
 
 It features:
 * Mapping menu, for remapping USB key codes to physical keys in real time, on running keyboard
-* Layers (max 16)
+* Layers
 * Sequences menu, for editing macros, passwords, etc.
 * Visual keyboard drawn on display with current mappings. Layout is set in cpp file
 * Mouse keys with move acceleration
@@ -31,7 +31,7 @@ Hardware
 
 The keyboard is made of:
 * Teensy 3.2 (or 3.1), overclocked, stable at 144 MHz
-* TFT LCD display ST7735, 160 x 128, 16bit color RGB565. Red PCB with SD card slot. Terribly low viewing angles.
+* TFT LCD display ST7735, 160 x 128, 16bit color RGB565. Red PCB with SD card slot. Terribly low viewing angle.
 * NPN transistor BC550. Connection from DAC A14 output through 4.7k resistor to base, collector to 3.3V, emitter through 47 ohm resistor to Display LED.
 
 Licensing

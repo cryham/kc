@@ -95,11 +95,7 @@ int8_t Gui::KeysMap()
 		{	//  apply in kc
 			if (scId >= 0 && scId < kc.set.nkeys())
 			{
-				KC_Key& k = kc.set.keys[scId];
-				if (keyCode != KEY_NONE)
-					k.add(keyCode, nLay);
-				else
-					k.rem(nLay);
+				kc.set.key[nLay][scId] = keyCode;
 			}
 			pickCode = 0;  return 1;
 		}
