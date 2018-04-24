@@ -82,6 +82,8 @@ void KC_Main::Load()
 	eeprom_read_block((void*)&par, (void*)a, n);  a+=n;
 	if (a >= ESize) {  err=E_size;  return;  }
 
+	if (par.startScreen >= ST_ALL)
+		par.startScreen = ST_ALL-1;
 	setDac = 1;  // upd
 
 

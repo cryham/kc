@@ -5,9 +5,8 @@
 
 //  sin table
 const int16_t sint[SX] =
-{	// flash
+{
 	#include "sint8k.h"
-	//#include "sint16k.h"
 };
 
 
@@ -15,30 +14,30 @@ const int16_t sint[SX] =
 //....................................................................................
 void Demos::Fire()
 {
-	uint tt[4]={t*6,t*12, t*16,t*24};
+	uint tt[4]={t*8,t*10, t*12,t*14};
 
 	uint yy[4]={0,0,0,0};
-	int cd = 9*SY/12;
+	int cd = 46*SY/12;
 	uint a = 0;
 	for (uint y=0; y<H; ++y)
 	{
 		uint xx[4]={0,0,0,0};
-		uint f = 32 + pow(y, 1.5);
+		uint f = 32 + pow(y, 1.55);
 		for (uint x=0; x<W; ++x,++a)
 		{
 			int c;
-			c = 8*Sin((xx[0]+ yy[0])*f/128-f*44 +tt[0] ) + 8*Cos( xx[1]+ yy[1]*f/128-f*56 +tt[1] );
-			c+= 8*Sin( xx[2]+ yy[2]*f/128-f*48 +tt[2] ) + 8*Cos( xx[3]+ yy[3]*f/128-f*60 +tt[3] );
+			c = 8*Sin( (-xx[0]- yy[0])*f/256+f*14 +tt[0] ) + 8*Cos( xx[1]+ yy[1]*f/128-f*32 +tt[1] );
+			c+= 8*Sin( (-xx[2]+ yy[2])*f/256+f*18 +tt[2] ) + 8*Cos( xx[3]+ yy[3]*f/128-f*36 +tt[3] );
 
-			xx[0]+=26; xx[1]+=49; xx[2]+=84; xx[3]+=101;
+			xx[0]+=56; xx[1]+=79; xx[2]+=84; xx[3]+=121;
 
 			c = abs(c);
 			c /= cd;
-			uint16_t d = RGB(min(31, c), min(31, c/4), c/10);
+			uint16_t d = RGB(min(31, c), min(31, c/4), c/12);
 			data[a] = d;
 		}
-		yy[0]+=11; yy[1]+=25; yy[2]+=37; yy[3]+=65;
-		cd -= 80;
+		yy[0]+=13; yy[1]+=25; yy[2]+=34; yy[3]+=45;
+		cd -= cd / 36 + 30;
 	}
 
 	if (iInfo > 0)

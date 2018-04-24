@@ -25,7 +25,7 @@ void Gui::KeyPress()
 	//  update keys press
 	kRight= kr(gRight,dt) - kr(gLeft,dt);
 	kUp   = kr(gDown,dt) - kr(gUp,dt);
-	kPgUp = kr(gPgDn,dt) - kr(gPgUp,dt);
+	kPgUp = kr(gPgUp,dt) - kr(gPgDn,dt);
 	kEnd  = kr(gEnd,dt) - kr(gHome,dt);
 
 	kBack = Key(gAdd);  kEnt = Key(gEnt);
@@ -90,7 +90,7 @@ void Gui::KeyPress()
 			break;
 
 		case 3:
-			RangeAdd(par.startScreen, kRight, 0, ST_Demos2 + D_All-1);  break;
+			RangeAdd(par.startScreen, kRight, 0, ST_ALL-1);  break;
 		case 4:
 			RangeAdd(par.krDelay, kRight, 0,255);  break;
 		case 5:

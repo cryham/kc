@@ -1,5 +1,6 @@
 #pragma once
 #include <stdint.h>
+#include "def.h"
 
 /*  data mem sizes
 //--------------------------------------
@@ -18,9 +19,9 @@ const int KC_MaxSeqs = 40;  // 60
 
 
 enum EStScr  //  start screen
-{	ST_main0=0, ST_Test=1, ST_Test2=2,
-	ST_Map=10, ST_Seqs=11, ST_Displ=12,
-	ST_Demos=13, ST_Demos2=14,
+{	ST_main0 = 0,  ST_Test, ST_Test2,
+	ST_Map= ST_Test2 +T_All,  ST_Seqs, ST_Displ,
+	ST_Demos, ST_Demos2,  ST_ALL= ST_Demos2 +D_All,
 };
 
 //  params, saved

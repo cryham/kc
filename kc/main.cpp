@@ -85,8 +85,8 @@ int main()
 
 
 	//  todo load set from ee
-//	kc.Load();
-//	gui.SetScreen(par.startScreen);
+	kc.Load();
+	gui.SetScreen(par.startScreen);
 //	gui.kbdSend = 1;  // release
 
 
