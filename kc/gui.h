@@ -4,11 +4,17 @@
 #include "demos.h"
 #include "kc_data.h"
 #include "keys_usb.h"
+#ifdef GAME
+#include "games.h"
+#endif
 
 
 struct Gui
 {
 	Demos demos;
+#ifdef GAME
+	Games game;
+#endif
 	Ada4_ST7735* d=0;
 
 	//  main

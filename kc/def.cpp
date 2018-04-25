@@ -6,10 +6,11 @@ const char* strMain[M_All] =
 {
 	"Testing", "Mapping", "Sequences",
 	"Display", //"Clock",
+	"Game",
 #ifdef DEMOS
 	"Demos",
 #endif
-	//"Game", //"Help", F1
+	//"Help", F1
 };
 
 //  Demos

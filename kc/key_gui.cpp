@@ -45,6 +45,10 @@ void Gui::KeyPress()
 		if (va < 0){  if (v+va <= a)  v = a;  else  v += va; }
 
 
+	if (ym == M_Game)
+		game.KeyPress(this, mlevel);
+
+
 	//  Testing  Scan Setup
 	//..............................................
 	if (ym == M_Testing && mlevel == 2 && yy == T_ScanSetup)

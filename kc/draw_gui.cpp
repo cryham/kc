@@ -78,6 +78,15 @@ void Gui::Draw()
 	}
 	#endif
 
+
+	//  Game
+	//------------------------------------------------------
+	#ifdef GAME
+	if (ym == M_Game)
+		game.Draw(*d);
+	#endif
+
+
 	//  Testing, Mappings,  kbd
 	//------------------------------------------------------
 	if (ym == M_Testing)
@@ -141,14 +150,14 @@ void Gui::Draw()
 				sprintf(a,"Fade bright.: %d %%", par.brightOff);  break;
 
 			case 3:
-				sprintf(a,"Start scren: %s", StrScreen(par.startScreen));  break;
+				sprintf(a,"Start screen: %s", StrScreen(par.startScreen));  break;
 
 			case 4:
 				sprintf(a,"Key delay:  %d ms", par.krDelay*5);  h = 2;  break;
 			case 5:
 				sprintf(a,"Key repeat: %d ms", par.krRepeat*5);  break;
 
-			//uint8_t mkSpeed, mkAccel;  todo scroll
+			//uint8_t mkSpeed, mkAccel;  todo pages|scroll
 			//start demo time
 			}
 			d->println(a);  d->moveCursor(0,h);

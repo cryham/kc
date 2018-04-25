@@ -10,7 +10,9 @@
 #define DEMOS			// 47844  66%  all 7k 11% ram, 41k 16% flash
 #define DEMOS_PLASMA	// 47852  68%
 #define DEMOS_3D		// 47860  72%
-#define DEMOS_OLD_PAR	// 48096  73%  min
+//#define DEMOS_OLD_PAR	// 48096  73%  min
+#define GAME			// 1544 B ram  22.9k flash
+
 //   keyboard
 //#define CK1  // 8x6
 #define CK3  // 18x8
@@ -34,10 +36,11 @@ enum EMainMenu  //  main menu entries, level0
 {
 		M_Testing=0, M_Mapping, M_Sequences,
 		M_Display, //M_Clock
+		M_Game,
 	#ifdef DEMOS
 		M_Demos,
 	#endif
-		/*M_Game,*/ M_All
+		M_All
 };
 
 #ifdef DEMOS

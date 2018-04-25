@@ -41,10 +41,10 @@ void Demos::Init(Ada4_ST7735* tft)
 	ckCur = 0;  ckSpeed = 6;  // logo
 #ifdef DEMOS_PLASMA
 	plasma = 2;  t = 3210;
-	tadd[0]=7; tadd[1]=5; tadd[2]=8; tadd[3]=4; tadd[4]=6; tadd[5]=9;  tadd[6]=8;
+	tadd[0]=7; tadd[1]=12; tadd[2]=10; tadd[3]=5; tadd[4]=12; tadd[5]=17;  tadd[6]=18;
 #endif
 
-	waveSpd = 6;  fireSpd = 12;  // wave, fire
+	waveSpd = 8;  fireSpd = 12;  // wave, fire
 #endif
 }
 
