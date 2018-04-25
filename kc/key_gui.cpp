@@ -24,7 +24,7 @@ void Gui::KeyPress()
 
 	//  update keys press
 	kRight= kr(gRight,dt) - kr(gLeft,dt);
-	kUp   = kr(gDown,dt) - kr(gUp,dt);
+	kUp   = kr(gDown,dt) - kr(gUp,dt);  kDnH = KeyH(gDown);
 	kPgUp = kr(gPgUp,dt) - kr(gPgDn,dt);
 	kEnd  = kr(gEnd,dt) - kr(gHome,dt);
 
@@ -45,8 +45,11 @@ void Gui::KeyPress()
 		if (va < 0){  if (v+va <= a)  v = a;  else  v += va; }
 
 
+	//  Game
+	#ifdef GAME
 	if (ym == M_Game)
-		game.KeyPress(this, mlevel);
+		game.KeyPress(mlevel);
+	#endif
 
 
 	//  Testing  Scan Setup
@@ -165,6 +168,8 @@ void Gui::KeyPress()
 		return;
 	}
 
+
+	//  Demos
 	#ifdef DEMOS
 	if (mlevel == 2 && ym == M_Demos)
 	{

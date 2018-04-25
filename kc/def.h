@@ -7,11 +7,11 @@
 //  all demos ck1 max	// 52252 79%  75% ok
 
 //   no demos ck3		// 47820  57%
-#define DEMOS			// 47844  66%  all 7k 11% ram, 41k 16% flash
+#define DEMOS			// 47844  66%  all  7k 11% ram  41k 16% flash
 #define DEMOS_PLASMA	// 47852  68%
 #define DEMOS_3D		// 47860  72%
 //#define DEMOS_OLD_PAR	// 48096  73%  min
-#define GAME			// 1544 B ram  22.9k flash
+#define GAME			//  1.5k 2% ram  22.9k 7% flash
 
 //   keyboard
 //#define CK1  // 8x6

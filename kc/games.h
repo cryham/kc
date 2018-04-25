@@ -1,19 +1,19 @@
 #pragma once
 #include <stdint.h>
 #include "def.h"
-#include "Ada4_ST7735.h"
-#define WHITE 0xFFFF
+struct Gui;
 
 
 struct Games
 {
 	//  main
 	Games();
-	void Init();
+	void Init(Gui* pGui);
+	Gui* g = 0;
 	
-	void Draw(Ada4_ST7735& display);
+	void Draw();
 	void Update();
-	int KeyPress(struct Gui* g, int8_t& mlevel);
+	int KeyPress(int8_t& mlevel);
 	
 	uint32_t old_ti, dt_sum;
 	
@@ -76,16 +76,17 @@ struct Games
 	
 	//  block generator
 	void GenBlock(Block& b), NewBlock(), NewGrid();
-	void Checks(struct Gui* g), NewSet();
+	void Checks(), NewSet();
 
 	//  utility
-	void Draw(    Ada4_ST7735& d, const Block& b,  int pos_x, int pos_y, int o_y=0, int dim=0);
-	void DrawNext(Ada4_ST7735& d, const Block& b,  int pos_x, int pos_y);
+	uint16_t BlkClr(int8_t b, int8_t d);
+	void Draw(    const Block& b,  int pos_x, int pos_y, int o_y=0, int dim=0);
+	void DrawNext(const Block& b,  int pos_x, int pos_y);
 	
 	int Overlaps(const Block& b,  int pos_x, int pos_y);	// test block overlap in grid
 
 	void Clear(Block& b);
-	int Copy(Block& to, const Block& from);
+	void Copy(Block& to, const Block& from);
 	
 	int8_t xo,yo, xa,xb, ya,yb;  // range
 	void GetRange(const Block& b);

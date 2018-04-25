@@ -83,7 +83,7 @@ void Gui::Draw()
 	//------------------------------------------------------
 	#ifdef GAME
 	if (ym == M_Game)
-		game.Draw(*d);
+		game.Draw();
 	#endif
 
 

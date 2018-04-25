@@ -26,6 +26,9 @@ void Gui::Init(Ada4_ST7735* tft)
 #ifdef DEMOS
 	demos.Init(d);
 #endif
+#ifdef GAME
+	game.Init(this);
+#endif
 
 	nLay=0;  scId=0;  drawId=54;
 	keyCode=0;

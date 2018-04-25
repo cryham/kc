@@ -1,4 +1,6 @@
-#include <games.h>
+#include "games.h"
+#include "WProgram.h"
+using namespace std;
 
 
 //  main
@@ -7,11 +9,13 @@ Games::Games()
 	old_ti = 0;  dt_sum = 0;
 	paused = 0;  demo = 0;  ended = 1;
 
-	Init();
+	Init(0);
 }
 
-void Games::Init()
+void Games::Init(Gui* pGui)
 {
+	g = pGui;
+
 	//  keys
 	o.sp_drop = 5;  o.sp_fall = 20;
 	o.key_rpt = 15;  o.move_in_drop = 0;
@@ -83,7 +87,7 @@ void Games::NewSet()
 		o.blen_min = 0;  o.blen_max = 12;  o.bsize = 8;  o.bdiag = 4;  o.bbias = -10;
 		o.speed = 0;  o.accel = 0;  break;
 	}
-	Checks(0);
+	Checks();
 	NewGrid();
 }
 
@@ -120,7 +124,7 @@ void Games::NewGame()
 	int y0 = o.size_y - o.btm_junk;  y0 = max(y0, o.bsize);
 	for (y=y0; y < o.size_y; ++y)
 	for (x=0; x < o.size_x; ++x)
-		if (random(100) < min(60, (y-y0+1) * 30))
+		if (int(random(100)) < min(60, (y-y0+1) * 30))
 			grid[y][x] = 1;
 		
 	//  randomize  --
@@ -172,7 +176,7 @@ int Games::Overlaps(const Block& b, int pos_x, int pos_y)
 	return 0;  // empty
 }
 
-int Games::Copy(Block& to, const Block& from)
+void Games::Copy(Block& to, const Block& from)
 {
 	for (int y=0; y < bmax; ++y)
 	for (int x=0; x < bmax; ++x)
@@ -262,7 +266,7 @@ void Games::Update()
 			++time_y;
 			
 			//  speed
-			uint spd = drop ? o.sp_drop : fall ? o.sp_fall : time_spd;
+			int32_t spd = drop ? o.sp_drop : fall ? o.sp_fall : time_spd;
 			//  accel
 			if (o.accel > 0)
 			{	speed_y += o.accel;  UpdSpeed();  }
@@ -283,7 +287,7 @@ void Games::Update()
 						if (yy < o.size_y)
 						for (x=0; x < o.bsize; ++x)
 							if (blk.b[y][x])
-								grid[yy][(pos_x + x) % o.size_x] = 1;
+								grid[yy][(pos_x + x) % o.size_x] = blk.b[y][x];
 					}
 					
 					//  clear full lines  __
@@ -343,11 +347,12 @@ void Games::GenBlock(Block& b)
 		if (o.bbias > 0)  len += random( o.bbias+1);
 		len = min(o.blen_max, max(1, len));  // len = 1..blen_max
 		
+		int cl = random(min(120, 25 + len*6));  // color
 		int l = 0, err = 0;
 		while (l < len && err < 100)
 		{
 			if (b.b[cy][cx] == 0)
-			{	b.b[cy][cx] = 1;  ++l;  //  inc len
+			{	b.b[cy][cx] = cl;  ++l;  //  inc len
 			}else  ++err;
 			
 			switch (random(o.bdiag))

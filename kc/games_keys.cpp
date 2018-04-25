@@ -3,7 +3,7 @@
 
 
 //  options check  . . .
-void Games::Checks(struct Gui* g)
+void Games::Checks()
 {
 	if (o.blen_max < o.blen_min)  o.blen_max = o.blen_min;  // min <= max
 	if (o.blen_min > o.blen_max)  o.blen_min = o.blen_max;
@@ -13,15 +13,13 @@ void Games::Checks(struct Gui* g)
 	if (o.blen_min > bb)  o.blen_min = bb;  // block_min < bsize^2
 	if (o.blen_max > bb)  o.blen_max = bb;
 
-	if (!g)  return;
-	if (g->kPgUp > 0)  opg = (opg - 1 + O_All) % O_All;
-	if (g->kPgUp < 0)  opg = (opg + 1) % O_All;
+	if (g->kPgUp < 0)  opg = (opg - 1 + O_All) % O_All;
+	if (g->kPgUp > 0)  opg = (opg + 1) % O_All;
 }
 
 //  Keys
 // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
-int kl = 0, kr = 0;
-int Games::KeyPress(Gui* g, int8_t& mlevel)
+int Games::KeyPress(int8_t& mlevel)
 {
 	//  global
 	if (g->kBack) // || g->kEsc)
@@ -32,17 +30,17 @@ int Games::KeyPress(Gui* g, int8_t& mlevel)
 		else  gui = 1;  // gui on
 	}
 
-	/*if (keyp(ASTERISK) || keyp(MINUS))
+	if (g->kInf)  // keyp(ASTERISK) || keyp(MINUS))
 	{
 		if (gui==2)  gui = 0;  // toggle options
 		else  gui = 2;
-	}*/
+	}
 	
 	
 	if (gui==1)  // - menu -
 	{
-		if (g->kUp > 0)    yg = (yg - 1 + G_All) % G_All;
-		if (g->kUp < 0)  yg = (yg + 1) % G_All;
+		if (g->kUp < 0)  yg = (yg - 1 + G_All) % G_All;
+		if (g->kUp > 0)  yg = (yg + 1) % G_All;
 		
 		if (yg == G_Preset)
 		{
@@ -69,8 +67,8 @@ int Games::KeyPress(Gui* g, int8_t& mlevel)
 
 	if (gui==2)  // - options -
 	{
-		if (g->kUp > 0)  --oyg;  //oyg = (oyg - 1 + 6) % 6;
-		if (g->kUp < 0)  ++oyg;  //oyg = (oyg + 1) % 6;
+		if (g->kUp < 0)  --oyg;  //oyg = (oyg - 1 + 6) % 6;
+		if (g->kUp > 0)  ++oyg;  //oyg = (oyg + 1) % 6;
 		
 		int k = 0, s = g->kCtrl ? 4 : 1;
 		if (g->kRight < 0)  k =-s;
@@ -111,7 +109,7 @@ int Games::KeyPress(Gui* g, int8_t& mlevel)
 			case 3:  o.sp_drop += k;  o.sp_drop = max(1, min(10, o.sp_drop));  break;
 			}	break;
 		}
-		Checks(g);
+		Checks();
 		return 0;
 	}
 
@@ -123,7 +121,7 @@ int Games::KeyPress(Gui* g, int8_t& mlevel)
 
 	if (ended)  return 0;
 
-	if (g->kInf)  // || key(SPACE))  // pause
+	if (g->kInf && !gui)  // || key(SPACE))  // pause
 		paused = 1 - paused;
 
 	if (paused)  return 0;
@@ -133,22 +131,22 @@ int Games::KeyPress(Gui* g, int8_t& mlevel)
 	if (!drop || o.move_in_drop)
 	{
 		//  rotate  control
-		if (demo && random(500)==0 ||
-			g->kUp > 0)  // rot cw
+		if ((demo && random(500)==0) ||
+			g->kUp < 0)  // rot cw
 		{
 			Rotate(cpy, blk, 1);  //  check possible
 			if (!Overlaps(cpy, pos_x, pos_y))
 				Copy(blk, cpy);
 		}
-		/*if (key(DELETE) || keyp(5) || keyp(SLASH))  // rot ccw
+		if (g->kDel > 0)  //|| keyp(5))  // rot ccw
 		{
 			Rotate(cpy, blk, 0);  //  check possible
 			if (!Overlaps(cpy, pos_x, pos_y))
 				Copy(blk, cpy);
-		}*/
+		}
 
 		//  move
-		if (demo && random(350)==0 || g->kRight < 0)  // move
+		if ((demo && random(350)==0) || g->kRight < 0)  // move
 		{
 			int old_x = pos_x;
 			--pos_x;  if (pos_x < 0)  pos_x = o.size_x-1;
@@ -156,7 +154,7 @@ int Games::KeyPress(Gui* g, int8_t& mlevel)
 				pos_x = old_x;  //  if not possible restore
 		}
 
-		if (demo && random(350)==0 || g->kRight > 0)  // mvoe
+		if ((demo && random(350)==0) || g->kRight > 0)  // mvoe
 		{
 			int old_x = pos_x;
 			++pos_x;  if (pos_x > o.size_x-1)  pos_x = 0;
@@ -165,7 +163,7 @@ int Games::KeyPress(Gui* g, int8_t& mlevel)
 		}
 	}
 
-	fall = g->kUp < 0;  // fall faster hold
+	fall = g->kDnH;  // fall faster hold
 
 	if (g->kIns)  // drop
 		drop = 1;
@@ -182,6 +180,7 @@ int Games::KeyPress(Gui* g, int8_t& mlevel)
 	if (key(2))
 	{	speed_y += 5*SpdDet;  UpdSpeed();  }
 	#endif
+
 
 	Update();
 

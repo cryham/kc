@@ -11,7 +11,7 @@ extern KC_Main kc;
 
 
 //  menu colors
-const uint8_t Gui::Mclr[Gui::Cl][2][3] = {
+const uint8_t Gui::Mclr[Gui::Cl_ALL][2][3] = {
 	{{16,26,31},{4,3,1}},  // 0 main
 	{{27,26,31},{2,3,1}},  // 1 demos
 	{{20,30,26},{6,3,4}},  //  2 test
@@ -19,6 +19,7 @@ const uint8_t Gui::Mclr[Gui::Cl][2][3] = {
 	{{17,31,31},{5,4,3}},  //  4 seqs
 	{{31,31,21},{1,3,5}},  // 5 display
 	{{26,28,28},{4,3,3}},  // 6 scan, mouse-
+	{{31,26,26},{2,4,3}},  // 7 game
 };
 
 

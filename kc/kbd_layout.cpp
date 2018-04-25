@@ -119,7 +119,7 @@ const DrawKey drawKeys[nDrawKeys] = {  //  Layout draw
 };
 const uint8_t gGui=57, gMslow=94, gLoad=95,gSave=110,gDiv=46,
 	gRight=101,gLeft=99,gDown=64,gUp=82, gPgUp=65,gPgDn=83,gEnd=63,gHome=81,gAdd=84,gEnt=66,
-	gCtrl=128,gSh=94,gMul=47,gSub=29, gIns=10,gDel=11,gBckSp=91,gC=49,gV=44,gX=50;
+	gCtrl=128,gSh=94,gMul=47,gSub=29, gIns=10,gDel=100,gBckSp=91,gC=49,gV=44,gX=50;
 #endif
 
 #undef wf

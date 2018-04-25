@@ -35,8 +35,8 @@ struct Gui
 
 	//  fade color menu
 	enum EFadeClr
-	{	C_Main=0, C_Demos, C_Test, C_Map, C_Seq, C_Disp, C_Scan, Cl  };
-	const static uint8_t Mclr[Cl][2][3];
+	{	C_Main=0, C_Demos, C_Test, C_Map, C_Seq, C_Disp, C_Scan, C_Game, Cl_ALL  };
+	const static uint8_t Mclr[Cl_ALL][2][3];
 
 	void FadeClr(EFadeClr ec, const uint8_t minRGB, const uint8_t mul, const uint8_t div);
 	void FadeGrp(uint8_t g, const uint8_t minRGB, const uint8_t mul, const uint8_t div);
@@ -69,7 +69,7 @@ struct Gui
 		keyGroup=0, grpFilt=0;  // group filter
 
 	//  keys pressed, some +-1
-	int8_t kRight=0, kUp=0,  kPgUp=0, kEnd=0,
+	int8_t kRight=0, kUp=0,  kPgUp=0, kEnd=0,  kDnH=0,
 			kBack=0, kEnt=0,  kCtrl=0, kSh=0,  kInf=0, kFps=0,
 	/*seq*/	kBckSp=0, kIns=0, kDel=0,  kCopy=0, kPaste=0, kSwap=0,
 			kLoad=0, kSave=0;
