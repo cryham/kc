@@ -36,7 +36,9 @@ enum EMainMenu  //  main menu entries, level0
 {
 		M_Testing=0, M_Mapping, M_Sequences,
 		M_Display, //M_Clock
+	#ifdef GAME
 		M_Game,
+	#endif
 	#ifdef DEMOS
 		M_Demos,
 	#endif
