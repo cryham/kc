@@ -19,7 +19,11 @@ void Gui::Init(Ada4_ST7735* tft)
 	//SetScreen(ST_Map);
 	//SetScreen(ST_Seqs);
 	//SetScreen(ST_Test2 + T_Layout);
-	SetScreen(ST_Demos2 + D_Fire);
+	SetScreen(ST_Demos2
+	#ifdef DEMOS
+		+ D_Fire
+	#endif
+		);
 
 	
 	oldti = 0;  tdemo = 0;
@@ -67,16 +71,22 @@ void Gui::SetScreen(int8_t s)
 	case ST_Map:   ym = M_Mapping;  break;
 	case ST_Seqs:  ym = M_Sequences;  break;
 	case ST_Displ: ym = M_Display;  break;
+#ifdef DEMOS
 	case ST_Demos: ym = M_Demos;  break;
 	}
 	if (s >= ST_Demos2)
 	{	mlevel = 2;  ym = M_Demos;
 		ym1[ym] = s - ST_Demos2;
 	}
-	else if (s >= ST_Test2 && s < ST_Map)
+	else
+#else
+	}
+#endif
+	if (s >= ST_Test2 && s < ST_Map)
 	{	mlevel = 2;  ym = M_Testing;
 		ym1[ym] = s - ST_Test2;
 	}
+	mlevel = 0;  ym = 0;
 }
 
 const char* Gui::StrScreen(int8_t s)
@@ -88,10 +98,14 @@ const char* Gui::StrScreen(int8_t s)
 	case ST_Map:    return strMain[M_Mapping];
 	case ST_Seqs:   return strMain[M_Sequences];
 	case ST_Displ:  return strMain[M_Display];
+#ifdef DEMOS
 	case ST_Demos:  return strMain[M_Demos];
 	}
 	if (s >= ST_Demos2)
 		return strDemo[s - ST_Demos2];
+#else
+	}
+#endif
 	if (s >= ST_Test2 && s < ST_Map)
 		return strTest[s - ST_Test2];
 	return "";

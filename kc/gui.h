@@ -28,6 +28,7 @@ struct Gui
 	void DrawTesting(), DrawMapping(), DrawSequences();
 	void DrawLayout(bool edit), Chk_y1();
 	int8_t KeysSeq(), KeysMap();
+	void WriteSeq(int8_t seq, int8_t q);
 
 	void SetScreen(int8_t start);
 	const char* StrScreen(int8_t s);

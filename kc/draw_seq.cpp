@@ -12,6 +12,27 @@ extern KC_Main kc;
 
 //  Sequences kbd view, edit
 //....................................................................................
+//  write sequence  ---
+void Gui::WriteSeq(int8_t seq, int8_t q)
+{
+	int n=0, xm=1;
+	while (n < kc.set.seqs[seq].len() && xm)
+	{
+		uint8_t z = kc.set.seqs[seq].data[n];
+		const char* st = cKeyStr[z];
+		uint8_t g = cKeyGrp[z];
+		FadeGrp(g, 9, q, 3);
+
+		if (d->getCursorX() + 6*strlen(st) >= W -6*2)  // outside
+		{	d->print(".");  d->moveCursor(-3,0);
+			d->print(".");  xm = 0;  // more sign
+		}else
+		{	d->print(st);  //d->print(" ");
+			d->moveCursor(z<=1 ? 0 : 2, 0);
+			++n;
+	}	}
+}
+
 void Gui::DrawSequences()
 {
 	char a[64];
@@ -24,7 +45,7 @@ void Gui::DrawSequences()
 		d->setTextColor(RGB(20,25,30));
 
 		//  list slots
-		int s = page * iPage, i,n, xm, y, q;
+		int s = page * iPage, i, y, q;
 		for (i=0; i < iPage && s < kc.set.seqSlots; ++i,++s)
 		{
 			y = 28 + i*9;
@@ -43,35 +64,27 @@ void Gui::DrawSequences()
 			if (s == cpId)  d->print("\x7");
 			d->setCursor(4*6, y);
 
-			//  write sequence  ---
-			n=0;  xm=1;
-			while (n < kc.set.seqs[s].len() && xm)
-			{
-				uint8_t z = kc.set.seqs[s].data[n];
-				const char* st = cKeyStr[z];
-				uint8_t g = cKeyGrp[z];
-				FadeGrp(g, 9, q, 3);
-
-				if (d->getCursorX() + 6*strlen(st) >= W -6*2)  // outside
-				{	d->print(".");  d->moveCursor(-3,0);
-					d->print(".");  xm = 0;  // more sign
-				}else
-				{	d->print(st);  //d->print(" ");
-					d->moveCursor(z<=1 ? 0 : 2, 0);
-					++n;
-			}	}
+			WriteSeq(s, q);  // write
 		}
 		//  page, center   /
 		d->setCursor(W/2 -2*6, 4);
 		sprintf(a,"%2d/%d", page+1, kc.set.seqSlots/iPage);  d->print(a);
 
-		///  seq key
-		/*if (tInfo == 0)
-		{	int q = seqId();
-			int l = strlen(cSeqKey[q]);
-			d->setCursor(W-1 -l*8, 4);
-			d->print(csSeqKey[q]);
-		}*/
+		//  seq preview key, find  ---
+		q = K_Seq0 + seqId();  // code
+		int l, ll=-1, ii=-1;
+		for (l=0; l < KC_MaxLayers; ++l)
+		for (i=0; i < kc.set.scanKeys; ++i)
+			if (kc.set.key[l][i] == q)
+			{	ll=l; ii=i;  break;  }  // found
+		if (ii != -1)
+		{	int x = W-1 -7*8;
+			d->setCursor(x, 0);
+			d->setTextColor(RGB(26,30,23));
+			sprintf(a,"Lay: %d", ll);  d->print(a);
+			d->setCursor(x, 10);  // layer 0 key
+			sprintf(a,"%s", cKeyStr[kc.set.key[0][ii]]);  d->print(a);
+		}
 	}
 	else  //  Edit  ----------
 	{

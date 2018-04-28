@@ -28,22 +28,37 @@ void Gui::DrawMapping()
 		d->setTextColor(RGB(28,28,26));
 		d->print("Pick key..");
 
-		d->setCursor(0,10);
+		d->setCursor(20,10);
 		d->setTextColor(RGB(22,22,12));
-		sprintf(a,"%3d/%d", keyCode, KEYS_ALL_EXT);
-		d->print(a);
-		if (grpFilt)  d->print(" grp:");
-				else  d->print(" all");
-		d->drawFastHLine(0,20,W-1,RGB(8,8,10));
+		//sprintf(a,"%3d/%d", keyCode, KEYS_ALL_EXT);
+		//d->print(a);
+		if (grpFilt)  d->print("Group:");
+				else  d->print("All");
+		//  line
+		d->drawFastHLine(0, 19, W-1,
+			grpFilt ? RGB(16,10,12) : RGB(10,10,12));
 
+		int x = (W-1-5) * keyCode / KEYS_ALL_EXT;
+		d->drawFastHLine(x, 19, 5,
+			grpFilt ? RGB(30,26,26) : RGB(25,25,28));
+
+		//  key, grp
 		d->setCursor(W/2-1,0);
 		d->setTextColor(RGB(25,28,31));
 		d->print(cKeyStr[keyCode]);
 
+		//  seq preview  ---
+		if (keyCode >= K_Seq0 && keyCode <= K_SeqLast)
+		{	int8_t seq = keyCode - K_Seq0;
+			if (seq < KC_MaxSeqs)
+			{	d->setCursor(0, 21);
+				WriteSeq(seq, 2);
+		}	}
+
 		d->setCursor(W/2-1,10);
 		d->setTextColor(RGB(31,15,21));
 
-		const int xw = 42, y0 = 28;
+		const int xw = 42, y0 = 31;
 		//  Filtered view by group, 3 cols
 		if (grpFilt)
 		{
@@ -71,6 +86,7 @@ void Gui::DrawMapping()
 			}
 			return;
 		}
+
 		//  All view  list  4 cols, 12 rows
 		d->print(cGrpName[cKeyGrp[keyCode]]);
 
@@ -144,6 +160,16 @@ void Gui::DrawMapping()
 				{
 					FadeGrp(cKeyGrp[u], 9, 0, 3);
 					sprintf(a,"Key: %s", cKeyStr[u]);
+					d->print(a);
+
+					//  seq preview  ---
+					if (u >= K_Seq0 && u <= K_SeqLast)
+					{	int8_t seq = u - K_Seq0;
+						if (seq < KC_MaxSeqs)
+						{	d->setCursor(x, y+12);
+							WriteSeq(seq, 2);
+					}	}
+					a[0]=0;
 				}
 			}
 			d->print(a);  break;
@@ -160,7 +186,7 @@ void Gui::DrawMapping()
 
 	//  stats, data
 	//. . . . . . . . . . . . . . . . . . . . . . . . .
-	x = W-8*6, y=0;
+	x = W-8*6;  y=0;
 	d->setTextColor(RGB(25,24,12));
 	d->setCursor(x,y);
 	int si = kc.set.nkeys();
