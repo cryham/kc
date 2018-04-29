@@ -42,6 +42,7 @@ void Demos::Init(Ada4_ST7735* tft)
 #ifdef DEMOS_PLASMA
 	plasma = 2;  t = 3210;
 	tadd[0]=7; tadd[1]=12; tadd[2]=10; tadd[3]=5; tadd[4]=12; tadd[5]=17;  tadd[6]=18;
+	tadd[7]=5; tadd[8]=4; tadd[9]=8;
 #endif
 
 	waveSpd = 8;  fireSpd = 12;  // wave, fire

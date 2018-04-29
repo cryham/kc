@@ -43,12 +43,13 @@ struct Demos
 #ifdef DEMOS_PLASMA
 	//  Plasma  ~~~~
 	int8_t plasma;  // cur mode
-	const static int8_t num_plasma = 7;  // all sets
+	const static int8_t num_plasma = 10;  // all sets
 	int8_t tadd[num_plasma];  // speeds
 
 	void Plasma(), PlasmaT(int8_t dt);
-	void Plasma1(),Plasma2(),Plasma3(),Plasma4(),
-		PlasmaC1(),PlasmaC2(),PlasmaC2b();
+	void PSlowClrRings(), PClrLines(),
+		POrnPinkCy(), POrnViolBlue(), PSmallWhiteCyVi(),  POldBlue(),
+		PFastOrnCy(), PFastBlueYellow(), PFastDiamCyBlR(), PPink();
 #endif
 
 	//  Wave
