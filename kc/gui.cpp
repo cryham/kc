@@ -16,14 +16,11 @@ void Gui::Init(Ada4_ST7735* tft)
 	for (int i=0; i < M_All; ++i)
 		ym1[i]=0;
 
+	mlevel = 0;  //2
+	ym = M_Testing;
+	ym1[M_Testing] = T_Pressed;
 	//SetScreen(ST_Map);
 	//SetScreen(ST_Seqs);
-	//SetScreen(ST_Test2 + T_Layout);
-	SetScreen(ST_Demos2
-	#ifdef DEMOS
-		+ D_Fire
-	#endif
-		);
 
 	
 	oldti = 0;  tdemo = 0;

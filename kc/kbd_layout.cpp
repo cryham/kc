@@ -2,12 +2,11 @@
 #include "def.h"
 #include "keys_usb.h"
 
-const uint16_t  // _colors for key types_
-//  0 letters  1 digits       2 func F1      3 symbols ,.   4 modifiers L  5 modif R      6 ent,tab      7 ent R        8 arrows
-clrRect[Omax] = {
-RGB(12,12,12), RGB(13,13,10), RGB( 8,14,19), RGB(21,21,12),	RGB(12,19,19), RGB(12,19,19), RGB( 9,21,12), RGB( 9,21,12), RGB(1,20,20) },
-clrText[Omax] = {
-RGB(25,28,31), RGB(28,28,23), RGB(20,26,30), RGB(29,29,16),	RGB( 9,26,26), RGB( 9,26,26), RGB(13,28,16), RGB(13,28,16), RGB(2,28,28) };
+const uint16_t clrRect[Omax] = {  // _colors for key types_
+//  0 letters  1 digits       2 func F1      3 symbols ,.   4 modifiers L  5 modif R
+RGB(12,12,12), RGB(13,13,10), RGB( 8,14,19), RGB(21,21,12),	RGB(12,19,19), RGB(12,19,19),
+//  6 ent,tab  7 ent R        8 arrows      9 tiny
+RGB( 9,21,12), RGB( 9,21,12), RGB(1,20,20), RGB(17,18,18) };
 
 #if defined(CK1)   //  CK1  ------------------------------------------------
 #define  wf  kW,kF
@@ -59,13 +58,13 @@ const DrawKey drawKeys[nDrawKeys] = {  //  Layout draw
 };
 //symbols: `240=  248 deg  249. 250,  7 cir  9 dot`
 const uint8_t gGui=40, gMslow=32, gLoad=15,gSave=31,gDiv=36,
-	gRight=9,gLeft=10,gDown=20,gUp=4, gPgDn=17,gPgUp=1,gEnd=18,gHome=2,gAdd=6,gEnt=22,
-	gCtrl=26,gSh=16,gMul=33,gSub=41, gIns=28,gDel=25,gBckSp=8,gC=39,gV=37,gX=45;
+	gRight=9,gLeft=10,gDown=20,gUp=4, gPgDn=17,gPgUp=1,gEnd=18,gHome=2, gAdd=6,gEnt=22,
+	gCtrl=26,gSh=16,gMul=33,gSub=41, gIns=28,gDel=25,gBckSp=8, gC=39,gV=37,gX=45;
 
-#elif defined(CK3)   //  CK3  ------------------------------------------------
+#elif defined(CK6)   //  CK6/3  ------------------------------------------------
 #define  wf  fW,kF
 #define  wh  kW,kH
-const char* CKname = "CK3 18x8";  const int16_t XR = 116, XN = 128;  // pos
+const char* CKname = "CK6 18x8";  const int16_t XR = 116, XN = 128;  // pos
 const int8_t  kW = 8, kH = 9, /* size */ kF = 6, fW = 7, F = -fW, X = -kW;
 
 const DrawKey drawKeys[nDrawKeys] = {  //  Layout draw
@@ -118,9 +117,66 @@ const DrawKey drawKeys[nDrawKeys] = {  //  Layout draw
 {XN,56,kW*2,kH,'_',6, 10,K_INS},{-kW*2,0,wh,'.',6, 11,K_DEL}, //Ins Del
 };
 const uint8_t gGui=57, gMslow=94, gLoad=95,gSave=110,gDiv=46,
-	gRight=101,gLeft=99,gDown=64,gUp=82, gPgUp=65,gPgDn=83,gEnd=63,gHome=81,gAdd=84,gEnt=66,
-	gCtrl=128,gSh=94,gMul=47,gSub=29, gIns=10,gDel=100,gBckSp=91,gC=49,gV=44,gX=50;
-#endif
+	gRight=101,gLeft=99,gDown=64,gUp=82, gPgUp=65,gPgDn=83,gEnd=63,gHome=81, gAdd=84,gEnt=66,
+	gCtrl=128,gSh=94,gMul=47,gSub=29, gIns=10,gDel=100,gBckSp=91, gC=49,gV=44,gX=50;
 
+#elif defined(CK7)   //  CK7/4  ------------------------------------------------
+#define  wf  fW,kF
+#define  wh  kW,kH
+#define  wm  4,4
+const char* CKname = "CK7 18x8";  const int16_t XN = 127;  // pos
+const int8_t  kW = 8, kH = 9, /* size */ kF = 6, fW = 7, F = -fW, X = -kW, M = -4;
+
+const DrawKey drawKeys[nDrawKeys] = {  //  Layout draw
+{ 0, 9,wf, 'e',6,135,K_ESC},{-8,0,wf, 'p',6, 47,K_PRTSCR},  // Esc 14x
+{-10,0,wf, '1',2, 57,K_F1},{F,0,wf, '2',2, 58,K_F2}, {F,0,wf, '3',2, 94,K_F3}, {F,0,wf, '4',2,130,K_F4},
+{-15,0,wf, '5',2, 37,K_F5},{F,0,wf, '6',2,139,K_F6}, {F,0,wf, '7',2, 95,K_F7}, {F,0,wf, '8',2, 59,K_F8},
+{-14,0,wf, '9',2, 64,K_F9},{F,0,wf, '0',2, 46,K_F10},{F,0,wf, '1',2,136,K_F11},{F,0,wf, '2',2, 10,K_F12},
+// |< >| << >>  || |> []  media 7x
+{XN, 1,wm, '.',9, 18,K_F13},{M,0,wm, '.',9,108,K_F14}, {M-2,0,wm, '.',9,30,K_F15},{M,0,wm, '.',9,66,K_F16},
+{M-2,0,wm, '.',9,102,K_F17},{M,0,wm, '.',9,  0,K_F18},{M,0,wm, '.',9,120,K_F19},
+
+{ 0,20, 8,kH, '`',3,63,K_TILDE}, //~
+{-8, 0,wh, '1',1,45,K_1},{X,0,wh, '2',1,39,K_2},{X,0,wh, '3',1,40,K_3},{X,0,wh, '4',1,44,K_4},
+{ X, 0,wh, '5',1,62,K_5},{X,0,wh, '6',1,70,K_6},{X,0,wh, '7',1,52,K_7},{X,0,wh, '8',1,49,K_8},
+{ X, 0,wh, '9',1,41,K_9},{X,0,wh, '0',1,50,K_0},
+{ X, 0,wh, '-',3,68,K_MINUS},{X,0,wh, '=',3,67,K_EQUAL},{X,0,13,kH, '<',7,100,K_BACK}, //Back 14x
+
+{ 0,29,12,kH, 29 ,6,99,K_TAB}, // Tab
+{-12,0,wh, 'Q',0,81,K_Q},{X,0,wh, 'W',0, 75,K_W},{X,0,wh, 'E',0,76,K_E},{X,0,wh, 'R',0,80,K_R},
+{ X, 0,wh, 'T',0,98,K_T},{X,0,wh, 'Y',0,106,K_Y},{X,0,wh, 'U',0,88,K_U},{X,0,wh, 'I',0,85,K_I},
+{ X, 0,wh, 'O',0,77,K_O},{X,0,wh, 'P',0, 86,K_P},{X,0,wh, '[',3,104,K_LBRACE},
+{ X, 0,wh, ']',3,103,K_RBRACE},{X,0, 9,kH,'\\',3,118,K_BSLASH}, // \| 14x
+
+{ 0, 2,wm, '.',9,91,K_CAPS},{M,0,wm, '.',9,109,K_F21},{M,0,wm,  '.',9,127,K_F22}, // Caps 3x
+{-15,-2,wh,'A',0,117,K_A},{X,0,wh, 'S',0,111,K_S},{X,0,wh, 'D',0,112,K_D},{X,0,wh, 'F',0,116,K_F},
+{ X, 0,wh, 'G',0,134,K_G},{X,0,wh, 'H',0,142,K_H},{X,0,wh, 'J',0,124,K_J},{X,0,wh, 'K',0,121,K_K},
+{ X, 0,wh, 'L',0,113,K_L},{X,0,wh, ';',3,122,K_SEMIC},
+{ X, 0,wh,'\'',3,140,K_QUOTE},{X, 0,14,kH, 217,7,28,K_ENT}, //Ent 12x
+
+{ 0,47,18,kH, 's',4,101,K_LSHIFT}, //L Sh
+{-18,0,wh, 'Z',0,27,K_Z},{X,0,wh, 'X',0,21,K_X},{X,0,wh, 'C',0,22,K_C},{X,0,wh, 'V',0,26,K_V},
+{ X, 0,wh, 'B',0, 8,K_B},{X,0,wh, 'N',0,16,K_N},{X,0,wh, 'M',0,34,K_M},{X,0,wh, ',',3,31,K_COMMA},
+{ X, 0,wh, '.',3,23,K_PERIOD},{X,0,wh, '/',3,14,K_SLASH}, //  ||
+{ X, 0,19,kH, 's',5,119,K_RSHIFT}, //R Sh 12x   || ,held3? ##
+
+//modif:  L Ctrl, L Gui, L Alt, space, R Alt, App,K_Ss, R Gui, R Ctrl
+{ 0,56,12,kH, 'c',4,55,K_LCTRL},{-12,0,8,kH,  9 ,4,90,K_LGUI},{-8,0,12,kH,'a',4,138,K_LALT},
+{-12,0,46,kH, ' ',6,141,K_SPACE},{-46,0,11,kH, 'a',5,12,K_RALT}, //Space
+{-11,0, wm,    9 ,9,92,K_F23},{M,0, wm,  9 ,8,96,K_F24}, {M-1,-2, 9,kH,254,5,5,K_MENU},
+{-9, 0,10,kH, 'c',5,19,K_RCTRL}, //R Ct 9x
+//numpad: 18x
+{XN,24,wm, '-',9,  9,K_VOL_DEC},{M,0,wm, '+',9,  9,K_VOL_INC},
+ {M,-2,wh, '/',3, 25,KP_DIV},{X,0,wh, 'x',3, 35,KP_MUL},{X,0,wh, '-',3,17,KP_SUB},
+{XN,29,wh, '7',8, 87,K_HOME},{X,0,wh, 24 ,8, 79,K_UP},  {X,0,wh, '9',8, 89,K_PGUP},{X,0,kW,kH*2,'+',3,78,KP_ADD},
+{XN,38,wh, 27 ,8,105,K_LEFT},{X,0,wh,  7 ,6, 97,K_DEL}, {X,0,wh, 26 ,8,107,K_RIGHT},
+{XN,47,wh, '1',8,123,K_END}, {X,0,wh, 25 ,8,115,K_DOWN},{X,0,wh, '3',8,125,K_PGDN},{X,0,kW,kH*2, 217,6,114,KP_ENT},
+{XN,56,kW*2,kH,'_',6,133,K_INS},{-kW*2,0,wh,'.',6,143,K_DEL}, //Ins Del
+};
+const uint8_t gGui=96, gMslow=101, gLoad=37,gSave=130,gDiv=25,
+	gRight=107,gLeft=105,gDown=115,gUp=79, gPgUp=89,gPgDn=125,gEnd=123,gHome=87, gAdd=78,gEnt=114,
+	gCtrl=55,gSh=101,gMul=35,gSub=17, gIns=133,gDel=97,gBckSp=100, gC=22,gV=26,gX=21;
+#endif
 #undef wf
 #undef wh
+#undef wm

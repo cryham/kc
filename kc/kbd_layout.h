@@ -17,7 +17,7 @@ struct DrawKey
 #define NO 255  // no scan code
 
 
-const static int8_t Omax = 9;
+const static int8_t Omax = 10;
 extern const int8_t kW, kH, kF, X;
 
 extern const uint16_t clrRect[Omax], clrText[Omax];  // colors types
@@ -27,9 +27,11 @@ extern const uint16_t clrRect[Omax], clrText[Omax];  // colors types
 extern const char* CKname;
 
 #if defined(CK1)   //  CK1
-const static int nDrawKeys = 91;
-#elif defined(CK3)   //  CK3
-const static int nDrawKeys = 103;
+	const static int nDrawKeys = 91;
+#elif defined(CK6)   //  CK6/3
+	const static int nDrawKeys = 103;
+#elif defined(CK7)   //  CK7/4
+	const static int nDrawKeys = 103;
 #endif
 extern const DrawKey drawKeys[nDrawKeys];
 

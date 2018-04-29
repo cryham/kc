@@ -86,15 +86,15 @@ typedef struct GPIO_Pin {
 const static GPIO_Pin
 	Matrix_cols[] = { T3_19, T3_16, T3_18, T3_14, T3_15, T3_17, T3_20, T3_21 },
 	Matrix_rows[] = { T3_0, T3_1, T3_2, T3_3, T3_23, T3_22 };
-#elif defined(CK3)   //  18 x 8  CK3
+#else  //elif defined(CK6)   //  18 x 8  CK6 or CK7
 const static GPIO_Pin
 Matrix_cols[] = {
 	gpio(B,16), gpio(B,17), gpio(D,0), gpio(A,12), gpio(A,13), gpio(D,7), gpio(D,4), gpio(D,2), gpio(D,3),
 	gpio(C,2), gpio(C,1), gpio(D,6), gpio(D,5), gpio(B,2), gpio(B,3), gpio(B,1), gpio(B,0), gpio(C,0)  },
 Matrix_rows[] = {
 	gpio(C,10), gpio(C,11), gpio(B,18), gpio(A,4), gpio(A,5), gpio(B,19), gpio(C,9), gpio(C,8) };
-#else
-#error "Define keyboard in def.h"
+//#else
+//#error "Define keyboard in def.h"
 #endif
 
 #define NumCols  sizeof( Matrix_cols ) / sizeof( GPIO_Pin )

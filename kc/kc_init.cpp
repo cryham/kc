@@ -78,11 +78,11 @@ void KC_Setup::InitCK()
 
 		#if 1  //  override  --*
 		#ifdef CK1
-				 if (dk.code == K_INS)		add(K_Layer1, 0);
-			else if (dk.code == K_SPACE)	add(K_Layer2, 0);
+				 if (dk.code == K_INS)	 add(K_Layer1, 0);
+			else if (dk.code == K_SPACE) add(K_Layer2, 0);
 		#else
-				 if (dk.code == K_RCTRL)	add(K_Layer1, 0);
-			else if (dk.code == K_CAPS)		add(K_Layer2, 0);
+				 if (dk.code == K_MENU)	add(K_Layer1, 0);
+			else if (dk.code == K_CAPS)	add(K_Layer2, 0);
 		#endif
 			else if (dk.code == K_T)	add(K_Seq0, 2);
 			else if (dk.code == K_H)	add(K_S2, 2);
