@@ -4,21 +4,26 @@
 using namespace std;
 
 
-//  Draw block
-// . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
-uint16_t Games::BlkClr(int8_t b, int8_t d)
+//  Block color
+const static int8_t rgb[12][3] = {
+	{31,15,0},{31,31,0},{15,31,0},{0,31,0},{0,31,15},{0,31,31},
+	{0,15,31},{15,0,31},{15,15,31},{31,0,31},{31,0,15},{31,0,0},
+};
+uint16_t Games::BlkClr(int8_t b, int8_t d, int8_t dim)
 {
+	int c = b / 10, e = b % 10, ed = e + d*4;
 	return RGB(
-		max(0, min(31, 6 +b/2 +d*6)),
-		max(0, min(31, 8 +b*1 +d*3)),
-		max(0, min(31, 10+b*2 -d*2)));
+		dim * min(31, max(0, rgb[c][0]-5) +ed) /4,
+		dim * min(31, max(0, rgb[c][1]-5) +ed) /4,
+		dim * min(31, max(0, rgb[c][2]-5) +ed) /4);
 }
 
+//  Draw block
+// . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
 void Games::Draw(const Block& b,
 	int pos_x, int pos_y, int o_y, int dim)
 {
 	Ada4_ST7735& d = *g->d;
-	if (!dim)
 	for (int y=0; y < o.bsize; ++y)
 	for (int x=0; x < o.bsize; ++x)
 	{
@@ -27,28 +32,16 @@ void Games::Draw(const Block& b,
 		if (b.b[y][x] &&
 			yy >= 0 && yy < H)
 		{
-			d.fillRect(xx, yy, dim_x, dim_y, BlkClr(b.b[y][x], 0));
-			d.drawRect(xx, yy, dim_x, dim_y, BlkClr(b.b[y][x], 2));
-			d.drawRect(xx+1, yy+1, dim_x-2, dim_y-2, BlkClr(b.b[y][x], 1));
+			d.fillRect(xx, yy, dim_x, dim_y, BlkClr(b.b[y][x], 0, dim));
+			d.drawRect(xx, yy, dim_x, dim_y, BlkClr(b.b[y][x], 2, dim));
+			d.drawRect(xx+1, yy+1, dim_x-2, dim_y-2, BlkClr(b.b[y][x], 1, dim));
 		}
-	}
-	else  //  dim, prv
-	for (int y=0; y < o.bsize; ++y)
-	for (int x=0; x < o.bsize; ++x)
-	{
-		int yy = (pos_y + y) % o.size_y * dim_y + ofs_y + o_y;
-		int xx = (pos_x + x) % o.size_x * dim_x + ofs_x;
-		if (b.b[y][x] &&
-			yy >= 0 && yy < H)
-			for (int j=0; j < dim_y; ++j)
-			for (int i=0; i < dim_x; ++i)
-				if ((xx+i) % 2 == (yy+j) % 2)
-					d.drawPixel(xx + i, yy + j, BlkClr(b.b[y][x], 0));
 	}
 }
 void Games::DrawNext(const Block& b,
 	int pos_x, int pos_y)
 {
+	const int8_t dim = 3;  //~
 	Ada4_ST7735& d = *g->d;
 	for (int y=0; y < o.bsize; ++y)
 	for (int x=0; x < o.bsize; ++x)
@@ -59,14 +52,14 @@ void Games::DrawNext(const Block& b,
 		if ( o.dots==0 ||
 			(o.dots==1 && (x%2 && y%2)) ||
 			(o.dots==2 && (x%3==1 && y%3==1)))
-			d.drawPixel(xx + dim_x/2, yy + dim_y/2, BlkClr(b.b[y][x], 0));
+			d.drawPixel(xx + dim_x/2, yy + dim_y/2, BlkClr(b.b[y][x], 0, dim));
 
 		if (b.b[y][x] &&
 			xx < W && yy < H)
 		{
-			d.fillRect(xx, yy, dim_x, dim_y, BlkClr(b.b[y][x], 0));
-			d.drawRect(xx, yy, dim_x, dim_y, BlkClr(b.b[y][x], 2));
-			d.drawRect(xx+1, yy+1, dim_x-2, dim_y-2, BlkClr(b.b[y][x], 1));
+			d.fillRect(xx, yy, dim_x, dim_y, BlkClr(b.b[y][x], 0, dim));
+			d.drawRect(xx, yy, dim_x, dim_y, BlkClr(b.b[y][x], 2, dim));
+			d.drawRect(xx+1, yy+1, dim_x-2, dim_y-2, BlkClr(b.b[y][x], 1, dim));
 		}
 	}
 }
@@ -173,39 +166,7 @@ void Games::Draw()
 	}
 	d.setFont(0);
 
-	#if 0  //  debug --
-	//x = W-1 -5*6;  y = H-1 - 4*8;
-	d.setTextColor(RGB(20,22,25));
-	d.setCursor(x,y);  d.print(xo);  d.print(",");  d.print(yo);  y+=8+1;
-	d.setCursor(x,y);  d.print(xa);  d.print("-");  d.print(xb);  y+=8;
-	d.setCursor(x,y);  d.print(ya);  d.print("|");  d.print(yb);  y+=8;
-	d.setCursor(x,y);  d.print("e ");  d.print(errors);  y+=8;
-	#else
-	//  score  -
-	d.setTextColor(RGB(22,22,15));
-	d.setCursor(x,  y);  d.print("Score");  y+=8+2;
-	d.setCursor(x+6,y);  sprintf(a,"%d", score);  d.print(a);  y+=8+2+8;
 
-	//d.setCursor(x,  y);  d.print("Lines");  y+=8;
-	//d.setCursor(x+6,y);  d.print(lines[0]);  y+=8+2;
-
-	d.setTextColor(RGB(10,25,18));
-	d.setCursor(x,  y);  d.print("Speed");  y+=8+2;
-	d.setCursor(x+6,y);  sprintf(a,"%ld", speed_y / SpdDet);  d.print(a);  y+=8+2;
-	#endif
-
-	//d.setCursor(x,  y);  d.print("Size");  y+=8;
-	//d.setCursor(0,0);  d.print(o.size_x);  d.print(" ");  d.print(o.size_y);  y+=8;
-
-	//d.setCursor(x,y);  d.print("Set ");  d.print(preset);  y+=8;
-
-	//  status  -
-	d.setTextColor(RGB(31,18,5));
-	d.setCursor(0, H-1-8);
-	if (ended)  d.print("Ended");
-	if (paused) d.print("Pause");
-	
-	
 	//  Grid  ::
 	const int dx = dim_x /2, dy = dim_y /2;
 	//const int dx = 0, dy = 0;
@@ -215,46 +176,50 @@ void Games::Draw()
 		for (x=0; x < o.size_x; ++x)
 		{
 			xx = x * dim_x + ofs_x;
-			//  grid modes
-			if ( o.dots==0 ||
+			if ( o.dots==0 ||  //  grid modes
 				(o.dots==1 && (x%2 == y%2)) ||
 				(o.dots==2 && (x%3==1 && y%3==1)))
-			d.drawPixel(xx+dx, yy+dy, RGB(16,24,31));  // .
+			d.drawPixel(xx+dx, yy+dy, RGB(16,18,22));  // .
 			
 			if (grid[y][x])  //  blocks
 			{
-				d.fillRect(xx, yy, dim_x, dim_y, BlkClr(grid[y][x], 0));
-				d.drawRect(xx, yy, dim_x, dim_y, BlkClr(grid[y][x], 2));
-				d.drawRect(xx+1, yy+1, dim_x-2, dim_y-2, BlkClr(grid[y][x], 1));
+				d.fillRect(xx, yy, dim_x, dim_y, BlkClr(grid[y][x], 0, 4));
+				d.drawRect(xx, yy, dim_x, dim_y, BlkClr(grid[y][x], 2, 4));
+				d.drawRect(xx+1, yy+1, dim_x-2, dim_y-2, BlkClr(grid[y][x], 1, 4));
 			}
 		}
 	}
 	//  Frame  | |
 	if (o.frame > 0)
 	{
+		yy = ofs_y + o.size_y * dim_y;
 		xx = ofs_x + o.size_x * dim_x;
-		for (y = ofs_y; y < H; y += o.frame)
+		for (y = ofs_y; y < yy; y += o.frame)
 		{
-			d.drawPixel(ofs_x-1, y, RGB(16,24,31));
-			d.drawPixel(xx, y, RGB(16,24,31));
+			d.drawPixel(ofs_x-1, y, RGB(18,22,25));
+			d.drawPixel(xx, y, RGB(18,22,25));
 		}
+		//  Frame  _
+		xx = ofs_x + o.size_x * dim_x;
+		for (x = ofs_x; x < xx; x += o.frame)
+			d.drawPixel(x, yy, RGB(20,24,27));
 	}
 	
+	//  Drop preview .
+	y = pos_y;  //+1
+	while (!Overlaps(blk, pos_x, y))  ++y;
+	Draw(blk, pos_x, y-1, 0, 2);  //~
+
 	//  Current block '
 	//Draw(d, blk, pos_x, 0);  // grid y
 	y = dim_y * time_y / time_spd;
 	Draw(blk, pos_x, pos_y-1, y);  // fine y
 
-	//  Drop preview .
-	y = pos_y;  //+1
-	while (!Overlaps(blk, pos_x, y))  ++y;
-	Draw(blk, pos_x, y-1, 0, 1);
 
-	
 	//  Next blocks :
 	if (!o.nx_cur)  return;
 	int by = dim_y * o.bsize;
-	int xe, ys = (H - o.nx_cur * by) / (o.nx_cur-1);
+	int xe, ys = (H-12 - o.nx_cur * by) / (o.nx_cur-1);
 	ys = max(0, ys);
 	
 	for (y=0; y < o.nx_cur; ++y)
@@ -268,9 +233,43 @@ void Games::Draw()
 		DrawNext(next[y], xx, yy);
 		
 		//  line ..
+		#if 0
 		xe = xx + o.bsize * dim_x;
 		if (y > 0)
 		for (x=xx; x < xe; x+=2)
-			d.drawPixel(x, yy-1, RGB(16,24,31));
+			d.drawPixel(x, yy-1, RGB(15,20,25));
+		#endif
 	}
+
+	//  text  --
+	#if 0  //  debug
+	//x = W-1 -5*6;  y = H-1 - 4*8;
+	d.setTextColor(RGB(20,22,25));
+	d.setCursor(x,y);  d.print(xo);  d.print(",");  d.print(yo);  y+=8+1;
+	d.setCursor(x,y);  d.print(xa);  d.print("-");  d.print(xb);  y+=8;
+	d.setCursor(x,y);  d.print(ya);  d.print("|");  d.print(yb);  y+=8;
+	d.setCursor(x,y);  d.print("e ");  d.print(errors);  y+=8;
+	#else
+
+	//  score  -
+	x = 0;  y = H-1-8;
+	d.setTextColor(RGB(25,25,10));
+	d.setCursor(x,y);  sprintf(a,"Score %d", score);  d.print(a);
+
+	//d.setCursor(x,  y);  d.print("Lines");  y+=8;
+	//d.setCursor(x+6,y);  d.print(lines[0]);  y+=8+2;
+	d.setTextColor(RGB(10,26,10));
+	sprintf(a,"  Speed %ld", speed_y / SpdDet);  d.print(a);
+	#endif
+
+	//d.setCursor(x,  y);  d.print("Size");  y+=8;
+	//d.setCursor(0,0);  d.print(o.size_x);  d.print(" ");  d.print(o.size_y);  y+=8;
+
+	//d.setCursor(x,y);  d.print("Set ");  d.print(preset);  y+=8;
+
+	//  status  -
+	d.setTextColor(RGB(31,18,5));
+	d.setCursor(W-1-6*6, H-1-8);
+	if (ended)  d.print("Ended"); else
+	if (paused) d.print("Pause");
 }

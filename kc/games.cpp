@@ -93,12 +93,19 @@ void Games::NewSet()
 
 void Games::NewGrid()
 {
+#if 0
 	//  box dim
 	dim_y = H / o.size_y;  dim_x = dim_y;
 
 	//  center, bottom
 	ofs_x = (W - o.size_x*dim_x) / 2;
 	ofs_y = (H - o.size_y*dim_y);
+#else
+	dim_y = (H-12) / o.size_y;  dim_x = dim_y;
+
+	ofs_x = 10;
+	ofs_y = 0;
+#endif
 	NewGame();
 }
 
@@ -333,7 +340,7 @@ void Games::GenBlock(Block& b)
 		s2 = s/2; //ss/2
 
 	int sc = 0, same = 1;
-	while (same && sc < 3)
+	while (same && sc < 5)
 	{	++sc;
 	
 		Clear(b);
@@ -347,9 +354,9 @@ void Games::GenBlock(Block& b)
 		if (o.bbias > 0)  len += random( o.bbias+1);
 		len = min(o.blen_max, max(1, len));  // len = 1..blen_max
 		
-		int cl = random(min(120, 25 + len*6));  // color
+		int cl = min(120, len*10 + int(random(5)));  // color
 		int l = 0, err = 0;
-		while (l < len && err < 100)
+		while (l < len && err < 20)
 		{
 			if (b.b[cy][cx] == 0)
 			{	b.b[cy][cx] = cl;  ++l;  //  inc len

@@ -13,8 +13,8 @@ void Games::Checks()
 	if (o.blen_min > bb)  o.blen_min = bb;  // block_min < bsize^2
 	if (o.blen_max > bb)  o.blen_max = bb;
 
-	if (g->kPgUp < 0)  opg = (opg - 1 + O_All) % O_All;
-	if (g->kPgUp > 0)  opg = (opg + 1) % O_All;
+	if (g->kPgUp > 0)  opg = (opg - 1 + O_All) % O_All;
+	if (g->kPgUp < 0)  opg = (opg + 1) % O_All;
 }
 
 //  Keys
@@ -67,20 +67,17 @@ int Games::KeyPress(int8_t& mlevel)
 
 	if (gui==2)  // - options -
 	{
-		if (g->kUp < 0)  --oyg;  //oyg = (oyg - 1 + 6) % 6;
-		if (g->kUp > 0)  ++oyg;  //oyg = (oyg + 1) % 6;
+		oyg = (oyg + g->kUp + 6) % 6;
 		
-		int k = 0, s = g->kCtrl ? 4 : 1;
-		if (g->kRight < 0)  k =-s;
-		if (g->kRight > 0)  k = s;
+		int s = g->kCtrl ? 4 : 1, k = g->kRight * s;
 		
 		if (k)  // change params  ----
 		switch (opg)
 		{
 		case O_Field:  switch (oyg)  {
-			case 0:  o.size_x   += k;  o.size_x   = max(2, min(32, o.size_x));  NewGrid();  break;
-			case 1:  o.size_y   += k;  o.size_y   = max(2, min(32, o.size_y));  NewGrid();  break;  //8 21
-			case 2:  o.btm_junk += k;  o.btm_junk = max(0, min(32, o.btm_junk));  break;
+			case 0:  o.size_x   += k;  o.size_x   = max(2, min(smax_x, o.size_x));  NewGrid();  break;
+			case 1:  o.size_y   += k;  o.size_y   = max(2, min(smax_y, o.size_y));  NewGrid();  break;  //8 21
+			case 2:  o.btm_junk += k;  o.btm_junk = max(0, min(smax_y, o.btm_junk));  break;
 			}	break;
 		case O_Speed:  switch (oyg)  {
 			case 0:  o.speed += k*SpdDet*4;  o.speed = max(0, min(200*SpdDet, o.speed));  break;

@@ -47,8 +47,11 @@ void Gui::KeyPress()
 
 	//  Game
 	#ifdef GAME
-	if (ym == M_Game)
+	if (ym == M_Game && mlevel == 1)
+	{
 		game.KeyPress(mlevel);
+		return;
+	}
 	#endif
 
 
@@ -161,9 +164,9 @@ void Gui::KeyPress()
 
 	if (mlevel == 1)  //  sub menu
 	{	//  navigate
-		if (kRight < 0)	mlevel = 0;  // <back
+		if (kRight < 0)  mlevel = 0;  // <back
 		if (ym != M_Display)
-		if (kRight > 0)	mlevel = 2;  // enter>
+		if (kRight > 0)	 mlevel = 2;  // enter>
 		if (kUp){  ym1[ym] += kUp;  Chk_y1();  }
 		return;
 	}

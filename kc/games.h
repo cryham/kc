@@ -79,8 +79,8 @@ struct Games
 	void Checks(), NewSet();
 
 	//  utility
-	uint16_t BlkClr(int8_t b, int8_t d);
-	void Draw(    const Block& b,  int pos_x, int pos_y, int o_y=0, int dim=0);
+	uint16_t BlkClr(int8_t b, int8_t d, int8_t dim);
+	void Draw(    const Block& b,  int pos_x, int pos_y, int o_y=0, int dim=4);
 	void DrawNext(const Block& b,  int pos_x, int pos_y);
 	
 	int Overlaps(const Block& b,  int pos_x, int pos_y);	// test block overlap in grid
