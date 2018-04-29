@@ -66,7 +66,7 @@ void Gui::KeyPress()
 		switch (ym2Test)
 		{
 		case 0:
-			RangeAdd(par.scanFreq, kRight*4, 2, 150);
+			RangeAdd(par.scanFreq, -kRight*4, 2, 150);
 			Periodic_init( par.scanFreq * 1000 );  break;  // upd
 		case 1:
 			RangeAdd(par.strobe_delay, kRight, 0, 50);  break;

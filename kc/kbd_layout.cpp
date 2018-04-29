@@ -133,7 +133,7 @@ const DrawKey drawKeys[nDrawKeys] = {  //  Layout draw
 {-15,0,wf, '5',2, 37,K_F5},{F,0,wf, '6',2,139,K_F6}, {F,0,wf, '7',2, 95,K_F7}, {F,0,wf, '8',2, 59,K_F8},
 {-14,0,wf, '9',2, 64,K_F9},{F,0,wf, '0',2, 46,K_F10},{F,0,wf, '1',2,136,K_F11},{F,0,wf, '2',2, 10,K_F12},
 // |< >| << >>  || |> []  media 7x
-{XN, 1,wm, '.',9, 18,K_F13},{M,0,wm, '.',9,108,K_F14}, {M-2,0,wm, '.',9,30,K_F15},{M,0,wm, '.',9,66,K_F16},
+{XN,10,wm, '.',9, 18,K_F13},{M,0,wm, '.',9,108,K_F14}, {M-2,0,wm, '.',9,30,K_F15},{M,0,wm, '.',9,66,K_F16},
 {M-2,0,wm, '.',9,102,K_F17},{M,0,wm, '.',9,  0,K_F18},{M,0,wm, '.',9,120,K_F19},
 
 { 0,20, 8,kH, '`',3,63,K_TILDE}, //~
@@ -148,8 +148,8 @@ const DrawKey drawKeys[nDrawKeys] = {  //  Layout draw
 { X, 0,wh, 'O',0,77,K_O},{X,0,wh, 'P',0, 86,K_P},{X,0,wh, '[',3,104,K_LBRACE},
 { X, 0,wh, ']',3,103,K_RBRACE},{X,0, 9,kH,'\\',3,118,K_BSLASH}, // \| 14x
 
-{ 0, 2,wm, '.',9,91,K_CAPS},{M,0,wm, '.',9,109,K_F21},{M,0,wm,  '.',9,127,K_F22}, // Caps 3x
-{-15,-2,wh,'A',0,117,K_A},{X,0,wh, 'S',0,111,K_S},{X,0,wh, 'D',0,112,K_D},{X,0,wh, 'F',0,116,K_F},
+{ 0,40,wm, '.',9,91,K_CAPS},{M,0,wm, '.',9,109,K_F21},{M,0,wm,  '.',9,127,K_F22}, // Caps 3x
+{M-3,-2,wh,'A',0,117,K_A},{X,0,wh, 'S',0,111,K_S},{X,0,wh, 'D',0,112,K_D},{X,0,wh, 'F',0,116,K_F},
 { X, 0,wh, 'G',0,134,K_G},{X,0,wh, 'H',0,142,K_H},{X,0,wh, 'J',0,124,K_J},{X,0,wh, 'K',0,121,K_K},
 { X, 0,wh, 'L',0,113,K_L},{X,0,wh, ';',3,122,K_SEMIC},
 { X, 0,wh,'\'',3,140,K_QUOTE},{X, 0,14,kH, 217,7,28,K_ENT}, //Ent 12x
@@ -157,16 +157,15 @@ const DrawKey drawKeys[nDrawKeys] = {  //  Layout draw
 { 0,47,18,kH, 's',4,101,K_LSHIFT}, //L Sh
 {-18,0,wh, 'Z',0,27,K_Z},{X,0,wh, 'X',0,21,K_X},{X,0,wh, 'C',0,22,K_C},{X,0,wh, 'V',0,26,K_V},
 { X, 0,wh, 'B',0, 8,K_B},{X,0,wh, 'N',0,16,K_N},{X,0,wh, 'M',0,34,K_M},{X,0,wh, ',',3,31,K_COMMA},
-{ X, 0,wh, '.',3,23,K_PERIOD},{X,0,wh, '/',3,14,K_SLASH}, //  ||
-{ X, 0,19,kH, 's',5,119,K_RSHIFT}, //R Sh 12x   || ,held3? ##
+{ X, 0,wh, '.',3,23,K_PERIOD},{X,0,wh, '/',3,14,K_SLASH},{X,0,19,kH, 's',5,119,K_RSHIFT}, //R Sh 12x
 
 //modif:  L Ctrl, L Gui, L Alt, space, R Alt, App,K_Ss, R Gui, R Ctrl
 { 0,56,12,kH, 'c',4,55,K_LCTRL},{-12,0,8,kH,  9 ,4,90,K_LGUI},{-8,0,12,kH,'a',4,138,K_LALT},
 {-12,0,46,kH, ' ',6,141,K_SPACE},{-46,0,11,kH, 'a',5,12,K_RALT}, //Space
-{-11,0, wm,    9 ,9,92,K_F23},{M,0, wm,  9 ,8,96,K_F24}, {M-1,-2, 9,kH,254,5,5,K_MENU},
+{-11,59, wm,   9 ,9,92,K_F23},{M,0, wm,  9 ,9,96,K_F24}, {M-1,-3, 9,kH,254,5,5,K_MENU},
 {-9, 0,10,kH, 'c',5,19,K_RCTRL}, //R Ct 9x
 //numpad: 18x
-{XN,24,wm, '-',9,  9,K_VOL_DEC},{M,0,wm, '+',9,  9,K_VOL_INC},
+{XN,22,wm, '-',9, 13,K_VOL_DEC},{M,0,wm, '+',9,  9,K_VOL_INC},
  {M,-2,wh, '/',3, 25,KP_DIV},{X,0,wh, 'x',3, 35,KP_MUL},{X,0,wh, '-',3,17,KP_SUB},
 {XN,29,wh, '7',8, 87,K_HOME},{X,0,wh, 24 ,8, 79,K_UP},  {X,0,wh, '9',8, 89,K_PGUP},{X,0,kW,kH*2,'+',3,78,KP_ADD},
 {XN,38,wh, 27 ,8,105,K_LEFT},{X,0,wh,  7 ,6, 97,K_DEL}, {X,0,wh, 26 ,8,107,K_RIGHT},
