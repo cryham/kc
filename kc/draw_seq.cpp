@@ -78,12 +78,15 @@ void Gui::DrawSequences()
 			if (kc.set.key[l][i] == q)
 			{	ll=l; ii=i;  break;  }  // found
 		if (ii != -1)
-		{	int x = W-1 -7*8;
+		{	int x = W-1 -5*6;
 			d->setCursor(x, 0);
-			d->setTextColor(RGB(26,30,23));
-			sprintf(a,"Lay: %d", ll);  d->print(a);
-			d->setCursor(x, 10);  // layer 0 key
-			sprintf(a,"%s", cKeyStr[kc.set.key[0][ii]]);  d->print(a);
+			d->setTextColor(RGB(30,23,26));
+			sprintf(a,"L %d", ll);  d->print(a);
+
+			d->setCursor(x, 10);
+			int8_t dt = kc.set.key[0][ii];  // layer 0 key
+			FadeGrp(cKeyGrp[dt], 9, 0, 3);
+			sprintf(a,"%s", cKeyStr[dt]);  d->print(a);
 		}
 	}
 	else  //  Edit  ----------

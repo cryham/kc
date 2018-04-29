@@ -230,7 +230,8 @@ void Gui::DrawLayout(bool edit)
 
 	for (int i=0; i < nDrawKeys; ++i)
 	{
-		const DrawKey& k = drawKeys[i];
+		const DrawKey& k = drawKeys[i],
+				pk = drawKeys[max(0,i-1)];
 
 		//  find if pressed
 		int f = k.sc != NO && !moveCur &&
@@ -243,7 +244,8 @@ void Gui::DrawLayout(bool edit)
 
 		//  set coords or advance
 		if (k.x >=0)  x = k.x;  else  x -= k.x;
-		if (k.y > 0)  y = k.y + yPosLay;  else  y -= k.y;
+		if (k.y > 0)  y = k.y + yPosLay;  else
+		{	if (pk.w < 6)  y += k.y;  else  y -= k.y;  }  // tiny up
 
 		if (i == drawId)  // save center for move
 		{	drawX = x + k.w/2;
@@ -253,14 +255,17 @@ void Gui::DrawLayout(bool edit)
 			d->fillRect(x+1, y-1, k.w-1, k.h-1, clrRect[k.o]);
 
 		uint16_t  // clr
-			cR = f==2 ? RGB(31,30,29) : f==1 ? RGB(28,28,29) : clrRect[k.o]/*,
-			cT = f==2 ? RGB(31,30,29) : f==1 ? RGB(31,31,31) : clrText[k.o]*/;  //<def
+			cR = f==2 ? RGB(31,30,29) : f==1 ? RGB(28,28,29) : clrRect[k.o];
 
 		//  darken  if draw has NO scId
 		if (moveCur && k.sc == NO)
 		{	cR = RGB(9,9,9);  /*if (!f)  cT = RGB(17,17,17);*/  }
 
 		d->drawRect(x, y-2, k.w+1, k.h+1, cR);
+
+		//  skip caption for tiny keys
+		if (k.w < 6)
+			continue;
 
 		d->setCursor(  // txt
 			k.o==5 || k.o==7 ? x + k.w - 6 :  // right align
