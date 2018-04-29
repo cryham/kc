@@ -4,18 +4,14 @@
 
 #ifdef DEMOS
 
-//#ifdef DEMOS_PLASMA
-// for: plasma, wave, ck_logo
-
 //  sinus table  ----
+// for: plasma, wave, ck_logo
 #define SX  8192   // 8192  mem size 16kB
-//#define SX  16384
 #define SY  16384  // 16384  y quality
 #define Cos(x)  sint[(SX/2+(x))%SX]  // %SX
 #define Sin(x)  sint[      (x) %SX]
 
 extern const int16_t sint[SX];
-//#endif
 #endif
 
 
@@ -69,11 +65,12 @@ struct Demos
 
 #ifdef DEMOS_OLD_PAR
 	//  Balls  --------
-	const static int  // _params_
-	//sMax = 10, bMax = 10, dMax = 10;  // 73%  48k ram
-	//sMax = 20, bMax = 20, dMax = 20;  // 74%  49k ram
-	//sMax = 240, bMax = 200, dMax = 250;  // 78%
-	sMax = 240, bMax = 300, dMax = 550;  // 80%  53k =7k
+	const static int  // _param_  none 49472
+	//bMax = 10,    // 156 B  ram size
+	//bMax = 100,  // 1356 B
+	//bMax = 200,  // 2696 B
+	bMax = 300,  // 4036 B  +100 = 1340
+	dMax = bMax, sMax = bMax *12/18;
 
 	int sCnt, sVel;  // stars: count, velocity
 	int bCnt, bSpd, bSpRnd, bRad;  // balls: count, speed, radius max
@@ -81,8 +78,8 @@ struct Demos
 	#define bDet  128  // move detail
 
 	enum EInit {  INone=0, IBalls, ISpace, IDrops  } einit;
-	struct Star {  int x,y,z, v;  uint16_t c;  };
-	struct Ball {  int16_t x,y, vx,vy, r;  uint16_t c;  };
+	struct Star {  int x,y,z, v;  uint16_t c;  };  // 18 B
+	struct Ball {  int16_t x,y, vx,vy, r;  uint16_t c;  };  // 12 B
 	struct Drop {  int16_t x,y, vx,vy, t;  uint16_t c;  };
 	union
 	{	//  common data

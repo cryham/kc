@@ -6,16 +6,18 @@
 //   no demos ck1		// 45572 69%  58%
 //  all demos ck1 max	// 52252 79%  75% ok
 
-//   no demos ck3		// 47820  57%
-#define DEMOS			// 47844  66%  all  7k 11% ram  41k 16% flash
-#define DEMOS_PLASMA	// 47852  68%
-#define DEMOS_3D		// 47860  72%
-//#define DEMOS_OLD_PAR	// 48096  73%  min
-#define GAME			//  1.5k 2% ram  22.9k 7% flash
+//   no demos ck3		//  0    0%
+#define DEMOS			//  28   9%
+#define DEMOS_PLASMA	//  36   11%
+#define DEMOS_3D		//  44   15%
+//#define DEMOS_OLD_PAR	//  280 <1%   16%  min
+					// all  6680 10%  17%  max 41k  75% total
+#define GAME		// game 1.5k 2%   22.9k 7%
 
 //   keyboard
 //#define CK1  // 8x6
-#define CK3  // 18x8
+//#define CK6  // 18x8  new CK3
+#define CK7  // 18x8  old CK4/2
 //-----------------
 
 

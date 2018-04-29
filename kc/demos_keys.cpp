@@ -124,12 +124,12 @@ void Demos::KeyPress(EDemo demo, Gui* gui)
 	#ifdef DEMOS_OLD_PAR
 		case D_Space:
 			if (k){  sCnt += k*sp;  sCnt = max(0, min(sMax, sCnt));  einit = INone;  }
-			if (u){  sVel += u;     sVel = max(0, min(40, sVel));  einit = INone;  }
+			if (u){  sVel += u;     sVel = max(0, min(60, sVel));  einit = INone;  }
 			break;
 			
 		case D_Balls:
 			if (ct)
-			{	if (k){  bRad += k;      bRad = max(1, min(5, bRad));  einit = INone;  }
+			{	if (k){  bRad += k;      bRad = max(1, min(8, bRad));  einit = INone;  }
 				if (u){  bSpRnd += u;  bSpRnd = max(0, min(bSpRMax, bSpRnd));  einit = INone;  }
 			}else
 			{	if (k){  bCnt += k*sp;    bCnt = max(0, min(bMax, bCnt));  einit = INone;  }
