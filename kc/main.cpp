@@ -12,6 +12,7 @@
 //  scan counter, freq
 uint scan_cnt = 0, scan_freq = 0;
 uint32_t us_scan = 0, ms_scan = 0;
+uint8_t scan_n = 0;
 
 RamMonitor ram;
 Gui gui;
@@ -35,15 +36,20 @@ void main_periodic()
 		scan_cnt = 0;
 	}
 	++scan_cnt;
+	++scan_n;
 
 
 	//  kbd scan
-	Matrix_scan( 0 );  // K
+	bool bsc = false;
+	if (gui.kbdSend ||  // slower for demos
+		gui.ym != M_Demos || scan_n % 4==0)
+	{	Matrix_scan(0);  bsc = true;  }  // K
 
 
 	//  gui keys
 	//------------------------
-	gui.KeyPress();
+	if (bsc)
+		gui.KeyPress();
 
 
 	//  keyboard send
@@ -89,6 +95,10 @@ int main()
 	gui.SetScreen(par.startScreen);
 //	gui.kbdSend = 1;  // release
 
+	delay(200);
+	tft.begin();
+	tft.clear();
+	tft.display();  // black
 
 	//  kbd
 	Matrix_setup();
