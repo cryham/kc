@@ -30,7 +30,7 @@ struct Gui
 	int8_t KeysSeq(), KeysMap();
 	void WriteSeq(int8_t seq, int8_t q);
 
-	void SetScreen(int8_t start);
+	void SetScreen(int8_t start), DrawOperInfo();
 	const char* StrScreen(int8_t s);
 
 
@@ -78,6 +78,12 @@ struct Gui
 	//  level 2 y cursor  - -
 	int8_t ym2Test = 0;  // Testing
 	int8_t ym2Disp = 0, pgDisp = 0;  // Display
+	const static uint8_t Disp_All = 2;
+	const static uint8_t DispPages[Disp_All];
+
+	//  util
+	int16_t RangeAdd(int16_t val, int16_t add, int16_t vmin, int16_t vmax, int8_t cycle=0);
+	void Save(), Load(int8_t reset);
 
 
 	//  Sequences  - - - -

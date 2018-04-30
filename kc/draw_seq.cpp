@@ -42,7 +42,11 @@ void Gui::DrawSequences()
 	{
 		d->setTextColor(RGB(14,26,26));
 		d->print("View");  d->setFont(0);
-		d->setTextColor(RGB(20,25,30));
+		d->setTextColor(RGB(23,25,26));
+
+		//  page, center   /
+		d->setCursor(W/2 -2*6, 4);
+		sprintf(a,"%d/%d", page+1, kc.set.seqSlots/iPage);  d->print(a);
 
 		//  list slots
 		int s = page * iPage, i, y, q;
@@ -66,9 +70,6 @@ void Gui::DrawSequences()
 
 			WriteSeq(s, q);  // write
 		}
-		//  page, center   /
-		d->setCursor(W/2 -2*6, 4);
-		sprintf(a,"%2d/%d", page+1, kc.set.seqSlots/iPage);  d->print(a);
 
 		//  seq preview key, find  ---
 		q = K_Seq0 + seqId();  // code
@@ -134,9 +135,12 @@ void Gui::DrawSequences()
 		++tBlnk;  // blink cur
 		if (tBlnk > cBlnk)  tBlnk = 0;
 	}
+}
 
-
-	//  Info operation  ----------
+void Gui::DrawOperInfo()
+{
+	char a[32];
+	//  Info Operation  ----------
 	if (tInfo < 0)  // trigger
 		tInfo = 100;  // par
 

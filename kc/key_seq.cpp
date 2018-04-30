@@ -92,12 +92,9 @@ int8_t Gui::KeysSeq()
 			}
 		}	}
 	}else
-	{	if (kSave)  // save
-		{	kc.Save();  infType = 2;  tInfo = -1;
-		}
-		if (kLoad)  // load
-		{	kc.Load();  infType = 1;  tInfo = -1;
-		}
+	{	//  save  load
+		if (kSave)  Save();
+		if (kLoad)  Load(kCtrl);
 
 		if (kUp > 0)  // move
 		{	++slot;  if (slot >= iPage) {  slot = 0;
@@ -114,7 +111,8 @@ int8_t Gui::KeysSeq()
 		{	--page;  if (page < 0)  page = kc.set.seqSlots/iPage-1;
 		}
 
-		if (kCopy)  // copy
+		//  copy
+		if (kCopy)
 		{	kc.set.copy.data = dt;  cpId = q;
 			infType = 3;  tInfo = -1;
 		}

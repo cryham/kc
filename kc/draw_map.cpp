@@ -21,7 +21,7 @@ void Gui::DrawMapping()
 
 
 	//  key codes list
-	//. . . . . . . . . . . . . . . . . . . . . . . . .
+	//. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
 	if (pickCode)
 	{
 		d->setCursor(x,0);
@@ -112,8 +112,9 @@ void Gui::DrawMapping()
 		return;
 	}
 
+
 	//  menu
-	//. . . . . . . . . . . . . . . . . . . . . . . . .
+	//. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
 	int id = scId;
 	if (moveCur)
 	{	if (drawKeys[drawId].sc == NO)  id = -1;
@@ -122,9 +123,10 @@ void Gui::DrawMapping()
 	x=2;  y=0;
 	for (int i=0; i < 4; ++i)
 	{
-		d->setCursor(x,y);
+		d->setCursor(x+8,y);
 		d->setTextColor(RGB(28,28,9));
-		d->print(i == yy ? "\x10 ":"  ");  // >
+		d->print(i == yy ? "\x10":" ");  // >
+		d->setCursor(x,y);
 
 		c = abs(i - yy);
 		FadeClr(C_Map, 4, c, 1);
@@ -135,31 +137,31 @@ void Gui::DrawMapping()
 			switch (pressKey)
 			{
 			case 0:
-			case 1:  sprintf(a,"Press");  break;
-			case 2:  sprintf(a,"Press key ..");  break;
+			case 1:  sprintf(a,"/  Press");  break;
+			case 2:  sprintf(a,"/\x10 Press key ..");  break;
 			}
 			d->print(a);  break;
 
 		case 1:
-			sprintf(a, moveCur ? "Moving .." : "Move");
+			sprintf(a, moveCur ? "*\x10 Moving .." : "*  Move");
 			d->print(a);  break;
 
 		case 2:
-			sprintf(a,"Layer: %d", nLay);
+			sprintf(a,"p  Layer: %d", nLay);
 			d->print(a);  break;
 
 		case 3:
 			if (id < 0 || id >= kc.set.nkeys())
-				sprintf(a,"Key: NONE");
+				sprintf(a,"-  Key: NONE");
 			else
 			{
 				uint8_t u = kc.set.key[nLay][id];
-					 if (u == KEY_NONE)  sprintf(a,"Key: None");
-				else if (u >= KEYS_ALL_EXT)  sprintf(a,"Key: OUT");
+					 if (u == KEY_NONE)  sprintf(a,"-  Key: None");
+				else if (u >= KEYS_ALL_EXT)  sprintf(a,"-  Key: OUT");
 				else
 				{
 					FadeGrp(cKeyGrp[u], 9, 0, 3);
-					sprintf(a,"Key: %s", cKeyStr[u]);
+					sprintf(a,"-  Key: %s", cKeyStr[u]);
 					d->print(a);
 
 					//  seq preview  ---
@@ -204,11 +206,11 @@ void Gui::DrawMapping()
 			if (kd != KEY_NONE)
 			{
 				FadeGrp(cKeyGrp[kd < KEYS_ALL_EXT ? kd : 0],
-					9, 2/*fade*/, 3);
+					9, 1/*fade*/, 3);
 				d->setCursor(x,y);
 				sprintf(a,"%d %s",i,
 					kd < KEYS_ALL_EXT ? cKeyStr[kd] : "OUT");
-				d->print(a);  y+=8;
+				d->print(a);  y+=9;
 		}	}
 	}
 	else

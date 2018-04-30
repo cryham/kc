@@ -72,7 +72,7 @@ void Gui::Draw()
 			d->setTextColor(RGB(25,16,28));
 			d->print(strMain[ym]);  d->setFont(0);
 
-			DrawMenu(D_All,strDemo, C_Demos,RGB(27,24,30), 10, D_Next);
+			DrawMenu(D_All,strDemo, C_Demos,RGB(27,27,30), 10, D_Next);
 		}
 		return;
 	}
@@ -83,7 +83,9 @@ void Gui::Draw()
 	//------------------------------------------------------
 	#ifdef GAME
 	if (ym == M_Game)
-		game.Draw();
+	{
+		game.Draw();  return;
+	}
 	#endif
 
 
@@ -118,17 +120,27 @@ void Gui::Draw()
 		if (tm)
 		{	int h = tm/3600%24, m = tm/60%60, s = tm%60;
 
-			d->setCursor(W/2, 0);
-			d->setTextColor(RGB(10,28,18));
+			d->setCursor(W/2, H-13);
+			d->setTextColor(RGB(16,26,10));
 
 			sprintf(a,"%2d:%02d:%02d", h,m,s);
 			d->print(a);
 		}
 		d->setFont(0);
 
-		//  brightness, dac  ---
+		//  page
+		d->setCursor(W-1 -3*6, 4);
+		d->setTextColor(RGB(29,18,12));
+		sprintf(a,"%d/%d", pgDisp+1, 2);
+		d->print(a);
+
+		//  par values  ---
 		d->setCursor(0, 32);
-		for (int i=0; i < 6; ++i)
+		int pg = DispPages[pgDisp];
+		switch (pgDisp)
+		{
+		case 0:
+		for (int i=0; i < pg; ++i)
 		{
 			int c = abs(i - ym2Disp);  // dist dim
 			if (!c)
@@ -143,25 +155,45 @@ void Gui::Draw()
 			{
 			case 0:
 				sprintf(a,"Brightness: %d %%", par.brightness);  break;
-
 			case 1:
-				sprintf(a,"Fade time: %d", par.fadeTime);  h = 2;  break;
+				sprintf(a,"Off bright: %d %%", par.brightOff);  break;
 			case 2:
-				sprintf(a,"Fade bright.: %d %%", par.brightOff);  break;
-
+				sprintf(a,"Fade time-: %d", par.fadeTime);  h = 2;  break;
 			case 3:
 				sprintf(a,"Start screen: %s", StrScreen(par.startScreen));  break;
+			}
+			d->println(a);  d->moveCursor(0,h);
+		}	break;
 
-			case 4:
+		case 1:
+		for (int i=0; i < pg; ++i)
+		{
+			int c = abs(i - ym2Disp);  // dist dim
+			if (!c)
+			{	d->setTextColor(RGB(31,22,6));
+				d->print("\x10 ");  // >
+			}else
+				d->print("  ");
+
+			FadeClr(C_Disp, 4, c, 1);
+			int8_t h = 4;
+			switch(i)
+			{
+			case 0:
 				sprintf(a,"Key delay:  %d ms", par.krDelay*5);  h = 2;  break;
-			case 5:
+			case 1:
 				sprintf(a,"Key repeat: %d ms", par.krRepeat*5);  break;
+			case 2:
+				sprintf(a,"Ram info: %d", iRam);  break;
 
-			//uint8_t mkSpeed, mkAccel;  todo pages|scroll
+			//uint8_t mkSpeed, mkAccel;
 			//start demo time
 			}
 			d->println(a);  d->moveCursor(0,h);
+		}	break;
 		}
 		return;
 	}
 }
+
+const uint8_t Gui::DispPages[Gui::Disp_All] = {4,3};
