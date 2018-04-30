@@ -36,13 +36,12 @@ void Gui::WriteSeq(int8_t seq, int8_t q)
 void Gui::DrawSequences()
 {
 	char a[64];
-	//d->print(strMain[ym]);  d->setFont(0);
 
 	if (!edit)  //  View  ----------
 	{
-		d->setTextColor(RGB(14,26,26));
+		d->setTextColor(RGB(12,26,26));
 		d->print("View");  d->setFont(0);
-		d->setTextColor(RGB(23,25,26));
+		d->setTextColor(RGB(20,25,28));
 
 		//  page, center   /
 		d->setCursor(W/2 -2*6, 4);
@@ -57,6 +56,7 @@ void Gui::DrawSequences()
 			d->setTextColor(RGB(20,30,25));
 			q = abs(i - slot);
 			FadeClr(C_Seq, 4, q, 2);
+			if (!q)  d->fillRect(0, y-1, W-1, 10, RGB(2,6,8));
 			sprintf(a,"%2d",s);  d->print(a);
 
 			d->setTextColor(RGB(0,30,30));
@@ -92,7 +92,7 @@ void Gui::DrawSequences()
 	}
 	else  //  Edit  ----------
 	{
-		d->setTextColor(RGB(23,23,27));
+		d->setTextColor(RGB(10,27,27));
 		d->print("Edit");  d->setFont(0);
 		d->setTextColor(RGB(22,26,30));
 

@@ -36,13 +36,14 @@ struct Gui
 
 	//  fade color menu
 	enum EFadeClr
-	{	C_Main=0, C_Demos, C_Test, C_Map, C_Seq, C_Disp, C_Scan, C_Game, Cl_ALL  };
+	{	C_Main=0, C_Demos, C_Test, C_Map, C_Seq,
+		C_Disp, C_Scan, C_Game, C_GameOpt, Cl_ALL  };
 	const static uint8_t Mclr[Cl_ALL][2][3];
 
 	void FadeClr(EFadeClr ec, const uint8_t minRGB, const uint8_t mul, const uint8_t div);
 	void FadeGrp(uint8_t g, const uint8_t minRGB, const uint8_t mul, const uint8_t div);
 	void DrawMenu(int cnt, const char** str, EFadeClr ec, uint16_t curClr,
-		int16_t yadd=10, int16_t nextCol=-1, int16_t numGap=-1);
+		uint16_t bckClr, int16_t yadd=10, int16_t nextCol=-1, int16_t numGap=-1);
 
 
 	//  vars
@@ -101,3 +102,4 @@ struct Gui
 	//  const from grp
 	uint8_t grpStart[grpMax], grpEnd[grpMax];
 };
+

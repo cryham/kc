@@ -19,14 +19,13 @@ extern KC_Main kc;
 //....................................................................................
 void Gui::DrawTesting()
 {
+	//  menu
 	if (mlevel == 1)
 	{
-		d->setTextColor(RGB(18,26,18));
+		d->setTextColor(RGB(16,26,16));
 		d->print(strMain[ym]);  d->setFont(0);
 
-		//  menu
-		DrawMenu(T_All,strTest, C_Test,RGB(22,31,14));
-
+		DrawMenu(T_All,strTest, C_Test,RGB(22,31,14),RGB(5,9,6), 10, -1, 2);
 		return;
 	}
 	char a[64];
@@ -128,6 +127,12 @@ void Gui::DrawTesting()
 	//-----------------------------------------------------
 	case T_Layout:
 	{
+		d->setCursor(0,32);
+		//  layer  -
+		d->setTextColor(RGB(20,23,31));
+		sprintf(a,"Layer: %d", kc.nLayer);
+		d->print(a);
+
 		DrawLayout(false);
 	}	break;
 
@@ -200,12 +205,14 @@ void Gui::DrawTesting()
 	//-----------------------------------------------------
 	case T_ScanSetup:
 	{
-		d->setCursor(0,32);
+		int16_t y=32;
 		for (int i=0; i < 4; ++i)
 		{
+			d->setCursor(2,y);
 			int c = abs(i - ym2Test);
 			if (!c)
 			{	d->setTextColor(RGB(10,30,30));
+				d->fillRect(0, y-1, W-1, 10, RGB(3,6,6));
 				d->print("\x10 ");  // >
 			}else
 				d->print("  ");
@@ -222,11 +229,11 @@ void Gui::DrawTesting()
 			case 3:
 				sprintf(a,"Sequence delay: %d ms", par.dtSeqDef);  break;
 			}
-			d->println(a);  d->moveCursor(0,4);
+			d->print(a);  y += 8+4;
 		}
-		d->moveCursor(0,4);
-		//DebounceThrottleDiv_define-
-		d->setTextColor(RGB(20,23,23));
+
+		d->setCursor(2,H-35);
+		d->setTextColor(RGB(22,23,23));
 		sprintf(a,"  Time: %lu us  %u Hz", us_scan, scan_freq);
 		d->println(a);  d->moveCursor(0,8);
 		d->setTextColor(RGB(20,23,26));
@@ -247,7 +254,7 @@ void Gui::DrawTesting()
 	{
 		///  dbg  mouse accel  --
 		const int16_t x0 = 0, x1 = W/3+6, x2 = 2*W/3+6;
-		const int16_t y0 = 32, y1 = y0+10+4, y2 = y1+10;
+		const int16_t y0 = 66, y1 = y0+10+2, y2 = y1+10;
 
 		d->setCursor(0, y0);     d->print("hold");
 		d->setCursor(W/3, y0);   d->print("delay");
@@ -262,9 +269,9 @@ void Gui::DrawTesting()
 		d->setCursor(x2, y1);  sprintf(a,"%d", mx_speed);  d->print(a);
 		d->setCursor(x2, y2);  sprintf(a,"%d", my_speed);  d->print(a);
 
-		d->setCursor(0, H-1-4*8);  sprintf(a,"move  x %+d  y %+d",
+		d->setCursor(0, H-1-18);  sprintf(a,"move  x %+d  y %+d",
 			Mouse_input_x/8, Mouse_input_y/8);  d->print(a);
-		d->setCursor(0, H-1-2*8);  sprintf(a,"buttons %d  wheel x %d y %d",
+		d->setCursor(0, H-1-8);  sprintf(a,"buttons %d  wh- x %d y %d",
 			usb_mouse_buttons_state, Mouse_wheel_x, Mouse_wheel_y);  d->print(a);
 	}	break;
 	}

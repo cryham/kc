@@ -17,9 +17,10 @@ const uint8_t Gui::Mclr[Gui::Cl_ALL][2][3] = {
 	{{20,30,26},{6,3,4}},  //  2 test
 	{{22,31,18},{6,3,7}},  //  3 map
 	{{17,31,31},{5,4,3}},  //  4 seqs
-	{{30,30,20},{3,6,5}},  // 5 display
+	{{31,31,16},{3,5,5}},  // 5 display
 	{{26,28,28},{4,3,3}},  // 6 scan, mouse
 	{{31,26,12},{1,4,5}},  // 7 game
+	{{31,26,22},{1,6,8}},  // 8 game opt
 };
 
 
@@ -105,7 +106,7 @@ void Gui::DrawEnd()
 //  draw utils
 //....................................................................................
 void Gui::DrawMenu(int cnt, const char** str, EFadeClr ec, uint16_t curClr,
-					int16_t yadd, int16_t nextCol, int16_t numGap)
+	uint16_t bckClr, int16_t yadd, int16_t nextCol, int16_t numGap)
 {
 	const int16_t my = mlevel==0 ? ym : yy;
 	const int16_t xw = 70, y1 = 32;  // par
@@ -115,6 +116,8 @@ void Gui::DrawMenu(int cnt, const char** str, EFadeClr ec, uint16_t curClr,
 	{
 		d->setCursor(x,y);
 		d->setTextColor(curClr);
+		if (i == my)
+			d->fillRect(x, y-1, x+W/2, 10, bckClr);
 		d->print(i == my ? " \x10 ":"   ");  // >
 
 		c = abs(i - my);  // dist dim

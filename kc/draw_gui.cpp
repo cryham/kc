@@ -26,7 +26,7 @@ void Gui::Draw()
 		d->setTextColor(RGB(6,19,31));
 		d->print("Main Menu");  d->setFont(0);
 
-		DrawMenu(M_All,strMain, C_Main,RGB(20,25,29), 10, -1,2);
+		DrawMenu(M_All,strMain, C_Main,RGB(20,25,29),RGB(5,7,9), 10, -1,2);
 
 		//d->setCursor(W-1 -7*6, H-8);
 		//todo d->print("F1 Help");
@@ -72,7 +72,7 @@ void Gui::Draw()
 			d->setTextColor(RGB(25,16,28));
 			d->print(strMain[ym]);  d->setFont(0);
 
-			DrawMenu(D_All,strDemo, C_Demos,RGB(27,27,30), 10, D_Next);
+			DrawMenu(D_All,strDemo, C_Demos,RGB(27,27,30),RGB(6,6,9), 10, D_Next);
 		}
 		return;
 	}
@@ -112,7 +112,7 @@ void Gui::Draw()
 	if (ym == M_Display)
 	{
 		char a[64];
-		d->setTextColor(RGB(29,23,16));
+		d->setTextColor(RGB(29,28,6));
 		d->print(strMain[ym]);  //d->setFont(0);
 
 		//  time  ---
@@ -121,7 +121,7 @@ void Gui::Draw()
 		{	int h = tm/3600%24, m = tm/60%60, s = tm%60;
 
 			d->setCursor(W/2, H-13);
-			d->setTextColor(RGB(16,26,10));
+			d->setTextColor(RGB(16,24,8));
 
 			sprintf(a,"%2d:%02d:%02d", h,m,s);
 			d->print(a);
@@ -130,21 +130,23 @@ void Gui::Draw()
 
 		//  page
 		d->setCursor(W-1 -3*6, 4);
-		d->setTextColor(RGB(29,18,12));
+		d->setTextColor(RGB(30,22,12));
 		sprintf(a,"%d/%d", pgDisp+1, 2);
 		d->print(a);
 
 		//  par values  ---
-		d->setCursor(0, 32);
 		int pg = DispPages[pgDisp];
+		int16_t y = 32;
 		switch (pgDisp)
 		{
 		case 0:
 		for (int i=0; i < pg; ++i)
 		{
+			d->setCursor(2, y);
 			int c = abs(i - ym2Disp);  // dist dim
 			if (!c)
-			{	d->setTextColor(RGB(31,22,6));
+			{	d->fillRect(0, y-1, W-1, 10, RGB(8,8,4));
+				d->setTextColor(RGB(31,22,6));
 				d->print("\x10 ");  // >
 			}else
 				d->print("  ");
@@ -162,15 +164,17 @@ void Gui::Draw()
 			case 3:
 				sprintf(a,"Start screen: %s", StrScreen(par.startScreen));  break;
 			}
-			d->println(a);  d->moveCursor(0,h);
+			d->print(a);  y += h+8;
 		}	break;
 
 		case 1:
 		for (int i=0; i < pg; ++i)
 		{
+			d->setCursor(2, y);
 			int c = abs(i - ym2Disp);  // dist dim
 			if (!c)
-			{	d->setTextColor(RGB(31,22,6));
+			{	d->fillRect(0, y-1, W-1, 10, RGB(8,8,4));
+				d->setTextColor(RGB(31,22,6));
 				d->print("\x10 ");  // >
 			}else
 				d->print("  ");
@@ -189,7 +193,7 @@ void Gui::Draw()
 			//uint8_t mkSpeed, mkAccel;
 			//start demo time
 			}
-			d->println(a);  d->moveCursor(0,h);
+			d->print(a);  y += h+8;
 		}	break;
 		}
 		return;

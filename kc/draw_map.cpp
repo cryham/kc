@@ -123,12 +123,12 @@ void Gui::DrawMapping()
 	x=2;  y=0;
 	for (int i=0; i < 4; ++i)
 	{
-		d->setCursor(x+8,y);
-		d->setTextColor(RGB(28,28,9));
-		d->print(i == yy ? "\x10":" ");  // >
-		d->setCursor(x,y);
-
 		c = abs(i - yy);
+		if (!c)  d->fillRect(x+6, y-1, W/2, 10, RGB(5,7,2));
+		d->setTextColor(RGB(28,28,9));
+		d->setCursor(x+8,y);
+		d->print(!c ? "\x10":" ");  // >
+		d->setCursor(x,y);
 		FadeClr(C_Map, 4, c, 1);
 
 		switch (i)
@@ -138,12 +138,17 @@ void Gui::DrawMapping()
 			{
 			case 0:
 			case 1:  sprintf(a,"/  Press");  break;
-			case 2:  sprintf(a,"/\x10 Press key ..");  break;
+			case 2:  sprintf(a,"/  Press key ..");
+				d->fillRect(0, y-1, 2*W/3, 10, RGB(6,8,2));
+				/*d->drawRect(0, y-1, 2*W/3, 10, RGB(20,28,12));*/  break;
 			}
 			d->print(a);  break;
 
 		case 1:
-			sprintf(a, moveCur ? "*\x10 Moving .." : "*  Move");
+			if (moveCur) {
+				d->fillRect(0, y-1, 2*W/3, 10, RGB(6,8,2));
+				/*d->drawRect(0, y-1, 2*W/3, 10, RGB(12,28,20));*/  }
+			sprintf(a, moveCur ? "*  Moving .." : "*  Move");
 			d->print(a);  break;
 
 		case 2:
@@ -206,8 +211,10 @@ void Gui::DrawMapping()
 			if (kd != KEY_NONE)
 			{
 				FadeGrp(cKeyGrp[kd < KEYS_ALL_EXT ? kd : 0],
-					9, 1/*fade*/, 3);
+					9, 1/*fade*/, 2);
 				d->setCursor(x,y);
+				if (i == nLay)
+					d->fillRect(x-2, y-1, W-1-x+2, 10, RGB(4,7,10));
 				sprintf(a,"%d %s",i,
 					kd < KEYS_ALL_EXT ? cKeyStr[kd] : "OUT");
 				d->print(a);  y+=9;
@@ -232,8 +239,7 @@ void Gui::DrawLayout(bool edit)
 
 	for (int i=0; i < nDrawKeys; ++i)
 	{
-		const DrawKey& k = drawKeys[i],
-				pk = drawKeys[max(0,i-1)];
+		const DrawKey& k = drawKeys[i], pk = drawKeys[max(0,i-1)];
 
 		//  find if pressed
 		int f = k.sc != NO && !moveCur &&
@@ -241,8 +247,8 @@ void Gui::DrawLayout(bool edit)
 
 		//  mark  mapping edit
 		if (edit)  {
-		if (moveCur && drawId >= 0 && i == drawId)  f = 2;
-		if (!moveCur && scId != NO && scId == k.sc)  f = 2;  }
+			if (moveCur && drawId >= 0 && i == drawId)  f = 2;
+			if (!moveCur && scId != NO && scId == k.sc)  f = 2;  }
 
 		//  set coords or advance
 		if (k.x >=0)  x = k.x;  else  x -= k.x;
@@ -282,7 +288,7 @@ void Gui::DrawLayout(bool edit)
 		if (k.sc != NO && k.sc < kc.set.nkeys())
 		{
 			// todo layer use vis..
-			uint8_t dt = kc.set.key[edit ? nLay : 0][k.sc];
+			uint8_t dt = kc.set.key[edit ? nLay : kc.nLayer][k.sc];
 			if (dt != KEY_NONE)
 			{
 				const uint8_t* c = &cGrpRgb[cKeyGrp[dt]][0][0];
