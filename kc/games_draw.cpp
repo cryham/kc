@@ -68,8 +68,9 @@ void Games::DrawNext(const Block& b,
 //  Draw
 // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
 const static char* sPresets[Games::Presets] = {
-	" Tiny 3+", " Basic 4/2", " Small 4+/4", "Medium 5+/4", " Tetris 4",
-	" Pentis 5/1", " Sixtis 6", "Septis 7+/1", "Octis 8+/1", " Huge 12"};
+	"  Tiny 3+", " Basic 4/2", " Small 4+/4", "Medium 5+/4", "Tetris 4-",
+	"Pentis 5/1", "Sixtis 6", "Septis 7+/4", "Septis 7+/1",
+	" Octis 8+/1", "  Huge 12"};
 	
 const static char* sOptPages[Games::O_All] = {
 	"Field", "Speed", "Block", "Draw", "Input"};
@@ -80,20 +81,23 @@ void Games::Draw()
 	int x = 0, y = 0;
 	Ada4_ST7735& d = *g->d;
 	d.setCursor(x,y);
-	d.setTextColor(RGB(31,20,26));
+	d.setTextColor(RGB(30,14,10));
 
-	if (gui==1)
+	if (gui==1)  //  game menu
 	{
 		d.print("Sixtis");  d.setFont(0);
 
+		d.setTextColor(RGB(31,24,12));
 		d.setCursor(W/2-6, 4);
 		d.println(sPresets[preset]);  // title
 		
 		for (y=0; y < G_All; ++y)
 		{
 			int c = abs(y - yg);
-			d.setTextColor(RGB(30,26,22));
-			d.setCursor(0, 32 + y*12);
+			d.setTextColor(RGB(30,20,20));
+			int yy = 32 + y*12;
+			if (!c)  d.fillRect(0, yy-1, 2*W/3, 10, RGB(9,7,5));
+			d.setCursor(2, yy);
 			d.print(!c ? "\x10 ":"  ");  // >
 			g->FadeClr(Gui::C_Game, 6, c, 1);
 
@@ -110,53 +114,48 @@ void Games::Draw()
 		}
 		return;
 	}
-	if (gui==2)
+	else if (gui==2)  //  options
 	{
 		d.print("Sixtis");  d.setFont(0);
 		
-		d.setTextColor(RGB(28,28,15));
+		d.setTextColor(RGB(28,16,22));
 		d.setCursor(W-1 -3*6, 0);
 		sprintf(a,"%d/%d", opg+1, O_All);  d.print(a);
 		
-		d.setTextColor(RGB(28,28,22));
+		d.setTextColor(RGB(28,20,23));
 		d.setCursor(W/2-6, 4);
 		d.print(sOptPages[opg]);  // title
-		d.setTextColor(RGB(26,23,22));
 
 		x = 12;  y = 32;  int l = 0;
-		#define  line(str, par, yy)  \
-			if (l == oyg) {  d.setCursor(0,y);  d.print("\x10");  }  d.setCursor(x,y);  \
-			sprintf(a,str,par);  d.print(a);  ++l;  y += yy+2;  d.setCursor(x,y)
-
 		switch (opg)
 		{
 		case O_Field:
-			line("Width   %d", o.size_x, 8);
-			line("Height  %d", o.size_y, 8+4);
-			line("Junk lines  %d", o.btm_junk, 8);
+			OptLine(x,y,l,"Width   %d", o.size_x, 8);
+			OptLine(x,y,l,"Height  %d", o.size_y, 8+4);
+			OptLine(x,y,l,"Junk lines  %d", o.btm_junk, 8);
 			break;
 		case O_Speed:
-			line("Fall Speed    %ld", o.speed/SpdDet, 8+2);
-			line("Acceleration  %ld", o.accel, 8+4);
+			OptLine(x,y,l,"Fall Speed    %d", o.speed/SpdDet, 8+2);
+			OptLine(x,y,l,"Acceleration  %d", o.accel, 8+4);
 			break;
 		case O_Block:
-			line("Size   %d", o.bsize, 8+2);
-			line("Length min  %d", o.blen_min, 8);
-			line("Length max  %d", o.blen_max, 8+2);
-			line("Bias   %d", o.bbias, 8+2);
-			line("Diagonal  %d", o.bdiag-4, 8);
+			OptLine(x,y,l,"Size   %d", o.bsize, 8+2);
+			OptLine(x,y,l,"Length min  %d", o.blen_min, 8);
+			OptLine(x,y,l,"Length max  %d", o.blen_max, 8+2);
+			OptLine(x,y,l,"Bias   %d", o.bbias, 8+2);
+			OptLine(x,y,l,"Diagonal  %d", o.bdiag-4, 8);
 			break;
 		
 		case O_Draw:
-			line("Preview blocks  %d", o.nx_cur, 8+2);
-			line("Grid dots   %d", o.dots, 8+2);
-			line("Frame draw  %d", o.frame, 8+2);
+			OptLine(x,y,l,"Preview blocks  %d", o.nx_cur, 8+2);
+			OptLine(x,y,l,"Grid dots   %d", o.dots, 8+2);
+			OptLine(x,y,l,"Frame draw  %d", o.frame, 8+2);
 			break;
 		case O_Input:
-			line("Key repeat  %d", o.key_rpt, 8+2);
-			line("Move in drop  %d", o.move_in_drop, 8+2);
-			line("Fall speed  %d", o.sp_fall, 8);
-			line("Drop speed  %d", o.sp_drop, 8+2);
+			OptLine(x,y,l,"Key repeat  %d", o.key_rpt, 8+2);
+			OptLine(x,y,l,"Move in drop  %d", o.move_in_drop, 8+2);
+			OptLine(x,y,l,"Fall speed  %d", o.sp_fall, 8);
+			OptLine(x,y,l,"Drop speed  %d", o.sp_drop, 8+2);
 			break;
 		}
 		// cursor out
@@ -272,4 +271,22 @@ void Games::Draw()
 	d.setCursor(W-1-6*6, H-1-8);
 	if (ended)  d.print("Ended"); else
 	if (paused) d.print("Pause");
+}
+
+
+//  draw game option line
+void Games::OptLine(int& x, int& y, int& l, const char* str, int par, int8_t yy)
+{
+	char a[32];
+	Ada4_ST7735& d = *g->d;
+
+	int c = abs(l - oyg);
+	if (!c)
+	{	d.fillRect(0, y-1, W-1, 10, RGB(10,4,4));
+		d.setCursor(0,y);  d.print("\x10");  // >
+	}
+	g->FadeClr(Gui::C_GameOpt, 8, c, 2);
+	d.setCursor(x,y);
+	sprintf(a,str, par);  d.print(a);
+	++l;  y += yy+2;
 }

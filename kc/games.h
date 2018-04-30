@@ -96,7 +96,7 @@ struct Games
 	//  global state
 	int8_t paused, demo, ended;
 	
-	const static int8_t Presets = 10;
+	const static int8_t Presets = 11;
 	int8_t preset;  // game type
 	void NewGame();
 
@@ -112,4 +112,5 @@ struct Games
 	
 	int8_t gui, yg,  // level, cursor
 		oyg, opg;  // opt
+	void OptLine(int& x, int& y, int& l, const char* str, int par, int8_t yy);
 };

@@ -13,8 +13,8 @@ void Games::Checks()
 	if (o.blen_min > bb)  o.blen_min = bb;  // block_min < bsize^2
 	if (o.blen_max > bb)  o.blen_max = bb;
 
-	if (g->kPgUp > 0)  opg = (opg - 1 + O_All) % O_All;
-	if (g->kPgUp < 0)  opg = (opg + 1) % O_All;
+	if (g->kPgUp)
+		opg = (opg + g->kPgUp + O_All) % O_All;
 }
 
 //  Keys
@@ -67,7 +67,7 @@ int Games::KeyPress(int8_t& mlevel)
 
 	if (gui==2)  // - options -
 	{
-		oyg = (oyg + g->kUp + 6) % 6;
+		if (g->kUp)  oyg += g->kUp;
 		
 		int s = g->kCtrl ? 4 : 1, k = g->kRight * s;
 		
@@ -75,35 +75,35 @@ int Games::KeyPress(int8_t& mlevel)
 		switch (opg)
 		{
 		case O_Field:  switch (oyg)  {
-			case 0:  o.size_x   += k;  o.size_x   = max(2, min(smax_x, o.size_x));  NewGrid();  break;
-			case 1:  o.size_y   += k;  o.size_y   = max(2, min(smax_y, o.size_y));  NewGrid();  break;  //8 21
-			case 2:  o.btm_junk += k;  o.btm_junk = max(0, min(smax_y, o.btm_junk));  break;
+			case 0:  o.size_x = g->RangeAdd(o.size_x, k, 2, smax_x);  NewGrid();  break;
+			case 1:  o.size_y = g->RangeAdd(o.size_y, k, 2, smax_y);  NewGrid();  break;  //8 21
+			case 2:  o.btm_junk = g->RangeAdd(o.btm_junk, k, 0, smax_y);  break;
 			}	break;
 		case O_Speed:  switch (oyg)  {
 			case 0:  o.speed += k*SpdDet*4;  o.speed = max(0, min(200*SpdDet, o.speed));  break;
-			case 1:  o.accel += k;  o.accel = max(0, min( 80, o.accel));  break;
+			case 1:  o.accel = g->RangeAdd(o.accel, k, 0, 80);  break;
 			}	break;
 		case O_Block:  switch (oyg)  {
-			case 0:  o.bsize += k;  o.bsize = max(2, min(bmax, o.bsize));  break;
+			case 0:  o.bsize = g->RangeAdd(o.bsize, k, 2, bmax);  break;
 
-			case 1:  o.blen_min += k;  o.blen_min = max(-16, min(32, o.blen_min));  break;
-			case 2:  o.blen_max += k;  o.blen_max = max(1, min(32, o.blen_max));  break;
+			case 1:  o.blen_min = g->RangeAdd(o.blen_min, k, -16, 32);  break;
+			case 2:  o.blen_max = g->RangeAdd(o.blen_max, k,   1, 32);  break;
 
-			case 3:  o.bbias += k;  o.bbias = max(-16, min(16, o.bbias));  break;
-			case 4:  o.bdiag += k;  o.bdiag = max(2, min(8, o.bdiag));  break;
+			case 3:  o.bbias = g->RangeAdd(o.bbias, k, -16, 16);  break;
+			case 4:  o.bdiag = g->RangeAdd(o.bdiag, k,   2, 8);  break;
 			}	break;
 		
 		case O_Draw:  switch (oyg)  {
-			case 0:  o.nx_cur += k;  o.nx_cur = max(0, min(4, o.nx_cur));  break;
-			case 1:  o.dots   += k;  o.dots   = max(0, min(3, o.dots));  break;
-			case 2:  o.frame  += k;  o.frame  = max(0, min(4, o.frame));  break;
+			case 0:  o.nx_cur = g->RangeAdd(o.nx_cur, k, 0, 4);  break;
+			case 1:  o.dots   = g->RangeAdd(o.dots  , k, 0, 3);  break;
+			case 2:  o.frame  = g->RangeAdd(o.frame , k, 0, 4);  break;
 			}	break;
 		case O_Input:  switch (oyg)  {
-			case 0:  o.key_rpt += k;  o.key_rpt = max(0, min(60, o.key_rpt));  break;
+			case 0:  o.key_rpt = g->RangeAdd(o.key_rpt, k, 0, 60);  break;
 			case 1:  o.move_in_drop = 1-o.move_in_drop;  break;
 			
-			case 2:  o.sp_fall += k;  o.sp_fall = max(1, min(40, o.sp_fall));  break;
-			case 3:  o.sp_drop += k;  o.sp_drop = max(1, min(10, o.sp_drop));  break;
+			case 2:  o.sp_fall = g->RangeAdd(o.sp_fall, k, 1, 40);  break;
+			case 3:  o.sp_drop = g->RangeAdd(o.sp_drop, k, 1, 10);  break;
 			}	break;
 		}
 		Checks();

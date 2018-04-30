@@ -20,7 +20,7 @@ void Games::Init(Gui* pGui)
 	o.sp_drop = 5;  o.sp_fall = 20;
 	o.key_rpt = 15;  o.move_in_drop = 0;
 	
-	preset = 6;
+	preset = 7;
 	xo= 0; yo= 0; xa= 0; ya= 0; xb= 0; yb= 0;
 
 	gui = 1;
@@ -35,54 +35,58 @@ void Games::NewSet()
 {
 	o.nx_cur = 3;  o.dots = 0;  o.frame = 2;  o.bbias = 0;
 	switch (preset)
-	//  H 64  sy dim  21 3 .. 16 4 .. 12 5 .. 10 6
 	{
-	case 0:  // tiny
+	case 0:  // tiny-
 		o.size_x = 3;  o.size_y = 10;  o.btm_junk = 2;  o.dots = 0;  o.frame = 0;
 		o.blen_min = 1;  o.blen_max = 4;  o.bsize = 2;  o.bdiag = 4;  o.bbias = -1;
 		o.speed = 40 * SpdDet;  o.accel = 20;  break;
 
-	case 1:  // basic
+	case 1:  // basic`
 		o.size_x = 4;  o.size_y = 10;  o.btm_junk = 1;	o.dots = 0;  o.frame = 0;
 		o.blen_min = 1;  o.blen_max = 4;  o.bsize = 3;	o.bdiag = 6;
 		o.speed = 30 * SpdDet;  o.accel = 30;  break;
 
-	case 2:  // small diag
+	case 2:  // small diag ~
 		o.size_x = 5;  o.size_y = 12;  o.btm_junk = 2;  o.dots = 0;  o.frame = 0;
 		o.blen_min = 1;  o.blen_max = 5;  o.bsize = 3;  o.bdiag = 8;  o.bbias = -2;
 		o.speed = 30 * SpdDet;  o.accel = 30;  break;
 
-	case 3:  // medim diag
+	case 3:  // medim diag +
 		o.size_x = 6;  o.size_y = 14;  o.btm_junk = 2;  o.dots = 3;  o.frame = 3;
 		o.blen_min = 0;  o.blen_max = 6;  o.bsize = 5;  o.bdiag = 8;  o.bbias = -4;
 		o.speed = 5 * SpdDet;  o.accel = 10;  break;
 
-	case 4:  // tetris meh
+	case 4:  // tetris meh-
 		o.size_x = 9;  o.size_y = 12;  o.btm_junk = 3;  o.dots = 0;  o.frame = 3;
 		o.blen_min = 4;  o.blen_max = 4;  o.bsize = 4;  o.bdiag = 4;
 		o.speed = 15 * SpdDet;  o.accel = 30;  break;
 
-	case 5:  // pentis
+	case 5:  // pentis`
 		o.size_x = 11;  o.size_y = 14;  o.btm_junk = 2;  o.dots = 1;  o.frame = 2;
 		o.blen_min = 2;  o.blen_max = 5;  o.bsize = 5;  o.bdiag = 5;
 		o.speed = 10 * SpdDet;  o.accel = 20;  break;
 
 	case 6:  // sixtis
-		o.size_x = 12;  o.size_y = 16;  o.btm_junk = 1;  o.dots = 2;  o.frame = 2;
+		o.size_x = 12;  o.size_y = 16;  o.btm_junk = 2;  o.dots = 2;  o.frame = 2;
 		o.blen_min = 1;  o.blen_max = 6;  o.bsize = 5;  o.bdiag = 4;
 		o.speed = 10 * SpdDet;  o.accel = 10;  break;
 
-	case 7:  // septis diag
-		o.size_x = 14;  o.size_y = 16;  o.btm_junk = 1;  o.dots = 3;  o.frame = 3;
+	case 7:  // septis diag2 ~
+		o.size_x = 8;  o.size_y = 14;  o.btm_junk = 3;  o.dots = 2;  o.frame = 2;
+		o.blen_min = 1;  o.blen_max = 7;  o.bsize = 5;  o.bdiag = 8;  o.bbias = -4;
+		o.speed = 4 * SpdDet;  o.accel = 2;  break;
+
+	case 8:  // septis diag`
+		o.size_x = 14;  o.size_y = 16;  o.btm_junk = 2;  o.dots = 3;  o.frame = 3;
 		o.blen_min = 1;  o.blen_max = 8;  o.bsize = 6;  o.bdiag = 5;  o.bbias = -4;
 		o.speed = 4 * SpdDet;  o.accel = 2;  break;
 
-	case 8:  // octis
+	case 9:  // octis
 		o.size_x = 18;  o.size_y = 21;  o.btm_junk = 1;  o.dots = 3;  o.frame = 3;
 		o.blen_min = 0;  o.blen_max = 9;  o.bsize = 8;  o.bdiag = 4;  o.bbias = -6;
 		o.speed = SpdDet / 8;  o.accel = 0;  break;
 
-	case 9:  // huge
+	case 10:  // huge-
 		o.size_x = 20;  o.size_y = 21;  o.btm_junk = 1;  o.dots = 3;  o.frame = 3;
 		o.blen_min = 0;  o.blen_max = 12;  o.bsize = 8;  o.bdiag = 4;  o.bbias = -10;
 		o.speed = 0;  o.accel = 0;  break;
@@ -93,19 +97,13 @@ void Games::NewSet()
 
 void Games::NewGrid()
 {
-#if 0
 	//  box dim
-	dim_y = H / o.size_y;  dim_x = dim_y;
-
-	//  center, bottom
-	ofs_x = (W - o.size_x*dim_x) / 2;
-	ofs_y = (H - o.size_y*dim_y);
-#else
 	dim_y = (H-12) / o.size_y;  dim_x = dim_y;
 
+	//  grid pos
 	ofs_x = 10;
 	ofs_y = 0;
-#endif
+
 	NewGame();
 }
 
