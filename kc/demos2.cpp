@@ -14,6 +14,22 @@ const int16_t sint[SX] =
 //....................................................................................
 void Demos::Fire()
 {
+	switch (fire)
+	{
+	case 0:  Fire1();  break;
+	case 1:  Fire2();  break;
+	}
+
+	if (iInfo > 0)
+	{
+		d->setCursor(0,0);
+		d->println(fireSpd[fire]);
+	}
+	t += fireSpd[fire];
+}
+
+void Demos::Fire1()
+{
 	uint tt[4]={t*8,t*10, t*12,t*14};
 
 	uint yy[4]={0,0,0,0};
@@ -33,19 +49,40 @@ void Demos::Fire()
 
 			c = abs(c);
 			c /= cd;
-			uint16_t d = RGB(min(31, c), min(31, c/4), c/12);
-			data[a] = d;
+			data[a] = RGB(min(31, c), min(31, c/4), c/12);
 		}
 		yy[0]+=13; yy[1]+=25; yy[2]+=34; yy[3]+=45;
 		cd -= cd / 36 + 30;
 	}
+}
 
-	if (iInfo > 0)
+void Demos::Fire2()
+{
+	uint tt[6]={t*8,t*11, t*13,t*15, t*19,t*21};
+
+	uint yy[6]={0,0,0,0,0,0};
+	int cd = 30*SY/12;
+	uint a = 0;
+	for (uint y=0; y<H; ++y)
 	{
-		d->setCursor(0,0);
-		d->println(fireSpd);
+		uint xx[6]={0,0,0,0,0,0};
+		uint f = 32 + pow(y, 1.55);
+		for (uint x=0; x<W; ++x, ++a)
+		{
+			int c;
+			c = 4*Sin( (-xx[0]- yy[0])*f/128+f*24 +tt[0] ) * Cos( xx[1]+ yy[1]*f/128-f*32 +tt[1] );
+			c+= 4*Sin( (-xx[2]+ yy[2])*f/128+f*28 +tt[2] ) * Cos( xx[3]+ yy[3]*f/128-f*36 +tt[3] );
+			c-= 4*Sin( ( xx[4]+ yy[4])*f/128-f*18 +tt[4] ) * Cos( xx[5]+ yy[5]*f/128+f*26 +tt[5] );
+
+			xx[0]+=56; xx[1]+=79; xx[2]+=84; xx[3]+=121; xx[4]+=24; xx[5]+=41;
+
+			c = abs(c);
+			c /= cd*SY;
+			data[a] = RGB(min(31, c), min(31, c/4), c/12);
+		}
+		yy[0]+=13; yy[1]+=25; yy[2]+=34; yy[3]+=45; yy[4]+=21; yy[5]+=28;
+		cd -= cd / 36 + 26;
 	}
-	t += fireSpd;
 }
 
 
@@ -79,9 +116,9 @@ void Demos::Wave()
 		//yw[x] = Sin(SX*x/W+t)/(SY/32);
 	}
 
+	uint a = 0;
 	for (uint y=0; y<H; ++y)
 	{
-		uint a = y*W;
 		for (uint x=0; x<W; ++x, ++a)
 		{
 			int c = yw[x];

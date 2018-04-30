@@ -42,9 +42,8 @@ struct Demos
 
 #ifdef DEMOS_PLASMA
 	//  Plasma  ~~~~
-	int8_t plasma;  // cur mode
 	const static int8_t num_plasma = 10;  // all sets
-	int8_t tadd[num_plasma];  // speeds
+	int8_t plasma, tadd[num_plasma];  // cur mode, speeds
 
 	void Plasma(), PlasmaT(int8_t dt);
 	void PSlowClrRings(), PClrLines(),
@@ -52,9 +51,14 @@ struct Demos
 		PFastOrnCy(), PFastBlueYellow(), PFastDiamCyBlR(), PPink();
 #endif
 
-	//  Wave
-	int8_t waveSpd, fireSpd;
-	void Wave(), Fire();
+	//  Wave  ~
+	int8_t waveSpd;
+	void Wave();
+
+	//  Fire  ~~
+	const static int8_t num_fire = 2;
+	int8_t fire, fireSpd[num_fire];
+	void Fire(), Fire1(),Fire2();
 	//Spiral, Water..
 
 

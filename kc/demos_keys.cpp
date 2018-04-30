@@ -22,7 +22,6 @@ void Demos::Init(Ada4_ST7735* tft)
 	einit = INone;
 	sCnt = 3*sMax/4;  sVel = 17;  // stars
 	bCnt = min(200,bMax);  bSpd = 160;  bSpRnd = 1;  bRad = 3;  // balls
-
 	fInt = 5;  fWave = 1;  // fountain
 #endif
 
@@ -40,12 +39,14 @@ void Demos::Init(Ada4_ST7735* tft)
 
 	ckCur = 0;  ckSpeed = 6;  // logo
 #ifdef DEMOS_PLASMA
-	plasma = 2;  t = 3210;
+	plasma = 2;  t = 3210;  // plasma
 	tadd[0]=7; tadd[1]=12; tadd[2]=10; tadd[3]=5; tadd[4]=12; tadd[5]=17;  tadd[6]=18;
 	tadd[7]=5; tadd[8]=4; tadd[9]=8;
 #endif
 
-	waveSpd = 8;  fireSpd = 12;  // wave, fire
+	waveSpd = 8;  // wave
+	fire = 0;
+	fireSpd[0]=12; fireSpd[1]=17;  // fire
 #endif
 }
 
@@ -75,7 +76,7 @@ void Demos::KeyPress(EDemo demo, Gui* gui)
 	#ifdef DEMOS_PLASMA
 		//  full  --------
 		case D_Plasma:
-			if (k){  plasma += k; if (plasma < 0) plasma = num_plasma-1;  if (plasma >= num_plasma) plasma = 0;  }
+			if (k)  plasma = (plasma + k + num_plasma) % num_plasma;
 			if (u)  PlasmaT(u);
 			break;
 	#endif
@@ -95,8 +96,8 @@ void Demos::KeyPress(EDemo demo, Gui* gui)
 	#endif
 
 		case D_Fire:
-			if (k)  fireSpd += k;
-			if (u)  fireSpd += u*10;
+			if (k)  fire = (fire + k + num_fire) % num_fire;
+			if (u)  fireSpd[fire] += u;
 			break;
 
 		case D_Wave:
