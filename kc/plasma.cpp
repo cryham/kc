@@ -44,11 +44,10 @@ void Demos::PSlowClrRings()  // Clr1 blur
 	uint tt2[4]={t*7,t*17,t*8,t*3}, tt3[4]={t*11,t*14,t*7,t*5};
 	uint yy[3]={0,0,0}, yy2[6]={0,0,0,0,0,0}, yy3[6]={0,0,0,0,0,0};
 
+	uint a = 0;
 	for (uint y=0; y<H; ++y)
 	{
-		uint a = y*W;
 		uint xx[3]={0,0,0}, xx2[6]={0,0,0,0,0,0}, xx3[6]={0,0,0,0,0,0};
-
 		for (uint x=0; x<W; ++x, ++a)
 		{
 			int c,d,e;
@@ -90,11 +89,10 @@ void Demos::PClrLines()  // Clr2 lines
 	uint tt[16]={t*9,t*12,t*5,t*4, t*14,t*3,t*7,t*12, t*5,t*13,t*4,t*8, t*2,t*6,t*10,t*11};
 	uint yy[12]={0,0,0,0,0,0,0,0,0,0,0,0};
 
+	uint a = 0;
 	for (uint y=0; y<H; ++y)
 	{
-		uint a = y*W;
 		uint xx[12]={0,0,0,0,0,0,0,0,0,0,0,0};
-
 		for (uint x=0; x<W; ++x, ++a)
 		{
 			int c,r,b;
@@ -127,11 +125,10 @@ void Demos::POrnPinkCy()  // POrnPinkCy ~~~
 	uint tt[16]={t*9,t*12,t*5,t*4, t*14,t*3,t*7,t*12, t*5,t*13,t*4,t*8, t*2,t*6,t*10,t*11};
 	uint yy[12]={0,0,0,0,0,0,0,0,0,0,0,0};
 
+	uint a = 0;
 	for (uint y=0; y<H; ++y)
 	{
-		uint a = y*W;
 		uint xx[12]={0,0,0,0,0,0,0,0,0,0,0,0};
-
 		for (uint x=0; x<W; ++x, ++a)
 		{
 			int c,r,b;
@@ -164,11 +161,10 @@ void Demos::POrnViolBlue()  // orange viol blue
 				t*3,t*8,t*2,t*6, t*5,t*9,t*2,t*7, t*3,t*8,t*4,t*5};
 	uint yy[12]={0,0,0,0, 0,0,0,0, 0,0,0,0};
 
+	uint a = 0;
 	for (uint y=0; y<H; ++y)
 	{
-		uint a = y*W;
 		uint xx[12]={0,0,0,0, 0,0,0,0, 0,0,0,0};
-
 		for (uint x=0; x<W; ++x, ++a)
 		{
 			int c,d,e;
@@ -199,11 +195,10 @@ void Demos::PSmallWhiteCyVi()  // small white cyan viol
 	uint tt[16]={t*9,t*12,t*5,t*4, t*14,t*3,t*7,t*12, t*5,t*13,t*4,t*8, t*2,t*6,t*10,t*11};
 	uint yy[12]={0,0,0,0,0,0,0,0,0,0,0,0};
 
+	uint a = 0;
 	for (uint y=0; y<H; ++y)
 	{
-		uint a = y*W;
 		uint xx[12]={0,0,0,0,0,0,0,0,0,0,0,0};
-
 		for (uint x=0; x<W; ++x, ++a)
 		{
 			int c,d,e;
@@ -233,11 +228,10 @@ void Demos::POldBlue()  // old blue  ---
 	uint tt[16]={t*9,t*12,t*5,t*4, t*14,t*3,t*7,t*12, t*5,t*13,t*4,t*8, t*2,t*6,t*10,t*11};
 	uint yy[12]={0,0,0,0,0,0,0,0,0,0,0,0};
 
+	uint a = 0;
 	for (uint y=0; y<H; ++y)
 	{
-		uint a = y*W;
 		uint xx[12]={0,0,0,0,0,0,0,0,0,0,0,0};
-
 		for (uint x=0; x<W; ++x, ++a)
 		{
 			int c;
@@ -268,11 +262,10 @@ void Demos::PFastOrnCy()  // fast1  orng cyan
 	uint tt[4]={t*9,t*17,t*8,t*3};
 	uint yy[6]={0,0,0,0,0,0};
 
+	uint a = 0;
 	for (uint y=0; y<H; ++y)
 	{
-		uint a = y*W;
 		uint xx[6]={0,0,0,0,0,0};
-
 		for (uint x=0; x<W; ++x, ++a)
 		{
 			int c,e;
@@ -296,11 +289,10 @@ void Demos::PFastBlueYellow()  // fast2  blue grn ylw
 	uint tt[8]={t*3,t*7,t*11,t*15,t*19,t*22,t*9,t*13};
 	uint yy[4]={0,0,0,0};
 
+	uint a = 0;
 	for (uint y=0; y<H; ++y)
 	{
-		uint a = y*W;
 		uint xx[4]={0,0,0,0};
-
 		for (uint x=0; x<W; ++x, ++a)
 		{
 			#define m 8
@@ -326,11 +318,10 @@ void Demos::PFastDiamCyBlR()  // fast3  diam cyan blue red
 	uint tt[8]={t*3,t*7,t*11,t*15,t*19,t*22,t*9,t*13};
 	uint yy[4]={0,0,0,0};
 
+	uint a = 0;
 	for (uint y=0; y<H; ++y)
 	{
-		uint a = y*W;
 		uint xx[4]={0,0,0,0};
-
 		for (uint x=0; x<W; ++x, ++a)
 		{
 			int32_t c,d,e;
@@ -341,7 +332,7 @@ void Demos::PFastDiamCyBlR()  // fast3  diam cyan blue red
 			c = abs(-S*5+d-abs(S*2+c));  d = abs(c-S*3+abs(e-S*6));  e = abs(S*7-d);
 			xx[0]+=25; xx[1]+=32; xx[2]+=47; xx[3]+=69;
 
-			c /= SY*(SY/12);  d /= SY*(SY/12);  e /= SY*(SY/12);
+			c /= SY*(SY/14);  d /= SY*(SY/14);  e /= SY*(SY/14);
 			data[a] = RGB(e/4, c/4, d/4);
 		}
 		yy[0]+=16; yy[1]+=31; yy[2]+=49; yy[3]+=71;
@@ -355,11 +346,10 @@ void Demos::PPink()  // fast4  pink
 	uint tt[8]={t*4,t*6,t*3,t*5,t*9,t*8,t*11,t*2};
 	uint yy[4]={0,0,0,0};
 
+	uint a = 0;
 	for (uint y=0; y<H; ++y)
 	{
-		uint a = y*W;
 		uint xx[4]={0,0,0,0};
-
 		for (uint x=0; x<W; ++x, ++a)
 		{
 			int c,d,e;
@@ -372,7 +362,7 @@ void Demos::PPink()  // fast4  pink
 			e = abs(d+3*S-abs(c-6*S));
 			xx[0]+=111; xx[1]+=62; xx[2]+=37; xx[3]+=46;
 
-			c /= SY*(SY/12);  d /= SY*(SY/12);  e /= SY*(SY/12);
+			c /= SY*(SY/14);  d /= SY*(SY/14);  e /= SY*(SY/14);
 			data[a] = RGB( max(c/5,d/4), min(d/5,e/5), max(c/4,e/5) );
 		}
 		yy[0]+=113; yy[1]+=55; yy[2]+=33; yy[3]+=41;

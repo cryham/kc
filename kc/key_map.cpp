@@ -33,7 +33,7 @@ int8_t Gui::KeysMap()
 
 	if (moveCur)  // move cursor
 	{
-		if (kBack)
+		if (kBack || kMul)
 		{	//  set if key exists in matrix
 			uint8_t sc = drawKeys[drawId].sc;
 			if (sc < ScanKeys && sc != NO)
@@ -47,7 +47,7 @@ int8_t Gui::KeysMap()
 
 		for (int i = 0; i < nDrawKeys; ++i)
 		{
-			const DrawKey& k = drawKeys[i];
+			const DrawKey& k = drawKeys[i], pk = drawKeys[max(0,i-1)];
 
 			//  set coords or advance
 			if (k.x >=0)  x = k.x;  else  x -= k.x;
