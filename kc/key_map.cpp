@@ -51,7 +51,8 @@ int8_t Gui::KeysMap()
 
 			//  set coords or advance
 			if (k.x >=0)  x = k.x;  else  x -= k.x;
-			if (k.y > 0)  y = k.y + yPosLay;  else  y -= k.y;
+			if (k.y > 0)  y = k.y + yPosLay;  else
+			{	if (pk.w < 6)  y += k.y;  else  y -= k.y;  }  // tiny up
 
 			//  distance to cursor key center
 			int dx = x + k.w/2 - drawX,
@@ -59,12 +60,12 @@ int8_t Gui::KeysMap()
 
 			if (i != drawId)
 			{
-				if (kRight > 0 && dx > 0 && abs(dy) < 8)  // >
+				if (kRight > 0 && dx > 0 && abs(dy) < 6)  // >
 				{
 					if (dx < mxr)
 					{	mxr = dx;  ii = i;  }
 				}else
-				if (kRight < 0 && dx < 0 && abs(dy) < 8)  // <
+				if (kRight < 0 && dx < 0 && abs(dy) < 6)  // <
 				{
 					if (dx > mxl)
 					{	mxl = dx;  ii = i;  }

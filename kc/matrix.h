@@ -160,7 +160,7 @@ extern "C"
 #endif
 
 extern void Matrix_setup();
-extern void Matrix_scan( uint16_t scanNum );  // todo ? ..
+extern void Matrix_scan( uint16_t scanNum );
 
 extern KeyState Matrix_scanArray[ScanKeys];
 

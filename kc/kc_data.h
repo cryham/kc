@@ -55,7 +55,6 @@ struct KC_Main
 {
 	//  current layer, set by keys
 	int8_t nLayer = 0;
-	// todo default layer
 
 	int8_t setDac = 1;  // update
 

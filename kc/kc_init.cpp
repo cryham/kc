@@ -84,16 +84,9 @@ void KC_Setup::InitCK()
 				 if (dk.code == K_MENU)	add(K_Layer1, 0);
 			else if (dk.code == K_CAPS)	add(K_Layer2, 0);
 		#endif
-			else if (dk.code == K_T)	add(K_Seq0, 2);
-			else if (dk.code == K_H)	add(K_S2, 2);
-			else if (dk.code < K_Z && i % 3 == 0)
-			{	add(dk.code+1, 1);
-				add(dk.code+2, 2);
-			}else if (dk.code < K_Z && i % 3 == 1)
-			{	add(dk.code+1, 2);
-			}else if (dk.code < K_UP && i % 3 == 1)
-			{	add(dk.code+1, 1);
-			}	// mouse
+			else if (dk.code == K_1)	add(K_Seq0, 2);
+			else if (dk.code == K_Q)	add(K_S1, 2);
+			else  // mouse
 			if (dk.code == K_UP)    add(KM_Up, 2);  else
 			if (dk.code == K_DOWN)  add(KM_Down, 2);  else
 			if (dk.code == K_LEFT)  add(KM_Left, 2);  else
@@ -116,13 +109,5 @@ void KC_Setup::InitCK()
 	sq.add(K_RCTRL);  sq.add(K_RSHIFT);
 	sq.add(K_LEFT);  sq.add(K_LEFT);  sq.add(K_LEFT);
 	seqs[2] = sq;  sq.data.clear();
-
-	sq.add(K_1);  sq.add(K_2);
-	sq.add(K_3);  sq.add(K_4);
-	seqs[5] = sq;  sq.data.clear();
-
-	sq.add(K_Q);  sq.add(K_E);  sq.add(K_LSHIFT);
-	sq.add(K_F);  sq.add(K_G);
-	seqs[7] = sq;
 	#endif
 }

@@ -150,7 +150,7 @@ void KC_Main::Send(uint32_t ms)
 					k.layerOn = nLayer;
 				}
 				else if (code >= KM_WhlUp && code <= KM_WhlRight)
-				{	switch (code)  // todo wheel ?
+				{	switch (code)  // wheel ?
 					{
 					case KM_WhlLeft:  Mouse_wheel_x =-1;  break;  case KM_WhlRight: Mouse_wheel_x = 1;  break;
 					case KM_WhlUp:    Mouse_wheel_y =-1;  break;  case KM_WhlDown:  Mouse_wheel_y = 1;  break;

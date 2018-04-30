@@ -86,19 +86,12 @@ int main()
 	tft.clear();
 	tft.display();  // black
 
-	//gui.Draw();  // visible if crashed?
-	//gui.DrawEnd();
 
-
-	//  todo load set from ee
+	//  load set from ee
 	kc.Load();
 	gui.SetScreen(par.startScreen);
-//	gui.kbdSend = 1;  // release
+	gui.kbdSend = 1;  // release
 
-	delay(200);
-	tft.begin();
-	tft.clear();
-	tft.display();  // black
 
 	//  kbd
 	Matrix_setup();
