@@ -71,17 +71,16 @@ struct Gui
 
 	//  keys pressed, some +-1
 	int8_t kRight=0, kUp=0,  kPgUp=0, kEnd=0,  kDnH=0,
-			kBack=0, kEnt=0,  kCtrl=0, kSh=0,  kInf=0, kFps=0,
+			kBack=0, kEnt=0,  kCtrl=0, kSh=0,  kMul=0, kSub=0, kDiv=0,
 	/*seq*/	kBckSp=0, kIns=0, kDel=0,  kCopy=0, kPaste=0, kSwap=0,
 			kLoad=0, kSave=0;
 
 	//  level 2 y cursor  - -
 	int8_t ym2Test = 0;  // Testing
-	int8_t ym2Disp = 0;  // Display
+	int8_t ym2Disp = 0, pgDisp = 0;  // Display
 
 
 	//  Sequences  - - - -
-	int8_t editSeq=0;
 	int8_t edit = 0;   // seq 0 view / 1 edit
 	int8_t edins = 0;  // 1 ins 0 overwrite
 	int8_t slot, page, edpos;  // edit vars
@@ -90,7 +89,7 @@ struct Gui
 	int8_t cpId = -1;  // copy/swap from
 
 	int8_t tBlnk = 0;
-	const int8_t iPage = 10, cBlnk = 35;  // par -
+	const int8_t iPage = 10, cBlnk = 25;  // par -
 	int16_t tInfo=0, infType=0;  // info text vars
 
 	//  const from grp

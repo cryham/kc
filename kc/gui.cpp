@@ -1,5 +1,6 @@
 #include "gui.h"
 #include "def.h"
+#include "kbd_layout.h"
 
 
 //  Main  ----
@@ -31,7 +32,7 @@ void Gui::Init(Ada4_ST7735* tft)
 	game.Init(this);
 #endif
 
-	nLay=0;  scId=0;  drawId=54;
+	nLay=0;  scId=NO;  drawId=54;
 	keyCode=0;
 	pressKey=0;  moveCur=0;  pickCode=0;
 

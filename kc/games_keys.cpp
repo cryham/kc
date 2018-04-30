@@ -30,7 +30,7 @@ int Games::KeyPress(int8_t& mlevel)
 		else  gui = 1;  // gui on
 	}
 
-	if (g->kInf)  // keyp(ASTERISK) || keyp(MINUS))
+	if (g->kMul)  // keyp(ASTERISK) || keyp(MINUS))
 	{
 		if (gui==2)  gui = 0;  // toggle options
 		else  gui = 2;
@@ -118,7 +118,7 @@ int Games::KeyPress(int8_t& mlevel)
 
 	if (ended)  return 0;
 
-	if (g->kInf && !gui)  // || key(SPACE))  // pause
+	if (g->kMul && !gui)  // || key(SPACE))  // pause
 		paused = 1 - paused;
 
 	if (paused)  return 0;

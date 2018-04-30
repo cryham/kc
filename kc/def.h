@@ -1,12 +1,11 @@
 #pragma once
 #include <stdint.h>
 
-
 //----  Setup  ----		   ram B      flash
-//   no demos ck1		// 45572 69%  58%
-//  all demos ck1 max	// 52252 79%  75% ok
+//   no demos ck1		//  69%  58%
+//  all demos ck1 max	//  79%  75% ok
 
-//   no demos ck3		//  0    0%
+//   no demos CK6		//  0    0%
 #define DEMOS			//  28   9%
 #define DEMOS_PLASMA	//  36   11%
 #define DEMOS_3D		//  44   15%
@@ -14,7 +13,7 @@
 					// all  6680 10%  17%  max 41k  75% total
 #define GAME		// game 1.5k 2%   22.9k 7%
 
-//   keyboard
+//   Keyboard  ----
 //#define CK1  // 8x6
 //#define CK6  // 18x8  new CK3
 #define CK7  // 18x8  old CK4/2
@@ -26,7 +25,7 @@
 #define H 128
 
 //  R F800  G 07E0  B 001F  R 32 G 64 B 32  565
-#define RGB(r,g,b) ( ((r)<<11)+ ((g)<<6) +(b))   // 31 31 31
+#define RGB(r,g,b)  ( ((r)<<11)+ ((g)<<6) +(b))   // 31 31 31
 #define RGB2(r,g,b) ( ((r)<<11)+ ((g)<<5) +(b))  // 31 63 31
 
 #ifdef __cplusplus
@@ -48,7 +47,7 @@ enum EMainMenu  //  main menu entries, level0
 };
 
 #ifdef DEMOS
-enum EDemo  // Demos, level1
+enum EDemo  //  Demos, level1
 {
 	#ifdef DEMOS_PLASMA
 		D_Plasma,
@@ -63,15 +62,14 @@ enum EDemo  // Demos, level1
 	#endif
 		D_Rain, D_Ngons, D_Fonts,
 
-		D_All,
-		D_Next = D_CK_Logo,
+		D_All,  D_Next = D_CK_Logo
 };
 extern const char *strDemo[D_All];
 #endif
 
-enum ETesting  // Testing kbd, level1
+enum ETesting  //  Testing kbd, level1
 {
-	T_Pressed=0, T_Matrix, T_Layout, T_ScanSetup, T_Mouse, T_All
+	T_Pressed=0, T_Matrix, T_Layout, T_Mouse, T_ScanSetup, T_All
 };
 
 //  string names for all above ^

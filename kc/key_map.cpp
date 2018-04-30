@@ -93,13 +93,13 @@ int8_t Gui::KeysMap()
 	{
 		if (kBack)
 		{	//  apply in kc
-			if (scId >= 0 && scId < kc.set.nkeys())
+			if (scId != NO && scId < kc.set.nkeys())
 			{
 				kc.set.key[nLay][scId] = keyCode;
 			}
 			pickCode = 0;  return 1;
 		}
-		if (kFps)
+		if (kSub)
 		{	pickCode = 0;  return 1;  }
 
 		if (kRight)  // <- ->

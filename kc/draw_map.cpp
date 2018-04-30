@@ -240,7 +240,7 @@ void Gui::DrawLayout(bool edit)
 		//  mark  mapping edit
 		if (edit)  {
 		if (moveCur && drawId >= 0 && i == drawId)  f = 2;
-		if (!moveCur && scId >= 0 && scId == k.sc)  f = 2;  }
+		if (!moveCur && scId != NO && scId == k.sc)  f = 2;  }
 
 		//  set coords or advance
 		if (k.x >=0)  x = k.x;  else  x -= k.x;
