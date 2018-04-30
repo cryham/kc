@@ -12,14 +12,14 @@ extern KC_Main kc;
 
 //  menu colors
 const uint8_t Gui::Mclr[Gui::Cl_ALL][2][3] = {
-	{{16,26,31},{4,3,1}},  // 0 main
+	{{20,26,31},{5,3,1}},  // 0 main
 	{{27,26,31},{2,3,1}},  // 1 demos
 	{{20,30,26},{6,3,4}},  //  2 test
 	{{22,31,18},{6,3,7}},  //  3 map
 	{{17,31,31},{5,4,3}},  //  4 seqs
-	{{31,31,21},{1,3,5}},  // 5 display
-	{{26,28,28},{4,3,3}},  // 6 scan, mouse-
-	{{31,26,26},{2,4,3}},  // 7 game
+	{{30,30,20},{3,6,5}},  // 5 display
+	{{26,28,28},{4,3,3}},  // 6 scan, mouse
+	{{31,26,12},{1,4,5}},  // 7 game
 };
 
 
@@ -27,6 +27,8 @@ const uint8_t Gui::Mclr[Gui::Cl_ALL][2][3] = {
 //....................................................................................
 void Gui::DrawEnd()
 {
+	DrawOperInfo();
+
 	char a[64];
 	//  ram info  ---------
 	if (iRam)
@@ -182,4 +184,32 @@ int8_t Gui::kr(uint8_t sc, uint16_t dt)
 		}
 	}
 	return 0;
+}
+
+//  value add, range
+int16_t Gui::RangeAdd(int16_t val, int16_t add, int16_t vmin, int16_t vmax, int8_t cycle)
+{
+	int16_t v = val;
+	if (cycle)
+	{	int16_t r = vmax - vmin + 1;
+		v = (v + add + r) % r;
+	}else
+	{	v += add;
+		v = min(vmax, max(vmin, v));
+	}
+	return v;
+}
+
+//  save
+void Gui::Save()
+{
+	kc.Save();  infType = 2;  tInfo = -1;
+}
+//  load
+void Gui::Load(int8_t reset)
+{
+	if (reset)
+	{	kc.set.InitCK();  infType = 0;  }
+	else
+	{	kc.Load();  infType = 1;  }  tInfo = -1;
 }

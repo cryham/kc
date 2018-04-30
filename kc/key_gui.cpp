@@ -12,7 +12,7 @@ extern KC_Main kc;
 //....................................................................................
 void Gui::KeyPress()
 {
-	if (Key(gGui))
+	if (Key(gGui))  // toggle Gui
 	{	kbdSend = 1 - kbdSend;  kc.setDac = 1;  }
 
 	if (kbdSend)
@@ -25,27 +25,19 @@ void Gui::KeyPress()
 	//  update keys press
 	kRight= kr(gRight,dt) - kr(gLeft,dt);
 	kUp   = kr(gDown,dt) - kr(gUp,dt);  kDnH = KeyH(gDown);
-	kPgUp = kr(gPgUp,dt) - kr(gPgDn,dt);
+	kPgUp = kr(gPgDn,dt) - kr(gPgUp,dt);
 	kEnd  = kr(gEnd,dt) - kr(gHome,dt);
 
 	kBack = Key(gAdd);  kEnt = Key(gEnt);
 	kCtrl = KeyH(gCtrl); kSh  = KeyH(gSh);
-	kInf  = Key(gMul);  kFps = Key(gSub);
+	kMul  = Key(gMul);  kSub = Key(gSub);  kDiv = Key(gDiv);
 	//  edit seq
 	kIns = Key(gIns);   kDel = kr(gDel,dt);  kBckSp = kr(gBckSp,dt);
 	kCopy = Key(gC);  kPaste = Key(gV);  kSwap = Key(gX);
 	kLoad = Key(gLoad);  kSave = Key(gSave);
 
-	if (Key(gDiv))  // ram info
-		iRam = (iRam + 1 + 3) % 3;
 
-
-	#define RangeAdd(v,va, a,b) \
-		if (va > 0){  if (v+va >= b)  v = b;  else  v += va; } \
-		if (va < 0){  if (v+va <= a)  v = a;  else  v += va; }
-
-
-	//  Game
+	//  Game  ------
 	#ifdef GAME
 	if (ym == M_Game && mlevel == 1)
 	{
@@ -66,14 +58,14 @@ void Gui::KeyPress()
 		switch (ym2Test)
 		{
 		case 0:
-			RangeAdd(par.scanFreq, -kRight*4, 2, 150);
+			par.scanFreq = RangeAdd(par.scanFreq, -kRight * (kSh ? 1 : 4), 2, 150);
 			Periodic_init( par.scanFreq * 1000 );  break;  // upd
 		case 1:
-			RangeAdd(par.strobe_delay, kRight, 0, 50);  break;
+			par.strobe_delay = RangeAdd(par.strobe_delay, kRight, 0, 50);  break;
 		case 2:
-			RangeAdd(par.debounce, kRight, 0, 50);  break;
+			par.debounce = RangeAdd(par.debounce, kRight, 0, 50);  break;
 		case 3:
-			RangeAdd(par.dtSeqDef, kRight, 0, 250);  break;
+			par.dtSeqDef = RangeAdd(par.dtSeqDef, kRight * (kCtrl ? 10 : 1), 0, 250);  break;
 		}
 	}
 	//  Testing  Mouse
@@ -83,30 +75,40 @@ void Gui::KeyPress()
 	//..............................................
 	if (ym == M_Display && mlevel == 1)
 	{
-		if (kUp)
-		{	ym2Disp = (ym2Disp + kUp + 6) % 6;  }  // y max par
+		if (kUp)  // y
+		{	ym2Disp = RangeAdd(ym2Disp, kUp, 0, DispPages[pgDisp]-1, 1);  }
 		else
+		if (kPgUp)  // pg
+		{	pgDisp = RangeAdd(pgDisp, kPgUp, 0, Disp_All-1, 1);
+			ym2Disp = RangeAdd(ym2Disp, 0, 0, DispPages[pgDisp]-1, 1);
+		}else
 		if (kRight)  // adjust values
-		switch (ym2Disp)
+		switch (pgDisp)
 		{
 		case 0:
-			RangeAdd(par.brightness, kRight * 2, 0, 100);
-			kc.setDac = 1;  break;
+			switch (ym2Disp)
+			{
+			case 0:
+				par.brightness = RangeAdd(par.brightness, kRight * (kCtrl ? 10 : 2), 0, 100);
+				kc.setDac = 1;  break;
+			case 1:
+				par.brightOff = RangeAdd(par.brightOff, kRight * (kCtrl ? 10 : 2), 0, 100);  break;
+			case 2:
+				par.fadeTime = RangeAdd(par.fadeTime, kRight * 2, 0, 100);  break;
+			case 3:
+				par.startScreen = RangeAdd(par.startScreen, kRight, 0, ST_ALL-1);  break;
+			}	break;
 		case 1:
-			RangeAdd(par.fadeTime, kRight * 2, 0, 100);
-			break;
-		case 2:
-			RangeAdd(par.brightOff, kRight * 2, 0, 100);
-			break;
-
-		case 3:
-			RangeAdd(par.startScreen, kRight, 0, ST_ALL-1);  break;
-		case 4:
-			RangeAdd(par.krDelay, kRight, 0,255);  break;
-		case 5:
-			RangeAdd(par.krRepeat, kRight, 0,255);  break;
+			switch (ym2Disp)
+			{
+			case 0:
+				par.krDelay = RangeAdd(par.krDelay, kRight, 0,255);  break;
+			case 1:
+				par.krRepeat = RangeAdd(par.krRepeat, kRight, 0,255);  break;
+			case 2:  // ram info
+				iRam = RangeAdd(iRam, kRight, 0, 2);  break;
+			}	break;
 		}
-
 		if (kBack)  --mlevel;
 		return;
 	}
@@ -124,16 +126,14 @@ void Gui::KeyPress()
 	//.......................
 	if (mlevel == 1 && ym == M_Sequences)
 	{
-		KeysSeq();
-		return;
+		KeysSeq();  return;
 	}
 
 
 	//  Add+  <back global
-	if (kBack && mlevel > 0)
-		--mlevel;
+	if (kBack && mlevel > 0)  --mlevel;
 
-	if (mlevel == 0)  //  main
+	if (mlevel == 0)  //  main menu
 	{
 		if (kUp){  ym += kUp;  if (ym >= M_All)  ym = 0;  if (ym < 0)  ym = M_All-1;  }
 		if (kRight > 0)  mlevel = 1;  // enter>
@@ -145,28 +145,36 @@ void Gui::KeyPress()
 	//............................................
 	if (mlevel == 1 && ym == M_Mapping)
 	{
-		#define ADD(v,a,ma,mi)  {  v+=a;  if (v >= ma)  v = mi;  if (v < mi)  v = ma-1;  }
-
 		if (kUp)  // menu up,dn
-			ADD(ym1[ym], kUp, YM1[ym], 0)
+			ym1[ym] = RangeAdd(ym1[ym], kUp, 0, YM1[ym]-1, 1);
 
 		if (kRight > 0)
 		{	//  enter modes
-			if (yy == 3)  pickCode = 1;  else
 			if (yy == 0)  pressKey = 1;  else
-			if (yy == 1)  moveCur = 1;
+			if (yy == 1)  moveCur = 1;  else
+			if (yy == 3)  pickCode = 1;
 		}
-		if (kRight)  // chg lay
-			if (yy == 2)  ADD(nLay, kRight, 8,0)
+		if (kPgUp || (yy == 2 && kRight))  // chg lay
+			nLay = RangeAdd(nLay, kPgUp+kRight, 0,7, 1);
+
+		//  quick access keys / * -
+		if (kDiv)  pressKey = 1;
+		if (kMul)  moveCur = 1;
+		if (kSub)  pickCode = 1;
+
+		if (kSave)  Save();
+		if (kLoad)  Load(kCtrl);
 		return;
 	}
 
 
 	if (mlevel == 1)  //  sub menu
-	{	//  navigate
+	{
+		//  navigate
 		if (kRight < 0)  mlevel = 0;  // <back
-		if (ym != M_Display)
-		if (kRight > 0)	 mlevel = 2;  // enter>
+		if (kRight > 0)
+			if (ym != M_Display)  mlevel = 2;  // enter>
+
 		if (kUp){  ym1[ym] += kUp;  Chk_y1();  }
 		return;
 	}
