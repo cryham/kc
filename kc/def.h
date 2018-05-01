@@ -36,14 +36,14 @@ class Ada4_ST7735;
 enum EMainMenu  //  main menu entries, level0
 {
 		M_Testing=0, M_Mapping, M_Sequences,
-		M_Display, //M_Clock
+		M_Display, M_Help,
 	#ifdef GAME
 		M_Game,
 	#endif
 	#ifdef DEMOS
 		M_Demos,
 	#endif
-		M_All
+		M_All,  M_Next = M_Display  // -1 off
 };
 
 #ifdef DEMOS

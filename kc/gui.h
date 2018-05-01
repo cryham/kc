@@ -30,7 +30,8 @@ struct Gui
 	int8_t KeysSeq(), KeysMap();
 	void WriteSeq(int8_t seq, int8_t q);
 
-	void SetScreen(int8_t start), DrawOperInfo();
+	void DrawDisplay(), DrawHelp(), DrawOperInfo();
+	void SetScreen(int8_t start);
 	const char* StrScreen(int8_t s);
 
 
@@ -61,6 +62,9 @@ struct Gui
 	uint32_t oldti_kr;
 	int8_t kr(uint8_t sc, uint16_t dt);
 	int8_t iRam = 0;
+
+	int8_t hpage = 0;
+	const static int8_t HAll = 11;
 
 
 	//  Mapping  - - - -

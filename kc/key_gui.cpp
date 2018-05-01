@@ -41,7 +41,10 @@ void Gui::KeyPress()
 	#ifdef GAME
 	if (ym == M_Game && mlevel == 1)
 	{
-		game.KeyPress(mlevel);
+		if (game.KeyPress(mlevel))
+		{	// goto help
+			ym = M_Help;  mlevel = 1;  hpage = 5;
+		}
 		return;
 	}
 	#endif
@@ -121,7 +124,6 @@ void Gui::KeyPress()
 		if (KeysMap())  return;
 	}
 
-
 	//  sequence list
 	//.......................
 	if (mlevel == 1 && ym == M_Sequences)
@@ -146,7 +148,7 @@ void Gui::KeyPress()
 	if (mlevel == 1 && ym == M_Mapping)
 	{
 		if (kUp)  // menu up,dn
-			ym1[ym] = RangeAdd(ym1[ym], kUp, 0, YM1[ym]-1, 1);
+			ym1[ym] = RangeAdd(ym1[ym], kUp, 0,YM1[ym]-1, 1);
 
 		if (kRight > 0)
 		{	//  enter modes
@@ -155,7 +157,8 @@ void Gui::KeyPress()
 			if (yy == 3)  pickCode = 1;
 		}
 		if (kPgUp || (yy == 2 && kRight))  // chg lay
-			nLay = RangeAdd(nLay, kPgUp+kRight, 0,7, 1);
+			nLay = RangeAdd(nLay, kPgUp+kRight, 0,KC_MaxLayers, 1);
+			// nLay == KC_MaxLayers shows layer use vis
 
 		//  quick access keys / * -
 		if (kDiv)  pressKey = 1;
@@ -164,6 +167,17 @@ void Gui::KeyPress()
 
 		if (kSave)  Save();
 		if (kLoad)  Load(kCtrl);
+		return;
+	}
+
+
+	//  Help
+	if (mlevel == 1 && ym == M_Help)
+	{
+		if (kUp)
+			hpage = RangeAdd(hpage, kUp, 0,HAll-1, 1);
+		if (kRight < 0 || kBack)
+			mlevel = 0;  // <back
 		return;
 	}
 

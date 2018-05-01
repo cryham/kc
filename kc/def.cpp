@@ -5,15 +5,15 @@
 const char* strMain[M_All] =
 {
 	"Testing", "Mapping", "Sequences",
-	"Display", //"Clock",
+	"Display", "Help",
 #ifdef GAME
 	"Game",
 #endif
 #ifdef DEMOS
 	"Demos",
 #endif
-	//"Help", F1
 };
+
 
 //  Demos
 #ifdef DEMOS
@@ -41,6 +41,7 @@ const char* strTest[T_All] =
 	"Pressed", "Matrix", "Layout", "Mouse", "Scan Setup",
 };
 
+
 //  sub pages
 const uint8_t YM1[M_All] =
 {
@@ -49,6 +50,7 @@ const uint8_t YM1[M_All] =
 	1,  // M_Sequences
 
 	1,  // M_Display
+	1,  // M_Help
 #ifdef GAME
 	1,
 #endif
