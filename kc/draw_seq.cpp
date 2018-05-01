@@ -12,7 +12,7 @@ extern KC_Main kc;
 
 //  Sequences kbd view, edit
 //....................................................................................
-//  write sequence  ---
+//  write sequence
 void Gui::WriteSeq(int8_t seq, int8_t q)
 {
 	int n=0, xm=1;
@@ -137,21 +137,23 @@ void Gui::DrawSequences()
 	}
 }
 
+//  Info Operation  ----------
 void Gui::DrawOperInfo()
 {
 	char a[32];
-	//  Info Operation  ----------
 	if (tInfo < 0)  // trigger
-		tInfo = 100;  // par
+		tInfo = 70;  // par
 
 	if (tInfo > 0)
 	{	--tInfo;
-		int x = W-1 - 6*9, x1 = x+6, xe = 6*3, y = 12;
 		bool h = infType == 1 || infType == 2;
+		int x = W-1 - 6*9, x1 = x+6, xe = 6*3,
+			y = 12, yy = h ? 42 : 10;
 
 		d->setFont(0);
 		d->setCursor(x, 0);  //  bck
-		d->fillRect(x-3, 0, W-1-(x-3), h ? 42 : 10, RGB(4,6,8));
+		d->fillRect(x-3, 0, W-1-(x-3), yy, RGB(4,6,8));
+		d->drawFastVLine(W-1, 0, yy * tInfo / 100, RGB(6,9,12));  // time|
 		d->setTextColor(RGB(27,29,31));
 
 		const static char* strInf[6] = {
@@ -159,8 +161,7 @@ void Gui::DrawOperInfo()
 		d->print(strInf[infType]);
 
 		if (h)
-		{
-			d->setTextColor(RGB(28,25,31));  // mem`
+		{	d->setTextColor(RGB(28,25,31));  // mem`
 			d->setCursor(x1, y);
 			sprintf(a,"%d B", kc.memSize);  d->print(a);
 
@@ -172,9 +173,11 @@ void Gui::DrawOperInfo()
 			d->setCursor(x1, y+20);
 			sprintf(a,"ver %d", kc.set.ver);  d->print(a);
 
-			d->fillRect(xe-3, y-2, x-3-(xe-3), 12, RGB(6,4,4));
-			d->setTextColor(RGB(31,22,21));
-			d->setCursor(xe, y);
-			d->print(KCerrStr[kc.err]);
-	}	}
+			if (kc.err != E_ok)  // error string
+			{
+				d->fillRect(xe-3, y-2, x-3-(xe-3), 12, RGB(6,4,4));
+				d->setTextColor(RGB(31,22,21));
+				d->setCursor(xe, y);
+				d->print(KCerrStr[kc.err]);
+	}	}	}
 }

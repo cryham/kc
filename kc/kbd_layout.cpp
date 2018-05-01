@@ -169,7 +169,7 @@ const DrawKey drawKeys[nDrawKeys] = {  //  Layout draw
  {M,-2,wh, '/',3, 25,KP_DIV},{X,0,wh, 'x',3, 35,KP_MUL},{X,0,wh, '-',3,17,KP_SUB},
 {XN,29,wh, '7',8, 87,K_HOME},{X,0,wh, 24 ,8, 79,K_UP},  {X,0,wh, '9',8, 89,K_PGUP},{X,0,kW,kH*2,'+',3,78,KP_ADD},
 {XN,38,wh, 27 ,8,105,K_LEFT},{X,0,wh,  7 ,6, 97,K_DEL}, {X,0,wh, 26 ,8,107,K_RIGHT},
-{XN,47,wh, '1',8,123,K_END}, {X,0,wh, 25 ,8,115,K_DOWN},{X,0,wh, '3',8,125,K_PGDN},{X,0,kW,kH*2, 217,6,114,KP_ENT},
+{XN,47,wh, '1',8,123,K_END}, {X,0,wh, 25 ,8,115,K_DOWN},{X,0,wh, '3',8,125,K_PGDN},{X,0,kW,kH*2, 217,7,114,KP_ENT},
 {XN,56,kW*2,kH,'_',6,133,K_INS},{-kW*2,0,wh,'.',6,143,K_DEL}, //Ins Del
 };
 const uint8_t gGui=96, gMslow=101, gLoad=37,gSave=130,gDiv=25,

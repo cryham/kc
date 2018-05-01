@@ -7,7 +7,7 @@ using namespace std;
 Games::Games()
 {
 	old_ti = 0;  dt_sum = 0;
-	paused = 0;  demo = 0;  ended = 1;
+	paused = 0;  ended = 1;
 
 	Init(0);
 }
@@ -109,7 +109,7 @@ void Games::NewGrid()
 
 void Games::NewGame()
 {
-	paused = 0;  demo = 0;  ended = 0;
+	paused = 0;  ended = 0;
 	score = 0;  errors = 0;
 	lines = 0;
 		
@@ -352,7 +352,7 @@ void Games::GenBlock(Block& b)
 		if (o.bbias > 0)  len += random( o.bbias+1);
 		len = min(o.blen_max, max(1, len));  // len = 1..blen_max
 		
-		int cl = min(120, len*10 + int(random(5)));  // color
+		int cl = min(len,12)*10 + int(random(7));  // color
 		int l = 0, err = 0;
 		while (l < len && err < 20)
 		{

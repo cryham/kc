@@ -128,14 +128,13 @@ int Games::KeyPress(int8_t& mlevel)
 	if (!drop || o.move_in_drop)
 	{
 		//  rotate  control
-		if ((demo && random(500)==0) ||
-			g->kUp < 0)  // rot cw
+		if (g->kUp < 0)  // rot cw
 		{
 			Rotate(cpy, blk, 1);  //  check possible
 			if (!Overlaps(cpy, pos_x, pos_y))
 				Copy(blk, cpy);
 		}
-		if (g->kDel > 0)  //|| keyp(5))  // rot ccw
+		if (g->kDel || g->kDiv)  // rot ccw
 		{
 			Rotate(cpy, blk, 0);  //  check possible
 			if (!Overlaps(cpy, pos_x, pos_y))
@@ -143,7 +142,7 @@ int Games::KeyPress(int8_t& mlevel)
 		}
 
 		//  move
-		if ((demo && random(350)==0) || g->kRight < 0)  // move
+		if (g->kRight < 0)  // move
 		{
 			int old_x = pos_x;
 			--pos_x;  if (pos_x < 0)  pos_x = o.size_x-1;
@@ -151,7 +150,7 @@ int Games::KeyPress(int8_t& mlevel)
 				pos_x = old_x;  //  if not possible restore
 		}
 
-		if ((demo && random(350)==0) || g->kRight > 0)  // mvoe
+		if (g->kRight > 0)  // mvoe
 		{
 			int old_x = pos_x;
 			++pos_x;  if (pos_x > o.size_x-1)  pos_x = 0;
@@ -164,19 +163,6 @@ int Games::KeyPress(int8_t& mlevel)
 
 	if (g->kIns)  // drop
 		drop = 1;
-
-
-	#if 0
-	//  - other -
-	if (key(M))  // demo-
-		demo = 1 - demo;
-
-	if (key(1))
-	{	if (speed_y > 5*SpdDet)  speed_y -= 5*SpdDet;
-		else  speed_y = 0;  UpdSpeed();  }
-	if (key(2))
-	{	speed_y += 5*SpdDet;  UpdSpeed();  }
-	#endif
 
 
 	Update();

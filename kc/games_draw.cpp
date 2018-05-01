@@ -7,7 +7,7 @@ using namespace std;
 //  Block color
 const static int8_t rgb[12][3] = {
 	{31,15,0},{31,31,0},{15,31,0},{0,31,0},{0,31,15},{0,31,31},
-	{0,15,31},{15,0,31},{15,15,31},{31,0,31},{31,0,15},{31,0,0},
+	{0,15,31},{15,10,31},{20,20,31},{31,10,31},{31,0,15},{31,20,20},
 };
 uint16_t Games::BlkClr(int8_t b, int8_t d, int8_t dim)
 {
@@ -91,18 +91,19 @@ void Games::Draw()
 		d.setCursor(W/2-6, 4);
 		d.println(sPresets[preset]);  // title
 		
+		int yy = 32;
 		for (y=0; y < G_All; ++y)
 		{
 			int c = abs(y - yg);
 			d.setTextColor(RGB(30,20,20));
-			int yy = 32 + y*12;
+
 			if (!c)  d.fillRect(0, yy-1, 2*W/3, 10, RGB(9,7,5));
 			d.setCursor(2, yy);
 			d.print(!c ? "\x10 ":"  ");  // >
 			g->FadeClr(Gui::C_Game, 6, c, 1);
 
 			switch (y)
-			{	case G_Resume:   d.println("Resume");  break;
+			{	case G_Resume:   d.println("Resume");  yy+=2;  break;
 				case G_NewGame:  d.println("New Game");  break;
 				case G_Preset:   d.print("Preset: ");
 					sprintf(a,"%d / %d", preset+1, Presets);  d.print(a);
@@ -111,6 +112,7 @@ void Games::Draw()
 				case G_Options: d.println("Options");  break;
 				case G_Help:    d.println("Help");  break;
 			}
+			yy += 10;
 		}
 		return;
 	}
