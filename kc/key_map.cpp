@@ -94,7 +94,8 @@ int8_t Gui::KeysMap()
 	{
 		if (kBack)
 		{	//  apply in kc
-			if (scId != NO && scId < kc.set.nkeys())
+			if (scId != NO && scId < kc.set.nkeys()
+				&& nLay < KC_MaxLayers)
 			{
 				kc.set.key[nLay][scId] = keyCode;
 			}

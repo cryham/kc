@@ -152,15 +152,19 @@ void Gui::DrawMapping()
 			d->print(a);  break;
 
 		case 2:
-			sprintf(a,"p  Layer: %d", nLay);
-			d->print(a);  break;
+			if (nLay == KC_MaxLayers)
+				d->print("p  Layer: use");
+			else
+			{	sprintf(a,"p  Layer: %d", nLay);
+				d->print(a);
+			}	break;
 
 		case 3:
 			if (id < 0 || id >= kc.set.nkeys())
 				sprintf(a,"-  Key: NONE");
 			else
 			{
-				uint8_t u = kc.set.key[nLay][id];
+				uint8_t u = kc.set.key[nLay == KC_MaxLayers ? 0 : nLay][id];
 					 if (u == KEY_NONE)  sprintf(a,"-  Key: None");
 				else if (u >= KEYS_ALL_EXT)  sprintf(a,"-  Key: OUT");
 				else
@@ -233,6 +237,11 @@ void Gui::DrawMapping()
 
 //  kbd draw   Layout
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+//  layer use count colors
+const uint8_t cluM = 5;
+const uint16_t clu[cluM] = {
+	RGB(16,24,31), RGB(5,30,30), RGB(30,30,4), RGB(31,19,8), RGB(31,21,22), };
+
 void Gui::DrawLayout(bool edit)
 {
 	int16_t x=2, y=0;
@@ -271,38 +280,54 @@ void Gui::DrawLayout(bool edit)
 
 		d->drawRect(x, y-2, k.w+1, k.h+1, cR);
 
+		//  layer keys visible on all layers ``
+		uint8_t dtL0 = kc.set.key[0][k.sc];
+		bool layKey = dtL0 >= K_Layer1 && dtL0 < K_Layer1+KC_MaxLayers;
+		bool layUse = nLay == KC_MaxLayers;  // vis mode
+		bool tiny = k.w < 6;
+
 		//  skip caption for tiny keys
-		if (k.w < 6)
+		if (tiny && !layKey && !layUse)
 			continue;
 
-		d->setCursor(  // txt
+		d->setCursor(  // txt pos
 			k.o==5 || k.o==7 ? x + k.w - 6 :  // right align
 			(k.o==3 ? x+1 : x+2),  // symb 3
 			k.h == kF ? y-2 : y-1);  // short
 
-	#if 0
-		d->setTextColor(cT);
-		sprintf(a,"%c", k.c);
-		d->print(a);
-	#else
 		if (k.sc != NO && k.sc < kc.set.nkeys())
 		{
-			// todo layer use vis..
-			uint8_t dt = kc.set.key[edit ? nLay : kc.nLayer][k.sc];
+			uint8_t dt = layKey ? dtL0 :
+				kc.set.key[edit ? nLay : kc.nLayer][k.sc];
+
+			const char* ch = cKeySh[dt];
+			//  font size
+			bool m = tiny || strlen(ch) == 2;
+
+			if (edit && layUse && !layKey)
+			{
+				//  layer use vis
+				uint8_t u = 0;  // count
+				for (int l=0; l < KC_MaxLayers; ++l)
+					if (kc.set.key[l][k.sc] != KEY_NONE)  ++u;
+
+				if (u > 0)
+				{	d->moveCursor(0, tiny ? 0 : 2);
+					d->setFont(&TomThumb);
+
+					d->setTextColor(clu[ min(cluM-1, u-1) ]);
+					d->print(u+'0');
+				}
+			}else	//  normal
 			if (dt != KEY_NONE)
 			{
-				const uint8_t* c = &cGrpRgb[cKeyGrp[dt]][0][0];
-				const char* ch = cKeySh[dt];
-				int le = strlen(ch);
-				d->setFont(le == 2 ? &TomThumb : 0);  // 3x5
-				if (le == 2)
-					d->moveCursor(-1,2);
+				if (m)  d->moveCursor(-1,2);
+				d->setFont(m ? &TomThumb : 0);  // 3x5
 
+				const uint8_t* c = &cGrpRgb[cKeyGrp[dt]][0][0];
 				d->setTextColor(RGB(c[0],c[1],c[2]));
-				//sprintf(a,"%s", );
-				d->print(ch);
+				d->print(tiny && layKey ? &ch[1] : ch);
 		}	}
-	#endif
 	}
 	d->setFont(0);
 }
