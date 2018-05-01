@@ -9,8 +9,9 @@ int8_t Gui::KeysSeq()
 {
 	bool lay2 = kc.nLayer == 2;
 	int q = seqId();
-	int len = kc.set.seqs[q].len();
-	std::vector<uint8_t>& dt = kc.set.seqs[q].data;
+	KC_Sequence& sq = kc.set.seqs[q];
+	int len = sq.len();
+	std::vector<uint8_t>& dt = sq.data;
 
 	//  toggle edit  ----
 	if (kEnt && (!edit || lay2))
@@ -127,7 +128,13 @@ int8_t Gui::KeysSeq()
 			KC_Sequence cp = kc.set.seqs[cpId];
 			kc.set.seqs[cpId] = kc.set.seqs[q];
 			kc.set.seqs[q] = cp;
+			infType = 5;  tInfo = -1;
 		}
+		if (kCtrl && kDel)  // erase
+		{	sq.data.clear();
+			sq.data.shrink_to_fit();  // free ram
+		}
+
 		if (kBack)
 			--mlevel;
 	}
