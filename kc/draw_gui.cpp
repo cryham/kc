@@ -26,20 +26,18 @@ void Gui::Draw()
 		d->setTextColor(RGB(6,19,31));
 		d->print("Main Menu");  d->setFont(0);
 
-		DrawMenu(M_All,strMain, C_Main,RGB(20,25,29),RGB(5,7,9), 10, -1,2);
-
-		//d->setCursor(W-1 -7*6, H-8);
-		//todo d->print("F1 Help");
+		DrawMenu(M_All,strMain, C_Main,RGB(20,25,29),RGB(5,7,9), 10, M_Next, 2);
 		return;
 	}
 	d->setTextColor(RGB(12,22,31));
 
 
+	switch (ym)
+	{
 	//  Demos
 	//------------------------------------------------------
 	#ifdef DEMOS
-	if (ym == M_Demos)
-	{
+	case M_Demos:
 		if (mlevel == 2)
 		{
 			d->setFont(0);
@@ -75,129 +73,19 @@ void Gui::Draw()
 			DrawMenu(D_All,strDemo, C_Demos,RGB(27,27,30),RGB(6,6,9), 10, D_Next);
 		}
 		return;
-	}
 	#endif
 
-
-	//  Game
-	//------------------------------------------------------
-	#ifdef GAME
-	if (ym == M_Game)
-	{
-		game.Draw();  return;
-	}
+	#ifdef GAME   // game
+	case M_Game:  game.Draw();  return;
 	#endif
-
 
 	//  Testing, Mappings,  kbd
-	//------------------------------------------------------
-	if (ym == M_Testing)
-	{
-		DrawTesting();  return;
-	}
+	case M_Testing:   DrawTesting();  return;
+	case M_Mapping:   DrawMapping();  return;
+	case M_Sequences: DrawSequences();  return;
 
-	if (ym == M_Mapping)
-	{
-		DrawMapping();  return;
-	}
-
-	if (ym == M_Sequences)
-	{
-		DrawSequences();  return;
-	}
-
-
-	//  Display
-	//------------------------------------------------------
-	if (ym == M_Display)
-	{
-		char a[64];
-		d->setTextColor(RGB(29,28,6));
-		d->print(strMain[ym]);  //d->setFont(0);
-
-		//  time  ---
-		tm = rtc_get();
-		if (tm)
-		{	int h = tm/3600%24, m = tm/60%60, s = tm%60;
-
-			d->setCursor(W/2, H-13);
-			d->setTextColor(RGB(16,24,8));
-
-			sprintf(a,"%2d:%02d:%02d", h,m,s);
-			d->print(a);
-		}
-		d->setFont(0);
-
-		//  page
-		d->setCursor(W-1 -3*6, 4);
-		d->setTextColor(RGB(30,22,12));
-		sprintf(a,"%d/%d", pgDisp+1, 2);
-		d->print(a);
-
-		//  par values  ---
-		int pg = DispPages[pgDisp];
-		int16_t y = 32;
-		switch (pgDisp)
-		{
-		case 0:
-		for (int i=0; i < pg; ++i)
-		{
-			d->setCursor(2, y);
-			int c = abs(i - ym2Disp);  // dist dim
-			if (!c)
-			{	d->fillRect(0, y-1, W-1, 10, RGB(8,8,4));
-				d->setTextColor(RGB(31,22,6));
-				d->print("\x10 ");  // >
-			}else
-				d->print("  ");
-
-			FadeClr(C_Disp, 4, c, 1);
-			int8_t h = 4;
-			switch(i)
-			{
-			case 0:
-				sprintf(a,"Brightness: %d %%", par.brightness);  break;
-			case 1:
-				sprintf(a,"Off bright: %d %%", par.brightOff);  break;
-			case 2:
-				sprintf(a,"Fade time-: %d", par.fadeTime);  h = 2;  break;
-			case 3:
-				sprintf(a,"Start screen: %s", StrScreen(par.startScreen));  break;
-			}
-			d->print(a);  y += h+8;
-		}	break;
-
-		case 1:
-		for (int i=0; i < pg; ++i)
-		{
-			d->setCursor(2, y);
-			int c = abs(i - ym2Disp);  // dist dim
-			if (!c)
-			{	d->fillRect(0, y-1, W-1, 10, RGB(8,8,4));
-				d->setTextColor(RGB(31,22,6));
-				d->print("\x10 ");  // >
-			}else
-				d->print("  ");
-
-			FadeClr(C_Disp, 4, c, 1);
-			int8_t h = 4;
-			switch(i)
-			{
-			case 0:
-				sprintf(a,"Key delay:  %d ms", par.krDelay*5);  h = 2;  break;
-			case 1:
-				sprintf(a,"Key repeat: %d ms", par.krRepeat*5);  break;
-			case 2:
-				sprintf(a,"Ram info: %d", iRam);  break;
-
-			//uint8_t mkSpeed, mkAccel;
-			//start demo time
-			}
-			d->print(a);  y += h+8;
-		}	break;
-		}
-		return;
+	//  Display, Help
+	case M_Display: DrawDisplay();  return;
+	case M_Help:    DrawHelp();  return;
 	}
 }
-
-const uint8_t Gui::DispPages[Gui::Disp_All] = {4,3};
