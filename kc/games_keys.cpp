@@ -57,7 +57,7 @@ int Games::KeyPress(int8_t& mlevel)
 			case G_Resume:  gui=0;  break;
 			case G_NewGame:  NewGame();  gui=0;  break;
 			case G_Options:  gui = 2;  break;
-			case G_Help:  return 1;
+			case G_Help:  return 1;  // set screen after
 			}
 		}
 		if (g->kRight < 0)

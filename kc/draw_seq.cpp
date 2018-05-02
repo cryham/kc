@@ -153,7 +153,7 @@ void Gui::DrawOperInfo()
 		d->setFont(0);
 		d->setCursor(x, 0);  //  bck
 		d->fillRect(x-3, 0, W-1-(x-3), yy, RGB(4,6,8));
-		d->drawFastVLine(W-1, 0, yy * tInfo / 100, RGB(6,9,12));  // time|
+		d->drawFastVLine(W-1, 0, yy * tInfo / 70, RGB(10,13,16));  // time|
 		d->setTextColor(RGB(27,29,31));
 
 		const static char* strInf[6] = {

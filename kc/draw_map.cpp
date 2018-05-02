@@ -28,12 +28,12 @@ void Gui::DrawMapping()
 		d->setTextColor(RGB(28,28,26));
 		d->print("Pick key..");
 
-		d->setCursor(20,10);
+		d->setCursor(0,10);
 		d->setTextColor(RGB(22,22,12));
 		//sprintf(a,"%3d/%d", keyCode, KEYS_ALL_EXT);
 		//d->print(a);
-		if (grpFilt)  d->print("Group:");
-				else  d->print("All");
+		if (grpFilt)  d->print("/  Group:");
+				else  d->print("/  All");
 		//  line
 		d->drawFastHLine(0, 19, W-1,
 			grpFilt ? RGB(16,10,12) : RGB(10,10,12));
@@ -312,7 +312,9 @@ void Gui::DrawLayout(bool edit)
 					if (kc.set.key[l][k.sc] != KEY_NONE)  ++u;
 
 				if (u > 0)
-				{	d->moveCursor(0, tiny ? 0 : 2);
+				{	d->moveCursor(tiny ? -1 : 0, tiny ? 0 : 2);
+					if (d->getCursorX() > W-4)  // off scr-
+						d->setCursor(W-4, d->getCursorY());
 					d->setFont(&TomThumb);
 
 					d->setTextColor(clu[ min(cluM-1, u-1) ]);

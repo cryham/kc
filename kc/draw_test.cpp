@@ -97,7 +97,7 @@ void Gui::DrawTesting()
 			if (k.state == KeyState_Hold)
 			{
 				int8_t code = kc.set.key[kc.nLayer][i];
-				if (code > K_ModLast && code < KEYS_ALL)
+				if (code > K_ModLast && code < KEYS_ALL_EXT/*KEYS_ALL*/)
 				{
 					const uint8_t* c = &cGrpRgb[cKeyGrp[code]][0][0];
 					d->setTextColor(RGB(c[0],c[1],c[2]));
