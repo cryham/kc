@@ -3,8 +3,41 @@
 #include "FreeSans9pt7b.h"  // 2k flash, 1%
 #include "TomThumb.h"
 
-#ifdef DEMOS
 
+//  Version
+//....................................................................................
+void Demos::Version()
+{
+	//  logo, ver
+	d->setCursor(0,18);
+	d->setFont(&FreeSans9pt7b);
+	d->setTextColor(RGB(1,28,28));
+	d->println("CrystaL");
+
+	d->setCursor(36,40);
+	d->setTextColor(RGB(22,16,31));
+	d->print("Keyboard");
+	d->setFont(0);
+
+	d->setCursor(0,70);
+	d->setTextColor(RGB(12,21,31));
+	d->print("K.C. \"Kacey\" Controller");
+
+	d->setCursor(0,H-23);
+	d->setTextColor(RGB(16,25,31));
+	d->print("ver 1.03");
+	//  version text  ^
+
+	d->setTextColor(RGB(21,26,31));
+	d->setCursor(0, H-8);
+	const char* a={__DATE__}, *m={__TIME__};
+	const char dt[] = {  //  build date, time   format yyyy-mmm-dd hh:mm
+		a[7],a[8],a[9],a[10],' ',a[0],a[1],a[2],' ',a[4],a[5],' ',' ',m[0],m[1],':',m[3],m[4],0};
+	d->print(dt);
+}
+
+
+#ifdef DEMOS
 
 //  regular polygons with diagonals
 //....................................................................................
@@ -99,36 +132,7 @@ void Demos::Fonts()
 {
 	switch (fntCur)
 	{
-	case 0:  // logo, ver
-	{
-		d->setCursor(0,18);
-		d->setFont(&FreeSans9pt7b);
-		d->setTextColor(RGB(1,28,28));
-		d->println("CrystaL");
-
-		d->setCursor(36,40);
-		d->setTextColor(RGB(22,16,31));
-		d->print("Keyboard");
-		d->setFont(0);
-
-		d->setCursor(0,70);
-		d->setTextColor(RGB(12,21,31));
-		d->print("K.C. \"Kacey\" Controller");
-
-		d->setCursor(0,H-23);
-		d->setTextColor(RGB(16,25,31));
-		d->print("ver 1.02");
-		//  version text  ^
-
-		d->setTextColor(RGB(21,26,31));
-		d->setCursor(0, H-8);
-		const char* a={__DATE__}, *m={__TIME__};
-		const char dt[] = {  //  build date, time   format yyyy-mmm-dd hh:mm
-			a[7],a[8],a[9],a[10],' ',a[0],a[1],a[2],' ',a[4],a[5],' ',' ',m[0],m[1],':',m[3],m[4],0};
-		d->print(dt);
-	}	break;
-
-	case 1:  // big chars
+	case 0:  // big chars
 	{
 		uint x=0, y=0, yw=18;
 		d->setFont(&FreeSans9pt7b);
@@ -154,7 +158,7 @@ void Demos::Fonts()
 
 	}	break;
 
-	case 2:  // small all chars
+	case 1:  // small all chars
 	{
 		d->setCursor(6,8);
 		d->setTextColor(RGB(21,26,31));
@@ -181,7 +185,7 @@ void Demos::Fonts()
 		}
 	}	break;
 
-	case 3:  // tiny all chars
+	case 2:  // tiny all chars
 	{
 		d->setFont(&TomThumb);
 		d->setCursor(6,8);

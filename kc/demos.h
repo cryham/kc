@@ -29,8 +29,9 @@ struct Demos
 
 	//  Fonts
 	int8_t fntCur;
-	const static int8_t fntMax = 4;  // all pages
-	void Fonts();  // ver, date, chars
+	const static int8_t fntMax = 3;  // all pages
+	void Fonts();  // chars
+	void Version();  // ver, date
 
 
 #ifdef DEMOS

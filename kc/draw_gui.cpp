@@ -31,7 +31,7 @@ void Gui::Draw()
 		d->setTextColor(RGB(6,19,31));
 		d->print("Main Menu");  d->setFont(0);
 
-		DrawMenu(M_All,strMain, C_Main,RGB(20,25,29),RGB(5,7,9), 10, M_Next, 2);
+		DrawMenu(M_All,strMain, C_Main,RGB(20,25,29),RGB(5,7,9), 10, M_Next);
 		return;
 	}
 	d->setTextColor(RGB(12,22,31));
@@ -84,10 +84,12 @@ void Gui::Draw()
 	case M_Game:  game.Draw();  return;
 	#endif
 
-	//  Testing, Mappings,  kbd
-	case M_Testing:   DrawTesting();  return;
+	//  Mappings,Seq  kbd
 	case M_Mapping:   DrawMapping();  return;
 	case M_Sequences: DrawSequences();  return;
+	//  Testing,Setup  kbd
+	case M_Testing:   DrawTesting();  return;
+	case M_Setup:     DrawSetup();  return;
 
 	//  Display, Help
 	case M_Display: DrawDisplay();  return;

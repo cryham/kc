@@ -107,8 +107,8 @@ void Demos::KeyPress(EDemo demo, Gui* gui)
 
 		//  txt	 --------
 		case D_CK_Logo:
-			if (k)  ckCur = (ckCur + u + ckMax) % ckMax;
-			if (u)  ckSpeed += k;
+			if (k)  ckCur = (ckCur + k + ckMax) % ckMax;
+			if (u)  ckSpeed += u;
 			break;
 
 		case D_Ngons:

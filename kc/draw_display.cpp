@@ -1,4 +1,5 @@
 #include "gui.h"
+#include "kc_data.h"
 #include "Ada4_ST7735.h"
 
 

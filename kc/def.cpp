@@ -4,7 +4,8 @@
 //  Main Menu
 const char* strMain[M_All] =
 {
-	"Testing", "Mapping", "Sequences",
+	"Mapping", "Sequences",
+	"Testing", "Setup",
 	"Display", "Help",
 #ifdef GAME
 	"Game",
@@ -35,24 +36,32 @@ const char* strDemo[D_All] =
 };
 #endif
 
+
 //  Testing kbd
 const char* strTest[T_All] =
 {
-	"Pressed", "Matrix", "Layout", "Mouse", "Scan Setup",
+	"Pressed", "Matrix", "Layout",
+};
+//  Setup kbd
+const char* strSetup[S_All] =
+{
+	"Scan", "Keyboard", "Mouse", "Version"
 };
 
 
 //  sub pages
 const uint8_t YM1[M_All] =
 {
-	T_All,  // M_Testing
 	4,  // M_Mapping
 	1,  // M_Sequences
+
+	T_All,  // M_Testing
+	S_All,  // M_Setup
 
 	1,  // M_Display
 	1,  // M_Help
 #ifdef GAME
-	1,
+	1,  // M_Game
 #endif
 #ifdef DEMOS
 	D_All,  // M_Demos

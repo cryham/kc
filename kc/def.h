@@ -35,7 +35,9 @@ class Ada4_ST7735;
 
 enum EMainMenu  //  main menu entries, level0
 {
-		M_Testing=0, M_Mapping, M_Sequences,
+		M_Mapping, M_Sequences,
+		M_Testing, M_Setup,
+
 		M_Display, M_Help,
 	#ifdef GAME
 		M_Game,
@@ -43,7 +45,7 @@ enum EMainMenu  //  main menu entries, level0
 	#ifdef DEMOS
 		M_Demos,
 	#endif
-		M_All,  M_Next = M_Display  // -1 off
+		M_All,  M_Next = M_Display  // -1 off+
 };
 
 #ifdef DEMOS
@@ -69,11 +71,15 @@ extern const char *strDemo[D_All];
 
 enum ETesting  //  Testing kbd, level1
 {
-	T_Pressed=0, T_Matrix, T_Layout, T_Mouse, T_ScanSetup, T_All
+	T_Pressed=0, T_Matrix, T_Layout, T_All
+};
+enum ESetup  //  Setup kbd, level1
+{
+	S_Scan, S_Keyboard, S_Mouse, S_Version, S_All
 };
 
 //  string names for all above ^
-extern const char *strMain[M_All], *strTest[T_All];
+extern const char *strMain[M_All], *strTest[T_All], *strSetup[S_All];
 
 //  sub page counts, inside each main menu entry
 extern const uint8_t YM1[M_All];
