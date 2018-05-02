@@ -185,7 +185,7 @@ void Demos::POrnViolBlue()  // orange viol blue
 		}
 		yy[0]+=76; yy[1]+=213; yy[2]+=48; yy[3]+=91; yy[4]+=177; yy[5]+= 39;
 		yy[6]+=26; yy[7]+=86;  yy[8]+=17; yy[9]+=21; yy[10]+=74; yy[11]+=17;
-	}	t += tadd[5];
+	}	t += tadd[3];
 }
 
 
@@ -219,7 +219,7 @@ void Demos::PSmallWhiteCyVi()  // small white cyan viol
 		}
 		yy[0]+=171; yy[1]+=36; yy[2]+=128; yy[3]+=82; yy[4] +=208; yy[5] +=319;
 		yy[6]+=193; yy[7]+=56; yy[8]+=113; yy[9]+=49; yy[10]+=221; yy[11]+=352;
-	}	t += tadd[6];
+	}	t += tadd[4];
 }
 
 
@@ -252,7 +252,7 @@ void Demos::POldBlue()  // old blue  ---
 		}
 		yy[0]+=71; yy[1]+=93; yy[2]+=128; yy[3]+=151; yy[4]+=78; yy[5]+=149;
 		yy[6]+=136; yy[7]+=56; yy[8]+=213; yy[9]+=109; yy[10]+=82; yy[11]+=132;
-	}	t += tadd[4];
+	}	t += tadd[5];
 }
 
 
@@ -280,7 +280,7 @@ void Demos::PFastOrnCy()  // fast1  orng cyan
 			data[a] = RGB(e/4, c/6 + e/6, c/3);
 		}
 		yy[0]+=66; yy[1]+=51; yy[2]+=166; yy[3]+=6; yy[4]+=151; yy[5]+=4;
-	}	t += tadd[3];
+	}	t += tadd[6];
 }
 
 

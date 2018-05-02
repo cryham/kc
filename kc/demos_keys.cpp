@@ -33,20 +33,20 @@ void Demos::Init(Ada4_ST7735* tft)
 
 #ifdef DEMOS_3D
 	hdtOn = 1;  // hedrons
-	hdt = 0;  hdCur = hdA-5;  hdRot = 0;
+	hdt = 0;  hdCur = 9;  hdRot = 0;
 	hdSpd = 1;  hdDiag = 1;
 #endif
 
 	ckCur = 0;  ckSpeed = 6;  // logo
 #ifdef DEMOS_PLASMA
-	plasma = 2;  t = 3210;  // plasma
-	tadd[0]=7; tadd[1]=12; tadd[2]=10; tadd[3]=5; tadd[4]=12; tadd[5]=17;  tadd[6]=18;
-	tadd[7]=5; tadd[8]=4; tadd[9]=8;
+	plasma = 2;  t = 13210;  // plasma
+	tadd[0]=8; tadd[1]=12; tadd[2]=10; tadd[3]=15; tadd[4]=12; tadd[5]=12;
+	tadd[6]=5; tadd[7]=5; tadd[8]=3; tadd[9]=8;
 #endif
 
 	waveSpd = 8;  // wave
-	fire = 0;
-	fireSpd[0]=12; fireSpd[1]=17;  // fire
+	fire = 1;
+	fireSpd[0]=19; fireSpd[1]=17;  // fire
 #endif
 }
 
@@ -107,8 +107,8 @@ void Demos::KeyPress(EDemo demo, Gui* gui)
 
 		//  txt	 --------
 		case D_CK_Logo:
-			if (k)  ckSpeed += k;
-			if (u)  ckCur = (ckCur + u + ckMax) % ckMax;
+			if (k)  ckCur = (ckCur + u + ckMax) % ckMax;
+			if (u)  ckSpeed += k;
 			break;
 
 		case D_Ngons:
