@@ -9,14 +9,19 @@ void Gui::Draw()
 {
 	yy = ym1[ym];
 
-	//  Clear  if not rain
+	//  Clear
 	#ifdef DEMOS
-	if (ym != M_Demos || mlevel != 2 || yy != D_Rain)
+	bool demo = ym == M_Demos && mlevel == 2;
+	bool no = demo && (yy == D_Rain || yy == D_Plasma || yy == D_Wave || yy == D_Fire);
+	if (!no)  //  if not full screen demo
 	#endif
 		d->clear();
 
-	d->setFont(&FreeSans9pt7b);
-	d->setCursor(0,0);
+	if (!demo)
+	{
+		d->setFont(&FreeSans9pt7b);
+		d->setCursor(0,0);
+	}
 
 
 	//  Main menu
