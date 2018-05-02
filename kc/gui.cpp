@@ -1,6 +1,7 @@
 #include "gui.h"
 #include "def.h"
 #include "kbd_layout.h"
+#include "kc_data.h"
 
 
 //  Main  ----
@@ -17,14 +18,17 @@ void Gui::Init(Ada4_ST7735* tft)
 	for (int i=0; i < M_All; ++i)
 		ym1[i]=0;
 
-	mlevel = 0;  //2
-	ym = M_Testing;
-	ym1[M_Testing] = T_Pressed;
+
+	mlevel = 2;  //0
+//	ym = M_Testing;
+//	ym1[M_Testing] = T_Pressed;
+	ym = M_Setup;
+	ym1[M_Setup] = S_Keyboard;
 	//SetScreen(ST_Map);
 	//SetScreen(ST_Seqs);
 
 	
-	oldti = 0;  tdemo = 0;
+	oldti=0;  tdemo=0;
 #ifdef DEMOS
 	demos.Init(d);
 #endif

@@ -1,6 +1,7 @@
 #include "gui.h"
 #include "RamMonitor.h"
 #include "matrix.h"
+#include "kc_data.h"
 
 #include "Ada4_ST7735.h"
 #include "FreeSans9pt7b.h"
@@ -17,10 +18,11 @@ const uint8_t Gui::Mclr[Gui::Cl_ALL][2][3] = {
 	{{20,30,26},{6,3,4}},  //  2 test
 	{{22,31,18},{6,3,7}},  //  3 map
 	{{17,31,31},{5,4,3}},  //  4 seqs
+	{{24,27,27},{6,5,4}},  // 5 setup
 	{{31,31,16},{3,5,5}},  // 5 display
 	{{26,28,28},{4,3,3}},  // 6 scan, mouse
-	{{31,26,12},{1,4,5}},  // 7 game
-	{{31,26,22},{1,6,8}},  // 8 game opt
+	{{31,26,12},{1,4,5}},  //  7 game
+	{{31,26,22},{1,6,8}},  //  8 game opt
 };
 
 
@@ -79,7 +81,7 @@ void Gui::DrawEnd()
 	//  fps  ---------
 	if (mlevel == 2)
 	if ((demos.iFps && ym == M_Demos) ||
-		(ym == M_Testing && yy == T_ScanSetup))
+		(ym == M_Setup && yy == S_Scan))
 	{
 		uint32_t ti = millis();
 		float fr = 1000.f / (ti - oldti);
