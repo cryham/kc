@@ -7,14 +7,14 @@ extern KC_Main kc;
 
 int8_t Gui::KeysSeq()
 {
-	bool lay2 = kc.nLayer == 2;
+	bool layEd = kc.nLayer == par.editLayer;
 	int q = seqId();
 	KC_Sequence& sq = kc.set.seqs[q];
 	int len = sq.len();
 	std::vector<uint8_t>& dt = sq.data;
 
 	//  toggle edit  ----
-	if (kEnt && (!edit || lay2))
+	if (kEnt && (!edit || layEd))
 	{
 		edit = 1-edit;
 		if (edit)  // enter edit
@@ -25,12 +25,12 @@ int8_t Gui::KeysSeq()
 		return 1;
 	}
 
+	//  Edit sequence
+	//------------------------------------------------------------
 	if (edit)
-	{	//  Edit sequence
-		//------------------------------
+	{
 
-		//uint8_t fun = 0;  // none
-		if (lay2)  //` switch..
+		if (layEd)
 		{	//  move cursor
 			if (kEnd < 0)  edpos = 0;
 			if (kEnd > 0)  edpos = len;
@@ -74,12 +74,13 @@ int8_t Gui::KeysSeq()
 					break;
 				}
 			}
+
 			//  add key to sequence
-			if (ii >= 0) {  // && edpos < iSeqLen-1)
+			if (ii >= 0) {
 			if (edpos >= len)  // at end
 			{
 				dt.push_back(ii);
-				edpos++;  //len++;
+				edpos++;
 			}else
 			if (edins)  // insert
 			{
@@ -87,13 +88,14 @@ int8_t Gui::KeysSeq()
 				for (int i=len-1; i > edpos; --i)
 					dt[i] = dt[i-1];
 				dt[edpos] = ii;
-				edpos++;  //len++;
+				edpos++;
 			}
 			else  // overwrite
 			{	dt[edpos] = ii;
 				if (edpos < len)  ++edpos;
 			}
 		}	}
+	}else
 	}else  // View
 	{	//------------------------------
 		//  save  load

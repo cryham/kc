@@ -40,22 +40,23 @@ struct KC_Params
 
 	//  brightness led, 0..100%
 	uint8_t brightness, brightOff;
-
-	//  screen after start
-	int8_t startScreen;
+	int8_t startScreen;  // screen after start
 
 	uint8_t verCounter;  // inc on each save
 
 	//  gui key auto repeat, ms
 	uint8_t krDelay, krRepeat;
-	//  mouse keys
-	uint8_t mkSpeed, mkAccel;
+	uint8_t mkSpeed, mkAccel;  // todo mouse speed ..
 
-	//* sequences default keys dt
+	//* sequence, default keys dt
 	uint8_t dtSeqDef;
+	//  default layer 0, sequence edit layer 2
+	uint8_t defLayer, editLayer;
 
-	//  todo fade time
-	uint8_t fadeTime;
+	//  todo par, low pri
+	//  start demo screen
+	//  auto start seq to login, after time
+	//  inactive time show, start demo-
 };
 //  --- ADD new to END ----
 

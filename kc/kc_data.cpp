@@ -13,7 +13,9 @@ extern Gui gui;
 
 //  update layers  (always)
 //------------------------------------------------
-void KC_Main::UpdLay()
+uint32_t oldt;
+
+void KC_Main::UpdLay(uint32_t ms)
 {
 	//  brightness dac led  ~~~
 	if (setDac)
@@ -45,8 +47,8 @@ void KC_Main::UpdLay()
 			{
 				//  set layer, hold
 				if (on)   nLayer = code0 - K_Layer1 + 1;
-				else
-				if (off)  nLayer = 0;  // todo defLay par
+				else  // default layer
+				if (off)  nLayer = par.defLayer;
 
 				if (nLayer >= KC_MaxLayers-1)
 					nLayer = KC_MaxLayers-1;

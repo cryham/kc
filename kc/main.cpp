@@ -54,7 +54,7 @@ void main_periodic()
 
 	//  keyboard send
 	//------------------------
-	kc.UpdLay();
+	kc.UpdLay(ms);
 
 	if (gui.kbdSend)
 		kc.Send(ms);

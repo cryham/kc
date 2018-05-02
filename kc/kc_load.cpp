@@ -17,15 +17,16 @@ void ParInit()
 	par.debounce = 1;  // ms?
 	par.strobe_delay = 4;
 	par.scanFreq = 50;  // mul by 1 kHz
-	par.dtSeqDef = 20;
 
-	par.brightness = 80;
-	par.brightOff = 60;  par.fadeTime = 4;
+	par.brightness = 80;  par.brightOff = 60;
 	par.startScreen = 0;
 
 	par.verCounter = 0;
 	par.krDelay = 250/5;  par.krRepeat = 80/5;  // ms
 	par.mkSpeed = 100;  par.mkAccel = 100;
+
+	par.dtSeqDef = 20;
+	par.defLayer = 0;  par.editLayer = 2;
 }
 
 //  errors
@@ -85,6 +86,9 @@ void KC_Main::Load()
 	if (par.startScreen >= ST_ALL)
 		par.startScreen = ST_ALL-1;
 	setDac = 1;  // upd
+	
+	if (set.ver == 2)
+	{	par.defLayer = 0;  par.editLayer = 2;  }
 
 
 	//  Keys  ---

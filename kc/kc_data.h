@@ -74,7 +74,7 @@ struct KC_Main
 
 	KC_Main();
 
-	void UpdLay();  // update
+	void UpdLay(uint32_t ms);  // update
 	void Send(uint32_t ms);  // send usb
 
 	//  eeprom  ----

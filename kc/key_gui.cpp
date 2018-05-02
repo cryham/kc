@@ -3,6 +3,7 @@
 #include "kbd_layout.h"
 #include "keys_usb.h"
 #include "kc_params.h"
+#include "kc_data.h"
 #include "periodic.h"
 
 extern KC_Main kc;
@@ -50,29 +51,57 @@ void Gui::KeyPress()
 	#endif
 
 
-	//  Testing  Scan Setup
+	//  Setup Scan
 	//..............................................
-	if (ym == M_Testing && mlevel == 2 && yy == T_ScanSetup)
+	if (ym == M_Setup && mlevel == 2)
 	{
-		if (kUp)
-		{	ym2Test = (ym2Test + kUp + 4) % 4;  }  // y max par
-		else
-		if (kRight)  // adjust values
-		switch (ym2Test)
+		switch (yy)
 		{
-		case 0:
-			par.scanFreq = RangeAdd(par.scanFreq, -kRight * (kSh ? 1 : 4), 2, 150);
-			Periodic_init( par.scanFreq * 1000 );  break;  // upd
-		case 1:
-			par.strobe_delay = RangeAdd(par.strobe_delay, kRight, 0, 50);  break;
-		case 2:
-			par.debounce = RangeAdd(par.debounce, kRight, 0, 50);  break;
-		case 3:
-			par.dtSeqDef = RangeAdd(par.dtSeqDef, kRight * (kCtrl ? 10 : 1), 0, 250);  break;
+		case S_Scan:
+			if (kUp)
+			{	ym2Scan = (ym2Scan + kUp + 3) % 3;  }
+			else
+			if (kRight)
+			switch (ym2Scan)
+			{
+			case 0:
+				par.scanFreq = RangeAdd(par.scanFreq, -kRight * (kSh ? 1 : 4), 2, 150);
+				Periodic_init( par.scanFreq * 1000 );  break;  // upd
+			case 1:
+				par.strobe_delay = RangeAdd(par.strobe_delay, kRight, 0, 50);  break;
+			case 2:
+				par.debounce = RangeAdd(par.debounce, kRight, 0, 50);  break;
+			}	break;
+
+		case S_Keyboard:
+			if (kUp)
+			{	ym2Keyb = (ym2Keyb + kUp + 3) % 3;  }
+			else
+			if (kRight)
+			switch (ym2Keyb)
+			{
+			case 0:
+				par.dtSeqDef = RangeAdd(par.dtSeqDef, kRight * (kCtrl ? 10 : 1), 0, 250);  break;
+			case 1:
+				par.defLayer = RangeAdd(par.defLayer, kRight, 0, KC_MaxLayers-1);  break;
+			case 2:
+				par.editLayer = RangeAdd(par.editLayer, kRight, 0, KC_MaxLayers-1);  break;
+			}	break;
+
+		case S_Mouse:
+			if (kUp)
+			{	ym2Mouse = (ym2Mouse + kUp + 2) % 2;  }
+			else
+			if (kRight)
+			switch (ym2Mouse)
+			{
+			case 0:
+				par.mkSpeed = RangeAdd(par.mkSpeed, kRight * (kCtrl ? 10 : 1), 0, 250);  break;
+			case 1:
+				par.mkAccel = RangeAdd(par.mkAccel, kRight * (kCtrl ? 10 : 1), 0, 250);  break;
+			}	break;
 		}
 	}
-	//  Testing  Mouse
-	//..
 
 	//  Display
 	//..............................................
