@@ -94,14 +94,12 @@ int8_t Gui::KeysMap()
 	{
 		if (kBack)
 		{	//  apply in kc
-			if (scId != NO && scId < kc.set.nkeys()
-				&& nLay < KC_MaxLayers)
-			{
+			if (scId != NO && scId < kc.set.nkeys() && nLay < KC_MaxLayers)
 				kc.set.key[nLay][scId] = keyCode;
-			}
+
 			pickCode = 0;  return 1;
 		}
-		if (kSub)
+		if (kSub)  // cancel
 		{	pickCode = 0;  return 1;  }
 
 		if (kRight)  // <- ->
@@ -116,7 +114,7 @@ int8_t Gui::KeysMap()
 		if (kUp)	keyCode += kUp;  else
 		if (kPgUp)	keyCode += kPgUp * 4;  else
 
-		if (kEnd < 0)  // home  filter
+		if (kDiv || kEnd < 0)  // filter
 			grpFilt = 1-grpFilt;
 
 		//  grp range

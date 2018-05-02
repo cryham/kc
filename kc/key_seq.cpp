@@ -26,7 +26,9 @@ int8_t Gui::KeysSeq()
 	}
 
 	if (edit)
-	{	//  edit sequence  ----
+	{	//  Edit sequence
+		//------------------------------
+
 		//uint8_t fun = 0;  // none
 		if (lay2)  //` switch..
 		{	//  move cursor
@@ -92,25 +94,21 @@ int8_t Gui::KeysSeq()
 				if (edpos < len)  ++edpos;
 			}
 		}	}
-	}else
-	{	//  save  load
+	}else  // View
+	{	//------------------------------
+		//  save  load
 		if (kSave)  Save();
 		if (kLoad)  Load(kCtrl);
 
-		if (kUp > 0)  // move
-		{	++slot;  if (slot >= iPage) {  slot = 0;
-			++page;  if (page >= kc.set.seqSlots/iPage)  page = 0;
-		}	}
-		if (kUp < 0)
-		{	--slot;  if (slot < 0) {  slot = iPage-1;
-			--page;  if (page < 0)  page = kc.set.seqSlots/iPage-1;
-		}	}
-		if (kPgUp > 0)  // page
-		{	++page;  if (page >= kc.set.seqSlots/iPage)  page = 0;
-		}
-		if (kPgUp < 0)
-		{	--page;  if (page < 0)  page = kc.set.seqSlots/iPage-1;
-		}
+		//  move
+		if (kUp > 0){	++slot;  slotMax();  }
+		if (kUp < 0){	--slot;  slotMin();  }
+		//  move 3
+		if (kEnd > 0){	slot += 3;  slotMax();  }
+		if (kEnd < 0){	slot -= 3;  slotMin();  }
+		//  page
+		if (kPgUp > 0)  pageInc();
+		if (kPgUp < 0)  pageDec();
 
 		//  copy
 		if (kCopy)
@@ -130,7 +128,8 @@ int8_t Gui::KeysSeq()
 			kc.set.seqs[q] = cp;
 			infType = 5;  tInfo = -1;
 		}
-		if (kCtrl && kDel)  // erase
+		//  erase seq *
+		if (kCtrl && kDel)
 		{	sq.data.clear();
 			sq.data.shrink_to_fit();  // free ram
 		}
@@ -139,4 +138,21 @@ int8_t Gui::KeysSeq()
 			--mlevel;
 	}
 	return 0;
+}
+
+void Gui::slotMax()
+{
+	if (slot >= iPage) {  slot = 0;  pageInc();  }
+}
+void Gui::slotMin()
+{
+	if (slot < 0) {  slot = iPage-1;  pageDec();  }
+}
+void Gui::pageInc()
+{
+	++page;  if (page >= kc.set.seqSlots/iPage)  page = 0;
+}
+void Gui::pageDec()
+{
+	--page;  if (page < 0)  page = kc.set.seqSlots/iPage-1;
 }

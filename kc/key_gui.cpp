@@ -156,9 +156,14 @@ void Gui::KeyPress()
 			if (yy == 1)  moveCur = 1;  else
 			if (yy == 3)  pickCode = 1;
 		}
-		if (kPgUp || (yy == 2 && kRight))  // chg lay
+		if (kPgUp || (yy == 2 && kRight))  // change layer
 			nLay = RangeAdd(nLay, kPgUp+kRight, 0,KC_MaxLayers, 1);
 			// nLay == KC_MaxLayers shows layer use vis
+
+		//  erase key *
+		if (kCtrl && kDel &&
+			scId != NO && scId < kc.set.nkeys() && nLay < KC_MaxLayers)
+			kc.set.key[nLay][scId] = KEY_NONE;
 
 		//  quick access keys / * -
 		if (kDiv)  pressKey = 1;
