@@ -18,7 +18,7 @@ void Games::Init(Gui* pGui)
 
 	//  keys
 	o.sp_drop = 5;  o.sp_fall = 20;
-	o.key_rpt = 15;  o.move_in_drop = 0;
+	o.move_in_drop = 0;
 	
 	preset = 7;
 	xo= 0; yo= 0; xa= 0; ya= 0; xb= 0; yb= 0;

@@ -37,8 +37,7 @@ struct Games
 		int32_t speed, accel;
 		
 		//  input, fine
-		int8_t sp_drop, sp_fall;
-		int8_t key_rpt, move_in_drop;
+		int8_t sp_drop, sp_fall, move_in_drop;
 	} o;
 
 

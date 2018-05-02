@@ -154,7 +154,6 @@ void Games::Draw()
 			OptLine(x,y,l,"Frame draw  %d", o.frame, 8+2);
 			break;
 		case O_Input:
-			OptLine(x,y,l,"Key repeat  %d", o.key_rpt, 8+2);
 			OptLine(x,y,l,"Move in drop  %d", o.move_in_drop, 8+2);
 			OptLine(x,y,l,"Fall speed  %d", o.sp_fall, 8);
 			OptLine(x,y,l,"Drop speed  %d", o.sp_drop, 8+2);

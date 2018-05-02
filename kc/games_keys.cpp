@@ -30,7 +30,7 @@ int Games::KeyPress(int8_t& mlevel)
 		else  gui = 1;  // gui on
 	}
 
-	if (g->kMul)  // keyp(ASTERISK) || keyp(MINUS))
+	if (g->kMul)
 	{
 		if (gui==2)  gui = 0;  // toggle options
 		else  gui = 2;
@@ -99,11 +99,10 @@ int Games::KeyPress(int8_t& mlevel)
 			case 2:  o.frame  = g->RangeAdd(o.frame , k, 0, 4);  break;
 			}	break;
 		case O_Input:  switch (oyg)  {
-			case 0:  o.key_rpt = g->RangeAdd(o.key_rpt, k, 0, 60);  break;
-			case 1:  o.move_in_drop = 1-o.move_in_drop;  break;
+			case 0:  o.move_in_drop = 1-o.move_in_drop;  break;
 			
-			case 2:  o.sp_fall = g->RangeAdd(o.sp_fall, k, 1, 40);  break;
-			case 3:  o.sp_drop = g->RangeAdd(o.sp_drop, k, 1, 10);  break;
+			case 1:  o.sp_fall = g->RangeAdd(o.sp_fall, k, 1, 40);  break;
+			case 2:  o.sp_drop = g->RangeAdd(o.sp_drop, k, 1, 10);  break;
 			}	break;
 		}
 		Checks();
@@ -118,7 +117,7 @@ int Games::KeyPress(int8_t& mlevel)
 
 	if (ended)  return 0;
 
-	if (g->kMul && !gui)  // || key(SPACE))  // pause
+	if (g->kSub && !gui)  // || key(SPACE))  // pause
 		paused = 1 - paused;
 
 	if (paused)  return 0;
