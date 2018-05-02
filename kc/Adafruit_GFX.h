@@ -45,7 +45,7 @@ public:
 protected:
 	int16_t _width, _height,
 			cursor_x, cursor_y;
-	uint16_t textcolor, textbgcolor;
+	uint16_t textcolor;
 
 	GFXfont *gfxFont;
 };

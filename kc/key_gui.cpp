@@ -97,8 +97,6 @@ void Gui::KeyPress()
 			case 1:
 				par.brightOff = RangeAdd(par.brightOff, kRight * (kCtrl ? 10 : 2), 0, 100);  break;
 			case 2:
-				par.fadeTime = RangeAdd(par.fadeTime, kRight * 2, 0, 100);  break;
-			case 3:
 				par.startScreen = RangeAdd(par.startScreen, kRight, 0, ST_ALL-1);  break;
 			}	break;
 		case 1:

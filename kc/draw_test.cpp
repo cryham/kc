@@ -55,7 +55,7 @@ void Gui::DrawTesting()
 
 		//  modifiers  -
 		d->setTextColor(RGB(18,21,24));
-		d->print("Modif:  ");
+		d->print("Modif:");
 		d->setTextColor(RGB(20,25,28));
 		for (uint i = 0; i < ScanKeys; ++i)
 		{
@@ -65,7 +65,7 @@ void Gui::DrawTesting()
 			{
 				int8_t code = kc.set.key[kc.nLayer][i];
 				if (code > KEY_NONE && code <= K_ModLast)
-				{	sprintf(a,"%s ",cKeyStr[code]);
+				{	sprintf(a," %s",cKeyStr[code]);
 					d->print(a);
 		}	}	}
 		d->println("");  d->moveCursor(0,4);
@@ -73,7 +73,7 @@ void Gui::DrawTesting()
 
 		//  scan codes  - - -
 		d->setTextColor(RGB(17,23,26));
-		d->print("Scan: ");
+		d->print("Scan:");
 		d->setTextColor(RGB(15,20,25));
 		int c = 0;
 		for (uint i = 0; i < ScanKeys; ++i)
@@ -81,19 +81,21 @@ void Gui::DrawTesting()
 			const KeyState& k = Matrix_scanArray[i];
 			if (k.state == KeyState_Hold)
 			{
-				sprintf(a,"%d ",i);  // scan code
+				sprintf(a," %d",i);  // scan code
 				d->print(a);  ++c;
 		}	}
 		d->println("");  d->moveCursor(0,4);
 
+
 		//  keys  - - - -
 		d->setTextColor(RGB(20,25,28));
-		d->print("Keys: ");
+		d->print("Keys:");
 		d->setTextColor(RGB(24,28,31));
+
+		if (kc.set.nkeys() >= int(ScanKeys))
 		for (uint i = 0; i < ScanKeys; ++i)
 		{
 			const KeyState& k = Matrix_scanArray[i];
-			if (kc.set.nkeys() >= int(ScanKeys))
 			if (k.state == KeyState_Hold)
 			{
 				int8_t code = kc.set.key[kc.nLayer][i];
@@ -101,7 +103,7 @@ void Gui::DrawTesting()
 				{
 					const uint8_t* c = &cGrpRgb[cKeyGrp[code]][0][0];
 					d->setTextColor(RGB(c[0],c[1],c[2]));
-					d->print(cKeyStr[code]);  d->print(" ");
+					d->print(" ");  d->print(cKeyStr[code]);
 		}	}	}
 
 		//  held count

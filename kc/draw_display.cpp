@@ -55,8 +55,6 @@ void Gui::DrawDisplay()
 		case 1:
 			sprintf(a,"Off bright: %d %%", par.brightOff);  break;
 		case 2:
-			sprintf(a,"Fade time-: %d", par.fadeTime);  h = 2;  break;
-		case 3:
 			sprintf(a,"Start screen: %s", StrScreen(par.startScreen));  break;
 		}
 		d->print(a);  y += h+8;
@@ -84,13 +82,10 @@ void Gui::DrawDisplay()
 			sprintf(a,"Key repeat: %d ms", par.krRepeat*5);  break;
 		case 2:
 			sprintf(a,"Ram info: %d", iRam);  break;
-
-		//uint8_t mkSpeed, mkAccel;
-		//start demo time
 		}
 		d->print(a);  y += h+8;
 	}	break;
 	}
 }
 
-const uint8_t Gui::DispPages[Gui::Disp_All] = {4,3};
+const uint8_t Gui::DispPages[Gui::Disp_All] = {3,3};

@@ -74,7 +74,7 @@ Adafruit_GFX::Adafruit_GFX(int16_t w, int16_t h)
 	_width  = w;
 	_height = h;
 	cursor_y = cursor_x	= 0;
-	textcolor = textbgcolor = 0xFFFF;
+	textcolor = 0xFFFF;
 	gfxFont	= 0;
 }
 
@@ -413,9 +413,7 @@ int16_t Adafruit_GFX::getCursorY() const
 
 void Adafruit_GFX::setTextColor(uint16_t c)
 {
-	// For 'transparent' background, we'll set the bg
-	// to the same as fg instead of using a flag
-	textcolor = textbgcolor = c;
+	textcolor = c;
 }
 
 void Adafruit_GFX::setFont(const GFXfont *f)
