@@ -38,19 +38,36 @@ void KC_Main::UpdLay()
 		if (id < set.nkeys())
 		{
 			//  get from kc
-			uint8_t code = set.key[/*nLayer*/0][id];
+			uint8_t code0 = set.key[0][id];
+			uint8_t codeL = set.key[nLayer][id];
 
-			if (code >= K_Layer1 && code < K_Layer1+KC_MaxLayers)
+			if (code0 >= K_Layer1 && code0 < K_Layer1+KC_MaxLayers)
 			{
 				//  set layer, hold
-				if (on)   nLayer = code - K_Layer1 + 1;
+				if (on)   nLayer = code0 - K_Layer1 + 1;
 				else
 				if (off)  nLayer = 0;  // todo defLay par
 
 				if (nLayer >= KC_MaxLayers-1)
 					nLayer = KC_MaxLayers-1;
-			//if (nLayer < 0)
-				//	nLayer = 0;
+			}
+			else  //  display, internal functions  ***
+			if (on && codeL >= K_Fun0 && codeL <= K_Fun9)
+			{
+				uint8_t& br = gui.kbdSend ? par.brightOff : par.brightness;
+				switch (codeL)
+				{
+				case K_Fun0:  // send, Gui toggle
+					gui.kbdSend = 1-gui.kbdSend;
+					setDac = 1;  break;
+
+				case K_Fun1:  // brightness -+
+					br = gui.RangeAdd(br, (gui.kCtrl ?-10 :-2), 0, 100);
+					setDac = 1;  break;
+				case K_Fun2:
+					br = gui.RangeAdd(br, (gui.kCtrl ? 10 : 2), 0, 100);
+					setDac = 1;  break;
+				}
 			}
 		}
 	}
@@ -184,21 +201,6 @@ void KC_Main::Send(uint32_t ms)
 						dtSeq = par.dtSeqDef;
 					}
 					else  inSeq = -1;
-				}
-				else  //  todo  display,  internal
-				if (code >= K_Fun0 && code <= K_Fun9)
-				{
-					switch (code)
-					{
-					case K_Fun0:  // send
-						gui.kbdSend = 1-gui.kbdSend;  setDac = 1;
-						break;
-					case K_Fun1:  // bright
-						//par.brightness;
-						break;
-					case K_Fun2:
-						break;
-					}
 				}
 			}
 			else if (off)
