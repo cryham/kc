@@ -36,9 +36,8 @@ enum EKeys  // byte key codes
 	K_Data0, K_Data1, K_Data2, K_Data3, K_Data4, K_Data5, K_Data6, K_Data7,
 
 	//  special  EXT  < Start  ----
-	//  display, quick func
-	K_Fun0, K_Special0=K_Fun0,  // < Start
-	K_Fun1, K_Fun2, K_Fun3, K_Fun4,	K_Fun5, K_Fun6, K_Fun7, K_Fun8, K_Fun9,
+	//  display, internal functions
+	K_Fun0, K_Fun1, K_Fun2, K_Fun3, K_Fun4,	K_Fun5, K_Fun6, K_Fun7, K_Fun8, K_Fun9,
 	//  mouse
 	KM_Left,KM_Right,KM_Up,KM_Down, KM_LMB,KM_MMB,KM_RMB,
 	KM_WhlUp,KM_WhlDown, KM_WhlLeft,KM_WhlRight, KM_Back,KM_Forw,
@@ -71,3 +70,6 @@ extern const uint8_t cKeyGrp[KEYS_ALL_EXT];
 const uint8_t grpMax = 17;
 extern const char* cGrpName[grpMax];
 extern const uint8_t cGrpRgb[grpMax][2][3];
+
+//  funtion names
+extern const char* cFunStr[K_Fun9-K_Fun0+1];

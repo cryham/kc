@@ -28,7 +28,7 @@ void Gui::Init(Ada4_ST7735* tft)
 	//SetScreen(ST_Seqs);
 
 	
-	oldti=0;  tdemo=0;
+	oldti=0;  tdraw=0;
 #ifdef DEMOS
 	demos.Init(d);
 #endif
@@ -60,7 +60,7 @@ void Gui::Init(Ada4_ST7735* tft)
 	}
 }
 
-//  start screen
+//  start screen  ---
 void Gui::SetScreen(int8_t s)
 {
 	if (s == ST_main0)
@@ -93,6 +93,7 @@ void Gui::SetScreen(int8_t s)
 
 const char* Gui::StrScreen(int8_t s)
 {
+	// todo main, pressed, layout, version, demos
 	switch (s)
 	{
 	case ST_main0:  return "Main";

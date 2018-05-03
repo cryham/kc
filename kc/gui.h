@@ -29,7 +29,8 @@ struct Gui
 	void DrawDisplay(), DrawHelp(), DrawOperInfo();
 
 	//  keys, draw util
-	void DrawPressed(), DrawLayout(bool edit), Chk_y1();
+	void DrawPressed(int8_t* seq=0, int8_t* fun=0);
+	void DrawLayout(bool edit), Chk_y1();
 	int8_t KeysSeq(), KeysMap();
 	void WriteSeq(int8_t seq, int8_t q);
 
@@ -61,7 +62,7 @@ struct Gui
 
 	//  time
 	unsigned long tm;
-	uint32_t oldti = 0, tdemo = 0;  // demo time ms
+	uint32_t oldti = 0, tdraw = 0;  // demo time ms
 
 	uint32_t oldti_kr;
 	int8_t kr(uint8_t sc, uint16_t dt);

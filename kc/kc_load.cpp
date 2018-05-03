@@ -1,5 +1,6 @@
 #include "WProgram.h"
 #include "kc_data.h"
+#include "kbd_layout.h"
 //extern KC_Params par;
 
 //  load, save in eeprom
@@ -27,6 +28,7 @@ void ParInit()
 
 	par.dtSeqDef = 20;
 	par.defLayer = 0;  par.editLayer = 2;
+	par.keyGui = gGui;
 }
 
 //  errors
@@ -87,8 +89,9 @@ void KC_Main::Load()
 		par.startScreen = ST_ALL-1;
 	setDac = 1;  // upd
 	
+	//  old versions  --
 	if (set.ver == 2)
-	{	par.defLayer = 0;  par.editLayer = 2;  }
+	{	par.defLayer = 0;  par.editLayer = 2;  par.keyGui = gGui;  }
 
 
 	//  Keys  ---

@@ -11,21 +11,6 @@ extern RamMonitor ram;
 extern KC_Main kc;
 
 
-//  menu colors
-const uint8_t Gui::Mclr[Gui::Cl_ALL][2][3] = {
-	{{20,26,31},{5,3,1}},  // 0 main
-	{{27,26,31},{2,3,1}},  // 1 demos
-	{{20,30,26},{6,3,4}},  //  2 test
-	{{22,31,18},{6,3,7}},  //  3 map
-	{{17,31,31},{5,4,3}},  //  4 seqs
-	{{24,27,27},{6,5,4}},  // 5 setup
-	{{31,31,16},{3,5,5}},  // 5 display
-	{{26,28,28},{4,3,3}},  // 6 scan, mouse
-	{{31,26,12},{1,4,5}},  //  7 game
-	{{31,26,22},{1,6,8}},  //  8 game opt
-};
-
-
 //  Draw End
 //....................................................................................
 void Gui::DrawEnd()
@@ -80,24 +65,24 @@ void Gui::DrawEnd()
 	#ifdef DEMOS
 	//  fps  ---------
 	if (mlevel == 2)
-	if ((demos.iFps && ym == M_Demos) ||
-		(ym == M_Setup && yy == S_Scan))
-	{
-		uint32_t ti = millis();
-		float fr = 1000.f / (ti - oldti);
-		int ff = fr;
-		oldti = ti;
+	{	bool sc = ym == M_Setup && yy == S_Scan;
+		if ((demos.iFps && ym == M_Demos) || sc)
+		{
+			uint32_t ti = millis();
+			float fr = 1000.f / (ti - oldti);
+			int ff = fr;
+			oldti = ti;
 
-		d->setTextColor(RGB(24,28,31));
-		d->setCursor(W-14,0);
-		sprintf(a,"%d", ff);
-		d->print(a);
+			d->setTextColor(RGB(24,28,31));
+			d->setCursor(W-14,0);
+			sprintf(a,"%d", ff);
+			d->print(a);
 
-		d->setTextColor(RGB(20,26,31));
-		d->setCursor(W-14,9);
-		sprintf(a,"%lu", tdemo);
-		d->print(a);
-	}
+			d->setTextColor(RGB(20,26,31));
+			d->setCursor(W-14,9);
+			sprintf(a,"%lu", tdraw);
+			d->print(a);
+	}	}
 	#endif
 
 	//if (!offDisp)

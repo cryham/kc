@@ -13,7 +13,7 @@ extern KC_Main kc;
 //....................................................................................
 void Gui::KeyPress()
 {
-	if (Key(gGui))  // toggle Gui
+	if (Key(par.keyGui))  // toggle Gui **
 	{	kbdSend = 1 - kbdSend;  kc.setDac = 1;  }
 
 	if (kbdSend)
@@ -44,7 +44,7 @@ void Gui::KeyPress()
 	{
 		if (game.KeyPress(mlevel))
 		{	// goto help
-			ym = M_Help;  mlevel = 1;  hpage = 5;
+			ym = M_Help;  mlevel = 1;  hpage = 6;
 		}
 		return;
 	}
@@ -75,7 +75,7 @@ void Gui::KeyPress()
 
 		case S_Keyboard:
 			if (kUp)
-			{	ym2Keyb = (ym2Keyb + kUp + 3) % 3;  }
+			{	ym2Keyb = (ym2Keyb + kUp + 4) % 4;  }
 			else
 			if (kRight)
 			switch (ym2Keyb)
@@ -86,6 +86,10 @@ void Gui::KeyPress()
 				par.defLayer = RangeAdd(par.defLayer, kRight, 0, KC_MaxLayers-1);  break;
 			case 2:
 				par.editLayer = RangeAdd(par.editLayer, kRight, 0, KC_MaxLayers-1);  break;
+			case 3:
+				// press to pick..
+				//par.keyGui
+				break;
 			}	break;
 
 		case S_Mouse:
@@ -206,8 +210,8 @@ void Gui::KeyPress()
 	//  Help
 	if (mlevel == 1 && ym == M_Help)
 	{
-		if (kUp)
-			hpage = RangeAdd(hpage, kUp, 0,HAll-1, 1);
+		if (kUp || kPgUp)
+			hpage = RangeAdd(hpage, kUp+kPgUp, 0,HAll-1, 1);
 		if (kRight < 0 || kBack)
 			mlevel = 0;  // <back
 		return;

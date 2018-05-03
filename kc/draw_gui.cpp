@@ -8,6 +8,7 @@
 void Gui::Draw()
 {
 	yy = ym1[ym];
+	uint32_t oti1 = millis();
 
 	//  Clear
 	#ifdef DEMOS
@@ -46,8 +47,6 @@ void Gui::Draw()
 		if (mlevel == 2)
 		{
 			d->setFont(0);
-
-			uint32_t oti1 = millis();
 			switch (yy)
 			{
 			#ifdef DEMOS_PLASMA
@@ -69,7 +68,6 @@ void Gui::Draw()
 			#endif
 				case D_Rain:     demos.Rain();  break;
 			}
-			tdemo = millis() - oti1;
 		}else
 		{	//  menu
 			d->setTextColor(RGB(25,16,28));
@@ -95,4 +93,6 @@ void Gui::Draw()
 	case M_Display: DrawDisplay();  return;
 	case M_Help:    DrawHelp();  return;
 	}
+
+	tdraw = millis() - oti1;
 }

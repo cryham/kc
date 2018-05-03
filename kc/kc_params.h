@@ -5,27 +5,19 @@
 /*  data mem sizes
 //--------------------------------------
   18x8 = 144  * 9L = 1296 B max
-	+ 60 seq * 20 = 1200 B
+     + 60 seq * 20 = 1200 B
   = 2500 B  RAM big
 
   144 keys * (1 size + 2 Lay data) = 432 B
-	+ 10 seq * 15 len = 150 B
+    + 10 seq * 15 len = 150 B
   = 600 B  EE small
 */
-const int KC_MaxRows = 8;
-const int KC_MaxCols = 18;
-const int KC_MaxLayers = 8;  // 16
-const int KC_MaxSeqs = 40;  // 60
+const static int8_t
+	KC_MaxRows = 8,
+	KC_MaxCols = 18,
+	KC_MaxLayers = 8,  // 16
+	KC_MaxSeqs = 40;  // 60
 
-
-enum EStScr  //  start screen
-{	ST_main0 = 0,  ST_Test, ST_Test2,
-	ST_Map= ST_Test2 +T_All,  ST_Seqs, ST_Displ,
-	ST_Demos, ST_Demos2,  ST_ALL= ST_Demos2
-	#ifdef DEMOS
-		+D_All,
-	#endif
-};
 
 //  params, saved
 //--------------------------------------
@@ -46,12 +38,13 @@ struct KC_Params
 
 	//  gui key auto repeat, ms
 	uint8_t krDelay, krRepeat;
-	uint8_t mkSpeed, mkAccel;  // todo mouse speed ..
+	uint8_t mkSpeed, mkAccel;
 
 	//* sequence, default keys dt
 	uint8_t dtSeqDef;
 	//  default layer 0, sequence edit layer 2
 	uint8_t defLayer, editLayer;
+	uint8_t keyGui;  // scId for gui toggle
 
 	//  todo par, low pri
 	//  start demo screen
@@ -60,6 +53,15 @@ struct KC_Params
 };
 //  --- ADD new to END ----
 
+
+enum EStScr  //  start screen
+{	ST_main0 = 0,  ST_Test, ST_Test2,
+	ST_Map= ST_Test2 +T_All,  ST_Seqs, ST_Displ,
+	ST_Demos, ST_Demos2,  ST_ALL= ST_Demos2
+	#ifdef DEMOS
+		+D_All,
+	#endif
+};
 
 #ifdef __cplusplus
 extern "C" {
@@ -70,4 +72,3 @@ extern struct KC_Params par;
 #ifdef __cplusplus
 }
 #endif
-
