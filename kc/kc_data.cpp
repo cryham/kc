@@ -13,8 +13,6 @@ extern Gui gui;
 
 //  update layers  (always)
 //------------------------------------------------
-uint32_t oldt;
-
 void KC_Main::UpdLay(uint32_t ms)
 {
 	//  brightness dac led  ~~~
@@ -32,12 +30,18 @@ void KC_Main::UpdLay(uint32_t ms)
 	for (r=0; r < NumRows; ++r)
 	{
 		id = NumCols * r + c;  // scan id
-		const KeyState& k = Matrix_scanArray[id];
+		if (id >= set.nkeys())  continue;
+
 		//  state
+		const KeyState& k = Matrix_scanArray[id];
 		bool on = k.state == KeyState_Press;
 		bool off = k.state == KeyState_Release;
+
+		bool hold = k.state == KeyState_Hold;
+		uint8_t codeL = set.key[nLayer][id];
+		bool fun = codeL >= K_Fun0 && codeL <= K_Fun9;
+
 		if (on || off)
-		if (id < set.nkeys())
 		{
 			//  get from kc
 			uint8_t code0 = set.key[0][id];
@@ -54,15 +58,28 @@ void KC_Main::UpdLay(uint32_t ms)
 					nLayer = KC_MaxLayers-1;
 			}
 			else  //  display, internal functions  ***
-			if (on && codeL >= K_Fun0 && codeL <= K_Fun9)
+			//..........................................................
+			if (on && fun)
 			{
-				uint8_t& br = gui.kbdSend ? par.brightOff : par.brightness;
 				switch (codeL)
 				{
 				case K_Fun0:  // send, Gui toggle
 					gui.kbdSend = 1-gui.kbdSend;
 					setDac = 1;  break;
 
+				case K_Fun1:
+				case K_Fun2:  // brightness -+
+					tiFun = ms;  break;  // delay no par
+				}
+			}
+		}else if (hold)
+		{
+			if (fun)
+			if (ms - tiFun > par.krRepeat*5 || ms < tiFun)
+			{	tiFun = ms;
+				uint8_t& br = gui.kbdSend ? par.brightOff : par.brightness;
+				switch (codeL)
+				{
 				case K_Fun1:  // brightness -+
 					br = gui.RangeAdd(br, (gui.kCtrl ?-10 :-2), 0, 100);
 					setDac = 1;  break;
@@ -80,7 +97,7 @@ void KC_Main::UpdLay(uint32_t ms)
 void KC_Main::Send(uint32_t ms)
 {
 	//  in sequence  ***
-	if (inSeq >= 0 && (ms - tiSeq > dtSeq || ms < tiSeq))  // par
+	if (inSeq >= 0 && (ms - tiSeq > dtSeq || ms < tiSeq))
 	{
 		tiSeq = ms;
 		const KC_Sequence& sq = set.seqs[inSeq];

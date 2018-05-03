@@ -62,8 +62,8 @@ struct KC_Main
 	int8_t inSeq = -1,  // id run, -1 none
 		seqPos = 0,  // index in seq data
 		seqRel = 0;  // pressed / released
-	uint32_t tiSeq = 0;  // ms time delay
 	uint16_t dtSeq = 20;  // var delay  param
+	uint32_t tiSeq = 0, tiFun = 0;  // ms time delay
 
 	int8_t seqMod[K_ModLast+1];  // modifiers state
 	void SeqModClear();
