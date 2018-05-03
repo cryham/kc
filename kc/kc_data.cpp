@@ -104,8 +104,25 @@ void KC_Main::Send(uint32_t ms)
 		uint8_t code = sq.data[seqPos];
 		uint usb = cKeyUsb[code];
 
+		//  commands
+		if (code >= K_Seq0 && code <= K_SeqLast)
+		{
+			uint8_t cmd = code - K_Seq0;
+			++seqPos;
+			switch (cmd)
+			{
+			case 0:  // set seq delay
+				break;
+
+			case 1:  // todo wait
+				break;
+
+			case 2:  // mouse move
+				break;
+			}
+		}
 		//  modifiers
-		if (code > KEY_NONE && code <= K_ModLast)
+		else if (code > KEY_NONE && code <= K_ModLast)
 		{
 			if (seqMod[code] == 0)
 			{

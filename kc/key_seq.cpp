@@ -14,7 +14,7 @@ int8_t Gui::KeysSeq()
 	std::vector<uint8_t>& dt = sq.data;
 
 	//  toggle edit  ----
-	if (kEnt && (!edit || layEd))
+	if (kEnt && layEd && (!edit || layEd))
 	{
 		edit = 1-edit;
 		if (edit)  // enter edit
@@ -29,16 +29,43 @@ int8_t Gui::KeysSeq()
 	//------------------------------------------------------------
 	if (edit)
 	{
+		int8_t cmd = 0;  // none
 
 		if (layEd)
-		{	//  move cursor
+		{	//  start, end
 			if (kEnd < 0)  edpos = 0;
 			if (kEnd > 0)  edpos = len;
 
-			if (kRight < 0)  if (edpos > 0)  --edpos;
-			if (kRight > 0)  if (edpos < len)  ++edpos;
+			//  cmd check
+			#define CmdAt(i)  (dt[i] >= K_Seq0 && dt[i] <= K_SeqLast)
+			bool cmdR = edpos > 1 && CmdAt(edpos-2);
+			bool cmdL = edpos < len-1 && CmdAt(edpos);
+			int cmdPar = cmdR ? edpos-1 : cmdL ? edpos+1 : 0;
 
-			if ((kDel || kBckSp) && len > 0)
+			//  move, skip cmd  <,>
+			if (kRight < 0)
+			{	if (cmdR)  edpos-=2;  else
+				if (edpos > 0)  --edpos;  }
+			if (kRight > 0)
+			{	if (cmdL)  edpos+=2;  else
+				if (edpos < len)  ++edpos;  }
+
+			//  edit cmd param  ^,v
+			if (cmdPar && kUp)
+			{
+				dt[cmdPar] = RangeAdd(dt[cmdPar],
+					(kCtrl ? 10 : 1) * kUp, 0, 255);
+			}
+
+			//  del char key
+			int8_t del = kDel || kBckSp ? 1 : 0;
+			//  del 2 chars, if cmd
+			if (kDel && edpos < len-1 && CmdAt(edpos))  del = 2;
+			if (kBckSp && edpos > 1 && CmdAt(edpos-2))  del = 2;
+
+			if (del)
+			for (int d=0; d < del; ++d)
+			if (len > 0)
 			{
 				int i = edpos;  // del>
 				if (kBckSp)
@@ -54,16 +81,42 @@ int8_t Gui::KeysSeq()
 			}
 			if (kIns)
 				edins = 1 - edins;  // ins/ovr
-			//if (kEnt)  SeqClear(q);  // erase
 
-			//if (key(F1))  fun = 1;  // set delay cmd todo
-			//if (key(F2))  fun = 2;  // wait cmd
+			//  commands
+			if (kDiv)  cmd = 1;  // set delay
+			if (kMul)  cmd = 2;  // wait
+			if (kSub)  cmd = 3;  // mouse
+
+			//  todo manual pick key from list-
 		}
-		if (!lay2)  // || fun > 0)
+		if (cmd > 0)
 		{
-			// manual pick list?
-			//  find key, if none
-			int ii = -1;
+			//  seq codes in seq are commands
+			int ci = K_Seq0 +cmd-1;
+
+			//  add command to sequence
+			if (edpos >= len)  // at end
+			{
+				dt.push_back(ci);  // 1B cmd
+				dt.push_back(0);   // 1B param
+				edpos+=2;
+			}
+			else  // insert
+			{
+				dt.push_back(0);
+				dt.push_back(0);  len+=2;
+				for (int i=len-1; i > edpos; --i)
+					dt[i] = dt[i-2];
+
+				dt[edpos] = ci;   // 1B cmd
+				dt[edpos+1] = 0;  // 1B par
+				edpos+=2;
+			}
+		}
+		else
+		if (!layEd)
+		{
+			int ii = -1;  // none, find key
 			for (uint i=0; i < ScanKeys; ++i)
 			{
 				if (Matrix_scanArray[i].state == KeyState_Press
@@ -96,8 +149,8 @@ int8_t Gui::KeysSeq()
 			}
 		}	}
 	}else
-	}else  // View
-	{	//------------------------------
+	{	// View
+		//------------------------------
 		//  save  load
 		if (kSave)  Save();
 		if (kLoad)  Load(kCtrl);
