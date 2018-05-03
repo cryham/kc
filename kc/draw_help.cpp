@@ -1,12 +1,13 @@
 #include "gui.h"
 #include "Ada4_ST7735.h"
+#include "kc_params.h"
 
 
 //  Help
 //....................................................................................
 void Gui::DrawHelp()
 {
-	char a[16];
+	char a[32];
 	d->setTextColor(RGB(21,26,31));
 	d->print(strMain[ym]);  d->setFont(0);
 
@@ -31,51 +32,59 @@ void Gui::DrawHelp()
 	{
 	case 0:  //  main
 		d->setTextColor(RGB(20,26,31));
-		d->println("\x18,\x19     Move Cursor \x10");
+		d->println("\x18,\x19     Move Cursor \x10");  // v,^
 		d->moveCursor(0,4);
 		d->println("\x1A       Enter");
 		d->moveCursor(0,2);
 		d->println("\x1B or +  Go Back");
 
-		d->moveCursor(0,8);
+		d->moveCursor(0,10);
 		d->setTextColor(RGB(16,22,28));
 		d->println("PgUp,PgDn  Prev,Next Page");
 		d->moveCursor(0,4);
-		d->println("\x1B,\x1A     Dec,Inc Value");
+		d->println("\x1B,\x1A     Dec,Inc Value");  // <,>
+		d->setTextColor(RGB(12,18,24));
+		d->println("        LCtrl- more");
 		break;
 
 	case 1:  //  mapping  ------------------------
-		d->setTextColor(RGB(26,29,22));
+		d->setTextColor(RGB(26,29,23));
 		d->println("/   Press key for cursor");
+		d->moveCursor(0,2);
 		d->println("*   Move cursor  * Back");
 		d->moveCursor(0,4);
 		d->println("Ctrl-Del   Delete");
 		d->moveCursor(0,6);
 		d->println("PgUp,PgDn  Prev/Next Layer");
-		d->setTextColor(RGB(20,25,23));
+		d->moveCursor(0,2);
+		d->setTextColor(RGB(17,24,17));
 		d->println("  Last is layer use visual");
-		d->moveCursor(0,4);
-		d->setTextColor(RGB(26,29,22));
+		d->moveCursor(0,6);
+		d->setTextColor(RGB(26,29,23));
 		d->println("-   Pick key list ..");
 		break;
 
 	case 2:  //  pick key
-		d->setTextColor(RGB(26,31,22));
-		d->println("+   Set key");
+		d->setTextColor(RGB(23,28,23));
+		d->println("\x1B,\x1A,PgUp,PgDn,\x18,\x19  Move");
+		d->moveCursor(0,4);
+		d->println("+    Set key");
 		d->moveCursor(0,2);
-		d->println("-   Cancel");
-		d->moveCursor(0,4);
-		d->println("/  Group filter");
-		d->moveCursor(0,4);
+		d->println("-    Cancel");
+		d->moveCursor(0,6);
+		d->println("/    Group filter toggle");
+		d->moveCursor(0,2);
+		d->println("\x1B,\x1A  Prev,Next Group");
 	//	d->println("--------------------------");  // max 26
 		break;
 
 	case 3:  //  sequences
-		d->setTextColor(RGB(23,29,29));
+		d->setTextColor(RGB(21,29,29));
 		//d->println("\x18\x19,PgUp,Dn,
 		d->println("Home,End    Move Cursor 3x");
 		d->moveCursor(0,6);
-		d->println("Enter       Edit seq.");
+		sprintf(a,"L%d-Enter    Edit seq.", par.editLayer);
+		d->println(a);
 
 		d->moveCursor(0,6);
 		d->println("F4   Save");
@@ -89,16 +98,19 @@ void Gui::DrawHelp()
 
 	case 4:  //  edit seq
 		d->setTextColor(RGB(6,30,30));
-		d->println("All on own Layer");  //par..
-		d->setTextColor(RGB(18,31,31));
-		d->moveCursor(0,4);
-		d->println("\x18,\x19  Move Cursor");
+		sprintf(a,"All on Layer %d", par.editLayer);
+		d->println(a);
+		d->setTextColor(RGB(18,30,30));
+		d->moveCursor(0,6);
+		d->println("\x18,\x19       Move Cursor");
+		d->moveCursor(0,2);
 		d->println("Home,End  To Start,End");
-		d->moveCursor(0,4);
-		d->println("Ins  Insert/Overwrite");
+
+		d->moveCursor(0,6);
 		d->println("Del,Backspc   Delete");
-		d->moveCursor(0,4);
-		d->println("Enter      Set seq.");
+		d->println("Ins  Insert/Overwrite");
+		d->moveCursor(0,6);
+		d->println("Enter     Set seq.");
 		break;
 
 	/*case 6:  // edit seq cd
@@ -114,14 +126,14 @@ void Gui::DrawHelp()
 
 	case 5:  //  demos  ------------------------
 		d->setTextColor(RGB(26,26,29));
-		d->println("\x18,\x19  Prev/Next Preset");
-		d->println("\x1B,\x1A  Dec,Inc Speed");
+		d->println("\x18,\x19   Prev/Next Preset");
+		d->println("\x1B,\x1A   Dec,Inc Speed");
 		d->moveCursor(0,4);
-		d->println("-   Toggle Fps");
-		d->println("*   Params Info");
-		d->moveCursor(0,4);
+		d->println("-     Toggle Fps");
+		d->println("*     Params Info");
+		d->moveCursor(0,8);
+		d->setTextColor(RGB(22,22,25));
 		d->println("PgUp,PgDn  Change");
-		d->moveCursor(0,2);
 		d->println("Home,End   Params");
 		d->moveCursor(0,2);
 		d->println("  Ctrl  Others");
@@ -129,7 +141,7 @@ void Gui::DrawHelp()
 		break;
 
 	case 6:  //  sixtis  ------------------------
-		d->setTextColor(RGB(25,29,29));
+		d->setTextColor(RGB(29,26,23));
 		d->println("\x1B,\x1A      Move");
 		d->moveCursor(0,6);
 		d->println("\x18        Rotate cw");
@@ -142,13 +154,17 @@ void Gui::DrawHelp()
 		break;
 
 	case 7:  //  sixtis cd
-		d->setTextColor(RGB(25,29,29));
-		d->println("+   Back");
-		d->println("-   Pause");
+		d->setTextColor(RGB(29,25,20));
+		d->println("+        Back");
+		d->moveCursor(0,2);
+		d->println("-        Pause");
+		d->moveCursor(0,2);
 		d->println("Enter    New Game");
-		d->moveCursor(0,4);
-		d->println("*   Options");
-		d->println("\x1B\x1A  Dec,Inc Param");
+		d->moveCursor(0,6);
+		d->println("*        Options toggle");
+		d->moveCursor(0,2);
+		d->setTextColor(RGB(25,21,16));
+		d->println("\x1B,\x1A      Dec,Inc Value");
 		d->println("PgUp,PgDn  Page");
 		break;
 	}
