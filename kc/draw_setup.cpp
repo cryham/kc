@@ -126,7 +126,7 @@ void Gui::DrawSetup()
 	case S_Mouse:
 	{
 		int16_t y=32;
-		for (int i=0; i < 2; ++i)
+		for (int i=0; i < 3; ++i)
 		{
 			d->setCursor(2,y);
 			int c = abs(i - ym2Mouse);
@@ -144,13 +144,18 @@ void Gui::DrawSetup()
 				sprintf(a,"Speed: %d", par.mkSpeed);  break;
 			case 1:
 				sprintf(a,"Accel: %d", par.mkAccel);  break;
+			case 2:
+				if (pressGui)
+					sprintf(a,"Slow key: Press ..");
+				else
+					sprintf(a,"Slow key: %d", par.keyMouseSlow);  break;
 			}
 			d->print(a);  y += 8+4;
 		}
 
 		///  dbg  mouse accel  --
 		const int16_t x0 = 0, x1 = W/3+6, x2 = 2*W/3+6;
-		const int16_t y0 = 66, y1 = y0+10+2, y2 = y1+10;
+		const uint8_t y0 = 72, y1 = y0+10+2, y2 = y1+10;
 
 		d->setTextColor(RGB(20,24,28));
 		d->setCursor(0, y0);     d->print("hold");

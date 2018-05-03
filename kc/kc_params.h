@@ -45,6 +45,7 @@ struct KC_Params
 	//  default layer 0, sequence edit layer 2
 	uint8_t defLayer, editLayer;
 	uint8_t keyGui;  // scId for gui toggle
+	uint8_t keyMouseSlow;  // mouse shift scId
 
 	//  todo par, low pri
 	//  start demo screen

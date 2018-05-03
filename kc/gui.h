@@ -16,7 +16,7 @@ struct Gui
 #endif
 	Ada4_ST7735* d=0;
 
-	//  main
+	//  main  ----
 	Gui();
 	void Init(Ada4_ST7735* tft);
 	void Draw(), DrawEnd();
@@ -63,7 +63,6 @@ struct Gui
 	int8_t yy = 0;      // = ym1[ym]  level1 y cursor
 
 	//  time
-	unsigned long tm;
 	uint32_t oldti = 0, tdraw = 0;  // demo time ms
 
 	uint32_t oldti_kr;

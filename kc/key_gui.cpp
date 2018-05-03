@@ -73,18 +73,17 @@ void Gui::KeyPress()
 			}	break;
 
 		case S_Keyboard:
-			if (kUp)
-			{	ym2Keyb = (ym2Keyb + kUp + 4) % 4;  }
-			else
 			if (pressGui)
 			{
 				int ii = PressKey(pressGui);
 				if (ii != -1)
 				switch (ym2Keyb)
 				{
-				case 3: par.keyGui = ii;  pressGui = 0;  break;
+				case 3:  par.keyGui = ii;  pressGui = 0;  break;
 				}
 			}
+			else if (kUp)
+			{	ym2Keyb = (ym2Keyb + kUp + 4) % 4;  }
 			else if (kRight)
 			switch (ym2Keyb)
 			{
@@ -99,8 +98,17 @@ void Gui::KeyPress()
 			}	break;
 
 		case S_Mouse:
-			if (kUp)
-			{	ym2Mouse = (ym2Mouse + kUp + 2) % 2;  }
+			if (pressGui)
+			{
+				int ii = PressKey(pressGui);
+				if (ii != -1)
+				switch (ym2Keyb)
+				{
+				case 2:  par.keyMouseSlow = ii;  pressGui = 0;  break;
+				}
+			}
+			else if (kUp)
+			{	ym2Mouse = (ym2Mouse + kUp + 3) % 3;  }
 			else if (kRight)
 			switch (ym2Mouse)
 			{
@@ -108,6 +116,8 @@ void Gui::KeyPress()
 				par.mkSpeed = RangeAdd(par.mkSpeed, kRight * (kCtrl ? 10 : 1), 0, 250);  break;
 			case 1:
 				par.mkAccel = RangeAdd(par.mkAccel, kRight * (kCtrl ? 10 : 1), 0, 250);  break;
+			case 2:
+				pressGui = 1;  break;
 			}	break;
 		}
 	}

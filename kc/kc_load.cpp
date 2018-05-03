@@ -91,7 +91,8 @@ void KC_Main::Load()
 	
 	//  old versions  --
 	if (set.ver == 2)
-	{	par.defLayer = 0;  par.editLayer = 2;  par.keyGui = gGui;  }
+	{	par.defLayer = 0;  par.editLayer = 2;
+		par.keyGui = gGui;  par.keyMouseSlow = gMslow;  }
 
 
 	//  Keys  ---

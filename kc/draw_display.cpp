@@ -12,7 +12,7 @@ void Gui::DrawDisplay()
 	d->print(strMain[ym]);  //d->setFont(0);
 
 	//  time  ---
-	tm = rtc_get();
+	unsigned long tm = rtc_get();
 	if (tm)
 	{	int h = tm/3600%24, m = tm/60%60, s = tm%60;
 

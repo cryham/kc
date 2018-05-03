@@ -12,7 +12,7 @@ extern Gui gui;
 
 
 //  update layers  (always)
-//------------------------------------------------
+//------------------------------------------------------------------------
 void KC_Main::UpdLay(uint32_t ms)
 {
 	//  brightness dac led  ~~~
@@ -93,7 +93,7 @@ void KC_Main::UpdLay(uint32_t ms)
 }
 
 //  keyboard send  (to pc usb)
-//------------------------------------------------
+//------------------------------------------------------------------------------------------------
 void KC_Main::Send(uint32_t ms)
 {
 	//  in sequence  ***
@@ -258,6 +258,6 @@ void KC_Main::Send(uint32_t ms)
 
 	//  mouse move and send  * * *
 
-	Mouse_shift = KeyH(gMslow);
+	Mouse_shift = KeyH(par.keyMouseSlow);
 	usb_mouse_idle();
 }
