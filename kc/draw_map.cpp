@@ -52,8 +52,14 @@ void Gui::DrawMapping()
 		{	int8_t seq = keyCode - K_Seq0;
 			if (seq < KC_MaxSeqs)
 			{	d->setCursor(0, 21);
-				WriteSeq(seq, 2);
+				DrawSeq(seq, 2);
 		}	}
+		else if (keyCode >= K_Fun0 && keyCode <= K_Fun9)
+		{	int8_t fun = keyCode - K_Fun0;
+			d->setCursor(0, 21);
+			d->print(cFunStr[fun]);
+		}
+
 
 		d->setCursor(W/2-1,10);
 		d->setTextColor(RGB(31,15,21));
@@ -62,25 +68,25 @@ void Gui::DrawMapping()
 		//  Filtered view by group, 3 cols
 		if (grpFilt)
 		{
-			const uint8_t g = keyGroup;
-			d->print(cGrpName[g]);
+			const uint8_t gr = keyGroup;
+			d->print(cGrpName[gr]);
 
-			int k = grpStart[g], y = y0, x = xw;
-			k += (keyCode - k)/12*12;
+			int gn = grpStart[gr], y = y0, x = xw;
+			gn += (keyCode - gn)/12*12;
 
-			while (k <= grpEnd[g] && x < W-5*6)
+			while (gn <= grpEnd[gr] && x < W-5*6)
 			{
 				d->setCursor(x, y);
-				int q = abs(k - keyCode);  // diff clr
+				int q = abs(gn - keyCode);  // diff clr
 
 				if (!q)  // cursor [ ]
 				{	d->fillRect(x-1,y, 41,8, RGB(10,10,9));
 					d->drawRect(x-2,y, 42,8, RGB(23,23,13));
 				}
-				FadeGrp(g, 9, q, 3);
-				d->print(cKeyStr[k]);
+				FadeGrp(gr, 9, q, 3);
+				d->print(cKeyStr[gn]);
 
-				++k;
+				++gn;
 				y += 8;  if (y > H-1-8)
 				{	y = y0;  x += xw;  }
 			}
@@ -99,13 +105,13 @@ void Gui::DrawMapping()
 			d->setCursor(x, y);
 			int k = (pg + i + c*12 + KEYS_ALL_EXT) % KEYS_ALL_EXT;
 			int q = abs(k - keyCode);  // diff clr
-			uint8_t g = cKeyGrp[k];
+			uint8_t gr = cKeyGrp[k];
 			{
 				if (!q)  // cursor [ ]
 				{	d->fillRect(x-1,y, 41,8, RGB(10,10,9));
 					d->drawRect(x-2,y, 42,8, RGB(23,23,13));
 				}
-				FadeGrp(g, 9, q, 3);
+				FadeGrp(gr, 9, q, 3);
 				d->print(cKeyStr[k]);
 			}
 		}
@@ -178,11 +184,15 @@ void Gui::DrawMapping()
 					{	int8_t seq = u - K_Seq0;
 						if (seq < KC_MaxSeqs)
 						{	d->setCursor(x, y+12);
-							WriteSeq(seq, 2);
+							DrawSeq(seq, 2);
 					}	}
+					else if (u >= K_Fun0 && u <= K_Fun9)
+					{	int8_t fun = u - K_Fun0;
+						d->setCursor(x, y+12);
+						d->print(cFunStr[fun]);
+					}
 					a[0]=0;
-				}
-			}
+			}	}
 			d->print(a);  break;
 		}
 		y += 10;
@@ -231,105 +241,5 @@ void Gui::DrawMapping()
 
 	DrawLayout(true);
 
-	d->setFont(0);
-}
-
-
-//  kbd draw   Layout
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-//  layer use count colors
-const uint8_t cluM = 5;
-const uint16_t clu[cluM] = {
-	RGB(16,24,31), RGB(5,30,30), RGB(30,30,4), RGB(31,19,8), RGB(31,21,22), };
-
-void Gui::DrawLayout(bool edit)
-{
-	int16_t x=2, y=0;
-
-	for (int i=0; i < nDrawKeys; ++i)
-	{
-		const DrawKey& k = drawKeys[i], pk = drawKeys[max(0,i-1)];
-
-		//  find if pressed
-		int f = k.sc != NO && !moveCur &&
-				Matrix_scanArray[k.sc].state == KeyState_Hold ? 1 : 0;
-
-		//  mark  mapping edit
-		if (edit)  {
-			if (moveCur && drawId >= 0 && i == drawId)  f = 2;
-			if (!moveCur && scId != NO && scId == k.sc)  f = 2;  }
-
-		//  set coords or advance
-		if (k.x >=0)  x = k.x;  else  x -= k.x;
-		if (k.y > 0)  y = k.y + yPosLay;  else
-		{	if (pk.w < 6)  y += k.y;  else  y -= k.y;  }  // tiny up
-
-		if (i == drawId)  // save center for move
-		{	drawX = x + k.w/2;
-			drawY = y + k.h/2;  }
-
-		if (f)
-			d->fillRect(x+1, y-1, k.w-1, k.h-1, clrRect[k.o]);
-
-		uint16_t  // clr
-			cR = f==2 ? RGB(31,30,29) : f==1 ? RGB(28,28,29) : clrRect[k.o];
-
-		//  darken  if draw has NO scId
-		if (moveCur && k.sc == NO)
-		{	cR = RGB(9,9,9);  /*if (!f)  cT = RGB(17,17,17);*/  }
-
-		d->drawRect(x, y-2, k.w+1, k.h+1, cR);
-
-		//  layer keys visible on all layers ``
-		uint8_t dtL0 = kc.set.key[0][k.sc];
-		bool layKey = dtL0 >= K_Layer1 && dtL0 < K_Layer1+KC_MaxLayers;
-		bool layUse = nLay == KC_MaxLayers;  // vis mode
-		bool tiny = k.w < 6;
-
-		//  skip caption for tiny keys
-		if (tiny && !layKey && !layUse)
-			continue;
-
-		d->setCursor(  // txt pos
-			k.o==5 || k.o==7 ? x + k.w - 6 :  // right align
-			(k.o==3 ? x+1 : x+2),  // symb 3
-			k.h == kF ? y-2 : y-1);  // short
-
-		if (k.sc != NO && k.sc < kc.set.nkeys())
-		{
-			uint8_t dt = layKey ? dtL0 :
-				kc.set.key[edit ? nLay : kc.nLayer][k.sc];
-
-			const char* ch = cKeySh[dt];
-			//  font size
-			bool m = tiny || strlen(ch) == 2;
-
-			if (edit && layUse && !layKey)
-			{
-				//  layer use vis
-				uint8_t u = 0;  // count
-				for (int l=0; l < KC_MaxLayers; ++l)
-					if (kc.set.key[l][k.sc] != KEY_NONE)  ++u;
-
-				if (u > 0)
-				{	d->moveCursor(tiny ? -1 : 0, tiny ? 0 : 2);
-					if (d->getCursorX() > W-4)  // off scr-
-						d->setCursor(W-4, d->getCursorY());
-					d->setFont(&TomThumb);
-
-					d->setTextColor(clu[ min(cluM-1, u-1) ]);
-					d->print(u+'0');
-				}
-			}else	//  normal
-			if (dt != KEY_NONE)
-			{
-				if (m)  d->moveCursor(-1,2);
-				d->setFont(m ? &TomThumb : 0);  // 3x5
-
-				const uint8_t* c = &cGrpRgb[cKeyGrp[dt]][0][0];
-				d->setTextColor(RGB(c[0],c[1],c[2]));
-				d->print(tiny && layKey ? &ch[1] : ch);
-		}	}
-	}
 	d->setFont(0);
 }

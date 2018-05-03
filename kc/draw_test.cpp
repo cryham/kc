@@ -22,7 +22,7 @@ void Gui::DrawTesting()
 	char a[64];
 
 	//  title
-	d->setTextColor(RGB(16,26,22));
+	d->setTextColor(RGB(12,20,28));
 	d->print(strTest[yy]);
 	d->setFont(0);
 	d->setTextColor(RGB(21,26,31));
@@ -83,18 +83,19 @@ void Gui::DrawTesting()
 		DrawPressed();
 
 		//  held count
-		d->setCursor(0, H-1-20);
+		d->setCursor(0, H-1-8);
 		d->setTextColor(RGB(16+c, min(31,24+c), 31));
 		sprintf(a,"Held: %d", c);
 		d->print(a);
 
 		if (ghost_cols)  // ghost
-		{	d->setTextColor(RGB(min(31,24+c), 18+c, 31));
-			sprintf(a,"  Ghost: %d %d", ghost_cols, ghost_rows);
+		{	d->setCursor(9*6, H-1-20);
+			d->setTextColor(RGB(min(31,24+c), 18+c, 31));
+			sprintf(a,"Ghost: %d %d", ghost_cols, ghost_rows);
 			d->print(a);
 		}
 		//  press count -
-		d->setCursor(0, H-1-8);
+		d->setCursor(9*6, H-1-8);
 		d->setTextColor(RGB(21,21,27));
 		sprintf(a,"Press: %d", cnt_press); //, cnt_hold % 1000);
 		d->print(a);
@@ -110,8 +111,9 @@ void Gui::DrawTesting()
 		d->setTextColor(RGB(20,23,31));
 		sprintf(a,"Layer: %d", kc.nLayer);
 		d->print(a);
-		d->moveCursor(0,2);
+		d->setCursor(0,38);
 
+		//  keys  - - - -
 		DrawPressed();
 
 		DrawLayout(false);
@@ -184,23 +186,36 @@ void Gui::DrawTesting()
 	}
 }
 
-//  util pressed keys list
+//  pressed keys list
+//....................................................................................
 void Gui::DrawPressed()
 {
+	int8_t seq=-1, fun=-1;
 	d->setTextColor(RGB(20,25,28));
 	d->print("Keys:");
 
 	if (kc.set.nkeys() >= int(ScanKeys))
 	for (uint i = 0; i < ScanKeys; ++i)
 	{
-		const KeyState& k = Matrix_scanArray[i];
-		if (k.state == KeyState_Hold)
+		const KeyState& ks = Matrix_scanArray[i];
+		if (ks.state == KeyState_Hold)
 		{
-			uint8_t code = kc.set.key[kc.nLayer][i];
-			if (code > K_ModLast && code < KEYS_ALL_EXT/*KEYS_ALL*/)
+			uint8_t k = kc.set.key[kc.nLayer][i];
+			if (k > K_ModLast && k < KEYS_ALL_EXT/*KEYS_ALL*/)
 			{
-				const uint8_t* c = &cGrpRgb[cKeyGrp[code]][0][0];
+				const uint8_t* c = &cGrpRgb[cKeyGrp[k]][0][0];
 				d->setTextColor(RGB(c[0],c[1],c[2]));
-				d->print(" ");  d->print(cKeyStr[code]);
+				d->print(" ");  d->print(cKeyStr[k]);
+
+				if (k >= K_Seq0 && k <= K_SeqLast)  seq = k - K_Seq0;  else
+				if (k >= K_Fun0 && k <= K_Fun9   )  fun = k - K_Fun0;
 	}	}	}
+
+	d->setCursor(0, d->getCursorY()+12);
+
+	if (seq >= 0)  //  seq preview  ---
+		DrawSeq(seq, 2);
+	else
+	if (fun >= 0)
+		d->print(cFunStr[fun]);
 }

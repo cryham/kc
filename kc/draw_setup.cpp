@@ -22,7 +22,7 @@ void Gui::DrawSetup()
 		d->setTextColor(RGB(21,23,23));
 		d->print(strMain[ym]);  d->setFont(0);
 
-		DrawMenu(S_All,strSetup, C_Setup,RGB(18,24,22),RGB(5,7,6), 10, -1, 2);
+		DrawMenu(S_All,strSetup, C_Setup,RGB(18,24,22),RGB(4,6,6), 10, -1, 2);
 		return;
 	}
 	char a[64];
@@ -32,7 +32,7 @@ void Gui::DrawSetup()
 	{	demos.Version();  return;  }
 
 	//  title
-	d->setTextColor(RGB(16,24,20));
+	d->setTextColor(RGB(17,22,22));
 	d->print(strSetup[yy]);
 	d->setFont(0);
 	d->setTextColor(RGB(21,26,26));
@@ -44,12 +44,12 @@ void Gui::DrawSetup()
 	case S_Keyboard:
 	{
 		int16_t y=32;
-		for (int i=0; i < 3; ++i)
+		for (int i=0; i < 4; ++i)
 		{
 			d->setCursor(2,y);
 			int c = abs(i - ym2Keyb);
 			if (!c)
-			{	d->setTextColor(RGB(10,30,30));
+			{	d->setTextColor(RGB(30,25,20));
 				d->fillRect(0, y-1, W-1, 10, RGB(3,6,6));
 				d->print("\x10 ");  // >
 			}else
@@ -59,11 +59,16 @@ void Gui::DrawSetup()
 			switch(i)
 			{
 			case 0:
-				sprintf(a,"Sequence delay: %d ms", par.dtSeqDef);  break;
-			case 1:
-				sprintf(a,"Default layer: %d", par.defLayer);  break;
-			case 2:
+				sprintf(a,"Sequence delay: %d ms", par.dtSeqDef);  y+=2;  break;
+			case 1:  // todo warning layer empty
+				sprintf(a,"Default layer: %d", par.defLayer);  y-=2;  break;
+			case 2:  // todo warning seq key not bound
 				sprintf(a,"Seq. edit layer: %d", par.editLayer);  break;
+			case 3:
+				if (pressGui)
+					sprintf(a,"Gui toggle Key: Press ..");
+				else
+					sprintf(a,"Gui toggle Key: %d", par.keyGui);  break;
 			}
 			d->print(a);  y += 8+4;
 		}
@@ -97,8 +102,11 @@ void Gui::DrawSetup()
 			d->print(a);  y += 8+4;
 		}
 
-		d->setCursor(2,H-35);
 		d->setTextColor(RGB(22,23,23));
+		d->setCursor(W-1-6*6,0);
+		d->print("Fps");
+
+		d->setCursor(2,H-42);
 		sprintf(a,"  Time: %lu us  %u Hz", us_scan, scan_freq);
 		d->println(a);  d->moveCursor(0,8);
 		d->setTextColor(RGB(20,23,26));
@@ -123,7 +131,7 @@ void Gui::DrawSetup()
 			d->setCursor(2,y);
 			int c = abs(i - ym2Mouse);
 			if (!c)
-			{	d->setTextColor(RGB(10,20,30));
+			{	d->setTextColor(RGB(15,23,30));
 				d->fillRect(0, y-1, W-1, 10, RGB(3,5,6));
 				d->print("\x10 ");  // >
 			}else
