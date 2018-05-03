@@ -78,11 +78,12 @@ void Gui::DrawEnd()
 			sprintf(a,"%d", ff);
 			d->print(a);
 
-			d->setTextColor(RGB(20,26,31));
-			d->setCursor(W-14,9);
-			sprintf(a,"%lu", tdraw);
-			d->print(a);
-	}	}
+			if (!sc)
+			{	d->setTextColor(RGB(20,26,31));
+				d->setCursor(W-14,9);
+				sprintf(a,"%lu", tdraw);
+				d->print(a);
+	}	}	}
 	#endif
 
 	//if (!offDisp)
@@ -144,10 +145,33 @@ void Gui::FadeGrp(uint8_t g, const uint8_t mi, const uint8_t mul, const uint8_t 
 
 
 //  key utils
+//....................................................................................
 void Gui::Chk_y1()
 {
 	if (ym1[ym] >= YM1[ym])  ym1[ym] = 0;
 	if (ym1[ym] < 0)  ym1[ym] = YM1[ym]-1;
+}
+
+//  returns pressed scan id or -1
+int Gui::PressKey(int8_t& pressKey)
+{
+	if (!pressKey)  return -1;
+
+	int c = 0, ii = -1;
+	for (uint i=0; i < ScanKeys; ++i)
+	{	if (Matrix_scanArray[i].state != KeyState_Off)  ++c;
+		if (Matrix_scanArray[i].state == KeyState_Press)  ii = i;
+	}
+	if (pressKey == 1)
+	{	//  wait until all keys are off
+		if (c == 0)
+			pressKey = 2;
+		return -1;
+	}
+	else if (pressKey == 2 && ii != -1)
+		return ii;
+
+	return -1;
 }
 
 //  key auto repeat,  row, col, ms

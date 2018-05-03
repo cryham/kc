@@ -29,10 +29,12 @@ struct Gui
 	void DrawDisplay(), DrawHelp(), DrawOperInfo();
 
 	//  keys, draw util
-	void DrawPressed(int8_t* seq=0, int8_t* fun=0);
+	void DrawPressed();
 	void DrawLayout(bool edit), Chk_y1();
+	void DrawSeq(int8_t seq, int8_t q);
 	int8_t KeysSeq(), KeysMap();
-	void WriteSeq(int8_t seq, int8_t q);
+	int PressKey(int8_t& var);
+
 
 	void SetScreen(int8_t start);
 	const char* StrScreen(int8_t s);
@@ -86,7 +88,7 @@ struct Gui
 			kLoad=0, kSave=0;
 
 	//  level 2 y cursors  - -
-	int8_t ym2Scan = 0, ym2Keyb = 0, ym2Mouse = 0;  // Setup
+	int8_t ym2Scan = 0, ym2Keyb = 0, ym2Mouse = 0, pressGui = 0;  // Setup
 	int8_t ym2Disp = 0, pgDisp = 0;  // Display
 	const static uint8_t Disp_All = 2;
 	const static uint8_t DispPages[Disp_All];

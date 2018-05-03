@@ -10,17 +10,8 @@ int8_t Gui::KeysMap()
 {
 	if (pressKey)  // press key
 	{
-		int c = 0, ii = -1;
-		for (uint i=0; i < ScanKeys; ++i)
-		{	if (Matrix_scanArray[i].state != KeyState_Off)  ++c;
-			if (Matrix_scanArray[i].state == KeyState_Press)  ii = i;
-		}
-		if (pressKey == 1)
-		{	//  wait until all keys are off
-			if (c == 0)
-				pressKey = 2;
-		}
-		else if (pressKey == 2 && ii != -1)
+		int ii = PressKey(pressKey);
+		if (ii != -1)
 		{	//  pick
 			pressKey = 0;  scId = ii;
 			//  find draw key for scId

@@ -60,8 +60,7 @@ void Gui::KeyPress()
 		case S_Scan:
 			if (kUp)
 			{	ym2Scan = (ym2Scan + kUp + 3) % 3;  }
-			else
-			if (kRight)
+			else if (kRight)
 			switch (ym2Scan)
 			{
 			case 0:
@@ -77,7 +76,16 @@ void Gui::KeyPress()
 			if (kUp)
 			{	ym2Keyb = (ym2Keyb + kUp + 4) % 4;  }
 			else
-			if (kRight)
+			if (pressGui)
+			{
+				int ii = PressKey(pressGui);
+				if (ii != -1)
+				switch (ym2Keyb)
+				{
+				case 3: par.keyGui = ii;  pressGui = 0;  break;
+				}
+			}
+			else if (kRight)
 			switch (ym2Keyb)
 			{
 			case 0:
@@ -87,16 +95,13 @@ void Gui::KeyPress()
 			case 2:
 				par.editLayer = RangeAdd(par.editLayer, kRight, 0, KC_MaxLayers-1);  break;
 			case 3:
-				// press to pick..
-				//par.keyGui
-				break;
+				pressGui = 1;  break;
 			}	break;
 
 		case S_Mouse:
 			if (kUp)
 			{	ym2Mouse = (ym2Mouse + kUp + 2) % 2;  }
-			else
-			if (kRight)
+			else if (kRight)
 			switch (ym2Mouse)
 			{
 			case 0:
