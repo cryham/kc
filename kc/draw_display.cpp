@@ -82,7 +82,7 @@ void Gui::DrawDisplay()
 		case 1:
 			sprintf(a,"Key repeat: %d ms", par.krRepeat*5);  break;
 		case 2:
-			sprintf(a,"Ram info: %d", iRam);  break;
+			sprintf(a,"Ram info: %d", iRam);  h = 2;  break;
 		case 3:
 			sprintf(a,"Frames per sec: %d", demos.iFps);  break;
 		}

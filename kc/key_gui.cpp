@@ -211,7 +211,7 @@ void Gui::KeyPress()
 	if (mlevel == 0)  //  main menu
 	{
 		if (kUp){  ym += kUp;  if (ym >= M_All)  ym = 0;  if (ym < 0)  ym = M_All-1;  }
-		if (kRight > 0)  mlevel = 1;  // enter>
+		if (kRight > 0 || kEnt2)  mlevel = 1;  // enter>
 		return;
 	}
 
@@ -223,7 +223,7 @@ void Gui::KeyPress()
 		if (kUp)  // menu up,dn
 			ym1[ym] = RangeAdd(ym1[ym], kUp, 0,YM1[ym]-1, 1);
 
-		if (kRight > 0)
+		if (kRight > 0 || kEnt2)
 		{	//  enter modes
 			if (yy == 0)  pressKey = 1;  else
 			if (yy == 1)  moveCur = 1;  else
@@ -263,8 +263,8 @@ void Gui::KeyPress()
 	if (mlevel == 1)  //  sub menu
 	{
 		//  navigate
-		if (kRight < 0)  mlevel = 0;  // <back
-		if (kRight > 0)
+		if (kRight < 0 || kBckSp)  mlevel = 0;  // <back
+		if (kRight > 0 || kEnt2)
 			if (ym != M_Display)  mlevel = 2;  // enter>
 
 		if (kUp){  ym1[ym] += kUp;  Chk_y1();  }

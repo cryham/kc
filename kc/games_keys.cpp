@@ -50,7 +50,7 @@ int Games::KeyPress(int8_t& mlevel)
 			{	preset = (preset + 1 + Presets) % Presets;  NewSet();  }
 			return 0;
 		}
-		if (g->kRight > 0)  // enter>
+		if (g->kRight > 0 || g->kEnt2)  // enter>
 		{
 			switch (yg)
 			{
@@ -60,7 +60,7 @@ int Games::KeyPress(int8_t& mlevel)
 			case G_Help:  return 1;  // set screen after
 			}
 		}
-		if (g->kRight < 0)
+		if (g->kRight < 0 || g->kBckSp)
 			mlevel = 0;  // <back to menu
 		return 0;
 	}
@@ -141,15 +141,14 @@ int Games::KeyPress(int8_t& mlevel)
 		}
 
 		//  move
-		if (g->kRight < 0)  // move
+		if (g->kRight < 0)
 		{
 			int old_x = pos_x;
 			--pos_x;  if (pos_x < 0)  pos_x = o.size_x-1;
 			if (Overlaps(blk, pos_x, pos_y))
 				pos_x = old_x;  //  if not possible restore
 		}
-
-		if (g->kRight > 0)  // mvoe
+		if (g->kRight > 0)
 		{
 			int old_x = pos_x;
 			++pos_x;  if (pos_x > o.size_x-1)  pos_x = 0;
