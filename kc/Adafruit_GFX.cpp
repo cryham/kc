@@ -411,7 +411,7 @@ int16_t Adafruit_GFX::getCursorY() const
 	return cursor_y;
 }
 
-void Adafruit_GFX::setTextColor(uint16_t c)
+void Adafruit_GFX::setColor(uint16_t c)
 {
 	textcolor = c;
 }

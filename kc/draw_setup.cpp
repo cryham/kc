@@ -19,7 +19,7 @@ void Gui::DrawSetup()
 	//  menu
 	if (mlevel == 1)
 	{
-		d->setTextColor(RGB(21,23,23));
+		d->setClr(21,23,23);
 		d->print(strMain[ym]);  d->setFont(0);
 
 		DrawMenu(S_All,strSetup, C_Setup,RGB(18,24,22),RGB(4,6,6), 10, -1, 2);
@@ -32,10 +32,10 @@ void Gui::DrawSetup()
 	{	demos.Version();  return;  }
 
 	//  title
-	d->setTextColor(RGB(17,22,22));
+	d->setClr(17,22,22);
 	d->print(strSetup[yy]);
 	d->setFont(0);
-	d->setTextColor(RGB(21,26,26));
+	d->setClr(21,26,26);
 
 
 	switch (yy)
@@ -49,7 +49,7 @@ void Gui::DrawSetup()
 			d->setCursor(2,y);
 			int c = abs(i - ym2Keyb);
 			if (!c)
-			{	d->setTextColor(RGB(30,25,20));
+			{	d->setClr(30,25,20);
 				d->fillRect(0, y-1, W-1, 10, RGB(3,6,6));
 				d->print("\x10 ");  // >
 			}else
@@ -83,7 +83,7 @@ void Gui::DrawSetup()
 			d->setCursor(2,y);
 			int c = abs(i - ym2Scan);
 			if (!c)
-			{	d->setTextColor(RGB(10,30,30));
+			{	d->setClr(10,30,30);
 				d->fillRect(0, y-1, W-1, 10, RGB(3,6,6));
 				d->print("\x10 ");  // >
 			}else
@@ -102,14 +102,14 @@ void Gui::DrawSetup()
 			d->print(a);  y += 8+4;
 		}
 
-		d->setTextColor(RGB(22,23,23));
+		d->setClr(22,23,23);
 		d->setCursor(W-1-6*6,0);
 		d->print("Fps");
 
 		d->setCursor(2,H-42);
 		sprintf(a,"  Time: %lu us  %u Hz", us_scan, scan_freq);
 		d->println(a);  d->moveCursor(0,8);
-		d->setTextColor(RGB(20,23,26));
+		d->setClr(20,23,26);
 
 		d->setCursor(0,H-20);
 		sprintf(a,"Matrix keys: %d = %d x %d", ScanKeys, NumCols, NumRows);
@@ -131,7 +131,7 @@ void Gui::DrawSetup()
 			d->setCursor(2,y);
 			int c = abs(i - ym2Mouse);
 			if (!c)
-			{	d->setTextColor(RGB(15,23,30));
+			{	d->setClr(15,23,30);
 				d->fillRect(0, y-1, W-1, 10, RGB(3,5,6));
 				d->print("\x10 ");  // >
 			}else
@@ -157,7 +157,7 @@ void Gui::DrawSetup()
 		const int16_t x0 = 0, x1 = W/3+6, x2 = 2*W/3+6;
 		const uint8_t y0 = 72, y1 = y0+10+2, y2 = y1+10;
 
-		d->setTextColor(RGB(20,24,28));
+		d->setClr(20,24,28);
 		d->setCursor(0, y0);     d->print("hold");
 		d->setCursor(W/3, y0);   d->print("delay");
 		d->setCursor(2*W/3, y0); d->print("speed");

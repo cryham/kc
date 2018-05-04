@@ -81,13 +81,13 @@ void Games::Draw()
 	int x = 0, y = 0;
 	Ada4_ST7735& d = *g->d;
 	d.setCursor(x,y);
-	d.setTextColor(RGB(30,14,10));
+	d.setClr(30,14,10);
 
 	if (gui==1)  //  game menu
 	{
 		d.print("Sixtis");  d.setFont(0);
 
-		d.setTextColor(RGB(31,24,12));
+		d.setClr(31,24,12);
 		d.setCursor(W/2-6, 4);
 		d.println(sPresets[preset]);  // title
 		
@@ -95,7 +95,7 @@ void Games::Draw()
 		for (y=0; y < G_All; ++y)
 		{
 			int c = abs(y - yg);
-			d.setTextColor(RGB(30,20,20));
+			d.setClr(30,20,20);
 
 			if (!c)  d.fillRect(0, yy-1, 2*W/3, 10, RGB(9,7,5));
 			d.setCursor(2, yy);
@@ -120,11 +120,11 @@ void Games::Draw()
 	{
 		d.print("Sixtis");  d.setFont(0);
 		
-		d.setTextColor(RGB(28,16,22));
+		d.setClr(28,16,22);
 		d.setCursor(W-1 -3*6, 0);
 		sprintf(a,"%d/%d", opg+1, O_All);  d.print(a);
 		
-		d.setTextColor(RGB(28,20,23));
+		d.setClr(28,20,23);
 		d.setCursor(W/2-6, 4);
 		d.print(sOptPages[opg]);  // title
 
@@ -244,7 +244,7 @@ void Games::Draw()
 	//  text  --
 	#if 0  //  debug
 	//x = W-1 -5*6;  y = H-1 - 4*8;
-	d.setTextColor(RGB(20,22,25));
+	d.setClr(20,22,25);
 	d.setCursor(x,y);  d.print(xo);  d.print(",");  d.print(yo);  y+=8+1;
 	d.setCursor(x,y);  d.print(xa);  d.print("-");  d.print(xb);  y+=8;
 	d.setCursor(x,y);  d.print(ya);  d.print("|");  d.print(yb);  y+=8;
@@ -253,12 +253,12 @@ void Games::Draw()
 
 	//  score  -
 	x = 0;  y = H-1-8;
-	d.setTextColor(RGB(25,25,10));
+	d.setClr(25,25,10);
 	d.setCursor(x,y);  sprintf(a,"Score %d", score);  d.print(a);
 
 	//d.setCursor(x,  y);  d.print("Lines");  y+=8;
 	//d.setCursor(x+6,y);  d.print(lines[0]);  y+=8+2;
-	d.setTextColor(RGB(10,26,10));
+	d.setClr(10,26,10);
 	sprintf(a,"  Speed %ld", speed_y / SpdDet);  d.print(a);
 	#endif
 
@@ -268,7 +268,7 @@ void Games::Draw()
 	//d.setCursor(x,y);  d.print("Set ");  d.print(preset);  y+=8;
 
 	//  status  -
-	d.setTextColor(RGB(31,18,5));
+	d.setClr(31,18,5);
 	d.setCursor(W-1-6*6, H-1-8);
 	if (ended)  d.print("Ended"); else
 	if (paused) d.print("Pause");

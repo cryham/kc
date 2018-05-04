@@ -91,7 +91,7 @@ void Gui::DrawLayout(bool edit)
 						d->setCursor(W-4, d->getCursorY());
 					d->setFont(&TomThumb);
 
-					d->setTextColor(clu[ min(cluM-1, u-1) ]);
+					d->setColor(clu[ min(cluM-1, u-1) ]);
 					d->print(u+'0');
 				}
 			}else	//  normal
@@ -101,7 +101,7 @@ void Gui::DrawLayout(bool edit)
 				d->setFont(m ? &TomThumb : 0);  // 3x5
 
 				const uint8_t* c = &cGrpRgb[cKeyGrp[dt]][0][0];
-				d->setTextColor(RGB(c[0],c[1],c[2]));
+				d->setClr(c[0],c[1],c[2]);
 				d->print(tiny && layKey ? &ch[1] : ch);
 		}	}
 	}

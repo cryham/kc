@@ -25,11 +25,11 @@ void Gui::DrawMapping()
 	if (pickCode)
 	{
 		d->setCursor(x,0);
-		d->setTextColor(RGB(28,28,26));
+		d->setClr(28,28,26);
 		d->print("Pick key..");
 
 		d->setCursor(0,10);
-		d->setTextColor(RGB(22,22,12));
+		d->setClr(22,22,12);
 		//sprintf(a,"%3d/%d", keyCode, KEYS_ALL_EXT);
 		//d->print(a);
 		if (grpFilt)  d->print("/  Group:");
@@ -44,7 +44,7 @@ void Gui::DrawMapping()
 
 		//  key, grp
 		d->setCursor(W/2-1,0);
-		d->setTextColor(RGB(25,28,31));
+		d->setClr(25,28,31);
 		d->print(cKeyStr[keyCode]);
 
 		//  seq preview  ---
@@ -62,7 +62,7 @@ void Gui::DrawMapping()
 
 
 		d->setCursor(W/2-1,10);
-		d->setTextColor(RGB(31,15,21));
+		d->setClr(31,15,21);
 
 		const int xw = 42, y0 = 31;
 		//  Filtered view by group, 3 cols
@@ -131,7 +131,7 @@ void Gui::DrawMapping()
 	{
 		c = abs(i - yy);
 		if (!c)  d->fillRect(x+6, y-1, W/2, 10, RGB(5,7,2));
-		d->setTextColor(RGB(28,28,9));
+		d->setClr(28,28,9);
 		d->setCursor(x+8,y);
 		d->print(!c ? "\x10":" ");  // >
 		d->setCursor(x,y);
@@ -199,7 +199,7 @@ void Gui::DrawMapping()
 	}
 
 	//  ids dbg -
-	/*d->setTextColor(RGB(16,20,12));
+	/*d->setClr(16,20,12);
 	d->setCursor(0, 6*8+4);
 	sprintf(a,"scId: %d draw %d  send %d", scId, drawId, kbdSend);  d->print(a);
 	sprintf(a,"draw %2d  x %2d y %2d", drawId, drawX, drawY);  d->print(a);*/
@@ -208,7 +208,7 @@ void Gui::DrawMapping()
 	//  stats, data
 	//. . . . . . . . . . . . . . . . . . . . . . . . .
 	x = W-8*6;  y=0;
-	d->setTextColor(RGB(25,24,12));
+	d->setClr(25,24,12);
 	d->setCursor(x,y);
 	int si = kc.set.nkeys();
 	//sprintf(a,"all %d", si);  d->print(a);  y+=10;

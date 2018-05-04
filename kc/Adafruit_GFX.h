@@ -32,11 +32,16 @@ public:
 
 		setCursor(int16_t x, int16_t y),
 		moveCursor(int16_t dx, int16_t dy),
-		setTextColor(uint16_t c),
+		setColor(uint16_t c),
 
 		setFont(const GFXfont *f = 0);
 
 	virtual int write(uint8_t);
+	inline void setClr(uint8_t r, uint8_t g, uint8_t b)
+	{
+		textcolor = (r<<11) + (g<<6) + b;  // 31 31 31 max
+	}
+
 
 	// get current cursor position
 	int16_t getCursorX() const;

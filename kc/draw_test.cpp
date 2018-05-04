@@ -13,7 +13,7 @@ void Gui::DrawTesting()
 	//  menu
 	if (mlevel == 1)
 	{
-		d->setTextColor(RGB(16,26,16));
+		d->setClr(16,26,16);
 		d->print(strMain[ym]);  d->setFont(0);
 
 		DrawMenu(T_All,strTest, C_Test,RGB(22,31,14),RGB(5,9,6), 10, -1, 2);
@@ -22,10 +22,10 @@ void Gui::DrawTesting()
 	char a[64];
 
 	//  title
-	d->setTextColor(RGB(12,20,28));
+	d->setClr(12,20,28);
 	d->print(strTest[yy]);
 	d->setFont(0);
-	d->setTextColor(RGB(21,26,31));
+	d->setClr(21,26,31);
 
 	switch (yy)
 	{
@@ -34,21 +34,21 @@ void Gui::DrawTesting()
 	{
 		d->setCursor(0,32);
 		//  layer  -
-		d->setTextColor(RGB(20,23,31));
+		d->setClr(20,23,31);
 		sprintf(a,"Layer: %d", kc.nLayer);
-		d->setTextColor(RGB(24,27,31));
+		d->setClr(24,27,31);
 		d->print(a);
 		d->println("");  d->moveCursor(0,4);
 
 		//  todo locks  -
-		//d->setTextColor(RGB(18,21,24));
+		//d->setClr(18,21,24);
 		//d->print("Locks: ");  // Num Caps Scrl
 		//d->println("");  d->moveCursor(0,2);
 
 		//  modifiers  -
-		d->setTextColor(RGB(18,21,24));
+		d->setClr(18,21,24);
 		d->print("Modif:");
-		d->setTextColor(RGB(20,25,28));
+		d->setClr(20,25,28);
 		for (uint i = 0; i < ScanKeys; ++i)
 		{
 			const KeyState& k = Matrix_scanArray[i];
@@ -64,9 +64,9 @@ void Gui::DrawTesting()
 
 
 		//  scan codes  - - -
-		d->setTextColor(RGB(17,23,26));
+		d->setClr(17,23,26);
 		d->print("Scan:");
-		d->setTextColor(RGB(15,20,25));
+		d->setClr(15,20,25);
 		int c = 0;
 		for (uint i = 0; i < ScanKeys; ++i)
 		{
@@ -84,19 +84,19 @@ void Gui::DrawTesting()
 
 		//  held count
 		d->setCursor(0, H-1-8);
-		d->setTextColor(RGB(16+c, min(31,24+c), 31));
+		d->setClr(16+c, min(31,24+c), 31);
 		sprintf(a,"Held: %d", c);
 		d->print(a);
 
 		if (ghost_cols)  // ghost
 		{	d->setCursor(9*6, H-1-20);
-			d->setTextColor(RGB(min(31,24+c), 18+c, 31));
+			d->setClr(min(31,24+c), 18+c, 31);
 			sprintf(a,"Ghost: %d %d", ghost_cols, ghost_rows);
 			d->print(a);
 		}
 		//  press count -
 		d->setCursor(9*6, H-1-8);
-		d->setTextColor(RGB(21,21,27));
+		d->setClr(21,21,27);
 		sprintf(a,"Press: %d", cnt_press); //, cnt_hold % 1000);
 		d->print(a);
 
@@ -108,7 +108,7 @@ void Gui::DrawTesting()
 	{
 		d->setCursor(0,26);
 		//  layer  -
-		d->setTextColor(RGB(20,23,31));
+		d->setClr(20,23,31);
 		sprintf(a,"Layer: %d", kc.nLayer);
 		d->print(a);
 		d->setCursor(0,38);
@@ -135,7 +135,7 @@ void Gui::DrawTesting()
 			const KeyState& k = Matrix_scanArray[NumCols * r + c];
 
 			//  color from ghost, use
-			#define CGh(gh,u)  d->setTextColor(gh ? RGB(31,26,12) : \
+			#define CGh(gh,u)  d->setColor(gh ? RGB(31,26,12) : \
 				RGB( min(31,7+u*5), min(31, 14+u*8), max(4, 24-u*2) ))
 
 			a[1]=0;
@@ -149,7 +149,7 @@ void Gui::DrawTesting()
 			}else{
 				a[0]='*';
 				//sprintf(a,"%d", k.state);
-				d->setTextColor(RGB(24,28,31));
+				d->setClr(24,28,31);
 			}
 			d->print(a);
 		}
@@ -172,13 +172,13 @@ void Gui::DrawTesting()
 
 		//  held  ---
 		d->setCursor(0,26);
-		d->setTextColor(RGB(24,24,31));
+		d->setClr(24,24,31);
 		sprintf(a,"Held %d  press %d", cnt_press-cnt_rel, cnt_press);
 		d->print(a);
 
 		//  ghosting  ---
 		d->setCursor(0,40);
-		d->setTextColor(ghost ? RGB(31,26,12) : RGB(16,21,26));
+		d->setColor(ghost ? RGB(31,26,12) : RGB(16,21,26));
 		sprintf(a,"Ghost col %d row %d", ghost_cols, ghost_rows);
 		d->print(a);
 
@@ -191,7 +191,7 @@ void Gui::DrawTesting()
 void Gui::DrawPressed()
 {
 	int8_t seq=-1, fun=-1;
-	d->setTextColor(RGB(20,25,28));
+	d->setClr(20,25,28);
 	d->print("Keys:");
 
 	if (kc.set.nkeys() >= int(ScanKeys))
@@ -204,7 +204,7 @@ void Gui::DrawPressed()
 			if (k > K_ModLast && k < KEYS_ALL_EXT/*KEYS_ALL*/)
 			{
 				const uint8_t* c = &cGrpRgb[cKeyGrp[k]][0][0];
-				d->setTextColor(RGB(c[0],c[1],c[2]));
+				d->setClr(c[0],c[1],c[2]);
 				d->print(" ");  d->print(cKeyStr[k]);
 
 				if (k >= K_Seq0 && k <= K_SeqLast)  seq = k - K_Seq0;  else

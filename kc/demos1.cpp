@@ -11,24 +11,24 @@ void Demos::Version()
 	//  logo, ver
 	d->setCursor(0,18);
 	d->setFont(&FreeSans9pt7b);
-	d->setTextColor(RGB(1,28,28));
+	d->setClr(1,28,28);
 	d->println("CrystaL");
 
 	d->setCursor(36,40);
-	d->setTextColor(RGB(22,16,31));
+	d->setClr(22,16,31);
 	d->print("Keyboard");
 	d->setFont(0);
 
 	d->setCursor(0,70);
-	d->setTextColor(RGB(12,21,31));
+	d->setClr(12,21,31);
 	d->print("K.C. \"Kacey\" Controller");
 
 	d->setCursor(0,H-23);
-	d->setTextColor(RGB(16,25,31));
-	d->print("ver 1.03");
+	d->setClr(16,25,31);
+	d->print("ver 1.04");
 	//  version text  ^
 
-	d->setTextColor(RGB(21,26,31));
+	d->setClr(21,26,31);
 	d->setCursor(0, H-8);
 	const char* a={__DATE__}, *m={__TIME__};
 	const char dt[] = {  //  build date, time   format yyyy-mmm-dd hh:mm
@@ -76,7 +76,7 @@ void Demos::Ngons()
 	if (iInfo > 0)
 	{
 		d->setCursor(0,0);
-		d->setTextColor(RGB(29,29,20));
+		d->setClr(29,29,20);
 		d->print("An");  d->println(ngRot);
 
 		d->setCursor(0, H-8);
@@ -136,32 +136,32 @@ void Demos::Fonts()
 	{
 		uint x=0, y=0, yw=18;
 		d->setFont(&FreeSans9pt7b);
-		d->setTextColor(RGB(21,18,31));
+		d->setClr(21,18,31);
 		d->setCursor(x,y); y+=yw;
 		d->println("ABCDEFGHIJKLM");
 		d->setCursor(x,y); y+=yw;
 		d->println("NOPQRSTUVWXYZ");
 
-		d->setTextColor(RGB(11,22,31));
+		d->setClr(11,22,31);
 		d->setCursor(x+22,y); y+=yw;
 		d->println("abcdefghijklm");  d->setCursor(x,y); y+=yw;
 		d->println("nopqrstuvwxyz");  d->setCursor(x+22,y); y+=yw;
 
-		d->setTextColor(RGB(30,25,10));
+		d->setClr(30,25,10);
 		d->println("0123456789");	d->setCursor(x,y); y+=yw;
-		d->setTextColor(RGB(14,27,11));
+		d->setClr(14,27,11);
 		d->println("!\"#$%&\'()*+,-./:;");  d->setCursor(x,y); y+=yw;
 		d->println("<=>?@[\\]^_`{|}~");
 
 		d->setFont(0);
-		d->setTextColor(RGB(21,26,31));
+		d->setClr(21,26,31);
 
 	}	break;
 
 	case 1:  // small all chars
 	{
 		d->setCursor(6,8);
-		d->setTextColor(RGB(21,26,31));
+		d->setClr(21,26,31);
 
 		for (int i=0; i < 256; i++)
 		{
@@ -172,13 +172,13 @@ void Demos::Fonts()
 			{	if (i > 0)
 				{	d->print('\n');
 					d->moveCursor(0, 1);  }
-				d->setTextColor(RGB(21,26,31));
+				d->setClr(21,26,31);
 
 				int ii = i / 24;
 				if (ii % 4 == 0)
 					d->moveCursor(0, 3);
 				if (ii % 2 == 0)
-					d->setTextColor(RGB(26,29,31));
+					d->setClr(26,29,31);
 			}
 			if (i % 8 == 0 && i > 0)
 				d->moveCursor(2, 0);
@@ -189,7 +189,7 @@ void Demos::Fonts()
 	{
 		d->setFont(&TomThumb);
 		d->setCursor(6,8);
-		d->setTextColor(RGB(21,26,31));
+		d->setClr(21,26,31);
 
 		for (int i=0; i < 128; i++)
 		{
@@ -200,13 +200,13 @@ void Demos::Fonts()
 			{	if (i > 0)
 				{	d->print('\n');
 					d->moveCursor(0, 1);  }
-				d->setTextColor(RGB(24,27,31));
+				d->setClr(24,27,31);
 
 				int ii = i / 20;
 				if (ii % 4 == 0)
 					d->moveCursor(0, 2);
 				if (ii % 2 == 0)
-					d->setTextColor(RGB(26,29,31));
+					d->setClr(26,29,31);
 			}
 			if (i % 8 == 0 && i > 0)
 				d->moveCursor(2, 0);

@@ -29,13 +29,13 @@ void Gui::Draw()
 	//------------------------------------------------------
 	if (mlevel==0)
 	{
-		d->setTextColor(RGB(6,19,31));
+		d->setClr(6,19,31);
 		d->print("Main Menu");  d->setFont(0);
 
 		DrawMenu(M_All,strMain, C_Main,RGB(20,25,29),RGB(5,7,9), 10, M_Next);
 		return;
 	}
-	d->setTextColor(RGB(12,22,31));
+	d->setClr(12,22,31);
 
 
 	switch (ym)
@@ -70,7 +70,7 @@ void Gui::Draw()
 			}
 		}else
 		{	//  menu
-			d->setTextColor(RGB(25,16,28));
+			d->setClr(25,16,28);
 			d->print(strMain[ym]);  d->setFont(0);
 
 			DrawMenu(D_All,strDemo, C_Demos,RGB(27,27,30),RGB(6,6,9), 10, D_Next);

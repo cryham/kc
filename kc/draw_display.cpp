@@ -8,7 +8,7 @@
 void Gui::DrawDisplay()
 {		
 	char a[64];
-	d->setTextColor(RGB(29,28,6));
+	d->setClr(29,28,6);
 	d->print(strMain[ym]);  //d->setFont(0);
 
 	//  time  ---
@@ -17,7 +17,7 @@ void Gui::DrawDisplay()
 	{	int h = tm/3600%24, m = tm/60%60, s = tm%60;
 
 		d->setCursor(W/2, H-13);
-		d->setTextColor(RGB(16,24,8));
+		d->setClr(16,24,8);
 
 		sprintf(a,"%2d:%02d:%02d", h,m,s);
 		d->print(a);
@@ -26,7 +26,7 @@ void Gui::DrawDisplay()
 
 	//  page
 	d->setCursor(W-1 -3*6, 4);
-	d->setTextColor(RGB(30,22,12));
+	d->setClr(30,22,12);
 	sprintf(a,"%d/%d", pgDisp+1, 2);
 	d->print(a);
 
@@ -42,7 +42,7 @@ void Gui::DrawDisplay()
 		int c = abs(i - ym2Disp);  // dist dim
 		if (!c)
 		{	d->fillRect(0, y-1, W-1, 10, RGB(8,8,4));
-			d->setTextColor(RGB(31,22,6));
+			d->setClr(31,22,6);
 			d->print("\x10 ");  // >
 		}else
 			d->print("  ");
@@ -68,7 +68,7 @@ void Gui::DrawDisplay()
 		int c = abs(i - ym2Disp);  // dist dim
 		if (!c)
 		{	d->fillRect(0, y-1, W-1, 10, RGB(8,8,4));
-			d->setTextColor(RGB(31,22,6));
+			d->setClr(31,22,6);
 			d->print("\x10 ");  // >
 		}else
 			d->print("  ");

@@ -29,7 +29,7 @@ void Gui::DrawEnd()
 
 		if (iRam == 2)
 		{	//  long
-			d->setTextColor(RGB(31,28,28));
+			d->setClr(31,28,28);
 			d->setFont(&TomThumb);  // 3x5
 			sprintf(a,"%s %d %d", ram.warning_crash() ? "crsh" : ram.warning_lowmem() ? "low" : "ok",
 					kc.GetSize(), sizeof(vv));
@@ -49,7 +49,7 @@ void Gui::DrawEnd()
 			d->setFont(0);
 		}else
 		{	//  short
-			d->setTextColor(RGB(31,23,23));
+			d->setClr(31,23,23);
 			sprintf(a,"%s %d", ram.warning_crash() ? "c" : ram.warning_lowmem() ? "l" : "o",
 					kc.GetSize());
 			d->println(a);  y+=9;
@@ -73,13 +73,13 @@ void Gui::DrawEnd()
 			int ff = fr;
 			oldti = ti;
 
-			d->setTextColor(RGB(24,28,31));
+			d->setClr(24,28,31);
 			d->setCursor(W-14,0);
 			sprintf(a,"%d", ff);
 			d->print(a);
 
 			if (!sc)
-			{	d->setTextColor(RGB(20,26,31));
+			{	d->setClr(20,26,31);
 				d->setCursor(W-14,9);
 				sprintf(a,"%lu", tdraw);
 				d->print(a);
@@ -103,7 +103,7 @@ void Gui::DrawMenu(int cnt, const char** str, EFadeClr ec, uint16_t curClr,
 	for (int i=0; i < cnt; ++i)
 	{
 		d->setCursor(x,y);
-		d->setTextColor(curClr);
+		d->setColor(curClr);
 		if (i == my)
 			d->fillRect(x, y-1, x+W/2, 10, bckClr);
 		d->print(i == my ? " \x10 ":"   ");  // >
@@ -127,20 +127,20 @@ void Gui::FadeClr(EFadeClr ec, const uint8_t mi, const uint8_t mul, const uint8_
 	const uint8_t* clr = &Mclr[ec][0][0];
 	const uint8_t* cmu = &Mclr[ec][1][0];
 
-	d->setTextColor(RGB(
+	d->setClr(
 		max(mi, clr[0] - cmu[0] * mul / div),
 		max(mi, clr[1] - cmu[1] * mul / div),
-		max(mi, clr[2] - cmu[2] * mul / div) ));
+		max(mi, clr[2] - cmu[2] * mul / div) );
 }
 void Gui::FadeGrp(uint8_t g, const uint8_t mi, const uint8_t mul, const uint8_t div)
 {
 	const uint8_t* clr = &cGrpRgb[g][0][0];
 	const uint8_t* cmu = &cGrpRgb[g][1][0];
 
-	d->setTextColor(RGB(
+	d->setClr(
 		max(mi, clr[0] - cmu[0] * mul / div),
 		max(mi, clr[1] - cmu[1] * mul / div),
-		max(mi, clr[2] - cmu[2] * mul / div) ));
+		max(mi, clr[2] - cmu[2] * mul / div) );
 }
 
 
