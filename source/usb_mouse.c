@@ -28,6 +28,7 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+//  CryHam: edited, add: usb_mouse_idle, acceleration, params, etc.
 
 #include "usb_dev.h"
 #include "usb_mouse.h"
@@ -35,6 +36,7 @@
 #include "HardwareSerial.h"
 #include <string.h> // for memcpy()
 #include <math.h> // for pow
+#include "kc_params.h"
 
 #ifdef MOUSE_INTERFACE // defined by usb_dev.h -> usb_desc.h
 #if F_CPU >= 20000000
@@ -43,44 +45,8 @@
 uint8_t usb_mouse_buttons_state=0;
 uint8_t usb_mouse_buttons_update=0;
 
-//#define DEFAULT_XRES 640
-//#define DEFAULT_YRES 480
-
-//#define DEFAULT_XRES 800
-//#define DEFAULT_YRES 600
-
-//#define DEFAULT_XRES 1024
-//#define DEFAULT_YRES 768
-
-//#define DEFAULT_XRES 1280
-//#define DEFAULT_YRES 720
-
-//#define DEFAULT_XRES 1280
-//#define DEFAULT_YRES 800
-
-#define DEFAULT_XRES 1366
+#define DEFAULT_XRES 1366  // ?
 #define DEFAULT_YRES 768
-
-//#define DEFAULT_XRES 1440
-//#define DEFAULT_YRES 900
-
-//#define DEFAULT_XRES 1920
-//#define DEFAULT_YRES 1080
-
-//#define DEFAULT_XRES 2560
-//#define DEFAULT_YRES 1440
-
-//#define DEFAULT_XRES 2560
-//#define DEFAULT_YRES 1600
-
-//#define DEFAULT_XRES 2880
-//#define DEFAULT_YRES 1800
-
-//#define DEFAULT_XRES 3840
-//#define DEFAULT_YRES 2160
-
-//#define DEFAULT_XRES 7680
-//#define DEFAULT_YRES 4320
 
 #define DEFAULT_XSCALE ((0x80000000ul+DEFAULT_XRES/2)/DEFAULT_XRES)
 #define DEFAULT_YSCALE ((0x80000000ul+DEFAULT_YRES/2)/DEFAULT_YRES)
@@ -187,15 +153,18 @@ void usb_mouse_idle()
 	mx_move = Mouse_input_x ? 1 : 0;
 	my_move = Mouse_input_y ? 1 : 0;
 
-	//  mouse send interval  par
+	//  mouse send interval  par-
 	float htx = min(hold_max, mx_holdtime);
 	float hty = min(hold_max, my_holdtime);
 
-	mx_delay = delay_max[shift] - pow(htx, pow_fast) * delay_mul[shift];  mx_delay = max(0, mx_delay);
-	my_delay = delay_max[shift] - pow(hty, pow_fast) * delay_mul[shift];  my_delay = max(0, my_delay);
+	const float s = par.mkSpeed/100.f;  // par
+	const float a = par.mkAccel/100.f;
 
-	mx_speed = pow(htx, pow_slow) * spd_mul[shift] + 1;  mx_speed = min(spd_max, mx_speed);
-	my_speed = pow(hty, pow_slow) * spd_mul[shift] + 1;  my_speed = min(spd_max, my_speed);
+	mx_delay = a * delay_max[shift] - pow(htx, pow_fast) * delay_mul[shift];  mx_delay = max(0, mx_delay);
+	my_delay = a * delay_max[shift] - pow(hty, pow_fast) * delay_mul[shift];  my_delay = max(0, my_delay);
+
+	mx_speed = s * pow(htx, pow_slow *a) * spd_mul[shift] + 1;  mx_speed = min(spd_max, mx_speed);
+	my_speed = s * pow(hty, pow_slow *a) * spd_mul[shift] + 1;  my_speed = min(spd_max, my_speed);
 
 	//  accel
 	if (mx_move && !shift)  mx_holdtime += 0.000001f * dt;
@@ -221,18 +190,14 @@ void usb_mouse_idle()
 
 	//  send
 	if (x || y || usb_mouse_buttons_update || Mouse_wheel_x || Mouse_wheel_y)
-		usb_mouse_move(x, y, Mouse_wheel_x*120, Mouse_wheel_y*60);
+		usb_mouse_move(x, y, -Mouse_wheel_y, Mouse_wheel_x);
 
-	// Clear status and state
+	//  clear status and state
 	usb_mouse_buttons_update = 0;
 	Mouse_wheel_x = 0;  Mouse_wheel_y = 0;
-	//	USBMouse_Buttons = 0;
-	//	Mouse_input_x = 0;
-	//	Mouse_input_y = 0;
+
 	if (mx_send) old_ti_mx = ti;
 	if (my_send) old_ti_my = ti;
-
-	//USBMouse_Changed = 0;
 }
 
 // Move the mouse.  x, y and wheel are -127 to 127.  Use 0 for no movement.
@@ -241,8 +206,6 @@ int usb_mouse_move(int8_t x, int8_t y, int8_t wheel, int8_t horiz)
 	uint32_t wait_count=0;
 	usb_packet_t *tx_packet;
 
-	//serial_print("move");
-	//serial_print("\n");
 	if (x == -128) x = -127;
 	if (y == -128) y = -127;
 	if (wheel == -128) wheel = -127;
@@ -309,18 +272,9 @@ int usb_mouse_position(uint16_t x, uint16_t y)
 	transmit_previous_timeout = 0;
 	*(tx_packet->buf + 0) = 2;
 	val32 = usb_mouse_position_x * usb_mouse_scale_x + usb_mouse_offset_x;
-	//serial_print("position:");
-	//serial_phex16(usb_mouse_position_x);
-	//serial_print("->");
-	//serial_phex32(val32);
 	*(tx_packet->buf + 1) = val32 >> 16;
 	*(tx_packet->buf + 2) = val32 >> 24;
 	val32 = usb_mouse_position_y * usb_mouse_scale_y + usb_mouse_offset_y;
-	//serial_print(",");
-	//serial_phex16(usb_mouse_position_y);
-	//serial_print("->");
-	//serial_phex32(val32);
-	//serial_print("\n");
 	*(tx_packet->buf + 3) = val32 >> 16;
 	*(tx_packet->buf + 4) = val32 >> 24;
 	tx_packet->len = 5;

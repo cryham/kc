@@ -20,12 +20,12 @@ void Gui::DrawHelp()
 	//  titles
 	const static char* title[HAll] = {"Main",
 		"Mapping", "Mapping",
-		"Sequences", "Sequence", "Sequence",
+		"Sequences", "Sequence", "Sequence", "Sequence",
 		"Demos", "Sixtis", "Sixtis"},
 
 	*title2[HAll] = {"",  // 2nd lines
 		"", "Pick Key",
-		" View", " Edit", "Commands",
+		" View", " Edit", "Commands", "Mouse",
 		"", " 1/2", " 2/2"};
 
 	const int x = W/3+6;
@@ -139,7 +139,22 @@ void Gui::DrawHelp()
 		d->println("\x18,\x19  Adjust parameter");
 		break;
 
-	case 6:  //  demos  ------------------------
+	case 6:  //  seq _mouse commands_ help
+		d->setClr(24,25,23);
+		d->println("Shift- Insert command:");
+		d->moveCursor(0,2);
+		d->println("\x1B,\x1A \x18,\x19  Move x,y");
+		d->moveCursor(0,4);
+		d->println("Button:");
+		d->println("Home click  End double");
+		d->println("PgDn press  PgUp release");
+		d->moveCursor(0,4);
+		d->println("/,*  Wheel move horiz,vert");
+		d->moveCursor(0,6);
+		d->println("\x18,\x19  Adjust parameter");
+		break;
+
+	case 7:  //  demos  ------------------------
 		d->setClr(26,26,29);
 		d->println("\x1B,\x1A   Prev/Next Preset");
 		d->println("\x18,\x19   Dec,Inc Speed");
@@ -156,7 +171,7 @@ void Gui::DrawHelp()
 		d->println("  Shift  Fine");
 		break;
 
-	case 7:  //  sixtis  ------------------------
+	case 8:  //  sixtis  ------------------------
 		d->setClr(29,26,23);
 		d->println("\x1B,\x1A      Move");
 		d->moveCursor(0,6);
@@ -169,7 +184,7 @@ void Gui::DrawHelp()
 		d->println("Ins      Drop");
 		break;
 
-	case 8:  //  sixtis cd
+	case 9:  //  sixtis cd
 		d->setClr(29,25,20);
 		d->println("+        Back");
 		d->moveCursor(0,2);
