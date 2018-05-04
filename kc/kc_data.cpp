@@ -109,6 +109,11 @@ bool KC_Main::SeqEnd(const KC_Sequence& sq)
 	}
 	return false;
 }
+
+//  const
+const static uint8_t parMBtn[6]={
+		MOUSE_LEFT, MOUSE_MIDDLE, MOUSE_RIGHT, MOUSE_BACK, MOUSE_FORWARD};
+
 void KC_Main::Send(uint32_t ms)
 {
 	//  in sequence  ***
@@ -131,17 +136,17 @@ void KC_Main::Send(uint32_t ms)
 			int cmd = code - K_Cmd0;
 			++seqPos;  if (!SeqEnd(sq))
 			{
-				int par = sq.data[seqPos];
+				int cp = sq.data[seqPos], cm = cp-128;
 				++seqPos;  SeqEnd(sq);
 
 				switch (cmd)
 				{
 				case CMD_SetDelay:  // ms
-					dtSeq = par;  // dtSeqOwn = par;
+					dtSeq = cp;  // dtSeqOwn = par;
 					break;
 
 				case CMD_Wait:  // 0.1s
-					dtSeq = 100*par;  seqWait = 1;
+					dtSeq = 100*cp;  seqWait = 1;
 					break;
 
 				case CMD_Comment:  //  move until over next Cmt
@@ -155,17 +160,23 @@ void KC_Main::Send(uint32_t ms)
 					//++seqPos;  SeqEnd(sq);
 					break;
 
-				// todo cmd mouse move x,y, btn on/off dbl
-				/*case CMD_Mx:
-					//usb_mouse_move(x, y, wh_x, wh_y*60);
-					void move(int8_t x, int8_t y, int8_t wheel=0, int8_t horiz=0)
-					void moveTo(uint16_t x, uint16_t y)		{	usb_mouse_position(x, y);  }
-					void scroll(int8_t wheel, int8_t horiz=0)
-					void press(uint8_t b = MOUSE_LEFT)
-					void release(uint8_t b = MOUSE_LEFT)
-					break;*/
+				//  _mouse commands_ execute
+				case CM_x:  usb_mouse_move(cm,0, 0,0);  break;
+				case CM_y:  usb_mouse_move(0,cm, 0,0);  break;
+
+				case CM_BtnOn:   Mouse.press(parMBtn[cp]);  break;
+				case CM_BtnOff:  Mouse.release(parMBtn[cp]);  break;
+
+				case CM_Btn2x:  Mouse.click(parMBtn[cp]);
+				case CM_Btn:  Mouse.click(parMBtn[cp]);  break;
+
+				case CM_WhX:  Mouse.scroll(cm,0);  break;  // wheels
+				case CM_WhY:  Mouse.scroll(0,cm);  break;
+				//  todo move big vals
+				//moveTo(uint16_t x, uint16_t y)  // absolute pos..
 			}	}
 		}
+		//  todo hold any key-
 		//  modifiers
 		else if (code > KEY_NONE && code <= K_ModLast)
 		{

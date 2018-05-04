@@ -38,8 +38,20 @@ const char* KCerrStr[E_max] = {
 	"r * c != sc", "nkeys != sc",
 };
 
+//  seq commands ___ underline colors
+const uint16_t cCmdClrLn[CMD_ALL]={
+	//CMD_SetDelay, CMD_Wait, CMD_Comment, CMD_Hide,
+	RGB(31,31,8),RGB(31,31,22), RGB(6,31,31), RGB(10,20,30),
+	//CM_x,CM_y, CM_BtnOn,CM_BtnOff, CM_Btn,CM_Btn2x, CM_WhX,CM_WhY,
+	RGB(6,31,6),RGB(16,31,6), RGB(6,31,6),RGB(16,31,6),  RGB(6,31,6),RGB(16,31,6), RGB(6,31,6),RGB(16,31,6),
+};
+const uint8_t cCmdStrLen[CMD_ALL]={
+	7, 6, 4, 5,
+	7,7, 4,4,3,4, 5,5
+};
 
-//  get ram used
+
+//  get ram allocated
 uint16_t KC_Main::GetSize()
 {
 	uint16_t s=0;

@@ -12,19 +12,25 @@ void Gui::DrawHelp()
 	d->print(strMain[ym]);  d->setFont(0);
 
 	//  page
-	d->setClr(29,29,31);
+	d->setClr(22,22,23);
 	d->setCursor(W-1 -5*6, 0);
 	sprintf(a, "%2d/%d", hpage+1, HAll);
 	d->print(a);
 
 	//  titles
-	d->setClr(26,26,31);
-	d->setCursor(W/3+6, 4);
 	const static char* title[HAll] = {"Main",
-		"Mapping", "Pick Key",
-		"Sequences", "Edit Seq.", "Commands",
-		"Demos", "Sixtis", "Sixtis cd."};
-	d->print(title[hpage]);
+		"Mapping", "Mapping",
+		"Sequences", "Sequence", "Sequence",
+		"Demos", "Sixtis", "Sixtis"},
+
+	*title2[HAll] = {"",  // 2nd lines
+		"", "Pick Key",
+		" View", " Edit", "Commands",
+		"", " 1/2", " 2/2"};
+
+	const int x = W/3+6;
+	d->setClr(25,28,31);  d->setCursor(x, 2);  d->print(title[hpage]);
+	d->setClr(21,24,28);  d->setCursor(x,12);  d->print(title2[hpage]);
 
 	//  text
 	d->setCursor(0, 32);
@@ -32,7 +38,7 @@ void Gui::DrawHelp()
 	{
 	case 0:  //  main
 		d->setClr(20,26,31);
-		d->println("\x18,\x19     Move Cursor \x10");  // v,^
+		d->println("\x18,\x19     Move Cursor \x10");  // ^,v
 		d->moveCursor(0,2);
 		d->println("\x1A       Enter");
 		d->moveCursor(0,2);
@@ -102,7 +108,7 @@ void Gui::DrawHelp()
 
 	case 4:  //  edit seq
 		d->setClr(6,30,30);
-		sprintf(a,"All on Layer %d", par.editLayer);
+		sprintf(a,"All on Layer %d:", par.editLayer);
 		d->println(a);
 		d->setClr(18,30,30);
 		d->moveCursor(0,6);
@@ -119,7 +125,7 @@ void Gui::DrawHelp()
 
 	case 5:  //  seq commands ___ help
 		d->setClr(25,26,26);
-		d->println("Insert commands in seq.");
+		d->println("Insert command in seq:");
 		d->moveCursor(0,2);
 		d->println("/  Set Key Delay [1ms]");
 		d->moveCursor(0,2);

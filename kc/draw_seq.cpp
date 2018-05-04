@@ -20,10 +20,12 @@ void Gui::DrawSeq(int8_t seq, int8_t q)
 		uint8_t dt = kc.set.seqs[seq].data[n];
 		bool isCmd = dt >= K_Cmd0 && dt <= K_CmdLast;
 
+		//  clr
 		const char* st = cKeyStr[dt];
 		uint8_t gr = cKeyGrp[dt];
 		FadeGrp(gr, 9, q, 3);
 
+		//  pos
 		int16_t x = d->getCursorX(),
 			xx = isCmd ? 4 : 6*strlen(st);
 
@@ -38,18 +40,26 @@ void Gui::DrawSeq(int8_t seq, int8_t q)
 			{	//  just indicator|
 				int cmd = dt - K_Cmd0;
 				int16_t y = d->getCursorY();
+				uint16_t ln = cCmdClrLn[cmd];
 				switch (cmd)
 				{
 				case CMD_SetDelay:
-				case CMD_Wait:
-					d->drawFastVLine(x,y+1,5, RGB(31,31,20));
-					break;
-				case CMD_Comment:
-					d->drawFastVLine(x,y+2,3, RGB(6,31,31));
-					break;
-				case CMD_Hide:
-					d->drawFastVLine(x,y+1,5, RGB(10,20,30));
-					return;
+				case CMD_Wait:		d->drawFastVLine(x,y+1,5, ln);  break;
+				case CMD_Comment:	d->drawFastVLine(x,y+2,3, ln);  break;
+				case CMD_Hide:		d->drawFastVLine(x,y+1,5, ln);  return;
+
+				//  _mouse commands_ draw short
+				case CM_x:  d->drawFastVLine(x,y+2,3, ln);  break;
+				case CM_y:  d->drawFastVLine(x,y+2,3, ln);  break;
+
+				case CM_BtnOn:  d->drawFastVLine(x,y+2,3, ln);  break;
+				case CM_BtnOff: d->drawFastVLine(x,y+2,3, ln);  break;
+
+				case CM_Btn:   d->drawFastVLine(x,y+2,3, ln);  break;
+				case CM_Btn2x: d->drawFastVLine(x,y+2,3, ln);  break;
+
+				case CM_WhX:  d->drawFastVLine(x,y+2,3, ln);  break;
+				case CM_WhY:  d->drawFastVLine(x,y+2,3, ln);  break;
 				}
 				d->moveCursor(4, 0);
 				++n;  // skip next, param byte
@@ -61,6 +71,7 @@ void Gui::DrawSeq(int8_t seq, int8_t q)
 			++n;
 	}	}
 }
+
 
 //  Sequences kbd  view, edit
 //....................................................................................
@@ -154,25 +165,30 @@ void Gui::DrawSequences()
 				//  command
 				bool isCmd = dt >= K_Cmd0 && dt <= K_CmdLast;
 				int cmd = dt - K_Cmd0;
-				const static uint8_t cmdStrLen[CMD_ALL]={
-					7, 6, 4, 5, 7,  };  // cmd str lengths
 
-				int gr = cKeyGrp[dt];  // clr
+				//  const
+				const static char* sMB[6]={"LMB", "MMB", "RMB", "Mbk", "Mfw"};
+
+				//  clr
+				int gr = cKeyGrp[dt];
 				int q = abs(n - edpos);
 				FadeGrp(gr, 9, q, 4);
 
 				//  string length
-				xx = (isCmd ? cmdStrLen[min(CMD_ALL-1, cmd)] :
+				xx = (isCmd ? cCmdStrLen[min(CMD_ALL-1, cmd)] :
 						strlen(cKeyStr[dt])) * 6 +2;
 				if (x + xx > W-1)
 				{	x = 1;  y += 8+4;  }  // new line
 
+				//  write
 				d->setCursor(x,y);
-				if (isCmd)
-				{	++n;  //  commands ___ draw
+				if (isCmd)  //  commands ___ draw
+				{	++n;
 					uint8_t cp = n < l ? kc.set.seqs[si].data[n] : 0;
+					int8_t cm = cp-128;
 
-					d->drawFastHLine(x, y+8, xx-2, RGB(20,20,31));  //_
+					uint16_t ln = cCmdClrLn[cmd];
+					d->drawFastHLine(x, y+8, xx-2, ln);  //_ underline
 					d->setClr(30,30,30);
 
 					//  format command name and param  ---
@@ -190,9 +206,18 @@ void Gui::DrawSequences()
 					case CMD_Hide:
 						d->print("Hide>");  break;
 
-					case CMD_Mx:  //int16_t-
-						sprintf(a,"Mx%+3d", cp-128);  d->print(a);  break;
-						break;
+					//  _mouse commands_ draw
+					case CM_x:  sprintf(a,"Mx%+3d", cm);  d->print(a);  break;
+					case CM_y:  sprintf(a,"My%+3d", cm);  d->print(a);  break;
+
+					case CM_BtnOn:  sprintf(a,"%s\x19", sMB[cp]);  d->print(a);  break;
+					case CM_BtnOff: sprintf(a,"%s\x18", sMB[cp]);  d->print(a);  break;
+
+					case CM_Btn:   d->print(sMB[cp]);  break;
+					case CM_Btn2x: sprintf(a,"%s2", sMB[cp]);  d->print(a);  break;
+
+					case CM_WhX:  sprintf(a,"WhX%2d", cm);  d->print(a);  break;
+					case CM_WhY:  sprintf(a,"WhY%2d", cm);  d->print(a);  break;
 					}
 				}else  // key
 					d->print(cKeyStr[dt]);

@@ -14,10 +14,15 @@ struct KC_Sequence
 	void add(uint8_t b) {  data.push_back(b);  }
 };
 
+//  seq commands
 enum ESeqCmd {
 	CMD_SetDelay=0, CMD_Wait, CMD_Comment, CMD_Hide,
-	CMD_Mx, CMD_My, CMD_MBtn, CMD_ALL
-};
+	//  mouse move: x,y, buttons: press,release, click,double, wheels: x,y
+	CM_x,CM_y, CM_BtnOn,CM_BtnOff, CM_Btn,CM_Btn2x, CM_WhX,CM_WhY, CMD_ALL
+};	// note: need >= sequence ids than commands
+
+extern const uint16_t cCmdClrLn[CMD_ALL];  // underline colors
+extern const uint8_t cCmdStrLen[CMD_ALL];  // string lengths
 
 
 struct KC_Setup
@@ -45,7 +50,8 @@ struct KC_Setup
 };
 
 
-enum KC_Err {  // load, save errors
+//  errors load, save
+enum KC_Err {
 	E_ok=0, E_size,  E_H1, E_H2, E_ver,
 	E_rows, E_cols,  E_slots, E_lay,
 	E_rcEq, E_nkeys,  E_max
@@ -59,14 +65,13 @@ struct KC_Main
 {
 	//  current layer, set by keys
 	int8_t nLayer = 0;
-
 	int8_t setDac = 1;  // update
 
 	//  sequence running vars
 	int8_t inSeq = -1,  // id run, -1 none
-		seqPos = 0,  // index in seq data
-		seqRel = 0,  // pressed / released
-		seqWait = 0; // one time, restore dtSeq
+		seqPos = 0,   // cur index in seq data
+		seqRel = 0,   // pressed / released
+		seqWait = 0;  // one time, restore dtSeq
 	uint16_t dtSeq = 20;  // var delay  param
 	uint32_t tiSeq = 0, tiFun = 0;  // ms time delay
 

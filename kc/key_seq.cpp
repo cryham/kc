@@ -32,67 +32,83 @@ int8_t Gui::KeysSeq()
 		int cmd = -1;  // none
 
 		if (layEd)
-		{	//  start, end
-			if (kEnd < 0)  edpos = 0;
-			if (kEnd > 0)  edpos = len;
-
-			//  cmd check
-			#define CmdAt(i)  (dt[i] >= K_Cmd0 && dt[i] <= K_CmdLast)
-			bool cmdR = edpos > 1 && CmdAt(edpos-2);
-			bool cmdL = edpos < len-1 && CmdAt(edpos);
-			int cmdPar = cmdR ? edpos-1 : cmdL ? edpos+1 : 0;
-
-			//  move, skip cmd  <,>
-			if (kRight < 0)
-			{	if (cmdR)  edpos-=2;  else
-				if (edpos > 0)  --edpos;  }
-			if (kRight > 0)
-			{	if (cmdL)  edpos+=2;  else
-				if (edpos < len)  ++edpos;  }
-
-			//  edit cmd param  ^,v
-			if (cmdPar && kUp)
+		{	if (!kSh)  // no shift
 			{
-				dt[cmdPar] = RangeAdd(dt[cmdPar],
-					(kCtrl ? 10 : 1) * -kUp, 0, 255);
-			}
+				//  start, end
+				if (kEnd < 0)  edpos = 0;
+				if (kEnd > 0)  edpos = len;
 
-			//  del char key
-			int8_t del = kDel || kBckSp ? 1 : 0;
-			//  del 2 chars, if cmd
-			if (kDel && edpos < len-1 && CmdAt(edpos))  del = 2;
-			if (kBckSp && edpos > 1 && CmdAt(edpos-2))  del = 2;
+				//  cmd check
+				#define CmdAt(i)  (dt[i] >= K_Cmd0 && dt[i] <= K_CmdLast)
+				bool cmdR = edpos > 1 && CmdAt(edpos-2);
+				bool cmdL = edpos < len-1 && CmdAt(edpos);
+				int cmdPar = cmdR ? edpos-1 : cmdL ? edpos+1 : 0;
 
-			if (del)
-			for (int d=0; d < del; ++d)
-			if (len > 0)
-			{
-				int i = edpos;  // del>
-				if (kBckSp)
-				{	i = max(0, edpos-1);  // <del
-					edpos = i;  //
+				//  move, skip cmd  <,>
+				if (kRight < 0)
+				{	if (cmdR)  edpos-=2;  else
+					if (edpos > 0)  --edpos;  }
+				if (kRight > 0)
+				{	if (cmdL)  edpos+=2;  else
+					if (edpos < len)  ++edpos;  }
+
+				//  edit cmd param  ^,v
+				if (cmdPar && kUp)
+				{
+					dt[cmdPar] = RangeAdd(dt[cmdPar],
+						(kCtrl ? 10 : 1) * -kUp, 0, 255);
 				}
-				for (; i < len-1; ++i)
-					dt[i] = dt[i+1];
-				dt.pop_back();
-				--len;
-				if (edpos > len)
-					edpos = len;
-			}
-			if (kIns)
-				edins = 1 - edins;  // ins/ovr
 
-			//  commands ___ set keys
-			if (kDiv)   cmd = CMD_SetDelay;
-			if (kMul)   cmd = CMD_Wait;
-			if (kCopy)  cmd = CMD_Comment;
-			if (kSwap)  cmd = CMD_Hide;
-			if (kSub)   cmd = CMD_Mx;
-			//  todo manual pick key from list-
+				//  del char key
+				int8_t del = kDel || kBckSp ? 1 : 0;
+				//  del 2 chars, if cmd
+				if (kDel && edpos < len-1 && CmdAt(edpos))  del = 2;
+				if (kBckSp && edpos > 1 && CmdAt(edpos-2))  del = 2;
+
+				if (del)
+				for (int d=0; d < del; ++d)
+				if (len > 0)
+				{
+					int i = edpos;  // del>
+					if (kBckSp)
+					{	i = max(0, edpos-1);  // <del
+						edpos = i;  //
+					}
+					for (; i < len-1; ++i)
+						dt[i] = dt[i+1];
+					dt.pop_back();
+					--len;
+					if (edpos > len)
+						edpos = len;
+				}
+				if (kIns)
+					edins = 1 - edins;  // ins/ovr
+
+				//  commands ___ set, keys
+				if (kDiv)   cmd = CMD_SetDelay;
+				if (kMul)   cmd = CMD_Wait;
+				if (kCopy)  cmd = CMD_Comment;
+				if (kSwap)  cmd = CMD_Hide;
+				//  todo manual pick key from list-
+			}
+			else  // shift
+			{
+				// _mouse commands_ set, keys
+				if (kRight < 0)  cmd = CM_x;  // par = 10;
+				if (kRight > 0)  cmd = CM_x;
+				if (kUp > 0)  cmd = CM_y;
+				if (kUp < 0)  cmd = CM_y;
+				if (kEnd < 0)  cmd = CM_Btn;
+				if (kEnd > 0)  cmd = CM_Btn2x;
+				if (kPgUp < 0)  cmd = CM_BtnOff;
+				if (kPgUp > 0)  cmd = CM_BtnOn;
+				if (kDiv)  cmd = CM_WhX;
+				if (kMul)  cmd = CM_WhY;
+			}
 		}
 		if (cmd >= 0)
 		{
-			//  1 B cmd id, 1 B param size
+			//  1 B cmd id, 1 B param
 			//  commands use seq codes
 			cmd += K_Cmd0;
 
