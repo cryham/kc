@@ -76,6 +76,7 @@ Adafruit_GFX::Adafruit_GFX(int16_t w, int16_t h)
 	cursor_y = cursor_x	= 0;
 	textcolor = 0xFFFF;
 	gfxFont	= 0;
+	wrap = true;
 }
 
 
@@ -288,7 +289,7 @@ int Adafruit_GFX::write(uint8_t c)
 		{	// skip
 		}else
 		{
-			if (cursor_x + 6 >= _width)
+			if (wrap && cursor_x + 6 >= _width)
 			{	// Heading off edge?
 				cursor_x = 0;	// Reset x to zero
 				cursor_y += 8;	// Advance y one line
@@ -317,7 +318,7 @@ int Adafruit_GFX::write(uint8_t c)
 				if (w > 0 && h > 0)  // Is there an associated bitmap?
 				{
 					int16_t xo = (int8_t)pgm_read_byte(&glyph->xOffset); // sic
-					if (cursor_x + (xo + w) >= _width)
+					if (wrap && cursor_x + (xo + w) >= _width)
 					{
 						// Drawing character would go off right edge; wrap to new line
 						cursor_x = 0;
@@ -419,4 +420,8 @@ void Adafruit_GFX::setColor(uint16_t c)
 void Adafruit_GFX::setFont(const GFXfont *f)
 {
 	gfxFont = (GFXfont *)f;
+}
+void Adafruit_GFX::setWrap(bool w)
+{
+	wrap = w;
 }

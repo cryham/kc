@@ -259,6 +259,7 @@ const uint8_t TomThumbBitmaps[] PROGMEM = {
 
 
 /* {offset, width, height, advance cursor, x offset, y offset} */
+//  width should be 4 ..
 const GFXglyph TomThumbGlyphs[] PROGMEM = {
    { 0, 8, 1, 2, 0, -5 },    /* 0x20 space */
    { 1, 8, 5, 2, 0, -5 },    /* 0x21 exclam */

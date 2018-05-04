@@ -196,20 +196,20 @@ void Demos::Fonts()
 			if (i == '\n') continue;
 			d->write(i);
 
-			if (i % 20 == 0)
+			if (i % 16 == 0)
 			{	if (i > 0)
 				{	d->print('\n');
 					d->moveCursor(0, 1);  }
 				d->setClr(24,27,31);
 
-				int ii = i / 20;
+				int ii = i / 16;
 				if (ii % 4 == 0)
-					d->moveCursor(0, 2);
+					d->moveCursor(0, 3);
 				if (ii % 2 == 0)
 					d->setClr(26,29,31);
 			}
 			if (i % 8 == 0 && i > 0)
-				d->moveCursor(2, 0);
+				d->moveCursor(3, 0);
 		}
 		d->setFont(0);
 	}	break;

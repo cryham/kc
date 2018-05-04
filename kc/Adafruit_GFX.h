@@ -41,7 +41,7 @@ public:
 	{
 		textcolor = (r<<11) + (g<<6) + b;  // 31 31 31 max
 	}
-
+	void setWrap(bool w);
 
 	// get current cursor position
 	int16_t getCursorX() const;
@@ -53,4 +53,5 @@ protected:
 	uint16_t textcolor;
 
 	GFXfont *gfxFont;
+	bool wrap;
 };

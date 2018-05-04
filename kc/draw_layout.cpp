@@ -6,8 +6,6 @@
 #include "kc_data.h"
 #include "keys_usb.h"
 
-extern KC_Main kc;
-
 
 //  kbd draw   Layout
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -19,6 +17,7 @@ const uint16_t clu[cluM] = {
 void Gui::DrawLayout(bool edit)
 {
 	int16_t x=2, y=0;
+	d->setWrap(false);
 
 	for (int i=0; i < nDrawKeys; ++i)
 	{
@@ -61,8 +60,8 @@ void Gui::DrawLayout(bool edit)
 		bool tiny = k.w < 6;
 
 		//  skip caption for tiny keys
-		if (tiny && !layKey && !layUse)
-			continue;
+		//if (tiny && edit && !layKey && !layUse)
+		//	continue;
 
 		d->setCursor(  // txt pos
 			k.o==5 || k.o==7 ? x + k.w - 6 :  // right align
@@ -87,8 +86,6 @@ void Gui::DrawLayout(bool edit)
 
 				if (u > 0)
 				{	d->moveCursor(tiny ? -1 : 0, tiny ? 0 : 2);
-					if (d->getCursorX() > W-4)  // off scr-
-						d->setCursor(W-4, d->getCursorY());
 					d->setFont(&TomThumb);
 
 					d->setColor(clu[ min(cluM-1, u-1) ]);
@@ -97,13 +94,18 @@ void Gui::DrawLayout(bool edit)
 			}else	//  normal
 			if (dt != KEY_NONE)
 			{
-				if (m)  d->moveCursor(-1,2);
+				if (m)  d->moveCursor(-1, tiny ? 0 : 2);
 				d->setFont(m ? &TomThumb : 0);  // 3x5
 
 				const uint8_t* c = &cGrpRgb[cKeyGrp[dt]][0][0];
-				d->setClr(c[0],c[1],c[2]);
-				d->print(tiny && layKey ? &ch[1] : ch);
+				if (tiny)  // tiny rect for color, no text
+					d->drawRect(d->getCursorX(), d->getCursorY()+1,
+						2,2, RGB(c[0],c[1],c[2]));
+				else
+				{	d->setClr(c[0],c[1],c[2]);
+					d->print(tiny && layKey ? &ch[1] : ch);
+				}
 		}	}
 	}
-	d->setFont(0);
+	d->setFont(0);  d->setWrap(true);
 }
