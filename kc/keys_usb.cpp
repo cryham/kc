@@ -174,8 +174,7 @@ const uint8_t cGrpRgb[grpMax][2][3]=
 	{31,18,20, 0,2,1},  // 15 layer
 	{28,26,31, 4,4,2},  // 16 sequence
 };
-
-//  funtion names
+//  funtion names  ***
 const char* cFunStr[K_Fun9-K_Fun0+1]=
-{	"GUI toggle", "Bright-", "Bright+","","","","","","",""
+{	"GUI toggle", "Bright-", "Bright+", "Soft Reset", "","","","","",""
 };

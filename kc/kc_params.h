@@ -48,9 +48,9 @@ struct KC_Params
 	uint8_t keyMouseSlow;  // mouse shift scId
 
 	//  todo par, low pri
-	//  start demo screen
-	//  auto start seq to login, after time
-	//  inactive time show, start demo-
+	//* start demo screen
+	//* auto start seq to login, after time
+	//* inactive time show, start demo-
 };
 //  --- ADD new to END ----
 

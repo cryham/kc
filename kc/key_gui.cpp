@@ -38,6 +38,11 @@ void Gui::KeyPress()
 	kLoad = Key(gLoad);  kSave = Key(gSave);
 
 
+	//  todo quick access keys
+	//  F1 help, F2, F8,F9 ..
+	//SetScreen();
+
+
 	//  Game  ------
 	#ifdef GAME
 	if (ym == M_Game && mlevel == 1)
@@ -120,6 +125,8 @@ void Gui::KeyPress()
 				pressGui = 1;  break;
 			}	break;
 		}
+		if (kSave)  Save();
+		if (kLoad)  Load(kCtrl);
 	}
 
 	//  Display
@@ -159,6 +166,9 @@ void Gui::KeyPress()
 			}	break;
 		}
 		if (kBack)  --mlevel;
+
+		if (kSave)  Save();
+		if (kLoad)  Load(kCtrl);
 		return;
 	}
 

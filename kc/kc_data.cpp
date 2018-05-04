@@ -70,6 +70,10 @@ void KC_Main::UpdLay(uint32_t ms)
 				case K_Fun1:
 				case K_Fun2:  // brightness -+
 					tiFun = ms;  break;  // delay no par
+
+				case K_Fun3:  // soft reset  //NVIC_SystemReset();
+					#define SCB_AIRCR (*(volatile uint32_t *)0xE000ED0C)
+					SCB_AIRCR = 0x05FA0004;  break;
 				}
 			}
 		}else if (hold)
