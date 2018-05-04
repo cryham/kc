@@ -8,7 +8,6 @@
 #include "TomThumb.h"
 
 extern RamMonitor ram;
-extern KC_Main kc;
 
 
 //  Draw End
@@ -62,29 +61,21 @@ void Gui::DrawEnd()
 		}
 	}
 
-	#ifdef DEMOS
 	//  fps  ---------
-	if (mlevel == 2)
-	{	bool sc = ym == M_Setup && yy == S_Scan;
-		if ((demos.iFps && ym == M_Demos) || sc)
-		{
-			uint32_t ti = millis();
-			float fr = 1000.f / (ti - oldti);
-			int ff = fr;
-			oldti = ti;
+	bool sc = ym == M_Setup && yy == S_Scan;
+	if (demos.iFps == 2 ||
+		(mlevel == 2 && (sc || (demos.iFps && ym == M_Demos))))
+	{
+		uint32_t ti = millis();
+		float fr = 1000.f / (ti - oldti);
+		int ff = fr;
+		oldti = ti;
 
-			d->setClr(24,28,31);
-			d->setCursor(W-14,0);
-			sprintf(a,"%d", ff);
-			d->print(a);
-
-			if (!sc)
-			{	d->setClr(20,26,31);
-				d->setCursor(W-14,9);
-				sprintf(a,"%lu", tdraw);
-				d->print(a);
-	}	}	}
-	#endif
+		d->setClr(24,28,31);
+		d->setCursor(W-14,0);
+		sprintf(a,"%d", ff);
+		d->print(a);
+	}
 
 	//if (!offDisp)
 		d->display();  // 58 Fps, 15ms @144MHz

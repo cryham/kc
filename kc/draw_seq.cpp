@@ -7,8 +7,6 @@
 #include "kc_data.h"
 #include "keys_usb.h"
 
-extern KC_Main kc;
-
 
 //  write sequence, 1 line, short
 //......................................................
@@ -109,7 +107,7 @@ void Gui::DrawSequences()
 			d->setClr(20,31,31);
 
 			d->setCursor(2*6, y);  // copy mark
-			if (s == cpId)  d->print("\x7");
+			if (s == copyId)  d->print("\x7");
 			d->setCursor(4*6, y);
 
 			DrawSeq(s, q);  // write

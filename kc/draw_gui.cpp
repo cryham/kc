@@ -8,7 +8,6 @@
 void Gui::Draw()
 {
 	yy = ym1[ym];
-	uint32_t oti1 = millis();
 
 	//  Clear
 	#ifdef DEMOS
@@ -93,6 +92,4 @@ void Gui::Draw()
 	case M_Display: DrawDisplay();  return;
 	case M_Help:    DrawHelp();  return;
 	}
-
-	tdraw = millis() - oti1;
 }

@@ -3,8 +3,6 @@
 #include "matrix.h"
 #include "kbd_layout.h"
 
-extern KC_Main kc;
-
 
 int8_t Gui::KeysMap()
 {

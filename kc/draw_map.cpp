@@ -6,8 +6,6 @@
 #include "kc_data.h"
 #include "keys_usb.h"
 
-extern KC_Main kc;
-
 
 //  Mappings kbd
 //....................................................................................

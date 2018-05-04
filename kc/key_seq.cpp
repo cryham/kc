@@ -2,8 +2,6 @@
 #include "kc_data.h"
 #include "matrix.h"
 
-extern KC_Main kc;
-
 
 int8_t Gui::KeysSeq()
 {
@@ -184,7 +182,7 @@ int8_t Gui::KeysSeq()
 
 		//  copy
 		if (kCopy)
-		{	kc.set.copy.data = dt;  cpId = q;
+		{	kc.set.copy.data = dt;  copyId = q;
 			infType = 3;  tInfo = -1;
 		}
 		//  paste, set
@@ -193,10 +191,10 @@ int8_t Gui::KeysSeq()
 			infType = 4;  tInfo = -1;
 		}
 		//  swap, xchg
-		if (kSwap && cpId != -1)
+		if (kSwap && copyId != -1)
 		{
-			KC_Sequence cp = kc.set.seqs[cpId];
-			kc.set.seqs[cpId] = kc.set.seqs[q];
+			KC_Sequence cp = kc.set.seqs[copyId];
+			kc.set.seqs[copyId] = kc.set.seqs[q];
 			kc.set.seqs[q] = cp;
 			infType = 5;  tInfo = -1;
 		}

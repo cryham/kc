@@ -36,7 +36,7 @@ void Gui::DrawDisplay()
 	switch (pgDisp)
 	{
 	case 0:
-	for (int i=0; i < pg; ++i)
+	for (int i=0; i <= pg; ++i)
 	{
 		d->setCursor(2, y);
 		int c = abs(i - ym2Disp);  // dist dim
@@ -62,7 +62,7 @@ void Gui::DrawDisplay()
 	}	break;
 
 	case 1:
-	for (int i=0; i < pg; ++i)
+	for (int i=0; i <= pg; ++i)
 	{
 		d->setCursor(2, y);
 		int c = abs(i - ym2Disp);  // dist dim
@@ -83,10 +83,10 @@ void Gui::DrawDisplay()
 			sprintf(a,"Key repeat: %d ms", par.krRepeat*5);  break;
 		case 2:
 			sprintf(a,"Ram info: %d", iRam);  break;
+		case 3:
+			sprintf(a,"Frames per sec: %d", demos.iFps);  break;
 		}
 		d->print(a);  y += h+8;
 	}	break;
 	}
 }
-
-const uint8_t Gui::DispPages[Gui::Disp_All] = {3,3};

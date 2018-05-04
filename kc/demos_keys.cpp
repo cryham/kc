@@ -56,12 +56,9 @@ void Demos::Init(Ada4_ST7735* tft)
 //....................................................................................
 void Demos::KeyPress(EDemo demo, Gui* gui)
 {
-	//  global
-	//if (key(R)){  Init(0);  return;  }  // reset all
-
-	//  fps, info txt
+	//  global  //  fps, info txt
 	if (gui->kMul){  iInfo = 1 - iInfo;  return;  }
-	if (gui->kSub){  iFps = 1 - iFps;   return;  }
+	if (gui->kSub){  iFps = (iFps + 1) % 3;   return;  }
 
 	int8_t k = gui->kRight, u = -gui->kUp,
 		pgup = gui->kPgUp, end = gui->kEnd, ct = gui->kCtrl;

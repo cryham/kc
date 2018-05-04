@@ -6,7 +6,8 @@
 #include "kc_data.h"
 #include "periodic.h"
 
-extern KC_Main kc;
+const uint8_t Gui::DispPages[Gui::Disp_All] = {2,3};
+const uint8_t Gui::ScanPages[S_All-1] = {2,3,2};
 
 
 //  Key press
@@ -41,7 +42,7 @@ void Gui::KeyPress()
 	kF8=Key(gF8); kF9=Key(gF9); kF10=Key(gF10); kF11=Key(gF11); kF12=Key(gF12);
 
 
-	//  quick access keys
+	//  quick access keys, todo rebindable-
 	if (kEsc)  SetScreen(ST_Main0);
 	if (kF1)  SetScreen(ST_Map);
 	if (kF2)  SetScreen(ST_Seqs);
@@ -76,7 +77,7 @@ void Gui::KeyPress()
 		{
 		case S_Scan:
 			if (kUp)
-			{	ym2Scan = (ym2Scan + kUp + 3) % 3;  }
+			{	ym2Scan = RangeAdd(ym2Scan, kUp, 0, ScanPages[yy], 1);  }
 			else if (kRight)
 			switch (ym2Scan)
 			{
@@ -100,7 +101,7 @@ void Gui::KeyPress()
 				}
 			}
 			else if (kUp)
-			{	ym2Keyb = (ym2Keyb + kUp + 4) % 4;  }
+			{	ym2Keyb  = RangeAdd(ym2Keyb , kUp, 0, ScanPages[yy], 1);  }
 			else if (kRight)
 			switch (ym2Keyb)
 			{
@@ -125,7 +126,7 @@ void Gui::KeyPress()
 				}
 			}
 			else if (kUp)
-			{	ym2Mouse = (ym2Mouse + kUp + 3) % 3;  }
+			{	ym2Mouse = RangeAdd(ym2Mouse, kUp, 0, ScanPages[yy], 1);  }
 			else if (kRight)
 			switch (ym2Mouse)
 			{
@@ -136,6 +137,8 @@ void Gui::KeyPress()
 			case 2:
 				pressGui = 1;  break;
 			}	break;
+
+		//case S_Version:
 		}
 		if (kSave)  Save();
 		if (kLoad)  Load(kCtrl);
@@ -146,11 +149,11 @@ void Gui::KeyPress()
 	if (ym == M_Display && mlevel == 1)
 	{
 		if (kUp)  // y
-		{	ym2Disp = RangeAdd(ym2Disp, kUp, 0, DispPages[pgDisp]-1, 1);  }
+		{	ym2Disp = RangeAdd(ym2Disp, kUp, 0, DispPages[pgDisp], 1);  }
 		else
 		if (kPgUp)  // pg
 		{	pgDisp = RangeAdd(pgDisp, kPgUp, 0, Disp_All-1, 1);
-			ym2Disp = RangeAdd(ym2Disp, 0, 0, DispPages[pgDisp]-1, 1);
+			ym2Disp = RangeAdd(ym2Disp, 0, 0, DispPages[pgDisp], 1);
 		}else
 		if (kRight)  // adjust values
 		switch (pgDisp)
@@ -175,6 +178,8 @@ void Gui::KeyPress()
 				par.krRepeat = RangeAdd(par.krRepeat, kRight, 0,255);  break;
 			case 2:  // ram info
 				iRam = RangeAdd(iRam, kRight, 0, 2);  break;
+			case 3:  // fps
+				demos.iFps = RangeAdd(demos.iFps, kRight, 0, 2);  break;
 			}	break;
 		}
 		if (kAdd || kBckSp)  --mlevel;

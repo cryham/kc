@@ -3,8 +3,6 @@
 #include "matrix.h"
 #include "kc_data.h"
 
-extern KC_Main kc;
-
 
 //  Testing
 //....................................................................................

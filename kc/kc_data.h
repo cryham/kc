@@ -95,3 +95,5 @@ struct KC_Main
 	uint16_t memSize = 0;  // result B
 	KC_Err err = E_ok;
 };
+
+extern KC_Main kc;
