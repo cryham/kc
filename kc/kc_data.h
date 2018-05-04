@@ -14,6 +14,11 @@ struct KC_Sequence
 	void add(uint8_t b) {  data.push_back(b);  }
 };
 
+enum ESeqCmd {
+	CMD_SetDelay=0, CMD_Wait, CMD_Comment, CMD_Hide,
+	CMD_Mx, CMD_My, CMD_MBtn, CMD_ALL
+};
+
 
 struct KC_Setup
 {
@@ -45,7 +50,6 @@ enum KC_Err {  // load, save errors
 	E_rows, E_cols,  E_slots, E_lay,
 	E_rcEq, E_nkeys,  E_max
 };
-
 extern const char* KCerrStr[E_max];
 
 
@@ -61,7 +65,8 @@ struct KC_Main
 	//  sequence running vars
 	int8_t inSeq = -1,  // id run, -1 none
 		seqPos = 0,  // index in seq data
-		seqRel = 0;  // pressed / released
+		seqRel = 0,  // pressed / released
+		seqWait = 0; // one time, restore dtSeq
 	uint16_t dtSeq = 20;  // var delay  param
 	uint32_t tiSeq = 0, tiFun = 0;  // ms time delay
 
@@ -76,6 +81,7 @@ struct KC_Main
 
 	void UpdLay(uint32_t ms);  // update
 	void Send(uint32_t ms);  // send usb
+	bool SeqEnd(const KC_Sequence& sq);
 
 	//  eeprom  ----
 	void Load(), Save();

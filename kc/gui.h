@@ -70,7 +70,7 @@ struct Gui
 	int8_t iRam = 0;
 
 	int8_t hpage = 0;
-	const static int8_t HAll = 8;
+	const static int8_t HAll = 9;
 
 
 	//  Mapping  - - - -

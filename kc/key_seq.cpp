@@ -26,10 +26,10 @@ int8_t Gui::KeysSeq()
 	}
 
 	//  Edit sequence
-	//------------------------------------------------------------
+	//--------------------------------------------------------------------------
 	if (edit)
 	{
-		int8_t cmd = 0;  // none
+		int cmd = -1;  // none
 
 		if (layEd)
 		{	//  start, end
@@ -37,7 +37,7 @@ int8_t Gui::KeysSeq()
 			if (kEnd > 0)  edpos = len;
 
 			//  cmd check
-			#define CmdAt(i)  (dt[i] >= K_Seq0 && dt[i] <= K_SeqLast)
+			#define CmdAt(i)  (dt[i] >= K_Cmd0 && dt[i] <= K_CmdLast)
 			bool cmdR = edpos > 1 && CmdAt(edpos-2);
 			bool cmdL = edpos < len-1 && CmdAt(edpos);
 			int cmdPar = cmdR ? edpos-1 : cmdL ? edpos+1 : 0;
@@ -54,7 +54,7 @@ int8_t Gui::KeysSeq()
 			if (cmdPar && kUp)
 			{
 				dt[cmdPar] = RangeAdd(dt[cmdPar],
-					(kCtrl ? 10 : 1) * kUp, 0, 255);
+					(kCtrl ? 10 : 1) * -kUp, 0, 255);
 			}
 
 			//  del char key
@@ -82,35 +82,36 @@ int8_t Gui::KeysSeq()
 			if (kIns)
 				edins = 1 - edins;  // ins/ovr
 
-			//  commands
-			if (kDiv)  cmd = 1;  // set delay
-			if (kMul)  cmd = 2;  // wait
-			if (kSub)  cmd = 3;  // mouse
-
+			//  commands ___ set keys
+			if (kDiv)   cmd = CMD_SetDelay;
+			if (kMul)   cmd = CMD_Wait;
+			if (kCopy)  cmd = CMD_Comment;
+			if (kSwap)  cmd = CMD_Hide;
+			if (kSub)   cmd = CMD_Mx;
 			//  todo manual pick key from list-
 		}
-		if (cmd > 0)
+		if (cmd >= 0)
 		{
-			//  seq codes in seq are commands
-			int ci = K_Seq0 +cmd-1;
+			//  1 B cmd id, 1 B param size
+			//  commands use seq codes
+			cmd += K_Cmd0;
 
 			//  add command to sequence
 			if (edpos >= len)  // at end
 			{
-				dt.push_back(ci);  // 1B cmd
-				dt.push_back(0);   // 1B param
-				edpos+=2;
+				dt.push_back(cmd);  ++edpos;
+				dt.push_back(0);  ++edpos;
 			}
 			else  // insert
 			{
-				dt.push_back(0);
-				dt.push_back(0);  len+=2;
+				dt.push_back(0);  ++len;
+				dt.push_back(0);  ++len;
+
 				for (int i=len-1; i > edpos; --i)
 					dt[i] = dt[i-2];
 
-				dt[edpos] = ci;   // 1B cmd
-				dt[edpos+1] = 0;  // 1B par
-				edpos+=2;
+				dt[edpos] = cmd;  ++edpos;
+				dt[edpos] = 0;  ++edpos;
 			}
 		}
 		else
@@ -150,7 +151,7 @@ int8_t Gui::KeysSeq()
 		}	}
 	}else
 	{	// View
-		//------------------------------
+		//------------------------------------------------------------
 		//  save  load
 		if (kSave)  Save();
 		if (kLoad)  Load(kCtrl);

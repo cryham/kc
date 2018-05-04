@@ -94,32 +94,73 @@ void KC_Main::UpdLay(uint32_t ms)
 
 //  keyboard send  (to pc usb)
 //------------------------------------------------------------------------------------------------
+bool KC_Main::SeqEnd(const KC_Sequence& sq)
+{
+	if (seqPos >= sq.len())
+	{
+		Keyboard.releaseAll();
+		SeqModClear();
+		inSeq = -1;  // end
+		return true;
+	}
+	return false;
+}
 void KC_Main::Send(uint32_t ms)
 {
 	//  in sequence  ***
 	if (inSeq >= 0 && (ms - tiSeq > dtSeq || ms < tiSeq))
 	{
 		tiSeq = ms;
+
+		if (seqWait)
+		{	seqWait = 0;  // restore, dtSeqOwn-
+			dtSeq = par.dtSeqDef;
+		}
 		const KC_Sequence& sq = set.seqs[inSeq];
 		uint8_t code = sq.data[seqPos];
 		uint usb = cKeyUsb[code];
 
-		//  commands
-		if (code >= K_Seq0 && code <= K_SeqLast)
+		//  commands ___ execute
+		bool isCmd = code >= K_Cmd0 && code <= K_CmdLast;
+		if (isCmd)
 		{
-			uint8_t cmd = code - K_Seq0;
-			++seqPos;
-			switch (cmd)
+			int cmd = code - K_Cmd0;
+			++seqPos;  if (!SeqEnd(sq))
 			{
-			case 0:  // set seq delay
-				break;
+				int par = sq.data[seqPos];
+				++seqPos;  SeqEnd(sq);
 
-			case 1:  // todo wait
-				break;
+				switch (cmd)
+				{
+				case CMD_SetDelay:  // ms
+					dtSeq = par;  // dtSeqOwn = par;
+					break;
 
-			case 2:  // mouse move
-				break;
-			}
+				case CMD_Wait:  // 0.1s
+					dtSeq = 100*par;  seqWait = 1;
+					break;
+
+				case CMD_Comment:  //  move until over next Cmt
+					#define Cmt  K_Cmd0 + CMD_Comment
+					seqPos += 2;
+					while (!SeqEnd(sq) && sq.data[seqPos-2] != Cmt)
+						++seqPos;
+					break;
+
+				case CMD_Hide:  // ignore
+					//++seqPos;  SeqEnd(sq);
+					break;
+
+				// todo cmd mouse move x,y, btn on/off dbl
+				/*case CMD_Mx:
+					//usb_mouse_move(x, y, wh_x, wh_y*60);
+					void move(int8_t x, int8_t y, int8_t wheel=0, int8_t horiz=0)
+					void moveTo(uint16_t x, uint16_t y)		{	usb_mouse_position(x, y);  }
+					void scroll(int8_t wheel, int8_t horiz=0)
+					void press(uint8_t b = MOUSE_LEFT)
+					void release(uint8_t b = MOUSE_LEFT)
+					break;*/
+			}	}
 		}
 		//  modifiers
 		else if (code > KEY_NONE && code <= K_ModLast)
@@ -150,7 +191,7 @@ void KC_Main::Send(uint32_t ms)
 			++seqRel;
 		}
 		//  both
-		if (seqRel >= 2)
+		if (seqRel >= 2 && !isCmd)
 		{
 			seqRel = 0;
 			++seqPos;  // next seq byte
@@ -234,7 +275,7 @@ void KC_Main::Send(uint32_t ms)
 						Keyboard.releaseAll();
 						SeqModClear();
 						inSeq = sq;  tiSeq = ms;  seqPos = 0;  seqRel = 0;
-						dtSeq = par.dtSeqDef;
+						dtSeq = par.dtSeqDef;  seqWait = 0;
 					}
 					else  inSeq = -1;
 				}

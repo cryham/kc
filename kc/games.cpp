@@ -73,7 +73,7 @@ void Games::NewSet()
 
 	case 7:  // septis diag2 ~
 		o.size_x = 8;  o.size_y = 14;  o.btm_junk = 3;  o.dots = 2;  o.frame = 2;
-		o.blen_min = 1;  o.blen_max = 7;  o.bsize = 5;  o.bdiag = 8;  o.bbias = -4;
+		o.blen_min = 1;  o.blen_max = 7;  o.bsize = 5;  o.bdiag = 8;  o.bbias = -5;
 		o.speed = 4 * SpdDet;  o.accel = 2;  break;
 
 	case 8:  // septis diag`
