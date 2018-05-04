@@ -73,18 +73,18 @@ struct Gui
 	const static int8_t HAll = 9;
 
 
+	//  keys pressed, some +-1  _k_
+	int8_t kRight=0, kUp=0,  kPgUp=0, kEnd=0,  kDnH=0,
+	/*Add*/ kEsc=0, kAdd=0, kEnt=0,kEnt2=0,  kCtrl=0, kSh=0,  kMul=0, kSub=0, kDiv=0,
+	/*seq*/	kBckSp=0, kIns=0, kDel=0,  kCopy=0, kPaste=0, kSwap=0, /*F4,5*/kLoad=0, kSave=0,
+			kF1=0,kF2=0,kF3=0,kF6=0,kF7=0,kF8=0,kF9=0,kF10=0,kF11=0,kF12=0;
+
 	//  Mapping  - - - -
 	const int8_t yPosLay = 62;
 	int16_t keyCode=0, scId=0, drawId=-1, drawX=0,drawY=0;
 	int8_t nLay=0,
 		pressKey=0, moveCur=0, pickCode=0, // edit operations
 		keyGroup=0, grpFilt=0;  // group filter
-
-	//  keys pressed, some +-1
-	int8_t kRight=0, kUp=0,  kPgUp=0, kEnd=0,  kDnH=0,
-			kBack=0, kEnt=0,  kCtrl=0, kSh=0,  kMul=0, kSub=0, kDiv=0,
-	/*seq*/	kBckSp=0, kIns=0, kDel=0,  kCopy=0, kPaste=0, kSwap=0,
-			kLoad=0, kSave=0;
 
 	//  level 2 y cursors  - -
 	int8_t ym2Scan = 0, ym2Keyb = 0, ym2Mouse = 0, pressGui = 0;  // Setup
@@ -95,7 +95,6 @@ struct Gui
 	//  util
 	int16_t RangeAdd(int16_t val, int16_t add, int16_t vmin, int16_t vmax, int8_t cycle=0);
 	void Save(), Load(int8_t reset);
-
 
 	//  Sequences  - - - -
 	int8_t edit = 0;   // seq 0 view / 1 edit

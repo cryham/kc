@@ -14,7 +14,7 @@ int8_t Gui::KeysSeq()
 	std::vector<uint8_t>& dt = sq.data;
 
 	//  toggle edit  ----
-	if (kEnt && layEd && (!edit || layEd))
+	if (layEd && (kEnt || kEnt2))
 	{
 		edit = 1-edit;
 		if (edit)  // enter edit
@@ -206,7 +206,7 @@ int8_t Gui::KeysSeq()
 			sq.data.shrink_to_fit();  // free ram
 		}
 
-		if (kBack)
+		if (kAdd || kBckSp)
 			--mlevel;
 	}
 	return 0;

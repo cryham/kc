@@ -57,9 +57,10 @@ const DrawKey drawKeys[nDrawKeys] = {  //  Layout draw
 {XN,56,kW*2,kH,'_',6,28,K_INS},{-kW*2,0,wh,'.',6,25,K_DEL}, //Ins Del
 };
 //symbols: `240=  248 deg  249. 250,  7 cir  9 dot`
-const uint8_t gGui=40, gMslow=32, gLoad=15,gSave=31,gDiv=36,
-	gRight=9,gLeft=10,gDown=20,gUp=4, gPgDn=17,gPgUp=1,gEnd=18,gHome=2, gAdd=6,gEnt=22,
-	gCtrl=26,gSh=16,gMul=33,gSub=41, gIns=28,gDel=25,gBckSp=8, gC=39,gV=37,gX=45;
+const uint8_t gGui=40, gMslow=32, gLoad=15,gSave=31,gDiv=36, gEsc=0,gAdd=6,gEnt=22,gEnt2=22,
+	gRight=9,gLeft=10,gDown=20,gUp=4, gPgDn=17,gPgUp=1,gEnd=18,gHome=2,
+	gCtrl=26,gSh=16,gMul=33,gSub=41, gIns=28,gDel=25,gBckSp=8, gC=39,gV=37,gX=45,
+	gF1=57,gF2=58,gF3=94,gF6=139,gF7=95,gF8=59,gF9=64,gF10=46,gF11=136,gF12=10;  //--
 
 #elif defined(CK6)   //  CK6/3  ------------------------------------------------
 #define  wf  fW,kF
@@ -116,9 +117,10 @@ const DrawKey drawKeys[nDrawKeys] = {  //  Layout draw
 {XN,47,wh, '1',8, 63,K_END}, {X, 0,wh, 25 ,8, 64,K_DOWN},{X,0,wh, '3',8, 65,K_PGDN},{X,0,kW-2,kH*2, '|',3, 66,KP_ENT},
 {XN,56,kW*2,kH,'_',6, 10,K_INS},{-kW*2,0,wh,'.',6, 11,K_DEL}, //Ins Del
 };
-const uint8_t gGui=57, gMslow=94, gLoad=95,gSave=110,gDiv=46,
-	gRight=101,gLeft=99,gDown=64,gUp=82, gPgUp=65,gPgDn=83,gEnd=63,gHome=81, gAdd=84,gEnt=66,
-	gCtrl=128,gSh=94,gMul=47,gSub=29, gIns=10,gDel=100,gBckSp=91, gC=49,gV=44,gX=50;
+const uint8_t gGui=57, gMslow=94, gLoad=95,gSave=110,gDiv=46, kEsc=15,gAdd=84,gEnt=66,gEnt=37,
+	gRight=101,gLeft=99,gDown=64,gUp=82, gPgUp=65,gPgDn=83,gEnd=63,gHome=81,
+	gCtrl=128,gSh=94,gMul=47,gSub=29, gIns=10,gDel=100,gBckSp=91, gC=49,gV=44,gX=50,
+	gF1=139,gF2=103,gF3=13,gF6=131,gF7=127,gF8=109,gF9=19,gF10=111,gF11=75,gF12=74;
 
 #elif defined(CK7)   //  CK7/4  ------------------------------------------------
 #define  wf  fW,kF
@@ -172,9 +174,10 @@ const DrawKey drawKeys[nDrawKeys] = {  //  Layout draw
 {XN,47,wh, '1',8,123,K_END}, {X,0,wh, 25 ,8,115,K_DOWN},{X,0,wh, '3',8,125,K_PGDN},{X,0,kW,kH*2, 217,7,114,KP_ENT},
 {XN,56,kW*2,kH,'_',6,133,K_INS},{-kW*2,0,wh,'.',6,143,K_DEL}, //Ins Del
 };
-const uint8_t gGui=96, gMslow=101, gLoad=37,gSave=130,gDiv=25,
-	gRight=107,gLeft=105,gDown=115,gUp=79, gPgUp=89,gPgDn=125,gEnd=123,gHome=87, gAdd=78,gEnt=114,
-	gCtrl=55,gSh=101,gMul=35,gSub=17, gIns=133,gDel=97,gBckSp=100, gC=22,gV=26,gX=21;
+const uint8_t gGui=96, gMslow=101, gLoad=37,gSave=130,gDiv=25, gEsc=135,gAdd=78,gEnt=114,gEnt2=28,
+	gRight=107,gLeft=105,gDown=115,gUp=79, gPgUp=89,gPgDn=125,gEnd=123,gHome=87,
+	gCtrl=55,gSh=101,gMul=35,gSub=17, gIns=133,gDel=97,gBckSp=100, gC=22,gV=26,gX=21,
+	gF1=57,gF2=58,gF3=94,gF6=139,gF7=95,gF8=59,gF9=64,gF10=46,gF11=136,gF12=10;
 #endif
 #undef wf
 #undef wh

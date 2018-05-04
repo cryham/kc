@@ -24,7 +24,7 @@ int8_t Gui::KeysMap()
 
 	if (moveCur)  // move cursor
 	{
-		if (kBack || kMul)
+		if (kAdd || kBckSp || kMul)
 		{	//  set if key exists in matrix
 			uint8_t sc = drawKeys[drawId].sc;
 			if (sc < ScanKeys && sc != NO)
@@ -83,7 +83,7 @@ int8_t Gui::KeysMap()
 
 	if (pickCode)  // pick code  ----
 	{
-		if (kBack)
+		if (kAdd || kBckSp)
 		{	//  apply in kc
 			if (scId != NO && scId < kc.set.nkeys() && nLay < KC_MaxLayers)
 				kc.set.key[nLay][scId] = keyCode;

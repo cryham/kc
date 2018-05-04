@@ -22,7 +22,7 @@ void Games::Checks()
 int Games::KeyPress(int8_t& mlevel)
 {
 	//  global
-	if (g->kBack) // || g->kEsc)
+	if (g->kAdd || g->kBckSp)
 	{
 		if (gui==2)  gui=0;  // off options
 		else
@@ -112,7 +112,7 @@ int Games::KeyPress(int8_t& mlevel)
 
 	//  ---  game  ---
 	
-	if (g->kEnt)  // new
+	if (g->kEnt || g->kEnt2)  // new
 		NewGame();
 
 	if (ended)  return 0;

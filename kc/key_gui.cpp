@@ -23,24 +23,36 @@ void Gui::KeyPress()
 	uint16_t dt = ti - oldti_kr;
 	oldti_kr = ti;
 
-	//  update keys press
+	//  update keys press  _k_
 	kRight= kr(gRight,dt) - kr(gLeft,dt);
 	kUp   = kr(gDown,dt) - kr(gUp,dt);  kDnH = KeyH(gDown);
 	kPgUp = kr(gPgDn,dt) - kr(gPgUp,dt);
 	kEnd  = kr(gEnd,dt) - kr(gHome,dt);
 
-	kBack = Key(gAdd);  kEnt = Key(gEnt);
-	kCtrl = KeyH(gCtrl); kSh  = KeyH(gSh);
+	kAdd = Key(gAdd);  kEnt = Key(gEnt);  kEnt2 = Key(gEnt2);
+	kCtrl = KeyH(gCtrl); kSh  = KeyH(gSh);  kEsc = Key(gEsc);
 	kMul  = Key(gMul);  kSub = Key(gSub);  kDiv = Key(gDiv);
 	//  edit seq
 	kIns = Key(gIns);   kDel = kr(gDel,dt);  kBckSp = kr(gBckSp,dt);
 	kCopy = Key(gC);  kPaste = Key(gV);  kSwap = Key(gX);
 	kLoad = Key(gLoad);  kSave = Key(gSave);
 
+	kF1=Key(gF1); kF2=Key(gF2); kF3=Key(gF3); kF6=Key(gF6); kF7=Key(gF7);
+	kF8=Key(gF8); kF9=Key(gF9); kF10=Key(gF10); kF11=Key(gF11); kF12=Key(gF12);
 
-	//  todo quick access keys
-	//  F1 help, F2, F8,F9 ..
-	//SetScreen();
+
+	//  quick access keys
+	if (kEsc)  SetScreen(ST_Main0);
+	if (kF1)  SetScreen(ST_Map);
+	if (kF2)  SetScreen(ST_Seqs);
+	//if (kF3)  SetScreen(ST_Test);
+	if (kF6)  SetScreen(ST_Test2+T_Pressed);
+	if (kF7)  SetScreen(ST_Test2+T_Layout);
+	if (kF8)  SetScreen(ST_Setup);
+	if (kF9)  SetScreen(ST_Displ);
+	//if (kF10)  SetScreen(ST_Displ);
+	if (kF11)  SetScreen(ST_Help);
+	if (kF12)  SetScreen(ST_Demos2+D_Plasma);
 
 
 	//  Game  ------
@@ -165,7 +177,7 @@ void Gui::KeyPress()
 				iRam = RangeAdd(iRam, kRight, 0, 2);  break;
 			}	break;
 		}
-		if (kBack)  --mlevel;
+		if (kAdd || kBckSp)  --mlevel;
 
 		if (kSave)  Save();
 		if (kLoad)  Load(kCtrl);
@@ -189,7 +201,7 @@ void Gui::KeyPress()
 
 
 	//  Add+  <back global
-	if (kBack && mlevel > 0)  --mlevel;
+	if ((kAdd || kBckSp) && mlevel > 0)  --mlevel;
 
 	if (mlevel == 0)  //  main menu
 	{
@@ -237,7 +249,7 @@ void Gui::KeyPress()
 	{
 		if (kUp || kPgUp)
 			hpage = RangeAdd(hpage, kUp+kPgUp, 0,HAll-1, 1);
-		if (kRight < 0 || kBack)
+		if (kRight < 0 || kAdd || kBckSp)
 			mlevel = 0;  // <back
 		return;
 	}
