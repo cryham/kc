@@ -9,10 +9,11 @@ TARGET = main
 
 #  configurable options  + + +
 #************************************************************************
+OPTIONS = -DF_CPU=120000000  # CK7/4
+#OPTIONS = -DF_CPU=144000000  # CK6/3
+
 # usb_desc.h : USB_HID  USB_KEYBOARDONLY 
-#OPTIONS = -DF_CPU=72000000 -USB_KEYBOARDONLY -DLAYOUT_US_ENGLISH -DUSING_MAKEFILE
-OPTIONS = -DF_CPU=120000000 -DUSB_HID -DLAYOUT_US_ENGLISH -DUSING_MAKEFILE
-#OPTIONS = -DF_CPU=144000000 -DUSB_HID -DLAYOUT_US_ENGLISH -DUSING_MAKEFILE
+OPTIONS += -DUSB_HID -DLAYOUT_US_ENGLISH -DUSING_MAKEFILE
 
 # options needed by many Arduino libraries to configure for Teensy 3.x
 OPTIONS += -D__$(MCU)__ -DARDUINO=10805 -DTEENSYDUINO=141
@@ -23,7 +24,7 @@ OPTIONS += -D__$(MCU)__ -DARDUINO=10805 -DTEENSYDUINO=141
 # cygwin64
 COMPILERPATH ?= /usr/local/bin
 
-SRCDIR = source
+SRCDIR = t3
 SRCLIB = lib
 SRCKC = kc
 
