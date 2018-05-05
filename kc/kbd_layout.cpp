@@ -104,7 +104,7 @@ const DrawKey drawKeys[nDrawKeys] = {  //  Layout draw
  {XR,0,wh, 's',7,120,K_RSHIFT}, // 12 up  120 end
 
  //modif:  L Ctrl, L Gui, L Alt, space, R Alt, App,K_Ss, R Gui, R Ctrl
-{ 0,56,11,kH, 'c',4,128,K_LCTRL},{-11,0,7,kH,  9 ,4,106,K_LGUI},{-7,0,7,kH,  '\\',4, 14,K_SLASH},
+{ 0,56,11,kH, 'c',4,128,K_LCTRL},{-11,0,7,kH,  9 ,4,106,K_LGUI},{-7,0,7,kH,  '\\',4, 14,K_NON_US_NUM},
 {-7, 0,11,kH, 'a',4,  3,K_LALT}, {-11,0,34,kH,' ',6,  9,K_SPACE}, //Space
 {-34,0, 9,kH, 'a',5, 21,K_RALT}, // 23 menu 136 ins 135 del  30 ri 27 dn  28 le
 {-9, 0, 8,kH,  9 ,6, 23,K_RGUI}, {-8,0, 8,kH,254,5,136,K_MENU},{-8, 0,7,kH,'c',5,135,K_RCTRL}, //R Ct 12x

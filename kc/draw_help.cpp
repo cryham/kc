@@ -146,7 +146,7 @@ void Gui::DrawHelp()
 		d->println("\x1B,\x1A \x18,\x19  Move x,y");
 		d->moveCursor(0,4);
 		d->println("Button:");
-		d->println("Home click  End double");
+		d->println("Home click  End  double");
 		d->println("PgDn press  PgUp release");
 		d->moveCursor(0,4);
 		d->println("/,*  Wheel move horiz,vert");

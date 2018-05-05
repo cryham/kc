@@ -29,7 +29,7 @@ KC_Main::KC_Main()
 void KC_Setup::Clear()
 {
 	//  header  ver
-	h1='k';  h2='c';  ver = 2;  //+ up on changes
+	h1 ='k';  h2 = 'c';  ver = 3;  //+ up on changes
 
 	//  default  matrix
 	rows = 8;  cols = 18;  scanKeys = rows * cols;
@@ -80,12 +80,22 @@ void KC_Setup::InitCK()
 		#ifdef CK1
 				 if (dk.code == K_INS)	 add(K_Layer1, 0);
 			else if (dk.code == K_SPACE) add(K_Layer2, 0);
-		#else
+		#elif defined(CK6)  //3 new
+				 if (dk.code == K_F14)	add(K_Layer2, 0);
+			else if (dk.code == K_CAPS)	add(K_Layer2, 0);
+			else if (dk.code == K_F15)	add(K_Layer3, 0);
+			else if (dk.code == K_NON_US_NUM)  add(K_Layer1, 0);
+		#elif defined(CK7)  //4 old
 				 if (dk.code == K_MENU)	add(K_Layer1, 0);
 			else if (dk.code == K_CAPS)	add(K_Layer2, 0);
 		#endif
 			else if (dk.code == K_1)	add(K_Seq0, 2);
 			else if (dk.code == K_Q)	add(K_S1, 2);
+			// funct
+			else if (dk.code == K_MINUS)	add(K_Fun1, 2);
+			else if (dk.code == K_EQUAL)	add(K_Fun2, 2);
+			else if (dk.code == K_RSHIFT)	add(K_Fun0, 2);
+			else if (dk.code == K_F12)	add(K_Fun4, 2);
 			else  // mouse
 			if (dk.code == K_UP)    add(KM_Up, 2);  else
 			if (dk.code == K_DOWN)  add(KM_Down, 2);  else

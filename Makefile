@@ -9,8 +9,8 @@ TARGET = main
 
 #  configurable options  + + +
 #************************************************************************
-OPTIONS = -DF_CPU=120000000  # CK7/4
-#OPTIONS = -DF_CPU=144000000  # CK6/3
+#OPTIONS = -DF_CPU=120000000  # CK7/4
+OPTIONS = -DF_CPU=144000000  # CK6/3
 
 # usb_desc.h : USB_HID  USB_KEYBOARDONLY 
 OPTIONS += -DUSB_HID -DLAYOUT_US_ENGLISH -DUSING_MAKEFILE
@@ -24,10 +24,12 @@ OPTIONS += -D__$(MCU)__ -DARDUINO=10805 -DTEENSYDUINO=141
 # cygwin64
 COMPILERPATH ?= /usr/local/bin
 
+# source subdirs 3
 SRCDIR = t3
 SRCLIB = lib
 SRCKC = kc
 
+# output dirs
 OBJDIR = obj
 BINDIR = bin
 PROJECT = main
@@ -101,7 +103,7 @@ COLOR_OUTPUT = 2>&1 |                                   \
 #  BUILD
 #************************************************************************
 
-all: $(BINDIR)/$(PROJECT).hex
+kc: $(BINDIR)/$(PROJECT).hex
 
 # C compilation
 $(OBJDIR)/%.o : $(SRCKC)/%.c

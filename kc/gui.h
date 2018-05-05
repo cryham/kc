@@ -35,7 +35,7 @@ struct Gui
 	int8_t KeysSeq(), KeysMap();
 	int PressKey(int8_t& var);
 
-
+	//  start
 	void SetScreen(int8_t start);
 	const char* StrScreen(int8_t s);
 
@@ -54,7 +54,7 @@ struct Gui
 		uint16_t bckClr, int16_t yadd=10, int16_t nextCol=-1, int16_t numGap=-1);
 
 
-	//  vars
+	//  vars  ---
 	int8_t kbdSend = 0; // 1 send to usb  0 in menu
 	int8_t mlevel = 0;  // 0 main, 1 level1, 2 level2
 
@@ -62,12 +62,10 @@ struct Gui
 	int8_t ym1[M_All];  // 1 y cursor for all main menu entries
 	int8_t yy = 0;      // = ym1[ym]  level1 y cursor
 
-
-	//  time
-	uint32_t oldti = 0;  // demo time ms
-	uint32_t oldti_kr = 0;
+	//  time, key repeat
+	uint32_t oldti=0, oldti_kr=0;
 	int8_t kr(uint8_t sc, uint16_t dt);
-	int8_t iRam = 0;
+	int8_t iRam = 0;  // ram info
 
 	//  help
 	int8_t hpage = 0;
@@ -88,10 +86,10 @@ struct Gui
 		pressKey=0, moveCur=0, pickCode=0, // edit operations
 		keyGroup=0, grpFilt=0;  // group filter
 
-
 	//  level 2 y cursors  - -
 	int8_t ym2Scan = 0, ym2Keyb = 0, ym2Mouse = 0, pressGui = 0;  // Setup
 	int8_t ym2Disp = 0, pgDisp = 0;  // Display
+
 	const static uint8_t Disp_All = 2;
 	const static uint8_t DispPages[Disp_All], ScanPages[S_All-1];
 
@@ -102,16 +100,16 @@ struct Gui
 
 	//  Sequences  - - - -
 	int8_t edit = 0;   // seq 0 view / 1 edit
-	int8_t edins = 0;  // 1 ins 0 overwrite
-	int8_t slot, page, edpos;  // edit vars
+	int8_t edins = 1;  // 1 ins 0 overwrite
+	int8_t copyId = -1;  // copy/swap from
+	int8_t slot=0, page=0, edpos=0;  // edit vars
 	void slotMax(),slotMin(),pageInc(),pageDec();
 	int seqId()
 	{	return slot + page*iPage;  }
-	int8_t copyId = -1;  // copy/swap from
 
 	int8_t tBlnk = 0;
-	const int8_t iPage = 10, cBlnk = 25;  // par-
 	int16_t tInfo=0;  int8_t infType=0;  // info text vars
+	const int8_t iPage = 10, cBlnk = 25;  // par-
 
 	//  const from grp
 	uint8_t grpStart[grpMax], grpEnd[grpMax];
