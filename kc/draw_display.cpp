@@ -54,7 +54,7 @@ void Gui::DrawDisplay()
 		case 0:
 			sprintf(a,"Brightness: %d %%", par.brightness);  break;
 		case 1:
-			sprintf(a,"Off bright: %d %%", par.brightOff);  break;
+			sprintf(a,"Off bright: %d %%", par.brightOff);  h = 2;  break;
 		case 2:
 			sprintf(a,"Start screen: %s", StrScreen(par.startScreen));  break;
 		}
@@ -85,6 +85,8 @@ void Gui::DrawDisplay()
 			sprintf(a,"Ram info: %d", iRam);  h = 2;  break;
 		case 3:
 			sprintf(a,"Frames per sec: %d", demos.iFps);  break;
+		case 4:
+			sprintf(a,"Quick keys: %d", par.quickKeys);  break;
 		}
 		d->print(a);  y += h+8;
 	}	break;

@@ -157,7 +157,7 @@ void Gui::DrawSetup()
 			case 4:
 				sprintf(a,"Accel: %3d", par.mkWhAccel);  break;
 			}
-			d->print(a);  y += 8;
+			d->print(a);  y += 8+1;
 		}
 
 		///  dbg  mouse accel  --
@@ -176,7 +176,7 @@ void Gui::DrawSetup()
 		d->setCursor(x1,y);  sprintf(a,"%d", my_delay);  d->print(a);
 		d->setCursor(x2,y);  sprintf(a,"%d", my_speed);  d->print(a);  y += 8+2;
 
-		const static char ch[3]={'-',' ','+'};
+		const static char ch[3]={'-',' ','+'};  // input status
 		#define Ch(v)  ch[max(0, min(2, v))]
 		d->setCursor(0, H-1-8);  sprintf(a,"m x%cy%c wh x%cy%c bt %d",
 			Ch(Mouse_input_x/8+1), Ch(Mouse_input_y/8+1),

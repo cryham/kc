@@ -6,7 +6,7 @@
 #include "kc_data.h"
 #include "periodic.h"
 
-const uint8_t Gui::DispPages[Gui::Disp_All] = {2,3};
+const uint8_t Gui::DispPages[Gui::Disp_All] = {2,4};
 const uint8_t Gui::ScanPages[S_All-1] = {2,3,4};
 
 
@@ -42,8 +42,9 @@ void Gui::KeyPress()
 	kF8=Key(gF8); kF9=Key(gF9); kF10=Key(gF10); kF11=Key(gF11); kF12=Key(gF12);
 
 
-	//  quick access keys, todo off par
-	if (par.quickKeys && !(pressGui || pressKey ))
+	//  quick access keys
+	if (par.quickKeys && !(pressGui || pressKey ||
+		(mlevel == 2 && ym == M_Testing)))
 	{
 	if (kEsc)  SetScreen(ST_Main0);
 	if (kF1)  SetScreen(ST_Map);
@@ -124,7 +125,7 @@ void Gui::KeyPress()
 			{
 				int ii = PressKey(pressGui);
 				if (ii != -1)
-				switch (ym2Keyb)
+				switch (ym2Mouse)
 				{
 				case 2:  par.keyMouseSlow = ii;  pressGui = 0;  break;
 				}
@@ -188,6 +189,8 @@ void Gui::KeyPress()
 				iRam = RangeAdd(iRam, kRight, 0, 2);  break;
 			case 3:  // fps
 				demos.iFps = RangeAdd(demos.iFps, kRight, 0, 2);  break;
+			case 4:
+				par.quickKeys = RangeAdd(par.quickKeys, kRight, 0, 2);  break;
 			}	break;
 		}
 		if (kAdd || kBckSp)  --mlevel;

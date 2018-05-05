@@ -132,16 +132,16 @@ const static int spd_max = 48,
 	delay_max[2] = { 10000,20000 },
 	delay_mul[2] = { 20000,40000 };
 
-//  held mouse keys
+//  held mouse keys --
 volatile int8_t
 	Mouse_input_x = 0, Mouse_input_y = 0,
 	Mouse_wheel_x = 0, Mouse_wheel_y = 0, Mouse_shift = 0;
-uint32_t wax = 200000, way = 200000;
-const static uint32_t  // wheel dt max, min, dec
-	wmin = 30000;
+//  wheel dt max, min accel
+uint32_t wdtx = 200000, wdty = 200000;
+const static uint32_t wmin = 20000;
 
 
-//  mouse idle update accel, speed
+//  mouse idle update  accel, speed
 //..............................................................................
 void usb_mouse_idle()
 {
@@ -188,12 +188,12 @@ void usb_mouse_idle()
 	//  wheel, repeat
 	int8_t iwx = Mouse_wheel_x, iwy = Mouse_wheel_y;
 	int8_t swx = 0, swy = 0;
-	uint32_t wmax = par.mkWhSpeed/100.f * 100000, wdec = par.mkWhAccel/100.f * 10000;  // kc
+	int wmax = (260-par.mkWhSpeed)/100.f * 100000, wdec = par.mkWhAccel/100.f * 10000;  // kc
 
-	int8_t wxon = iwx && !old_iwx;  if (wxon)  wax = wmax;
-	int8_t wyon = iwy && !old_iwy;  if (wyon)  way = wmax;
-	if (wxon || (iwx && ti - old_ti_wx > wax)){  swx = iwx;  old_ti_wx = ti;  wax -= wdec;  if (wax < wmin) wax = wmin; }
-	if (wyon || (iwy && ti - old_ti_wy > way)){  swy = iwy;  old_ti_wy = ti;  way -= wdec;  if (way < wmin) way = wmin; }
+	int8_t wxon = iwx && !old_iwx;  if (wxon)  wdtx = wmax;
+	int8_t wyon = iwy && !old_iwy;  if (wyon)  wdty = wmax;
+	if (wxon || (iwx && ti - old_ti_wx > wdtx)){  swx = iwx;  old_ti_wx = ti;  wdtx -= wdec;  if (wdtx < wmin) wdtx = wmin; }
+	if (wyon || (iwy && ti - old_ti_wy > wdty)){  swy = iwy;  old_ti_wy = ti;  wdty -= wdec;  if (wdty < wmin) wdty = wmin; }
 	old_iwx = iwx;  old_iwy = iwy;
 
 

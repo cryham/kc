@@ -78,25 +78,25 @@ void KC_Setup::InitCK()
 
 		#if 1  //  override  --*
 		#ifdef CK1
-				 if (dk.code == K_INS)	 add(K_Layer1, 0);
-			else if (dk.code == K_SPACE) add(K_Layer2, 0);
+			if (dk.code == K_INS)	 add(K_Layer1, 0);
+			if (dk.code == K_SPACE) add(K_Layer2, 0);  else 
 		#elif defined(CK6)  //3 new
-				 if (dk.code == K_F14)	add(K_Layer2, 0);
-			else if (dk.code == K_CAPS)	add(K_Layer2, 0);
-			else if (dk.code == K_F15)	add(K_Layer3, 0);
-			else if (dk.code == K_NON_US_NUM)  add(K_Layer1, 0);
+			if (dk.code == K_F14)	add(K_Layer2, 0);
+			if (dk.code == K_CAPS)	add(K_Layer2, 0);  else 
+			if (dk.code == K_F15)	add(K_Layer3, 0);  else 
+			if (dk.code == K_NON_US_NUM)  add(K_Layer1, 0);  else 
 		#elif defined(CK7)  //4 old
 				 if (dk.code == K_MENU)	add(K_Layer1, 0);
-			else if (dk.code == K_CAPS)	add(K_Layer2, 0);
+			if (dk.code == K_CAPS)	add(K_Layer2, 0);  else 
 		#endif
-			else if (dk.code == K_1)	add(K_Seq0, 2);
-			else if (dk.code == K_Q)	add(K_S1, 2);
-			// funct
-			else if (dk.code == K_MINUS)	add(K_Fun1, 2);
-			else if (dk.code == K_EQUAL)	add(K_Fun2, 2);
-			else if (dk.code == K_RSHIFT)	add(K_Fun0, 2);
-			else if (dk.code == K_F12)	add(K_Fun4, 2);
-			else  // mouse
+			if (dk.code == K_1)	add(K_Seq0, 2);  else 
+			if (dk.code == K_Q)	add(K_S1, 2);  else
+			//  funct
+			if (dk.code == K_MINUS)	add(K_Fun1, 2);  else
+			if (dk.code == K_EQUAL)	add(K_Fun2, 2);  else
+			if (dk.code == K_RSHIFT)	add(K_Fun0, 2);  else
+			if (dk.code == K_F12)	add(K_Fun3, 2);  else
+			//  mouse
 			if (dk.code == K_UP)    add(KM_Up, 2);  else
 			if (dk.code == K_DOWN)  add(KM_Down, 2);  else
 			if (dk.code == K_LEFT)  add(KM_Left, 2);  else
@@ -105,7 +105,15 @@ void KC_Setup::InitCK()
 			if (dk.code == K_PGUP)  add(KM_RMB, 2);  else
 			if (dk.code == K_DEL)   add(KM_MMB, 2);  else
 			if (dk.code == K_END)   add(KM_WhlUp, 2);  else
-			if (dk.code == K_PGDN)  add(KM_WhlDown, 2);
+			if (dk.code == K_PGDN)  add(KM_WhlDown, 2);  else
+			//  player
+			if (dk.code == K_Q)   add(K_F14, 1);  else
+			if (dk.code == K_W)   add(K_F15, 1);  else
+			if (dk.code == K_A)   add(KM_PREV_TRACK, 1);  else
+			if (dk.code == K_S)   add(KM_NEXT_TRACK, 1);  else
+			if (dk.code == K_Z)   add(K_F13, 1);  else
+			if (dk.code == K_X)   add(KM_PLAY_PAUSE, 1);  else
+			if (dk.code == K_C)   add(KM_STOP, 1);
 		#endif
 			#undef add
 	}	}
