@@ -23,9 +23,10 @@ tPicture tp {buffer, ww,hh, ww*hh, 16, RLE_no};
 
 #define CS1 10
 #define DC1  9
+#define RST 26
 
-TFT_ST7735 tft = TFT_ST7735(CS1, DC1);
-
+TFT_ST7735 tft = TFT_ST7735(CS1, DC1, RST);
+//TFT_ST7735 tft = TFT_ST7735(CS1, DC1);
 
 
 uint16_t* Ada4_ST7735::getBuffer()
@@ -87,14 +88,13 @@ void Ada4_ST7735::print(char c)
 	write(c);
 }
 
-static char ch[32];
 void Ada4_ST7735::println(int i)
 {
+	char ch[32];
 	sprintf(ch,"%d",i);
 	print(ch);
 	cursor_x = 0;
 	cursor_y += 8;
 }
-
 
 //void Ada4_ST7735::drawFastHLine(int16_t x, int16_t y, int16_t w, uint16_t color)
