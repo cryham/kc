@@ -107,26 +107,23 @@ static uint8_t transmit_previous_timeout=0;
 #define TX_TIMEOUT (TX_TIMEOUT_MSEC * 262)
 #endif
 
-// ----- Functions -----
-
-// Process pending mouse commands
-// XXX Missing mouse movement and wheels
-//     Proper support will require KLL generation of the USB descriptors
-//     Similar support will be required for joystick control
-
-///  mouse move speed vars
-uint32_t old_ti = 0, old_ti_mx = 0, old_ti_my = 0, ti = 0, time = 0;
-int mx_delay = 10000, my_delay = 10000,
-	mx_move = 0, my_move = 0,
-	mx_speed = 1, my_speed = 1;
-float mx_holdtime = 0.f, my_holdtime = 0.f;
-
 #ifndef min
 #define min(a,b) ((a)<(b)?(a):(b))
 #define max(a,b) ((a)>(b)?(a):(b))
 #endif
 
-///  accel params
+//  var
+//  mouse move speed vars  ---
+uint32_t old_ti = 0, time = 0,
+	old_ti_mx=0, old_ti_my=0,
+	old_ti_wx=0, old_ti_wy=0;
+int8_t old_iwx=0, old_iwy=0;
+
+float mx_holdtime = 0.f, my_holdtime = 0.f;
+int mx_delay=10000, my_delay=10000;  // for status
+int mx_speed=1, my_speed=1;
+
+//  accel params --
 const static float
 	decay = 1.0 - 0.02, hold_max = 2.0,
 	pow_fast = 0.5, pow_slow = 2,
@@ -135,12 +132,13 @@ const static int spd_max = 48,
 	delay_max[2] = { 10000,20000 },
 	delay_mul[2] = { 20000,40000 };
 
-// Currently pressed mouse buttons, bitmask, 0 represents no buttons pressed
-volatile uint16_t USBMouse_Buttons = 0;
-
-// Relative mouse axis movement, stores pending movement
-volatile int8_t Mouse_input_x = 0, Mouse_input_y = 0,
-				Mouse_wheel_x = 0, Mouse_wheel_y = 0, Mouse_shift = 0;
+//  held mouse keys
+volatile int8_t
+	Mouse_input_x = 0, Mouse_input_y = 0,
+	Mouse_wheel_x = 0, Mouse_wheel_y = 0, Mouse_shift = 0;
+uint32_t wax = 200000, way = 200000;
+const static uint32_t  // wheel dt max, min, dec
+	wmin = 30000;
 
 
 //  mouse idle update accel, speed
@@ -149,16 +147,15 @@ void usb_mouse_idle()
 {
 	int shift = Mouse_shift;
 	//  update
-	ti = micros();  uint32_t dt = ti - old_ti;  old_ti = ti;
-	mx_move = Mouse_input_x ? 1 : 0;
-	my_move = Mouse_input_y ? 1 : 0;
+	uint32_t ti = micros(), dt = ti - old_ti;  old_ti = ti;
+	int mx_move = Mouse_input_x ? 1 : 0;
+	int my_move = Mouse_input_y ? 1 : 0;
 
 	//  mouse send interval  par-
 	float htx = min(hold_max, mx_holdtime);
 	float hty = min(hold_max, my_holdtime);
 
-	const float s = par.mkSpeed/100.f;  // par
-	const float a = par.mkAccel/100.f;
+	const float s = par.mkSpeed/100.f, a = par.mkAccel/100.f;  // kc
 
 	mx_delay = a * delay_max[shift] - pow(htx, pow_fast) * delay_mul[shift];  mx_delay = max(0, mx_delay);
 	my_delay = a * delay_max[shift] - pow(hty, pow_fast) * delay_mul[shift];  my_delay = max(0, my_delay);
@@ -180,21 +177,33 @@ void usb_mouse_idle()
 		if (!my_move || shift)  my_holdtime *= decay;
 	}
 
-	///  mouse send
+	//  mouse send, int
 	int mx_send = mx_speed>1 || (mx_move && ti - old_ti_mx > mx_delay) ? 1 : 0;
 	int my_send = my_speed>1 || (my_move && ti - old_ti_my > my_delay) ? 1 : 0;
 
-	//usb_mouse_buttons_state = USBMouse_Buttons;
 	int8_t x = mx_send ? Mouse_input_x * (int16_t)(mx_speed) / 8 : 0;
 	int8_t y = my_send ? Mouse_input_y * (int16_t)(my_speed) / 8 : 0;
 
-	//  send
-	if (x || y || usb_mouse_buttons_update || Mouse_wheel_x || Mouse_wheel_y)
-		usb_mouse_move(x, y, -Mouse_wheel_y, Mouse_wheel_x);
+
+	//  wheel, repeat
+	int8_t iwx = Mouse_wheel_x, iwy = Mouse_wheel_y;
+	int8_t swx = 0, swy = 0;
+	uint32_t wmax = par.mkWhSpeed/100.f * 100000, wdec = par.mkWhAccel/100.f * 10000;  // kc
+
+	int8_t wxon = iwx && !old_iwx;  if (wxon)  wax = wmax;
+	int8_t wyon = iwy && !old_iwy;  if (wyon)  way = wmax;
+	if (wxon || (iwx && ti - old_ti_wx > wax)){  swx = iwx;  old_ti_wx = ti;  wax -= wdec;  if (wax < wmin) wax = wmin; }
+	if (wyon || (iwy && ti - old_ti_wy > way)){  swy = iwy;  old_ti_wy = ti;  way -= wdec;  if (way < wmin) way = wmin; }
+	old_iwx = iwx;  old_iwy = iwy;
+
+
+	//  send  ---
+	if (x || y || usb_mouse_buttons_update || swx || swy)
+		usb_mouse_move(x, y, -swy, swx);
+
 
 	//  clear status and state
 	usb_mouse_buttons_update = 0;
-	Mouse_wheel_x = 0;  Mouse_wheel_y = 0;
 
 	if (mx_send) old_ti_mx = ti;
 	if (my_send) old_ti_my = ti;

@@ -38,14 +38,18 @@ struct KC_Params
 
 	//  gui key auto repeat, ms
 	uint8_t krDelay, krRepeat;
-	uint8_t mkSpeed, mkAccel;
+	uint8_t mkSpeed, mkAccel;  // mouse keys
 
 	//* sequence, default keys dt
 	uint8_t dtSeqDef;
+
 	//  default layer 0, sequence edit layer 2
 	uint8_t defLayer, editLayer;
 	uint8_t keyGui;  // scId for gui toggle
+
 	uint8_t keyMouseSlow;  // mouse shift scId
+	uint8_t mkWhSpeed, mkWhAccel;  // mouse wheel
+	uint8_t quickKeys;  // off
 
 	//  todo par, low pri
 	//* start demo screen

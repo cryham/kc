@@ -25,6 +25,8 @@ void ParInit()
 	par.verCounter = 0;
 	par.krDelay = 250/5;  par.krRepeat = 80/5;  // ms
 	par.mkSpeed = 100;  par.mkAccel = 100;
+	par.mkWhSpeed = 100;  par.mkWhAccel = 100;
+	par.quickKeys = 2;
 
 	par.dtSeqDef = 20;
 	par.defLayer = 0;  par.editLayer = 2;
@@ -80,7 +82,7 @@ void KC_Main::Load()
 	//  header
 	set.h1 = Erd(a);  if (set.h1 != 'k') {  err=E_H1;  return;  }
 	set.h2 = Erd(a);  if (set.h2 != 'c') {  err=E_H2;  return;  }
-	set.ver = Erd(a);  if (set.ver > 2) {  err=E_ver;  return;  }
+	set.ver = Erd(a);  if (set.ver > 9) {  err=E_ver;  return;  }
 
 	//  matrix
 	set.rows = Erd(a);  if (set.rows > KC_MaxRows) {  err=E_rows;  return;  }
@@ -104,7 +106,10 @@ void KC_Main::Load()
 	//  old versions  --
 	if (set.ver == 2)
 	{	par.defLayer = 0;  par.editLayer = 2;
-		par.keyGui = gGui;  par.keyMouseSlow = gMslow;  }
+		par.keyGui = gGui;  par.keyMouseSlow = gMslow;
+		par.mkWhSpeed = 100;  par.mkWhAccel = 100;
+		par.quickKeys = 2;
+	}
 
 
 	//  Keys  ---
@@ -153,6 +158,7 @@ void KC_Main::Save()
 	int a = EOfs, i, n;
 
 	//  header
+	set.h1 = 'k';  set.h2 = 'c';  set.ver = 3;  // cur
 	Ewr(a, set.h1);  Ewr(a, set.h2);  Ewr(a, set.ver);
 
 	//  matrix

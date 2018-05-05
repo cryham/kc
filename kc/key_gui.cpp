@@ -7,7 +7,7 @@
 #include "periodic.h"
 
 const uint8_t Gui::DispPages[Gui::Disp_All] = {2,3};
-const uint8_t Gui::ScanPages[S_All-1] = {2,3,2};
+const uint8_t Gui::ScanPages[S_All-1] = {2,3,4};
 
 
 //  Key press
@@ -42,7 +42,9 @@ void Gui::KeyPress()
 	kF8=Key(gF8); kF9=Key(gF9); kF10=Key(gF10); kF11=Key(gF11); kF12=Key(gF12);
 
 
-	//  quick access keys, todo rebindable-
+	//  quick access keys, todo off par
+	if (par.quickKeys && !(pressGui || pressKey ))
+	{
 	if (kEsc)  SetScreen(ST_Main0);
 	if (kF1)  SetScreen(ST_Map);
 	if (kF2)  SetScreen(ST_Seqs);
@@ -54,7 +56,7 @@ void Gui::KeyPress()
 	//if (kF10)  SetScreen(ST_Displ);
 	if (kF11)  SetScreen(ST_Help);
 	if (kF12)  SetScreen(ST_Demos2+D_Plasma);
-
+	}
 
 	//  Game  ------
 	#ifdef GAME
@@ -67,6 +69,8 @@ void Gui::KeyPress()
 		return;
 	}
 	#endif
+
+	int sp = (kCtrl ? 10 : kSh ? 1 : 2);  // mul
 
 
 	//  Setup Scan
@@ -106,7 +110,7 @@ void Gui::KeyPress()
 			switch (ym2Keyb)
 			{
 			case 0:
-				par.dtSeqDef = RangeAdd(par.dtSeqDef, kRight * (kCtrl ? 10 : 1), 0, 250);  break;
+				par.dtSeqDef = RangeAdd(par.dtSeqDef, kRight * sp, 0, 250);  break;
 			case 1:
 				par.defLayer = RangeAdd(par.defLayer, kRight, 0, KC_MaxLayers-1);  break;
 			case 2:
@@ -131,11 +135,15 @@ void Gui::KeyPress()
 			switch (ym2Mouse)
 			{
 			case 0:
-				par.mkSpeed = RangeAdd(par.mkSpeed, kRight * (kCtrl ? 10 : 1), 0, 250);  break;
+				par.mkSpeed = RangeAdd(par.mkSpeed, kRight * sp, 0, 250);  break;
 			case 1:
-				par.mkAccel = RangeAdd(par.mkAccel, kRight * (kCtrl ? 10 : 1), 0, 250);  break;
+				par.mkAccel = RangeAdd(par.mkAccel, kRight * sp, 0, 250);  break;
 			case 2:
 				pressGui = 1;  break;
+			case 3:
+				par.mkWhSpeed = RangeAdd(par.mkWhSpeed, kRight * sp, 0, 250);  break;
+			case 4:
+				par.mkWhAccel = RangeAdd(par.mkWhAccel, kRight * sp, 0, 250);  break;
 			}	break;
 
 		//case S_Version:
@@ -162,10 +170,10 @@ void Gui::KeyPress()
 			switch (ym2Disp)
 			{
 			case 0:
-				par.brightness = RangeAdd(par.brightness, kRight * (kCtrl ? 10 : 2), 0, 100);
+				par.brightness = RangeAdd(par.brightness, kRight * sp, 0, 100);
 				kc.setDac = 1;  break;
 			case 1:
-				par.brightOff = RangeAdd(par.brightOff, kRight * (kCtrl ? 10 : 2), 0, 100);  break;
+				par.brightOff = RangeAdd(par.brightOff, kRight * sp, 0, 100);  break;
 			case 2:
 				par.startScreen = RangeAdd(par.startScreen, kRight, 0, ST_ALL-1);  break;
 			}	break;
