@@ -11,7 +11,8 @@ TARGET = main
 #************************************************************************
 # usb_desc.h : USB_HID  USB_KEYBOARDONLY 
 #OPTIONS = -DF_CPU=72000000 -USB_KEYBOARDONLY -DLAYOUT_US_ENGLISH -DUSING_MAKEFILE
-OPTIONS = -DF_CPU=144000000 -DUSB_HID -DLAYOUT_US_ENGLISH -DUSING_MAKEFILE
+OPTIONS = -DF_CPU=120000000 -DUSB_HID -DLAYOUT_US_ENGLISH -DUSING_MAKEFILE
+#OPTIONS = -DF_CPU=144000000 -DUSB_HID -DLAYOUT_US_ENGLISH -DUSING_MAKEFILE
 
 # options needed by many Arduino libraries to configure for Teensy 3.x
 OPTIONS += -D__$(MCU)__ -DARDUINO=10805 -DTEENSYDUINO=141
@@ -23,13 +24,14 @@ OPTIONS += -D__$(MCU)__ -DARDUINO=10805 -DTEENSYDUINO=141
 COMPILERPATH ?= /usr/local/bin
 
 SRCDIR = source
+SRCLIB = lib
 SRCKC = kc
 
 OBJDIR = obj
 BINDIR = bin
 PROJECT = main
 
-INC = -I$(SRCDIR) -I$(SRCKC)
+INC = -I$(SRCDIR) -I$(SRCLIB) -I$(SRCKC)
 MCU_LD = $(SRCDIR)/$(LOWER_MCU).ld
 
 
@@ -60,8 +62,8 @@ OBJCOPY = @$(COMPILERPATH)/arm-none-eabi-objcopy
 SIZE = $(COMPILERPATH)/arm-none-eabi-size
 
 #  auto create lists of sources and objects
-C_FILES := $(wildcard $(SRCDIR)/*.c) $(wildcard $(SRCKC)/*.c)
-CPP_FILES := $(wildcard $(SRCDIR)/*.cpp) $(wildcard $(SRCKC)/*.cpp)
+C_FILES := $(wildcard $(SRCDIR)/*.c) $(wildcard $(SRCLIB)/*.c) $(wildcard $(SRCKC)/*.c)
+CPP_FILES := $(wildcard $(SRCDIR)/*.cpp) $(wildcard $(SRCLIB)/*.cpp) $(wildcard $(SRCKC)/*.cpp)
 OBJ_FILES := $(addprefix $(OBJDIR)/,$(notdir $(CPP_FILES:.cpp=.o))) $(addprefix $(OBJDIR)/,$(notdir $(C_FILES:.c=.o)))
 
 
@@ -104,12 +106,18 @@ all: $(BINDIR)/$(PROJECT).hex
 $(OBJDIR)/%.o : $(SRCKC)/%.c
 	@echo -e "$(CC_CLR)  CC\e[m" $<
 	$(CC) $(CFLAGS) $(INC) -c $< -o $@ $(COLOR_OUTPUT)
+$(OBJDIR)/%.o : $(SRCLIB)/%.c
+	@echo -e "$(CC_CLR)  CC\e[m" $<
+	$(CC) $(CFLAGS) $(INC) -c $< -o $@ $(COLOR_OUTPUT)
 $(OBJDIR)/%.o : $(SRCDIR)/%.c
 	@echo -e "$(CC_CLR)  CC\e[m" $<
 	$(CC) $(CFLAGS) $(INC) -c $< -o $@ $(COLOR_OUTPUT)
 
 # C++ compilation
 $(OBJDIR)/%.o : $(SRCKC)/%.cpp
+	@echo -e "$(CXX_CLR) CXX\e[m" $<
+	$(CXX) $(CXXFLAGS) $(INC) -c $< -o $@ $(COLOR_OUTPUT)
+$(OBJDIR)/%.o : $(SRCLIB)/%.cpp
 	@echo -e "$(CXX_CLR) CXX\e[m" $<
 	$(CXX) $(CXXFLAGS) $(INC) -c $< -o $@ $(COLOR_OUTPUT)
 $(OBJDIR)/%.o : $(SRCDIR)/%.cpp
