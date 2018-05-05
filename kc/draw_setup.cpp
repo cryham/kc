@@ -163,7 +163,7 @@ void Gui::DrawSetup()
 		///  dbg  mouse accel  --
 		const int16_t x0 = 0, x1 = W/3+6, x2 = 2*W/3+6;
 		y = H-1 - 2*8 - 2*(8+2);
-		d->setClr(14,18,22);
+		d->setClr(16,20,24);
 		d->setCursor(0, y);     d->print("hold");
 		d->setCursor(W/3, y);   d->print("delay");
 		d->setCursor(2*W/3, y); d->print("speed");  y+= 8+2;
