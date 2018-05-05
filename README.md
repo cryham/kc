@@ -14,12 +14,14 @@ Features:
 * In sequence commands - e.g. wait, change key delay, comment part, hide rest, and all mouse commands.
 * Visual keyboard - drawn on display with current mappings. Physical layout is done in cpp file.
 * Mouse keys - with move acceleration, also for wheel.
+
 Also:
 * Setup on EEPROM - Loading and saving full keyboard setup (parameters, mappings, sequences).
 * Anti-ghosting code - needed for foil keyboards without diodes.
 * Testing pages - showing pressed keys info, matrix ghosting, layer use, etc.
 * Keys list - for picking, with custom group colors and filtering.
 * Parameters - for Scan Setup, Mouse and Display, adjustable in menu.
+
 Lastly:
 * Many demos - with presets, e.g. Plasma, Wave, Fire, Polyhedrons 3D, etc.
 * Falling blocks game - with random generated blocks, many presets and custom options
