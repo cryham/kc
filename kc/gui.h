@@ -62,15 +62,16 @@ struct Gui
 	int8_t ym1[M_All];  // 1 y cursor for all main menu entries
 	int8_t yy = 0;      // = ym1[ym]  level1 y cursor
 
-	//  time
-	uint32_t oldti = 0, tdraw = 0;  // demo time ms
 
-	uint32_t oldti_kr;
+	//  time
+	uint32_t oldti = 0;  // demo time ms
+	uint32_t oldti_kr = 0;
 	int8_t kr(uint8_t sc, uint16_t dt);
 	int8_t iRam = 0;
 
+	//  help
 	int8_t hpage = 0;
-	const static int8_t HAll = 9;
+	const static int8_t HAll = 10;
 
 
 	//  keys pressed, some +-1  _k_
@@ -79,6 +80,7 @@ struct Gui
 	/*seq*/	kBckSp=0, kIns=0, kDel=0,  kCopy=0, kPaste=0, kSwap=0, /*F4,5*/kLoad=0, kSave=0,
 			kF1=0,kF2=0,kF3=0,kF6=0,kF7=0,kF8=0,kF9=0,kF10=0,kF11=0,kF12=0;
 
+
 	//  Mapping  - - - -
 	const int8_t yPosLay = 62;
 	int16_t keyCode=0, scId=0, drawId=-1, drawX=0,drawY=0;
@@ -86,15 +88,17 @@ struct Gui
 		pressKey=0, moveCur=0, pickCode=0, // edit operations
 		keyGroup=0, grpFilt=0;  // group filter
 
+
 	//  level 2 y cursors  - -
 	int8_t ym2Scan = 0, ym2Keyb = 0, ym2Mouse = 0, pressGui = 0;  // Setup
 	int8_t ym2Disp = 0, pgDisp = 0;  // Display
 	const static uint8_t Disp_All = 2;
-	const static uint8_t DispPages[Disp_All];
+	const static uint8_t DispPages[Disp_All], ScanPages[S_All-1];
 
 	//  util
 	int16_t RangeAdd(int16_t val, int16_t add, int16_t vmin, int16_t vmax, int8_t cycle=0);
 	void Save(), Load(int8_t reset);
+
 
 	//  Sequences  - - - -
 	int8_t edit = 0;   // seq 0 view / 1 edit
@@ -103,7 +107,7 @@ struct Gui
 	void slotMax(),slotMin(),pageInc(),pageDec();
 	int seqId()
 	{	return slot + page*iPage;  }
-	int8_t cpId = -1;  // copy/swap from
+	int8_t copyId = -1;  // copy/swap from
 
 	int8_t tBlnk = 0;
 	const int8_t iPage = 10, cBlnk = 25;  // par-

@@ -24,11 +24,10 @@ void Gui::Init(Ada4_ST7735* tft)
 //	ym1[M_Testing] = T_Pressed;
 	ym = M_Setup;
 	ym1[M_Setup] = S_Keyboard;
-	//SetScreen(ST_Map);
-	//SetScreen(ST_Seqs);
+	SetScreen(ST_Main0);
 
 	
-	oldti=0;  tdraw=0;
+	oldti=0;
 #ifdef DEMOS
 	demos.Init(d);
 #endif
@@ -63,16 +62,19 @@ void Gui::Init(Ada4_ST7735* tft)
 //  start screen  ---
 void Gui::SetScreen(int8_t s)
 {
-	if (s == ST_main0)
+	if (s == ST_Main0)
 	{	mlevel = 0;  ym = 0;  return;  }
 	else  mlevel = 1;
 
 	switch (s)
 	{
-	case ST_Test:  ym = M_Testing;  break;
 	case ST_Map:   ym = M_Mapping;  break;
 	case ST_Seqs:  ym = M_Sequences;  break;
+	case ST_Test:  ym = M_Testing;  break;
+
 	case ST_Displ: ym = M_Display;  break;
+	case ST_Setup: ym = M_Setup;  break;
+	case ST_Help:  ym = M_Help;  break;
 #ifdef DEMOS
 	case ST_Demos: ym = M_Demos;  break;
 	}
@@ -84,11 +86,14 @@ void Gui::SetScreen(int8_t s)
 #else
 	}
 #endif
-	if (s >= ST_Test2 && s < ST_Map)
+	if (s >= ST_Setup2 && s < ST_Setup2Max)
+	{	mlevel = 2;  ym = M_Setup;
+		ym1[ym] = s - ST_Setup2;
+	}else
+	if (s >= ST_Test2 && s < ST_Test2Max)
 	{	mlevel = 2;  ym = M_Testing;
 		ym1[ym] = s - ST_Test2;
 	}
-	mlevel = 0;  ym = 0;
 }
 
 const char* Gui::StrScreen(int8_t s)
@@ -96,11 +101,14 @@ const char* Gui::StrScreen(int8_t s)
 	// todo main, pressed, layout, version, demos
 	switch (s)
 	{
-	case ST_main0:  return "Main";
-	case ST_Test:   return strMain[M_Testing];
+	case ST_Main0:  return "Main";
 	case ST_Map:    return strMain[M_Mapping];
 	case ST_Seqs:   return strMain[M_Sequences];
+	case ST_Test:   return strMain[M_Testing];
+
 	case ST_Displ:  return strMain[M_Display];
+	case ST_Setup:  return strMain[M_Setup];
+	case ST_Help:   return strMain[M_Help];
 #ifdef DEMOS
 	case ST_Demos:  return strMain[M_Demos];
 	}
@@ -109,7 +117,9 @@ const char* Gui::StrScreen(int8_t s)
 #else
 	}
 #endif
-	if (s >= ST_Test2 && s < ST_Map)
+	if (s >= ST_Setup2 && s < ST_Setup2Max)
+		return strSetup[s - ST_Setup2];
+	if (s >= ST_Test2 && s < ST_Test2Max)
 		return strTest[s - ST_Test2];
 	return "";
 }

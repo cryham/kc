@@ -49,7 +49,7 @@ void Gui::KeyPress()
 	//if (kF3)  SetScreen(ST_Test);
 	if (kF6)  SetScreen(ST_Test2+T_Pressed);
 	if (kF7)  SetScreen(ST_Test2+T_Layout);
-	if (kF8)  SetScreen(ST_Setup);
+	if (kF8)  SetScreen(ST_Setup2+S_Mouse);
 	if (kF9)  SetScreen(ST_Displ);
 	//if (kF10)  SetScreen(ST_Displ);
 	if (kF11)  SetScreen(ST_Help);

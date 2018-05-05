@@ -2,16 +2,12 @@
 #include <stdint.h>
 
 //----  Setup  ----		   ram B      flash
-//   no demos ck1		//  69%  58%
-//  all demos ck1 max	//  79%  75% ok
-
-//   no demos CK6		//  0    0%
-#define DEMOS			//  28   9%
-#define DEMOS_PLASMA	//  36   11%
-#define DEMOS_3D		//  44   15%
+#define DEMOS			//  28        9%
+#define DEMOS_PLASMA	//  36        11%
+#define DEMOS_3D		//  44        15%
 //#define DEMOS_OLD_PAR	//  280 <1%   16%  min
-					// all  6680 10%  17%  max 41k  75% total
-#define GAME		// game 1.5k 2%   22.9k 7%
+					// all  6680 10%  17%  max 41k
+#define GAME		// game 1.5k 2%   8%  22.5k
 
 //   Keyboard  ----
 //#define CK1  // 8x6
@@ -20,8 +16,7 @@
 //-----------------
 
 
-//  display dim
-#define W 160
+#define W 160  //  display dim
 #define H 128
 
 //  R F800  G 07E0  B 001F  R 32 G 64 B 32  565
@@ -35,17 +30,16 @@ class Ada4_ST7735;
 
 enum EMainMenu  //  main menu entries, level0
 {
-		M_Mapping, M_Sequences,
-		M_Testing, M_Setup,
-
-		M_Display, M_Help,
+	M_Mapping, M_Sequences,
+	M_Testing, M_Setup,
+	M_Display, M_Help,
 	#ifdef GAME
 		M_Game,
 	#endif
 	#ifdef DEMOS
 		M_Demos,
 	#endif
-		M_All,  M_Next = M_Display  // -1 off+
+	M_All,  M_Next = M_Display  // -1 off
 };
 
 #ifdef DEMOS
@@ -62,9 +56,8 @@ enum EDemo  //  Demos, level1
 	#ifdef DEMOS_OLD_PAR
 		D_Space, D_Balls, D_Fountain,
 	#endif
-		D_Rain, D_Ngons, D_Fonts,
-
-		D_All,  D_Next = D_CK_Logo
+	D_Rain, D_Ngons, D_Fonts,
+	D_All,  D_Next = D_CK_Logo
 };
 extern const char *strDemo[D_All];
 #endif
@@ -80,6 +73,5 @@ enum ESetup  //  Setup kbd, level1
 
 //  string names for all above ^
 extern const char *strMain[M_All], *strTest[T_All], *strSetup[S_All];
-
 //  sub page counts, inside each main menu entry
 extern const uint8_t YM1[M_All];
