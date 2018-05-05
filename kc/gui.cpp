@@ -15,19 +15,21 @@ void Gui::Init(Ada4_ST7735* tft)
 	d = tft;
 	kbdSend = 0;  //-
 
+	mlevel = 0;
+	ym = 0;  yy = 0;
 	for (int i=0; i < M_All; ++i)
 		ym1[i]=0;
 
 
-	mlevel = 2;  //0
+//	mlevel = 2;  //0
 //	ym = M_Testing;
 //	ym1[M_Testing] = T_Pressed;
-	ym = M_Setup;
-	ym1[M_Setup] = S_Keyboard;
-	SetScreen(ST_Main0);
+//	SetScreen(ST_Main0);
 
 	
-	oldti=0;
+	oldti=0;  oldti_kr=0;
+	iRam = 0;  hpage = 0;
+
 #ifdef DEMOS
 	demos.Init(d);
 #endif
@@ -35,12 +37,16 @@ void Gui::Init(Ada4_ST7735* tft)
 	game.Init(this);
 #endif
 
-	nLay=0;  scId=NO;  drawId=54;
-	keyCode=0;
+	ym2Scan=0; ym2Keyb=0; ym2Mouse=0; pressGui=0;
+	ym2Disp=0; pgDisp=0;
+
+	nLay=0;  scId=NO;  drawId=54;  drawX=0; drawY=0;
+	keyCode=0;  pressKey=0;  moveCur=0;  pickCode=0;
 	pressKey=0;  moveCur=0;  pickCode=0;
 
-	edit = 0;  edins = 1;
+	edit = 0;  edins = 1;  copyId = -1;
 	slot=0; page=0; edpos=0;
+	tBlnk=0; tInfo=0;  infType=0;
 
 
 	//  init Group Starts and Ends
