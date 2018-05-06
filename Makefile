@@ -9,8 +9,8 @@ TARGET = main
 
 #  configurable options  + + +
 #************************************************************************
-#OPTIONS = -DF_CPU=120000000  # CK7/4
-OPTIONS = -DF_CPU=144000000  # CK6/3
+#OPTIONS = -DF_CPU=144000000  # CK6/3
+OPTIONS = -DF_CPU=120000000  # CK7/4
 
 # usb_desc.h : USB_HID  USB_KEYBOARDONLY 
 OPTIONS += -DUSB_HID -DLAYOUT_US_ENGLISH -DUSING_MAKEFILE
