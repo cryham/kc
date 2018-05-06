@@ -25,7 +25,7 @@ const uint16_t cKeyUsb[KEYS_ALL]={  KEY_ESC, //0
 	KEY_F13,KEY_F14,KEY_F15,KEY_F16,KEY_F17,KEY_F18,KEY_F19,KEY_F20,KEY_F21,KEY_F22,KEY_F23,KEY_F24,  // func2
 	KEY_MEDIA_PLAY, KEY_MEDIA_PAUSE, KEY_MEDIA_RECORD, KEY_MEDIA_FAST_FORWARD, KEY_MEDIA_REWIND,  // media
 	KEY_MEDIA_NEXT_TRACK, KEY_MEDIA_PREV_TRACK, KEY_MEDIA_STOP,
-	KEY_MEDIA_EJECT, KEY_MEDIA_RANDOM_PLAY, KEY_MEDIA_PLAY_PAUSE, KEY_MEDIA_PLAY_SKIP,
+	KEY_MEDIA_CALC, KEY_MEDIA_RANDOM_PLAY, KEY_MEDIA_PLAY_PAUSE, KEY_MEDIA_PLAY_SKIP,
 
 	KEY_MEDIA_MUTE, KEY_MEDIA_VOLUME_INC, KEY_MEDIA_VOLUME_DEC,  // vol
 	KEY_SYSTEM_POWER_DOWN, KEY_SYSTEM_SLEEP, KEY_SYSTEM_WAKE_UP,  // sys
@@ -50,7 +50,7 @@ const char* cKeyStr[KEYS_ALL_EXT]={  "None",  // max [255]
 
 	"F13","F14","F15","F16","F17","F18","F19","F20","F21","F22","F23","F24",  // func2
 	"Play", "Pause", "Rec", "Forw", "Rew", "Next", "Prev", "Stop",  // media
-	"Eject", "Randm", "PlPau", "PlSkp",
+	"Calc", "Randm", "PlPau", "PlSkp",
 
 	"Mute", "Vol+", "Vol-",  "Power", "Sleep", "Wake",  // vol,sys
 	"All",  "D0", "D1", "D2", "D3", "D4", "D5", "D6", "D7",  // padding-
@@ -88,7 +88,7 @@ const char* cKeySh[KEYS_ALL_EXT]={  "no",
 
 	"13","14","15","16","17","18","19","20","21","22","23","24",  // func2
 	"Pl", "Pa", "Rc", "Fw", "Rw", "Nx", "Pv", "St",  // media
-	"Ej", "Rn", "Pp", "Pk",
+	"Ca", "Rn", "Pp", "Pk",
 
 	"Mt", "V+", "V-",  "Pw", "Sl", "Wk",  // vol,sys
 	"AL",  "D0", "D1", "D2", "D3", "D4", "D5", "D6", "D7",  // padding-
