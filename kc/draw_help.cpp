@@ -38,7 +38,7 @@ void Gui::DrawHelp()
 	{
 	case 0:  //  main
 		d->setClr(20,26,31);
-		d->println("\x18,\x19      \x10 Move Cursor");  // ^,v
+		d->println("\x18,\x19        Move Cursor");  // ^,v \x10
 		d->moveCursor(0,2);
 		d->println("\x1A or Ent        Enter");
 		d->moveCursor(0,2);
@@ -50,7 +50,7 @@ void Gui::DrawHelp()
 		d->moveCursor(0,2);
 		d->println("\x1B,\x1A     Dec,Inc Value");  // <,>
 		d->setClr(12,18,24);
-		d->println(" LCtrl  more  LShift less");
+		d->println("  LCtrl more  LShift less");
 
 		d->moveCursor(0,6);
 		d->setClr(16,22,28);
@@ -62,15 +62,16 @@ void Gui::DrawHelp()
 		d->setClr(25,28,23);
 		d->println("\x18,\x19 \x1B,\x1A    Move Cursor");
 		d->moveCursor(0,2);
-		d->println("/   Press key, set cursor");
+		d->println("/    Press key, set cursor");
 		d->moveCursor(0,6);
 		d->println("PgUp,PgDn  Prev/Next Layer");
 		d->moveCursor(0,2);
 		d->setClr(17,24,17);
 		d->println("  Last is layer use visual");
+
 		d->moveCursor(0,6);
 		d->setClr(25,28,23);
-		d->println("- or Ent   Pick key list..");
+		d->println("- or Ent   Pick key list");
 		d->moveCursor(0,6);
 		d->println("C,V,X      Copy,Paste,Swap");
 		d->moveCursor(0,2);
@@ -80,10 +81,11 @@ void Gui::DrawHelp()
 	case 2:  //  pick key
 		d->setClr(23,28,23);
 		d->println("\x18,\x19 PgUp,PgDn \x1B,\x1A  Move");
-		d->moveCursor(0,4);
+		d->moveCursor(0,6);
 		d->println("+ or Ent    Set key");
 		d->moveCursor(0,2);
 		d->println("- or Bksp   Cancel");
+
 		d->moveCursor(0,6);
 		d->setClr(21,25,21);
 		d->println("/    Group filter toggle");
@@ -119,7 +121,7 @@ void Gui::DrawHelp()
 
 		d->moveCursor(0,6);
 		d->println("Del,Bksp   Delete");
-		d->println("Ins   Insert/Overwrite");
+		d->println("Ins      Insert/Overwrite");
 		d->moveCursor(0,6);
 		d->println("Enter      Exit Edit");
 		break;
@@ -127,7 +129,7 @@ void Gui::DrawHelp()
 	case 5:  //  seq commands ___ help
 		d->setClr(25,26,26);
 		d->println("Insert command in seq:");
-		d->moveCursor(0,2);
+		d->moveCursor(0,6);
 		d->println("/  Set Key Delay [1ms]");
 		d->moveCursor(0,2);
 		d->println("*  Wait [0.1s]");
@@ -143,7 +145,7 @@ void Gui::DrawHelp()
 	case 6:  //  seq _mouse commands_ help
 		d->setClr(24,25,23);
 		d->println("Shift- Insert command:");
-		d->moveCursor(0,2);
+		d->moveCursor(0,6);
 		d->println("\x1B,\x1A \x18,\x19  Move x,y");
 		d->moveCursor(0,4);
 		d->println("Button:");
@@ -160,7 +162,7 @@ void Gui::DrawHelp()
 		d->println("\x1B,\x1A   Prev/Next Preset");
 		d->println("\x18,\x19   Dec,Inc Speed");
 		d->moveCursor(0,4);
-		d->println("-     Toggle Fps");
+		d->println("-     Fps show +mode");
 		d->println("*     Params Info");
 
 		d->moveCursor(0,8);
@@ -187,7 +189,7 @@ void Gui::DrawHelp()
 
 	case 9:  //  sixtis cd
 		d->setClr(29,25,20);
-		d->println("+        Back");
+		d->println("+ or Bksp  Back");
 		d->moveCursor(0,2);
 		d->println("-        Pause");
 		d->moveCursor(0,2);
