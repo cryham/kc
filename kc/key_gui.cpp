@@ -46,17 +46,17 @@ void Gui::KeyPress()
 	if (par.quickKeys && !(pressGui || pressKey ||
 		(mlevel == 2 && ym == M_Testing)))
 	{
-	if (kEsc)  SetScreen(ST_Main0);
-	if (kF1)  SetScreen(ST_Map);
-	if (kF2)  SetScreen(ST_Seqs);
-	//if (kF3)  SetScreen(ST_Test);
-	if (kF6)  SetScreen(ST_Test2+T_Pressed);
-	if (kF7)  SetScreen(ST_Test2+T_Layout);
-	if (kF8)  SetScreen(ST_Setup2+S_Mouse);
-	if (kF9)  SetScreen(ST_Displ);
-	//if (kF10)  SetScreen(ST_Displ);
-	if (kF11)  SetScreen(ST_Help);
-	if (kF12)  SetScreen(ST_Demos2+D_Plasma);
+		if (kEsc)  SetScreen(ST_Main0);
+		if (kF1)  SetScreen(ST_Map);
+		if (kF2)  SetScreen(ST_Seqs);
+		//if (kF3)  SetScreen(ST_Test);
+		if (kF6)  SetScreen(ST_Test2+T_Pressed);
+		if (kF7)  SetScreen(ST_Test2+T_Layout);
+		if (kF8)  SetScreen(ST_Setup2+S_Mouse);
+		if (kF9)  SetScreen(ST_Displ);
+		//if (kF10)  SetScreen(ST_Displ);
+		if (kF11)  SetScreen(ST_Help);
+		if (kF12)  SetScreen(ST_Demos2+D_Plasma);
 	}
 
 	//  Game  ------
@@ -65,7 +65,7 @@ void Gui::KeyPress()
 	{
 		if (game.KeyPress(mlevel))
 		{	// goto help
-			ym = M_Help;  mlevel = 1;  hpage = 6;
+			ym = M_Help;  mlevel = 1;  hpage = 10;
 		}
 		return;
 	}
@@ -205,7 +205,7 @@ void Gui::KeyPress()
 	//.......................
 	if (ym == M_Mapping && mlevel == 1)
 	{
-		if (KeysMap())  return;
+		KeysMap();  return;
 	}
 
 	//  sequence list
@@ -223,39 +223,6 @@ void Gui::KeyPress()
 	{
 		if (kUp){  ym += kUp;  if (ym >= M_All)  ym = 0;  if (ym < 0)  ym = M_All-1;  }
 		if (kRight > 0 || kEnt2)  mlevel = 1;  // enter>
-		return;
-	}
-
-
-	//  mapping edit  ----
-	//............................................
-	if (mlevel == 1 && ym == M_Mapping)
-	{
-		if (kUp)  // menu up,dn
-			ym1[ym] = RangeAdd(ym1[ym], kUp, 0,YM1[ym]-1, 1);
-
-		if (kRight > 0 || kEnt2)
-		{	//  enter modes
-			if (yy == 0)  pressKey = 1;  else
-			if (yy == 1)  moveCur = 1;  else
-			if (yy == 3)  pickCode = 1;
-		}
-		if (kPgUp || (yy == 2 && kRight))  // change layer
-			nLay = RangeAdd(nLay, kPgUp+kRight, 0,KC_MaxLayers, 1);
-			// nLay == KC_MaxLayers shows layer use vis
-
-		//  erase key *
-		if (kCtrl && kDel &&
-			scId != NO && scId < kc.set.nkeys() && nLay < KC_MaxLayers)
-			kc.set.key[nLay][scId] = KEY_NONE;
-
-		//  quick access keys / * -
-		if (kDiv)  pressKey = 1;
-		if (kMul)  moveCur = 1;
-		if (kSub)  pickCode = 1;
-
-		if (kSave)  Save();
-		if (kLoad)  Load(kCtrl);
 		return;
 	}
 

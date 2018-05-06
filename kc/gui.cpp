@@ -41,8 +41,8 @@ void Gui::Init(Ada4_ST7735* tft)
 	ym2Disp=0; pgDisp=0;
 
 	nLay=0;  scId=NO;  drawId=54;  drawX=0; drawY=0;
-	keyCode=0;  pressKey=0;  moveCur=0;  pickCode=0;
-	pressKey=0;  moveCur=0;  pickCode=0;
+	nLayCpy=0;  scIdCpy=0;  
+	keyCode=0;  pressKey=0;  pickCode=0;
 
 	edit = 0;  edins = 1;  copyId = -1;
 	slot=0; page=0; edpos=0;

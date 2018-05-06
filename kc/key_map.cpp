@@ -4,7 +4,7 @@
 #include "kbd_layout.h"
 
 
-int8_t Gui::KeysMap()
+void Gui::KeysMap()
 {
 	if (pressKey)  // press key
 	{
@@ -17,20 +17,57 @@ int8_t Gui::KeysMap()
 				if (drawKeys[i].sc == scId)
 				{	drawId = i;  break;  }
 		}
-		return 1;
+		return;
 	}
 
-	if (moveCur)  // move cursor
+	if (pickCode)  // pick code  ----
 	{
-		if (kAdd || kBckSp || kMul)
-		{	//  set if key exists in matrix
-			uint8_t sc = drawKeys[drawId].sc;
-			if (sc < ScanKeys && sc != NO)
-				scId = sc;
-			moveCur = 0;  return 1;
-		}
+		if (kAdd || kEnt || kEnt2)
+		{	//  apply in kc
+			if (scId != NO && scId < kc.set.nkeys() && nLay < KC_MaxLayers)
+				kc.set.key[nLay][scId] = keyCode;
 
-		//  find closest next in move direction
+			pickCode = 0;  return;
+		}
+		if (kSub || kBckSp)  // cancel
+		{	pickCode = 0;  return;  }
+
+		if (kRight)  // <- ->
+		{	if (grpFilt)
+			{	keyGroup += kRight;
+				if (keyGroup < 0)		 keyGroup = grpMax-1;
+				if (keyGroup >= grpMax)	 keyGroup = 0;
+				keyCode = grpStart[keyGroup];
+			}else
+				keyCode += kRight * 12;
+		}else
+		if (kUp)	keyCode += kUp;  else
+		if (kPgUp)	keyCode += kPgUp * 4;  else
+
+		if (kDiv || kEnd < 0)  // filter
+			grpFilt = 1-grpFilt;
+
+		//  grp range
+		if (grpFilt)
+		{	if (keyCode < grpStart[keyGroup])
+				keyCode = grpEnd[keyGroup];
+			if (keyCode > grpEnd[keyGroup])
+				keyCode = grpStart[keyGroup];
+		}
+		//  all range
+		if (keyCode < 0)			  keyCode += KEYS_ALL_EXT;
+		if (keyCode >= KEYS_ALL_EXT)  keyCode -= KEYS_ALL_EXT;
+		return;
+	}
+
+	//  Add+  <back global
+	if ((kAdd || kBckSp) && mlevel > 0)  --mlevel;
+
+
+	//  move, find closest next in move direction
+	//............................................
+	if (kUp || kRight)
+	{
 		int x=2, y=0, ii = -1, B = 2000,
 			mxl = -B, mxr = B, myu = B, myd = B, axd = B, axu = B;
 
@@ -76,47 +113,42 @@ int8_t Gui::KeysMap()
 
 		if (drawId >= nDrawKeys) drawId -= nDrawKeys;
 		if (drawId < 0)			 drawId += nDrawKeys;
-		return 1;
+
+		//  set if key exists in matrix
+		uint8_t sc = drawKeys[drawId].sc;
+		if (sc < ScanKeys && sc != NO)
+			scId = sc;
+		return;
 	}
 
-	if (pickCode)  // pick code  ----
+
+	//  mapping edit  ----
+	//............................................
+
+	if (kPgUp || (yy == 2 && kRight))  // change layer
+		nLay = RangeAdd(nLay, kPgUp+kRight, 0,KC_MaxLayers, 1);
+		// nLay == KC_MaxLayers shows layer use vis
+
+
+	//  quick access keys / * -
+	if (kDiv)  pressKey = 1;
+	if (kSub || kEnt || kEnt2)  pickCode = 1;
+
+	if (kSave)  Save();
+	if (kLoad)  Load(kCtrl);
+
+
+	//  key oper
+	if (scId != NO && scId < kc.set.nkeys() && nLay < KC_MaxLayers)
 	{
-		if (kAdd || kBckSp)
-		{	//  apply in kc
-			if (scId != NO && scId < kc.set.nkeys() && nLay < KC_MaxLayers)
-				kc.set.key[nLay][scId] = keyCode;
+		if (kCtrl && kDel)  kc.set.key[nLay][scId] = KEY_NONE;
 
-			pickCode = 0;  return 1;
-		}
-		if (kSub)  // cancel
-		{	pickCode = 0;  return 1;  }
+		if (kCopy){  scIdCpy = scId;  nLayCpy = nLay;  }
 
-		if (kRight)  // <- ->
-		{	if (grpFilt)
-			{	keyGroup += kRight;
-				if (keyGroup < 0)		 keyGroup = grpMax-1;
-				if (keyGroup >= grpMax)	 keyGroup = 0;
-				keyCode = grpStart[keyGroup];
-			}else
-				keyCode += kRight * 12;
-		}else
-		if (kUp)	keyCode += kUp;  else
-		if (kPgUp)	keyCode += kPgUp * 4;  else
+		if (kPaste)  kc.set.key[nLay][scId] = kc.set.key[nLayCpy][scIdCpy];
 
-		if (kDiv || kEnd < 0)  // filter
-			grpFilt = 1-grpFilt;
-
-		//  grp range
-		if (grpFilt)
-		{	if (keyCode < grpStart[keyGroup])
-				keyCode = grpEnd[keyGroup];
-			if (keyCode > grpEnd[keyGroup])
-				keyCode = grpStart[keyGroup];
-		}
-		//  all range
-		if (keyCode < 0)			  keyCode += KEYS_ALL_EXT;
-		if (keyCode >= KEYS_ALL_EXT)  keyCode -= KEYS_ALL_EXT;
-		return 1;
+		if (kSwap){  uint8_t c = kc.set.key[nLay][scId];
+			kc.set.key[nLay][scId] = kc.set.key[nLayCpy][scIdCpy];
+			kc.set.key[nLayCpy][scIdCpy] = c;  }
 	}
-	return 0;
 }

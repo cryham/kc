@@ -14,14 +14,14 @@ const static int pgMin = ((KEYS_ALL_EXT-12*3)/12 +1)*12;
 void Gui::DrawMapping()
 {
 	char a[64];
-	d->setFont(0);
-	int16_t x=2, y=0, c;
+	int16_t x=2, y=0;
 
 
 	//  key codes list
 	//. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
 	if (pickCode)
 	{
+		d->setFont(0);
 		d->setCursor(x,0);
 		d->setClr(28,28,26);
 		d->print("Pick key..");
@@ -119,21 +119,19 @@ void Gui::DrawMapping()
 
 	//  menu
 	//. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+	d->setClr(17,23,12);  // mapping
+	d->print(strMain[ym]);
+	d->setFont(0);
+
 	int id = scId;
-	if (moveCur)
-	{	if (drawKeys[drawId].sc == NO)  id = -1;
-		else  id = drawKeys[drawId].sc;
-	}
-	x=2;  y=0;
-	for (int i=0; i < 4; ++i)
+	if (drawKeys[drawId].sc == NO)  id = -1;
+	else  id = drawKeys[drawId].sc;
+
+	x=2;  y=24;
+	for (int i=0; i < 3; ++i)
 	{
-		c = abs(i - yy);
-		if (!c)  d->fillRect(x+6, y-1, W/2, 10, RGB(5,7,2));
-		d->setClr(28,28,9);
-		d->setCursor(x+8,y);
-		d->print(!c ? "\x10":" ");  // >
 		d->setCursor(x,y);
-		FadeClr(C_Map, 4, c, 1);
+		FadeClr(C_Map, 4, i+1, 1);
 
 		switch (i)
 		{
@@ -149,13 +147,6 @@ void Gui::DrawMapping()
 			d->print(a);  break;
 
 		case 1:
-			if (moveCur) {
-				d->fillRect(0, y-1, 2*W/3, 10, RGB(6,8,2));
-				/*d->drawRect(0, y-1, 2*W/3, 10, RGB(12,28,20));*/  }
-			sprintf(a, moveCur ? "*  Moving .." : "*  Move");
-			d->print(a);  break;
-
-		case 2:
 			if (nLay == KC_MaxLayers)
 				d->print("p  Layer: use");
 			else
@@ -163,7 +154,7 @@ void Gui::DrawMapping()
 				d->print(a);
 			}	break;
 
-		case 3:
+		case 2:
 			if (id < 0 || id >= kc.set.nkeys())
 				sprintf(a,"-  Key: NONE");
 			else
@@ -203,7 +194,7 @@ void Gui::DrawMapping()
 	sprintf(a,"draw %2d  x %2d y %2d", drawId, drawX, drawY);  d->print(a);*/
 
 
-	//  stats, data
+	//  key binds, lay data
 	//. . . . . . . . . . . . . . . . . . . . . . . . .
 	x = W-8*6;  y=0;
 	d->setClr(25,24,12);

@@ -52,9 +52,9 @@ void Gui::DrawDisplay()
 		switch(i)
 		{
 		case 0:
-			sprintf(a,"Brightness: %d %%", par.brightness);  break;
+			sprintf(a,"Brightness: %d %%", par.brightness);  h = 2;  break;
 		case 1:
-			sprintf(a,"Off bright: %d %%", par.brightOff);  h = 2;  break;
+			sprintf(a,"Off bright: %d %%", par.brightOff);  break;
 		case 2:
 			sprintf(a,"Start screen: %s", StrScreen(par.startScreen));  break;
 		}

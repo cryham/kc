@@ -32,7 +32,7 @@ struct Gui
 	void DrawPressed();
 	void DrawLayout(bool edit), Chk_y1();
 	void DrawSeq(int8_t seq, int8_t q);
-	int8_t KeysSeq(), KeysMap();
+	int8_t KeysSeq();  void KeysMap();
 	int PressKey(int8_t& var);
 
 	//  start
@@ -81,10 +81,10 @@ struct Gui
 
 	//  Mapping  - - - -
 	const int8_t yPosLay = 62;
-	int16_t keyCode=0, scId=0, drawId=-1, drawX=0,drawY=0;
-	int8_t nLay=0,
-		pressKey=0, moveCur=0, pickCode=0, // edit operations
-		keyGroup=0, grpFilt=0;  // group filter
+	int16_t keyCode=0, scId=0, scIdCpy=0, drawId=-1, drawX=0,drawY=0;
+	int8_t nLay=0, nLayCpy=0,
+		pressKey=0, pickCode=0, // edit operations
+		keyGroup=0, grpFilt=0;  // pick group filter
 
 	//  level 2 y cursors  - -
 	int8_t ym2Scan = 0, ym2Keyb = 0, ym2Mouse = 0, pressGui = 0;  // Setup

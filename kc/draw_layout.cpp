@@ -24,13 +24,11 @@ void Gui::DrawLayout(bool edit)
 		const DrawKey& k = drawKeys[i], pk = drawKeys[max(0,i-1)];
 
 		//  find if pressed
-		int f = k.sc != NO && !moveCur &&
-				Matrix_scanArray[k.sc].state == KeyState_Hold ? 1 : 0;
+		int f = !edit && k.sc != NO &&
+			Matrix_scanArray[k.sc].state == KeyState_Hold ? 1 : 0;
 
-		//  mark  mapping edit
-		if (edit)  {
-			if (moveCur && drawId >= 0 && i == drawId)  f = 2;
-			if (!moveCur && scId != NO && scId == k.sc)  f = 2;  }
+		//  mapping cursor
+		if (edit && drawId >= 0 && i == drawId)  f = 2;
 
 		//  set coords or advance
 		if (k.x >=0)  x = k.x;  else  x -= k.x;
@@ -41,17 +39,17 @@ void Gui::DrawLayout(bool edit)
 		{	drawX = x + k.w/2;
 			drawY = y + k.h/2;  }
 
-		if (f)
+		if (f)  // backgr
 			d->fillRect(x+1, y-1, k.w-1, k.h-1, clrRect[k.o]);
 
 		uint16_t  // clr
 			cR = f==2 ? RGB(31,30,29) : f==1 ? RGB(28,28,29) : clrRect[k.o];
 
 		//  darken  if draw has NO scId
-		if (moveCur && k.sc == NO)
-		{	cR = RGB(9,9,9);  /*if (!f)  cT = RGB(17,17,17);*/  }
+		if (edit && k.sc == NO)  cR = RGB(9,9,9);
 
-		d->drawRect(x, y-2, k.w+1, k.h+1, cR);
+		d->drawRect(x, y-2, k.w+1, k.h+1, cR);  // frame
+
 
 		//  layer keys visible on all layers ``
 		uint8_t dtL0 = kc.set.key[0][k.sc];
@@ -59,11 +57,8 @@ void Gui::DrawLayout(bool edit)
 		bool layUse = nLay == KC_MaxLayers;  // vis mode
 		bool tiny = k.w < 6;
 
-		//  skip caption for tiny keys
-		//if (tiny && edit && !layKey && !layUse)
-		//	continue;
-
-		d->setCursor(  // txt pos
+		//  text  ----
+		d->setCursor(
 			k.o==5 || k.o==7 ? x + k.w - 6 :  // right align
 			(k.o==3 ? x+1 : x+2),  // symb 3
 			k.h == kF ? y-2 : y-1);  // short

@@ -38,11 +38,11 @@ void Gui::DrawHelp()
 	{
 	case 0:  //  main
 		d->setClr(20,26,31);
-		d->println("\x18,\x19     Move Cursor \x10");  // ^,v
+		d->println("\x18,\x19      \x10 Move Cursor");  // ^,v
 		d->moveCursor(0,2);
-		d->println("\x1A       Enter");
+		d->println("\x1A or Ent        Enter");
 		d->moveCursor(0,2);
-		d->println("\x1B or +  Go Back");
+		d->println("\x1B or Bksp or +  Go Back");
 
 		d->moveCursor(0,8);
 		d->setClr(16,22,28);
@@ -60,12 +60,9 @@ void Gui::DrawHelp()
 
 	case 1:  //  mapping  ------------------------
 		d->setClr(25,28,23);
-		d->println("/   Press key, set cursor");
+		d->println("\x18,\x19 \x1B,\x1A    Move Cursor");
 		d->moveCursor(0,2);
-		d->println("*   Move cursor  * Back");
-		d->moveCursor(0,4);
-		d->println("Ctrl-Del   Delete");
-
+		d->println("/   Press key, set cursor");
 		d->moveCursor(0,6);
 		d->println("PgUp,PgDn  Prev/Next Layer");
 		d->moveCursor(0,2);
@@ -73,16 +70,20 @@ void Gui::DrawHelp()
 		d->println("  Last is layer use visual");
 		d->moveCursor(0,6);
 		d->setClr(25,28,23);
-		d->println("-   Pick key list..");
+		d->println("- or Ent   Pick key list..");
+		d->moveCursor(0,6);
+		d->println("C,V,X      Copy,Paste,Swap");
+		d->moveCursor(0,2);
+		d->println("Ctrl-Del   Delete");
 		break;
 
 	case 2:  //  pick key
 		d->setClr(23,28,23);
 		d->println("\x18,\x19 PgUp,PgDn \x1B,\x1A  Move");
 		d->moveCursor(0,4);
-		d->println("+    Set key");
+		d->println("+ or Ent    Set key");
 		d->moveCursor(0,2);
-		d->println("-    Cancel");
+		d->println("- or Bksp   Cancel");
 		d->moveCursor(0,6);
 		d->setClr(21,25,21);
 		d->println("/    Group filter toggle");
@@ -95,15 +96,15 @@ void Gui::DrawHelp()
 		d->setClr(21,28,28);
 		d->println("\x18,\x19 PgUp,PgDn  Move");
 		d->moveCursor(0,2);
-		d->println("Home,End    Move 3x");
+		d->println("Home,End   Move 3x");
 		d->moveCursor(0,6);
-		sprintf(a,"L%d-Enter    Edit seq.", par.editLayer);
+		sprintf(a,"L%d-Enter   Edit seq.", par.editLayer);
 		d->println(a);
 
 		d->moveCursor(0,6);
-		d->println("C,V,X    Copy,Paste,Swap");
+		d->println("C,V,X      Copy,Paste,Swap");
 		d->moveCursor(0,2);
-		d->println("Ctrl-Del    Delete");
+		d->println("Ctrl-Del   Delete");
 		break;
 
 	case 4:  //  edit seq
@@ -112,15 +113,15 @@ void Gui::DrawHelp()
 		d->println(a);
 		d->setClr(18,30,30);
 		d->moveCursor(0,6);
-		d->println("\x1B,\x1A       Move Cursor");
+		d->println("\x1B,\x1A        Move Cursor");
 		d->moveCursor(0,2);
-		d->println("Home,End  To Start,End");
+		d->println("Home,End   To Start,End");
 
 		d->moveCursor(0,6);
-		d->println("Del,Backspc   Delete");
-		d->println("Ins  Insert/Overwrite");
+		d->println("Del,Bksp   Delete");
+		d->println("Ins   Insert/Overwrite");
 		d->moveCursor(0,6);
-		d->println("Enter     Exit Edit");
+		d->println("Enter      Exit Edit");
 		break;
 
 	case 5:  //  seq commands ___ help
@@ -167,7 +168,7 @@ void Gui::DrawHelp()
 		d->println("PgUp,PgDn  Change");
 		d->println("Home,End   Params");
 		d->moveCursor(0,2);
-		d->println("  Ctrl  Others");
+		d->println("  Ctrl   Others");
 		d->println("  Shift  Fine");
 		break;
 
