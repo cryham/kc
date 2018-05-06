@@ -41,6 +41,7 @@ void Gui::KeyPress()
 
 	//  quick access keys
 	if (par.quickKeys && !(pressGui || pressKey ||
+		(edit && mlevel == 1 && ym == M_Sequences) ||
 		(mlevel == 2 && ym == M_Testing)))
 	{
 		if (kEsc)  SetScreen(ST_Main0);
@@ -71,31 +72,27 @@ void Gui::KeyPress()
 	int sp = (kCtrl ? 10 : kSh ? 1 : 2);  // mul
 
 
-	//  Setup Scan
-	//..............................................
+	//  Setup
 	if (ym == M_Setup && mlevel == 2)
 	{
 		KeysParSetup(sp);
 	}
 
 	//  Display
-	//..............................................
 	if (ym == M_Display && mlevel == 1)
 	{
-		KeysParDisplay(sp);
+		KeysParDisplay(sp);  return;
 	}
 
 
-	//  Mapping  edit modes
-	//.......................
+	//  Mapping kbd
 	if (ym == M_Mapping && mlevel == 1)
 	{
 		KeysMap();  return;
 	}
 
-	//  sequence list
-	//.......................
-	if (mlevel == 1 && ym == M_Sequences)
+	//  Sequences
+	if (ym == M_Sequences && mlevel == 1)
 	{
 		KeysSeq();  return;
 	}
@@ -103,6 +100,7 @@ void Gui::KeyPress()
 
 	//  Add+  <back global
 	if ((kAdd || kBckSp) && mlevel > 0)  --mlevel;
+
 
 	if (mlevel == 0)  //  main menu
 	{
@@ -113,7 +111,7 @@ void Gui::KeyPress()
 
 
 	//  Help
-	if (mlevel == 1 && ym == M_Help)
+	if (ym == M_Help && mlevel == 1)
 	{
 		if (kUp || kPgUp)
 			hpage = RangeAdd(hpage, kUp+kPgUp, 0,HAll-1, 1);
@@ -137,7 +135,7 @@ void Gui::KeyPress()
 
 	//  Demos
 	#ifdef DEMOS
-	if (mlevel == 2 && ym == M_Demos)
+	if (ym == M_Demos && mlevel == 2)
 	{
 		demos.KeyPress((EDemo)ym1[ym], this);
 		return;

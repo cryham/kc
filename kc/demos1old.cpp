@@ -14,7 +14,7 @@ void Demos::BallsInit()
 		v0 = bSpd * bSpRnd / bSpRMax;
 
 	for (int i=0; i < bCnt; i++)
-	{	Ball& b = ball[i];    b.r = min(bRad-3, random(bRad));
+	{	Ball& b = ball[i];    b.r = max(max(0,bRad-3), random(bRad));
 		b.x = (random(W - b.r*2) + b.r) *bDet;
 		b.y = (random(H - b.r*2) + b.r) *bDet;
 		b.vx = random(v1) + v0;

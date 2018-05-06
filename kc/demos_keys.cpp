@@ -21,8 +21,8 @@ void Demos::Init(Ada4_ST7735* tft)
 #ifdef DEMOS_OLD_PAR
 	einit = INone;
 	sCnt = 3*sMax/4;  sVel = 17;  // stars
-	bCnt = min(200,bMax);  bSpd = 160;  bSpRnd = 1;  bRad = 3;  // balls
-	fInt = 5;  fWave = 1;  // fountain
+	bCnt = min(200,bMax);  bSpd = 120;  bSpRnd = 1;  bRad = 3;  // balls
+	fInt = 3;  fWave = 1;  // fountain
 #endif
 
 	r1Int = 2;  r1Size = 2;  // rain
