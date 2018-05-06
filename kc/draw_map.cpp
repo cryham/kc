@@ -118,8 +118,8 @@ void Gui::DrawMapping()
 
 
 	//  menu
-	//. . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
-	d->setClr(17,23,12);  // mapping
+	//. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+	d->setClr(13,20,9);  // mapping
 	d->print(strMain[ym]);
 	d->setFont(0);
 

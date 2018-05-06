@@ -188,7 +188,7 @@ void usb_mouse_idle()
 	//  wheel, repeat
 	int8_t iwx = Mouse_wheel_x, iwy = Mouse_wheel_y;
 	int8_t swx = 0, swy = 0;
-	int wmax = (260-par.mkWhSpeed)/100.f * 100000, wdec = par.mkWhAccel/100.f * 10000;  // kc
+	int wmax = (260-par.mkWhSpeed)/100.f * 100000, wdec = min(wmax, par.mkWhAccel/100.f * 10000);  // kc
 
 	int8_t wxon = iwx && !old_iwx;  if (wxon)  wdtx = wmax;
 	int8_t wyon = iwy && !old_iwy;  if (wyon)  wdty = wmax;

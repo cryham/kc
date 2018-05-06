@@ -28,12 +28,15 @@ struct Gui
 	void DrawTesting(), DrawSetup();
 	void DrawDisplay(), DrawHelp(), DrawOperInfo();
 
-	//  keys, draw util
+	//  draw util
 	void DrawPressed();
 	void DrawLayout(bool edit), Chk_y1();
 	void DrawSeq(int8_t seq, int8_t q);
+
+	//  keys
 	int8_t KeysSeq();  void KeysMap();
 	int PressKey(int8_t& var);
+	void KeysParSetup(int sp), KeysParDisplay(int sp);
 
 	//  start
 	void SetScreen(int8_t start);
