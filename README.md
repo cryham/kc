@@ -9,6 +9,10 @@ It allows editing everything on keyboard display, in real time. No other tools n
 
 More description of project on [my website](http://cryham.tuxfamily.org/archives/portfolio/2018-k-c-controller), with links to [videos](https://www.youtube.com/channel/UC9-gc9xgEeuSSKB8_dESLGw/videos).
 
+### Screenshots
+
+![](https://raw.githubusercontent.com/cryham/kc/master/screens.jpg)
+
 ## Features
 
 * **Mapping** - menu, for remapping USB key codes to physical keys.
