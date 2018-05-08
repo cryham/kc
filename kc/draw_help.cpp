@@ -115,7 +115,7 @@ void Gui::DrawHelp()
 		d->println(a);
 		d->setClr(18,30,30);
 		d->moveCursor(0,6);
-		d->println("\x1B,\x1A        Move Cursor");
+		d->println("\x1B,\x1A   Move Cursor  Ctrl 4x");
 		d->moveCursor(0,2);
 		d->println("Home,End   To Start,End");
 

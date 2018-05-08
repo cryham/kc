@@ -137,23 +137,45 @@ void Gui::DrawSequences()
 	else
 	{
 		d->setClr(5,27,27);
-		d->print("Edit");  d->setFont(0);
-		d->setClr(23,27,31);
+		d->print("Edit");  //d->setFont(0);
 
 		int si = seqId();
-		d->setCursor(W-1 -2*6, 4);  sprintf(a,"%2d", si);  d->print(a);
-		d->setCursor(W/2 -2*6, 4);  d->print(edins ? "Ins" : "Ovr");
+		d->setClr(19,23,27);
+		//d->setCursor(W-1 -2*6, 4);
+		d->setCursor(W-1 -2*10, 0);  sprintf(a,"%2d", si);  d->print(a);
+		d->setFont(0);
 
 		//  write sequence  ------------------------------------
-		int16_t x = 1, y = 32, xx=0;
 		int n, l = kc.set.seqs[si].len();
-		#if 0
-		d->setCursor(W/2 -3*6, 14);  // test
-		sprintf(a,"%d %d", edpos,l);  d->print(a);
-		#endif
-		bool inCmt = false;
+		int16_t x = 1, y = 32, xx=0;
 
-		for (n=0; n <= l; ++n)  // +1 for cursor
+		bool inCmt = false;
+		const int qdiv = 1 + min(11, l/20);  // less fade
+
+		//  offset from cursor, big seqs
+		n = max(0, edpos-80);
+		int ofs = n;
+
+		if (n > 0)  // find out Cmt state
+		for (int i=0; i < n; ++i)
+		{
+			uint8_t dt = kc.set.seqs[si].data[i];
+			//  command
+			bool isCmd = dt >= K_Cmd0 && dt <= K_CmdLast;
+			int cmd = dt - K_Cmd0;
+
+			if (isCmd)
+			{	++n;  ++ofs;
+			switch (cmd)
+			{
+			case CMD_Comment:
+				inCmt = !inCmt;  break;
+			}
+			}
+			// todo get num lines, scroll-
+		}
+
+		while (n <= l && d->getCursorY() < H-1-2*8)  // +1 for cursor
 		{
 			xx = 0;
 			bool cur = n == edpos;
@@ -169,40 +191,41 @@ void Gui::DrawSequences()
 
 				//  clr
 				int gr = cKeyGrp[dt];
-				int q = abs(n - edpos);
-				FadeGrp(gr, 9, q, 4);
+				int q = abs(n - edpos)/qdiv;
+				FadeGrp(gr, 13, q, 4);
 
 				//  string length
 				xx = (isCmd ? cCmdStrLen[min(CMD_ALL-1, cmd)] :
 						strlen(cKeyStr[dt])) * 6 +2;
 				if (x + xx > W-1)
-				{	x = 1;  y += 8+4;  }  // new line
+				{	x = 1;  y += 8+2;  }  // new line
 
 				//  write
 				d->setCursor(x,y);
 				if (isCmd)  //  commands ___ draw
 				{	++n;
 					uint8_t cp = n < l ? kc.set.seqs[si].data[n] : 0;
-					int8_t cm = cp-128;
+					int8_t cm = cp-128;  // next, param
 
 					uint16_t ln = cCmdClrLn[cmd];
 					d->drawFastHLine(x, y+8, xx-2, ln);  //_ underline
-					d->setClr(30,30,30);
+					int w = max(21, 30-q/2);
+					d->setClr(w,w,w);
 
 					//  format command name and param  ---
 					switch (cmd)
 					{
 					case CMD_SetDelay:
-						sprintf(a,"D=%3dms", cp);  d->print(a);  break;
+						sprintf(a,"D%3dms", cp);  d->print(a);  break;
 					case CMD_Wait:
 					{	char f[6];  dtostrf(cp*0.1f, 4,1, f);
 						sprintf(a,"W%ss", f);  d->print(a);  }  break;
 
 					case CMD_Comment:
-						d->print(inCmt ? "}Cmt" : "Cmt{");
+						d->print(inCmt ? "}C" : "C{");
 						inCmt = !inCmt;  break;
 					case CMD_Hide:
-						d->print("Hide>");  break;
+						d->print("H>");  break;
 
 					//  _mouse commands_ draw
 					case CM_x:  sprintf(a,"Mx%+3d", cm);  d->print(a);  break;
@@ -228,8 +251,23 @@ void Gui::DrawSequences()
 				else  // ovr _
 					d->drawFastHLine(x-1, y+8, b+1, 0xFFFF);
 			}
-			x += xx;
+			x += xx;  ++n;
 		}
+
+		//  header more signs < >
+		x = W/2-2;
+		d->setClr(21,25,28);
+		d->setCursor(x, 4);  d->print(edins ? "Ins" : "Ovr");
+		d->setClr(23,27,31);
+		if (ofs > 0) {  d->setCursor(x -4*6, 4);  d->print("<");  }
+		if (n < l) {    d->setCursor(x -2*6, 4);  d->print(">");  }
+		#if 1
+		//  cursor ofs pos/len
+		d->setClr(18,21,23);
+		d->setCursor(x -3*6, 14);
+		sprintf(a,"%d %d/%d", ofs, edpos, l);  d->print(a);
+		#endif
+
 		++tBlnk;  // blink cur
 		if (tBlnk > cBlnk)  tBlnk = 0;
 	}

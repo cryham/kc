@@ -48,7 +48,7 @@ const uint16_t cCmdClrLn[CMD_ALL]={
 	RGB(6,31,6),RGB(16,31,6), RGB(6,31,6),RGB(16,31,6),  RGB(6,31,6),RGB(16,31,6), RGB(6,31,6),RGB(16,31,6),
 };
 const uint8_t cCmdStrLen[CMD_ALL]={
-	7, 6, 4, 5,
+	6, 6, 2, 2,
 	7,7, 4,4,3,4, 5,5
 };
 

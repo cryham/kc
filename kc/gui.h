@@ -105,7 +105,7 @@ struct Gui
 	int8_t edit = 0;   // seq 0 view / 1 edit
 	int8_t edins = 1;  // 1 ins 0 overwrite
 	int8_t copyId = -1;  // copy/swap from
-	int8_t slot=0, page=0, edpos=0;  // edit vars
+	int8_t slot=0, page=0;  int16_t edpos=0;  // edit vars
 	void slotMax(),slotMin(),pageInc(),pageDec();
 	int seqId()
 	{	return slot + page*iPage;  }
