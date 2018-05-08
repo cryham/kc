@@ -37,19 +37,23 @@ int8_t Gui::KeysSeq()
 				if (kEnd > 0)  edpos = len;
 
 				//  cmd check
-				#define CmdAt(i)  (dt[i] >= K_Cmd0 && dt[i] <= K_CmdLast)
-				bool cmdR = edpos > 1 && CmdAt(edpos-2);
-				bool cmdL = edpos < len-1 && CmdAt(edpos);
-				int cmdPar = cmdR ? edpos-1 : cmdL ? edpos+1 : 0;
+				int cmdPar = 0;
+				int ii = kCtrl ? 4 : 1;  // ctrl x4
+				for (int i=0; i < ii; ++i)
+				{
+					#define CmdAt(i)  (dt[i] >= K_Cmd0 && dt[i] <= K_CmdLast)
+					bool cmdR = edpos > 1 && CmdAt(edpos-2);
+					bool cmdL = edpos < len-1 && CmdAt(edpos);
+					cmdPar = cmdR ? edpos-1 : cmdL ? edpos+1 : 0;
 
-				//  move, skip cmd  <,>
-				if (kRight < 0)
-				{	if (cmdR)  edpos-=2;  else
-					if (edpos > 0)  --edpos;  }
-				if (kRight > 0)
-				{	if (cmdL)  edpos+=2;  else
-					if (edpos < len)  ++edpos;  }
-
+					//  move, skip cmd  <,>
+					if (kRight < 0)
+					{	if (cmdR)  edpos-=2;  else
+						if (edpos > 0)  --edpos;  }
+					if (kRight > 0)
+					{	if (cmdL)  edpos+=2;  else
+						if (edpos < len)  ++edpos;  }
+				}
 				//  edit cmd param  ^,v
 				if (cmdPar && kUp)
 				{
