@@ -123,23 +123,23 @@ void Gui::DrawSequences()
 			DrawSeq(s, q);  // write
 		}
 
-		//  seq preview key, find  ---
+		//  seq preview key(s), find  ---
+		const int x = W-1 -5*6;
 		q = K_Seq0 + seqId();  // code
-		int l, ll=-1, ii=-1;
+		int l;  y=0;
 		for (l=0; l < KC_MaxLayers; ++l)
 		for (i=0; i < kc.set.scanKeys; ++i)
-			if (kc.set.key[l][i] == q)
-			{	ll=l; ii=i;  break;  }  // found
-		if (ii != -1)
-		{	int x = W-1 -5*6;
-			d->setCursor(x, 0);
-			d->setClr(30,23,26);
-			sprintf(a,"L %d", ll);  d->print(a);
+			if (kc.set.key[l][i] == q)  // found
+			{
+				d->setCursor(x-2*6 -4, y);
+				d->setClr(25,18,21);
+				sprintf(a,"L%d", l);  d->print(a);
 
-			d->setCursor(x, 10);
-			int8_t dt = kc.set.key[0][ii];  // layer 0 key
+				d->setCursor(x, y);
+				int8_t dt = kc.set.key[0][i];  // layer 0 key
 				FadeGrp(cKeyGrp[dt], 9, 0, 3);
 				sprintf(a,"%s", cKeyStr[dt]);  d->print(a);
+				y += 8+1;
 			}
 	}
 	//  Edit
