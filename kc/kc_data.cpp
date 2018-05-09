@@ -157,7 +157,9 @@ void KC_Main::Send(uint32_t ms)
 					break;
 
 				case CMD_Hide:  // ignore
-					//++seqPos;  SeqEnd(sq);
+					break;
+
+				case CMD_RunSeq:  // todo inSeq2 =
 					break;
 
 				//  _mouse commands_ execute
@@ -172,8 +174,13 @@ void KC_Main::Send(uint32_t ms)
 
 				case CM_WhX:  Mouse.scroll(cm,0);  break;  // wheels
 				case CM_WhY:  Mouse.scroll(0,cm);  break;
-				//  todo move big vals
-				//moveTo(uint16_t x, uint16_t y)  // absolute pos..
+
+				case CM_xbig:  usb_mouse_move(cm*100,0, 0,0);  break;
+				case CM_ybig:  usb_mouse_move(0,cm*100, 0,0);  break;
+
+				case CM_xset:  xm=cm*100;  break;  // absolute pos
+				case CM_yset:  ym=cm*100;  break;
+				case CM_mset:  Mouse.moveTo(xm,ym);  break;
 			}	}
 		}
 		//  todo hold any key-

@@ -45,19 +45,29 @@ void Gui::DrawSeq(int8_t seq, int8_t q)
 				case CMD_Wait:		d->drawFastVLine(x,y+1,5, ln);  break;
 				case CMD_Comment:	d->drawFastVLine(x,y+2,3, ln);  break;
 				case CMD_Hide:		d->drawFastVLine(x,y+1,5, ln);  return;
+				case CMD_RunSeq:    d->drawFastVLine(x,y,6, ln);  return;
 
 				//  _mouse commands_ draw short
-				case CM_x:  d->drawFastVLine(x,y+2,3, ln);  break;
-				case CM_y:  d->drawFastVLine(x,y+2,3, ln);  break;
+				#define ma(y1,h,a,s)  d->drawFastVLine(x, y+y1, h, ln); \
+					d->moveCursor(a, 0);  d->print(s);
+				case CM_x:  ma(2,3,2,"x");  break;
+				case CM_y:  ma(2,3,2,"y");  break;
 
-				case CM_BtnOn:  d->drawFastVLine(x,y+2,3, ln);  break;
-				case CM_BtnOff: d->drawFastVLine(x,y+2,3, ln);  break;
+				case CM_BtnOn:  ma(1,4,2,"b");  break;
+				case CM_BtnOff: ma(1,4,2,"b");  break;
 
-				case CM_Btn:   d->drawFastVLine(x,y+2,3, ln);  break;
-				case CM_Btn2x: d->drawFastVLine(x,y+2,3, ln);  break;
+				case CM_Btn:   ma(1,4,2,"B");   break;
+				case CM_Btn2x: ma(1,4,2,"B2");  break;
 
 				case CM_WhX:  d->drawFastVLine(x,y+2,3, ln);  break;
 				case CM_WhY:  d->drawFastVLine(x,y+2,3, ln);  break;
+
+				case CM_xbig:  ma(1,4,2,"X");  break;
+				case CM_ybig:  ma(1,4,2,"Y");  break;
+
+				case CM_xset:  ma(0,6,2,"X");  break;
+				case CM_yset:  ma(0,6,2,"Y");  break;
+				case CM_mset:  ma(0,6,2,"XY");  break;
 				}
 				d->moveCursor(4, 0);
 				++n;  // skip next, param byte
@@ -128,9 +138,9 @@ void Gui::DrawSequences()
 
 			d->setCursor(x, 10);
 			int8_t dt = kc.set.key[0][ii];  // layer 0 key
-			FadeGrp(cKeyGrp[dt], 9, 0, 3);
-			sprintf(a,"%s", cKeyStr[dt]);  d->print(a);
-		}
+				FadeGrp(cKeyGrp[dt], 9, 0, 3);
+				sprintf(a,"%s", cKeyStr[dt]);  d->print(a);
+			}
 	}
 	//  Edit
 	//......................................................
@@ -227,9 +237,12 @@ void Gui::DrawSequences()
 					case CMD_Hide:
 						d->print("H>");  break;
 
+					case CMD_RunSeq:
+						sprintf(a,"S%2d", cp);  d->print(a);  break;
+
 					//  _mouse commands_ draw
-					case CM_x:  sprintf(a,"Mx%+3d", cm);  d->print(a);  break;
-					case CM_y:  sprintf(a,"My%+3d", cm);  d->print(a);  break;
+					case CM_x:  sprintf(a,"Mx%+4d", cm);  d->print(a);  break;
+					case CM_y:  sprintf(a,"My%+4d", cm);  d->print(a);  break;
 
 					case CM_BtnOn:  sprintf(a,"%s\x19", sMB[cp]);  d->print(a);  break;
 					case CM_BtnOff: sprintf(a,"%s\x18", sMB[cp]);  d->print(a);  break;
@@ -239,13 +252,20 @@ void Gui::DrawSequences()
 
 					case CM_WhX:  sprintf(a,"WhX%2d", cm);  d->print(a);  break;
 					case CM_WhY:  sprintf(a,"WhY%2d", cm);  d->print(a);  break;
+
+					case CM_xbig:  sprintf(a,"MX%+4d", cm);  d->print(a);  break;
+					case CM_ybig:  sprintf(a,"MY%+4d", cm);  d->print(a);  break;
+
+					case CM_xset:  sprintf(a,"X=%+3d", cp);  d->print(a);  break;
+					case CM_yset:  sprintf(a,"Y=%+3d", cp);  d->print(a);  break;
+					case CM_mset:  d->print("XY");  break;
 					}
 				}else  // key
 					d->print(cKeyStr[dt]);
 			}
 			if (cur)  // cursor
 			{
-				int16_t b = 8 - 8 * tBlnk / cBlnk;
+				int16_t b = 8 * tBlnk / cBlnk;
 				if (edins)  // ins |
 					d->drawFastVLine(x-1, y-1-b+8, b+1, 0xFFFF);
 				else  // ovr _

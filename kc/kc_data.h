@@ -18,7 +18,8 @@ struct KC_Sequence
 enum ESeqCmd {
 	CMD_SetDelay=0, CMD_Wait, CMD_Comment, CMD_Hide,
 	//  mouse move: x,y, buttons: press,release, click,double, wheels: x,y
-	CM_x,CM_y, CM_BtnOn,CM_BtnOff, CM_Btn,CM_Btn2x, CM_WhX,CM_WhY, CMD_ALL
+	CM_x,CM_y, CM_BtnOn,CM_BtnOff, CM_Btn,CM_Btn2x, CM_WhX,CM_WhY,
+	CMD_RunSeq, CM_xbig,CM_ybig, CM_xset,CM_yset,CM_mset, CMD_ALL
 };	// note: need >= sequence ids than commands
 
 extern const uint16_t cCmdClrLn[CMD_ALL];  // underline colors
@@ -77,6 +78,7 @@ struct KC_Main
 
 	int8_t seqMod[K_ModLast+1];  // modifiers state
 	void SeqModClear();
+	uint16_t xm=0, ym=0;  // abs mouse pos
 
 
 	//  main  ----

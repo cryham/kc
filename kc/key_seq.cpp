@@ -91,34 +91,38 @@ int8_t Gui::KeysSeq()
 				if (kMul)   cmd = CMD_Wait;
 				if (kCopy)  cmd = CMD_Comment;
 				if (kSwap)  cmd = CMD_Hide;
+				if (kPaste) cmd = CMD_RunSeq;
 				//  todo manual pick key from list-
 			}
 			else  // shift
 			{
 				// _mouse commands_ set, keys
-				if (kRight < 0)  cmd = CM_x;  // par = 10;
-				if (kRight > 0)  cmd = CM_x;
-				if (kUp > 0)  cmd = CM_y;
-				if (kUp < 0)  cmd = CM_y;
+				if (kRight) cmd = kCtrl ? CM_xbig : CM_x;
+				if (kUp)    cmd = kCtrl ? CM_ybig : CM_y;
 				if (kEnd < 0)  cmd = CM_Btn;
 				if (kEnd > 0)  cmd = CM_Btn2x;
 				if (kPgUp < 0)  cmd = CM_BtnOff;
 				if (kPgUp > 0)  cmd = CM_BtnOn;
-				if (kDiv)  cmd = CM_WhX;
-				if (kMul)  cmd = CM_WhY;
+				if (kDiv)  cmd = kCtrl ? CM_xset : CM_WhX;
+				if (kMul)  cmd = kCtrl ? CM_yset : CM_WhY;
+				if (kSub)  cmd = CM_mset;
 			}
 		}
 		if (cmd >= 0)
 		{
 			//  1 B cmd id, 1 B param
 			//  commands use seq codes
+			uint8_t par = 0;
+			if (cmd == CM_x    || cmd == CM_y ||
+				cmd == CM_xbig || cmd == CM_ybig)
+				par += 128;
 			cmd += K_Cmd0;
 
 			//  add command to sequence
 			if (edpos >= len)  // at end
 			{
 				dt.push_back(cmd);  ++edpos;
-				dt.push_back(0);  ++edpos;
+				dt.push_back(par);  ++edpos;
 			}
 			else  // insert
 			{
@@ -129,7 +133,7 @@ int8_t Gui::KeysSeq()
 					dt[i] = dt[i-2];
 
 				dt[edpos] = cmd;  ++edpos;
-				dt[edpos] = 0;  ++edpos;
+				dt[edpos] = par;  ++edpos;
 			}
 		}
 		else
