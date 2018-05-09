@@ -114,7 +114,8 @@ int8_t Gui::KeysSeq()
 			//  commands use seq codes
 			uint8_t par = 0;
 			if (cmd == CM_x    || cmd == CM_y ||
-				cmd == CM_xbig || cmd == CM_ybig)
+				cmd == CM_xbig || cmd == CM_ybig ||
+				cmd == CM_WhX  || cmd == CM_WhY)
 				par += 128;
 			cmd += K_Cmd0;
 

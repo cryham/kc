@@ -250,8 +250,8 @@ void Gui::DrawSequences()
 					case CM_Btn:   d->print(sMB[cp]);  break;
 					case CM_Btn2x: sprintf(a,"%s2", sMB[cp]);  d->print(a);  break;
 
-					case CM_WhX:  sprintf(a,"WhX%2d", cm);  d->print(a);  break;
-					case CM_WhY:  sprintf(a,"WhY%2d", cm);  d->print(a);  break;
+					case CM_WhX:  sprintf(a,"Wx%2d", cm);  d->print(a);  break;
+					case CM_WhY:  sprintf(a,"Wy%2d", cm);  d->print(a);  break;
 
 					case CM_xbig:  sprintf(a,"MX%+4d", cm);  d->print(a);  break;
 					case CM_ybig:  sprintf(a,"MY%+4d", cm);  d->print(a);  break;

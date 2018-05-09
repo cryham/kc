@@ -45,9 +45,9 @@ const uint16_t cCmdClrLn[CMD_ALL]={
 	//CMD_SetDelay, CMD_Wait,  CMD_Comment, CMD_Hide,
 	RGB(31,31,8),RGB(31,31,22),  RGB(6,31,31), RGB(10,20,30),
 	//CM_x,CM_y, CM_BtnOn,CM_BtnOff,  CM_Btn,CM_Btn2x, CM_WhX,CM_WhY,
-	RGB(6,31,6),RGB(16,31,6), RGB(6,31,6),RGB(16,31,6),  RGB(6,31,6),RGB(16,31,6), RGB(6,31,6),RGB(16,31,6),
+	RGB(6,31,6),RGB(16,31,6), RGB(6,22,6),RGB(12,22,6),  RGB(6,31,6),RGB(16,31,6), RGB(6,31,16),RGB(16,31,16),
 	//CMD_RunSeq,  CM_xbig,CM_ybig, CM_xset,CM_yset,  CM_mset,
-	RGB(31,11,6),  RGB(6,31,6),RGB(16,31,6), RGB(6,31,6),RGB(16,31,6),  RGB(21,31,6),
+	RGB(31,11,6),  RGB(6,31,6),RGB(16,31,6), RGB(16,24,16),RGB(19,24,16),  RGB(21,26,21),
 };
 const uint8_t cCmdStrLen[CMD_ALL]={
 	6, 6, 2, 2,
