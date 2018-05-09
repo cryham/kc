@@ -88,7 +88,7 @@ void KC_Main::Load()
 	set.rows = Erd(a);  if (set.rows > KC_MaxRows) {  err=E_rows;  return;  }
 	set.cols = Erd(a);  if (set.cols > KC_MaxCols) {  err=E_cols;  return;  }
 	set.scanKeys = set.rows * set.cols;
-	set.seqSlots = Erd(a);
+	set.seqSlots = Erd(a);  // now less than in ee
 	if (set.seqSlots > KC_MaxSeqs) {  err=E_slots;  set.seqSlots = KC_MaxSeqs;  }
 
 
@@ -139,6 +139,9 @@ void KC_Main::Load()
 		}
 		set.seqs[i] = s;
 	}
+
+	if (set.seqSlots < KC_MaxSeqs)
+		set.seqSlots = KC_MaxSeqs;  // now more than in ee
 
 	memSize = a;
 }

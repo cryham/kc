@@ -49,9 +49,9 @@ enum EKeys  // byte key codes
 	K_Seq0, K_S1,K_S2,K_S3,K_S4,K_S5,K_S6,K_S7,K_S8,K_S9,
 	K_S10,K_S11,K_S12,K_S13,K_S14,K_S15,K_S16,K_S17,K_S18,K_S19,
 	K_S20,K_S21,K_S22,K_S23,K_S24,K_S25,K_S26,K_S27,K_S28,K_S29,
-	K_S30,K_S31,K_S32,K_S33,K_S34,K_S35,K_S36,K_S37,K_S38,K_S39, K_SeqLast = K_S39,
-//	K_S40,K_S41,K_S42,K_S43,K_S44,K_S45,K_S46,K_S47,K_S48,K_S49,
-//	K_S50,K_S51,K_S52,K_S53,K_S54,K_S55,K_S56,K_S57,K_S58,K_S59, K_SeqLast = K_S59,
+	K_S30,K_S31,K_S32,K_S33,K_S34,K_S35,K_S36,K_S37,K_S38,K_S39,
+	K_S40,K_S41,K_S42,K_S43,K_S44,K_S45,K_S46,K_S47,K_S48,K_S49,
+	K_S50,K_S51,K_S52,K_S53,K_S54,K_S55,K_S56,K_S57,K_S58,K_S59, K_SeqLast = K_S59,
 	KEYS_ALL_EXT,  // < End
 	//  commands in sequence, same ids, note: have at least 10 seqs to have all cmds
 	K_Cmd0=K_Seq0, K_CmdLast=K_SeqLast

@@ -16,7 +16,7 @@ const static int8_t
 	KC_MaxRows = 8,
 	KC_MaxCols = 18,
 	KC_MaxLayers = 8,  // 16
-	KC_MaxSeqs = 40;  // 60
+	KC_MaxSeqs = 60;  // 60
 
 
 //  params, saved
