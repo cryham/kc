@@ -172,8 +172,8 @@ void KC_Main::Send(uint32_t ms)
 				case CM_Btn2x:  Mouse.click(parMBtn[cp]);
 				case CM_Btn:  Mouse.click(parMBtn[cp]);  break;
 
-				case CM_WhX:  Mouse.scroll(cm,0);  break;  // wheels
-				case CM_WhY:  Mouse.scroll(0,cm);  break;
+				case CM_WhX:  Mouse.scroll(0,cm);  break;  // wheels
+				case CM_WhY:  Mouse.scroll(-cm,0);  break;
 
 				case CM_xbig:  usb_mouse_move(cm*100,0, 0,0);  break;
 				case CM_ybig:  usb_mouse_move(0,cm*100, 0,0);  break;
