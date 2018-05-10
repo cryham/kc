@@ -59,8 +59,8 @@ void Gui::DrawSeq(int8_t seq, int8_t q)
 				case CM_Btn:   ma(1,4,2,"B");   break;
 				case CM_Btn2x: ma(1,4,2,"B2");  break;
 
-				case CM_WhX:  d->drawFastVLine(x,y+2,3, ln);  break;
-				case CM_WhY:  d->drawFastVLine(x,y+2,3, ln);  break;
+				case CM_WhX:  ma(1,2,2,"W");  break;
+				case CM_WhY:  ma(1,4,2,"w");  break;
 
 				case CM_xbig:  ma(1,4,2,"X");  break;
 				case CM_ybig:  ma(1,4,2,"Y");  break;

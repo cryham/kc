@@ -132,7 +132,15 @@ void Gui::KeysMap()
 
 	//  quick access keys / * -
 	if (kDiv)  pressKey = 1;
-	if (kSub || kEnt || kEnt2)  pickCode = 1;
+	if (kSub || kEnt || kEnt2)
+		if (!kCtrl)
+			pickCode = 1;
+		else
+		//if ()
+		{	//  jump to seq, todo jump to map
+			//SetScreen(ST_Seqs);
+
+		}
 
 	if (kSave)  Save();
 	if (kLoad)  Load(kCtrl);

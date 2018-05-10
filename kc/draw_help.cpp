@@ -146,13 +146,15 @@ void Gui::DrawHelp()
 		d->setClr(24,25,23);
 		d->println("Shift- Insert command:");
 		d->moveCursor(0,6);
-		d->println("\x1B,\x1A \x18,\x19  Move x,y");
+		d->println("\x1B,\x1A \x18,\x19  Move  Ctrl big");
 		d->moveCursor(0,4);
-		d->println("Button:");
+		d->println("  Buttons:");
 		d->println("Home click  End  double");
 		d->println("PgDn press  PgUp release");
 		d->moveCursor(0,4);
 		d->println("/,*  Wheel move horiz,vert");
+		d->moveCursor(0,2);
+		d->println("/,*,-  Adjust x,y, Set xy-");
 		d->moveCursor(0,6);
 		d->println("\x18,\x19  Adjust parameter");
 		break;
