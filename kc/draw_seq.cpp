@@ -12,6 +12,7 @@
 //......................................................
 void Gui::DrawSeq(int8_t seq, int8_t q)
 {
+	char a[16];
 	int n=0, len = kc.set.seqs[seq].len();
 	while (n < len)
 	{
@@ -39,13 +40,17 @@ void Gui::DrawSeq(int8_t seq, int8_t q)
 				int cmd = dt - K_Cmd0;
 				int16_t y = d->getCursorY();
 				uint16_t ln = cCmdClrLn[cmd];
+				++n;  // next, param
+				uint8_t par = n < len ? kc.set.seqs[seq].data[n] : 0;
+
 				switch (cmd)
 				{
 				case CMD_SetDelay:
 				case CMD_Wait:		d->drawFastVLine(x,y+1,5, ln);  break;
 				case CMD_Comment:	d->drawFastVLine(x,y+2,3, ln);  break;
 				case CMD_Hide:		d->drawFastVLine(x,y+1,5, ln);  return;
-				case CMD_RunSeq:    d->drawFastVLine(x,y,6, ln);  return;
+				case CMD_RunSeq:    d->drawFastVLine(x,y,6, ln);
+					d->moveCursor(2, 0);  sprintf(a,"%2d",par);  d->print(a);  break;
 
 				//  _mouse commands_ draw short
 				#define ma(y1,h,a,s)  d->drawFastVLine(x, y+y1, h, ln); \
@@ -70,7 +75,6 @@ void Gui::DrawSeq(int8_t seq, int8_t q)
 				case CM_mset:  ma(0,6,2,"XY");  break;
 				}
 				d->moveCursor(4, 0);
-				++n;  // skip next, param byte
 			}
 			else  //  keys
 			{	d->print(st);  //d->print(" ");

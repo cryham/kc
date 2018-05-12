@@ -190,8 +190,7 @@ void Gui::DrawMapping()
 	//  ids dbg -
 	/*d->setClr(16,20,12);
 	d->setCursor(0, 6*8+4);
-	sprintf(a,"scId: %d draw %d  send %d", scId, drawId, kbdSend);  d->print(a);
-	sprintf(a,"draw %2d  x %2d y %2d", drawId, drawX, drawY);  d->print(a);*/
+	sprintf(a,"sc: %d dr %d x %2d y %2d", scId, drawId, drawX, drawY);  d->print(a);*/
 
 
 	//  key binds, lay data

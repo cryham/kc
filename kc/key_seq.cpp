@@ -1,6 +1,7 @@
 #include "gui.h"
 #include "kc_data.h"
 #include "matrix.h"
+#include "kbd_layout.h"
 
 
 int8_t Gui::KeysSeq()
@@ -12,7 +13,25 @@ int8_t Gui::KeysSeq()
 	std::vector<uint8_t>& dt = sq.data;
 
 	//  toggle edit  ----
-	if (layEd && (kEnt || kEnt2))
+	bool ent = kEnt || kEnt2;
+	if (ent && kCtrl && !edit)
+	{
+		//  jump to mapping key with seq id (on cur lay)
+		uint8_t sq = seqId() + K_Seq0;
+		for (int i = 0; i < nDrawKeys; ++i)
+		{
+			uint8_t sc = drawKeys[i].sc;
+			if (sc < ScanKeys && sc != NO &&
+				kc.set.key[nLay][sc] == sq)
+			{
+				SetScreen(ST_Map);
+				drawId = i;  scId = sc;  break;
+			}
+		}
+		return 1;
+	}
+	else
+	if (ent && layEd)
 	{
 		edit = 1-edit;
 		if (edit)  // enter edit

@@ -133,14 +133,17 @@ void Gui::KeysMap()
 	//  quick access keys / * -
 	if (kDiv)  pressKey = 1;
 	if (kSub || kEnt || kEnt2)
-		if (!kCtrl)
+	{	if (!kCtrl)
 			pickCode = 1;
-		else
-		//if ()
-		{	//  jump to seq, todo jump to map
-			//SetScreen(ST_Seqs);
-
-		}
+		else	//  jump to seq id, if seq key
+		if (scId != NO && scId >= 0) /*&& scId < kc.set.nkeys()*/
+		{	int sq = kc.set.key[nLay][scId] - K_Seq0;
+			if (sq >= 0 && sq <= K_SeqLast && sq < KC_MaxSeqs)
+			{
+				SetScreen(ST_Seqs);
+				page = sq / iPage;
+				slot = sq - page*iPage;
+	}	}	}
 
 	if (kSave)  Save();
 	if (kLoad)  Load(kCtrl);
