@@ -18,12 +18,12 @@ void Gui::DrawHelp()
 	d->print(a);
 
 	//  titles
-	const static char* title[HAll] = {"Main",
+	const static char* title[HAll] = {"Main", "Quick",
 		"Mapping", "Mapping",
 		"Sequences", "Sequence", "Sequence", "Sequence",
 		"Demos", "Sixtis", "Sixtis"},
 
-	*title2[HAll] = {"",  // 2nd lines
+	*title2[HAll] = {"", "Access",  // 2nd lines
 		"", "Pick Key",
 		" View", " Edit", "Commands", "Mouse",
 		"", " 1/2", " 2/2"};
@@ -58,27 +58,42 @@ void Gui::DrawHelp()
 		d->println("F5   Load   Ctrl- Reset");
 		break;
 
-	case 1:  //  mapping  ------------------------
+	case 1:  //  quick
+		d->setClr(16,22,28);
+		d->println("F1   Mapping");
+		d->println("F2   Sequences");
+		d->moveCursor(0,4);
+		d->println("F6   Test Pressed");
+		d->println("F7   Test Layout");
+		d->println("F8   Setup Mouse");
+		d->moveCursor(0,4);
+		d->println("F9   Display");
+		d->println("F11  Help");
+		d->println("F12  Demos Plasma");
+		break;
+
+	case 2:  //  mapping  ------------------------
 		d->setClr(25,28,23);
 		d->println("\x18,\x19 \x1B,\x1A    Move Cursor");
 		d->moveCursor(0,2);
 		d->println("/    Press key, set cursor");
 		d->moveCursor(0,6);
 		d->println("PgUp,PgDn  Prev/Next Layer");
-		d->moveCursor(0,2);
+		//d->moveCursor(0,2);
 		d->setClr(17,24,17);
 		d->println("  Last is layer use visual");
 
 		d->moveCursor(0,6);
 		d->setClr(25,28,23);
 		d->println("- or Ent   Pick key list");
+		d->println("Ctrl-Ent   Go to sequence");
 		d->moveCursor(0,6);
 		d->println("C,V,X      Copy,Paste,Swap");
-		d->moveCursor(0,2);
+		//d->moveCursor(0,2);
 		d->println("Ctrl-Del   Delete");
 		break;
 
-	case 2:  //  pick key
+	case 3:  //  pick key
 		d->setClr(23,28,23);
 		d->println("\x18,\x19 PgUp,PgDn \x1B,\x1A  Move");
 		d->moveCursor(0,6);
@@ -93,7 +108,7 @@ void Gui::DrawHelp()
 		d->println("\x1B,\x1A  Prev,Next Group");
 		break;
 
-	case 3:  //  sequences
+	case 4:  //  sequences
 	//	d->println("--------------------------");  // max 26
 		d->setClr(21,28,28);
 		d->println("\x18,\x19 PgUp,PgDn  Move");
@@ -102,14 +117,15 @@ void Gui::DrawHelp()
 		d->moveCursor(0,6);
 		sprintf(a,"L%d-Enter   Edit seq.", par.editLayer);
 		d->println(a);
+		d->println("Ctrl-Ent   Go to mapping");
 
 		d->moveCursor(0,6);
 		d->println("C,V,X      Copy,Paste,Swap");
-		d->moveCursor(0,2);
+		//d->moveCursor(0,2);
 		d->println("Ctrl-Del   Delete");
 		break;
 
-	case 4:  //  edit seq
+	case 5:  //  edit seq
 		d->setClr(6,30,30);
 		sprintf(a,"All on Layer %d:", par.editLayer);
 		d->println(a);
@@ -126,7 +142,7 @@ void Gui::DrawHelp()
 		d->println("Enter      Exit Edit");
 		break;
 
-	case 5:  //  seq commands ___ help
+	case 6:  //  seq commands ___ help
 		d->setClr(25,26,26);
 		d->println("Insert command in seq:");
 		d->moveCursor(0,6);
@@ -142,7 +158,7 @@ void Gui::DrawHelp()
 		d->println("\x18,\x19  Adjust parameter");
 		break;
 
-	case 6:  //  seq _mouse commands_ help
+	case 7:  //  seq _mouse commands_ help
 		d->setClr(24,25,23);
 		d->println("Shift- Insert command:");
 		d->moveCursor(0,6);
@@ -159,7 +175,7 @@ void Gui::DrawHelp()
 		d->println("\x18,\x19  Adjust parameter");
 		break;
 
-	case 7:  //  demos  ------------------------
+	case 8:  //  demos  ------------------------
 		d->setClr(26,26,29);
 		d->println("\x1B,\x1A   Prev/Next Preset");
 		d->println("\x18,\x19   Dec,Inc Speed");
@@ -176,7 +192,7 @@ void Gui::DrawHelp()
 		d->println("  Shift  Fine");
 		break;
 
-	case 8:  //  sixtis  ------------------------
+	case 9:  //  sixtis  ------------------------
 		d->setClr(29,26,23);
 		d->println("\x1B,\x1A      Move");
 		d->moveCursor(0,6);
@@ -189,7 +205,7 @@ void Gui::DrawHelp()
 		d->println("Ins      Drop");
 		break;
 
-	case 9:  //  sixtis cd
+	case 10:  //  sixtis cd
 		d->setClr(29,25,20);
 		d->println("+ or Bksp  Back");
 		d->moveCursor(0,2);
