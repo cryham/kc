@@ -24,20 +24,18 @@ struct Gui
 
 
 	//  draw menus
-	void DrawMapping(), DrawSequences();
-	void DrawTesting(), DrawSetup();
-	void DrawDisplay(), DrawHelp(), DrawOperInfo();
+	void DrawMapping(), DrawSequences(), DrawTesting(), DrawSetup();
+	void DrawDisplay(), DrawClock(), DrawHelp(), DrawOperInfo();
 
 	//  draw util
-	void DrawPressed();
-	void DrawLayout(bool edit), Chk_y1();
+	void DrawPressed(), DrawLayout(bool edit), Chk_y1();
 	void DrawSeq(int8_t seq, int8_t q);
-	void DrawDispCur(int i, int16_t y);
+	void DrawDispCur(int i, int16_t y), DrawClockCur(int i, int16_t y);
 
 	//  keys
 	int8_t KeysSeq();  void KeysMap();
 	int PressKey(int8_t& var);
-	void KeysParSetup(int sp), KeysParDisplay(int sp);
+	void KeysParSetup(int sp), KeysParDisplay(int sp), KeysClock();
 
 	//  start
 	void SetScreen(int8_t start);
@@ -47,7 +45,7 @@ struct Gui
 	//  fade color menu  ---
 	enum EFadeClr
 	{	C_Main=0, C_Demos, C_Test, C_Map, C_Seq,
-		C_Setup, C_Disp, C_Setup2,
+		C_Setup, C_Disp, C_Clock, C_Setup2,
 		C_Game, C_GameOpt, Cl_ALL  };
 	const static uint8_t
 		Mclr[Cl_ALL][2][3];
@@ -95,9 +93,10 @@ struct Gui
 	//  level 2 y cursors  - -
 	int8_t ym2Scan = 0, ym2Keyb = 0, ym2Mouse = 0, pressGui = 0;  // Setup
 	int8_t ym2Disp = 0, pgDisp = 0;  // Display
+	int8_t ym2Clock = 0, pgClock = 0;  // Clock
 
-	const static uint8_t Disp_All = 3;
-	const static uint8_t DispPages[Disp_All], ScanPages[S_All-1];
+	const static uint8_t Disp_All = 2, Clock_All = 2;
+	const static uint8_t DispPages[Disp_All], ScanPages[S_All-1], ClockPages[Clock_All];
 
 	//  util
 	int16_t RangeAdd(int16_t val, int16_t add, int16_t vmin, int16_t vmax, int8_t cycle=0);

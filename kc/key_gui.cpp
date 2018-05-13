@@ -52,7 +52,7 @@ void Gui::KeyPress()
 		if (kF7)  SetScreen(ST_Test2+T_Layout);
 		if (kF8)  SetScreen(ST_Setup2+S_Mouse);
 		if (kF9)  SetScreen(ST_Displ);
-		//if (kF10)  SetScreen(ST_Displ);
+		if (kF10)  SetScreen(ST_Clock);
 		if (kF11)  SetScreen(ST_Help);
 		if (kF12)  SetScreen(ST_Demos2+D_Plasma);
 	}
@@ -82,6 +82,12 @@ void Gui::KeyPress()
 	if (ym == M_Display && mlevel == 1)
 	{
 		KeysParDisplay(sp);  return;
+	}
+
+	//  Clock
+	if (ym == M_Clock && mlevel == 1)
+	{
+		KeysClock();  return;
 	}
 
 

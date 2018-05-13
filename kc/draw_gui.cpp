@@ -90,6 +90,7 @@ void Gui::Draw()
 
 	//  Display, Help
 	case M_Display: DrawDisplay();  return;
+	case M_Clock:   DrawClock();  return;
 	case M_Help:    DrawHelp();  return;
 	}
 }

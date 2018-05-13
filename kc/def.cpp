@@ -9,10 +9,11 @@ const uint8_t Gui::Mclr[Gui::Cl_ALL][2][3] = {
 	{{22,31,18},{6,3,7}},  //  3 map
 	{{17,31,31},{5,4,3}},  //  4 seqs
 	{{24,27,27},{5,4,3}},  // 5 setup
-	{{31,31,16},{3,5,5}},  // 6 display
-	{{26,28,28},{4,3,3}},  // 7 setup2
-	{{31,26,12},{1,4,5}},  //  8 game
-	{{31,26,22},{1,6,8}},  //  9 game opt
+	{{31,31,16},{3,5,5}},  //  6 display
+	{{30,30,30},{5,3,1}},  //  7 clock
+	{{26,28,28},{4,3,3}},  // 8 setup2
+	{{31,26,12},{1,4,5}},  //  9 game
+	{{31,26,22},{1,6,8}},  //  10 game opt
 };
 
 //  Main Menu
@@ -20,7 +21,7 @@ const char* strMain[M_All] =
 {
 	"Mapping", "Sequences",
 	"Testing", "Setup",
-	"Display", "Help",
+	"Display", "Clock", "Help",
 #ifdef GAME
 	"Game",
 #endif
@@ -70,6 +71,7 @@ const uint8_t YM1[M_All] =
 	T_All,  // M_Testing
 	S_All,  // M_Setup
 	1,  // M_Display
+	1,  // M_Clock,
 	1,  // M_Help
 #ifdef GAME
 	1,  // M_Game

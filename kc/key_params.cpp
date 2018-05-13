@@ -6,7 +6,7 @@
 #include "kc_data.h"
 #include "periodic.h"
 
-const uint8_t Gui::DispPages[Gui::Disp_All] = {2,4,5};
+const uint8_t Gui::DispPages[Gui::Disp_All] = {2,4};
 const uint8_t Gui::ScanPages[S_All-1] = {2,3,4};
 
 
