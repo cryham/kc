@@ -20,7 +20,7 @@ void Gui::DrawDispCur(int i, int16_t y)
 }
 
 //  date from day number
-uint8_t MDays[13]= {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+uint8_t MDays[13] = {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 
 inline bool isLeap(int y)
 {
@@ -47,6 +47,28 @@ void getMD(bool leap, int day, int* mday, int* mth)
 	*mday = day+1;  *mth = m;
 }
 
+typedef unsigned long ul;
+typedef unsigned int ui;
+
+//  Given the year, month and day, return the day number.
+//  https://alcor.concordia.ca/~gpkatch/gdate-method.html
+ul DayNumFromDate(ui y, ui m, ui d)
+{
+	m = (m + 9) % 12;
+	y -= m / 10;
+	ul dn = 365*y + y/4 - y/100 + y/400 + (m*306 + 5)/10 + (d - 1);
+	return dn;
+}
+
+const char* mths[] = {"Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"};
+const char* wdays[] = {"Wed", "Thu", "Fri", "Sat", "Sun", "Mon", "Tue"};
+
+//  Given year, month, day, return the day of week (string).
+const char* DayOfWeek(int y, ul m, ul d)
+{
+	ul dn = DayNumFromDate(y, m, d);
+	return wdays[dn % 7];
+}
 
 void Gui::DrawDisplay()
 {		
@@ -61,23 +83,29 @@ void Gui::DrawDisplay()
 			dt = t/3600/24, yr = dt/365 +2000;
 
 		d->setCursor(W/2, H-13);
-		d->setClr(16,24,8);
+		d->setClr(18,27,10);
 
 		sprintf(a,"%2d:%02d:%02d", h, m, s);
 		d->print(a);
 		d->setFont(0);
 
+		//  date
 		int mth=0, day=0;
 		getMD(isLeap(yr), dt%365, &day, &mth);
-		d->setCursor(0, H-1-8);  // date
+		d->setCursor(0, H-1-8);
 		sprintf(a,"%04d %02d %02d", yr, mth, day);
+		d->print(a);
+		//  mth, week
+		d->setCursor(0, H-1-8-10);
+		sprintf(a,"%2d %s, %s", day, mths[mth-1],
+				DayOfWeek(yr, mth, day));
 		d->print(a);
 
 		//  time since on
 		t -= tm_on;
 		dt = t/3600/24; h = t/3600%24; m = t/60%60; s = t%60;
 
-		d->setCursor(W/2, H-13-10);
+		d->setCursor(W/2 +4, H-13-12);
 		sprintf(a,"%d %2d:%02d:%02d", dt%10, h, m, s);
 		d->print(a);
 	}
@@ -140,13 +168,13 @@ void Gui::DrawDisplay()
 			switch(i)
 			{
 			case 0:
-				sprintf(a,"Hour");  break;
+				sprintf(a,"Hour  Clock");  break;
 			case 1:
 				sprintf(a,"Minute");  break;
 			case 2:
 				sprintf(a,"Second");  h = 4;  break;
 			case 3:
-				sprintf(a,"Day");  break;
+				sprintf(a,"Day  Date");  break;
 			case 4:
 				sprintf(a,"Month");  break;
 			case 5:
