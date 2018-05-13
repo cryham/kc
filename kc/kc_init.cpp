@@ -19,11 +19,11 @@ void KC_Main::SeqModClear()
 KC_Main::KC_Main()
 {
 	err=E_ok;  memSize = 0;
-
 	setDac = 1;
-
 	SeqModClear();
+
 	Mouse.screenSize(1920,1200);  //?
+	tm_key = rtc_get();
 }
 
 //  clear evth

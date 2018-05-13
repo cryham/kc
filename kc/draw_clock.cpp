@@ -1,5 +1,7 @@
 #include "gui.h"
 #include "Ada4_ST7735.h"
+#include "matrix.h"
+#include "kc_data.h"
 
 
 //  const
@@ -42,6 +44,8 @@ int DayOfWeek(int d, int m, int y)
     return (y + y/4 - y/100 + y/400 + int(t12[m-1]) + d) % 7;
 }
 
+const char* sPgClock[Gui::Clock_All] = {"", "Adjust", "Stats"};
+
 
 //  Display
 //....................................................................................
@@ -61,55 +65,74 @@ void Gui::DrawClockCur(int i, int16_t y)
 
 void Gui::DrawClock()
 {		
-	char a[64];
+	char a[64],f[32];
 	d->setClr(20,22,24);
 	d->print(strMain[ym]);
 
 	//  time  ---
-	unsigned long t = rtc_get();
+	unsigned long t = rtc_get(), to, ti;
 	//if (!t)  return;  // no rtc osc
 
 	int h = t/3600%24, m = t/60%60, s = t%60,
 		dt = t/3600/24, yr = dt/365 + 2000;
 
-	//  time
-	int16_t x = W/2, y = 32;
-	d->setCursor(x, y);
-	d->setClr(25,27,29);
+	int16_t x = W/2, y = 32, yo = H-20, yd = 32+24, yi = yo-26;
+	to = t - tm_on;
+	bool clock = pgClock < 2;
 
-	sprintf(a,"%2d:%02d:%02d", h, m, s);
-	d->print(a);
+	//  time, date
+	if (clock)
+	{
+		d->setCursor(x, y);
+		d->setClr(25,27,29);
+
+		sprintf(a,"%2d:%02d:%02d", h, m, s);
+		d->print(a);
+	}
 
 	//  time since on
-	t -= tm_on;  int dn = t/3600/24 %10;
-	h = t/3600%24;  m = t/60%60;  s = t%60;
+	int dn = to/3600/24 %10;
+	h = to/3600%24;  m = to/60%60;  s = to%60;
 
-	int16_t yo = H-20;  y = yo;
+	y = yo;
 	d->setCursor(x -10, y);
 	d->setClr(16,21,26);
 	sprintf(a,"%d %2d:%02d:%02d", dn, h, m, s);
 	d->print(a);
 
-	//  date
-	int mth=0, day=0;
-	getMD(isLeap(yr), dt%365, &day, &mth);
+	//  time inactive
+	if (pgClock == 2)
+	{
+		ti = t - kc.tm_key;
+		h = ti/3600%24;  m = ti/60%60;  s = ti%60;
 
-	int16_t yd = 32+24;
-	y = yd;  // day, week
-	x += 6;
-	d->setCursor(x, y);
-	d->setClr(20,23,26);
-	sprintf(a,"%02d  %s", day,
-			wdays[DayOfWeek(yr, mth, day)]);  d->print(a);
-	y += 16;  // month
-	d->setCursor(x, y);
-	sprintf(a,"%2d  %s", mth, mths[mth-1]);  d->print(a);
-	d->setFont(0);
+		d->setCursor(x, yi);
+		sprintf(a,"%2d:%02d:%02d", h, m, s);
+		d->print(a);
+	}
 
-	y += 16;  // year
-	d->setCursor(x, y);
-	sprintf(a,"%04d", yr);  d->print(a);
+	if (clock)
+	{
+		//  date
+		int mth=0, day=0;
+		getMD(isLeap(yr), dt%365, &day, &mth);
 
+		//  day, week
+		x += 6;  y = yd;
+		d->setCursor(x, y);
+		d->setClr(20,23,26);
+		sprintf(a,"%02d  %s", day,
+				wdays[DayOfWeek(yr, mth, day)]);  d->print(a);
+		y += 16;  // month
+		d->setCursor(x, y);
+		sprintf(a,"%d  %s", mth, mths[mth-1]);  d->print(a);
+		d->setFont(0);
+
+		y += 16;  // year
+		d->setCursor(x, y);
+		sprintf(a,"%04d", yr);  d->print(a);
+	}else
+		d->setFont(0);
 
 	//  page  --
 	d->setCursor(W-1 -3*6, 4);
@@ -117,10 +140,9 @@ void Gui::DrawClock()
 	sprintf(a,"%d/%d", pgClock+1, Clock_All);
 	d->print(a);
 
-	if (pgClock == 1)
-	{	d->setCursor(W/2 -2*6, 4);
-		d->print("Adjust");
-	}
+	d->setCursor(W/2 -2*6, 4);
+	d->print(sPgClock[pgClock]);
+
 
 	//  par values  ---
 	int pg = ClockPages[pgClock];
@@ -134,7 +156,7 @@ void Gui::DrawClock()
 		x = 6;	y = yo;  d->setCursor(x,y+4);  d->print("Since on");
 		break;
 
-	case 1:
+	case 1:  //  adjust
 		for (int i=0; i <= pg; ++i)
 		{
 			DrawClockCur(i, y);
@@ -156,5 +178,19 @@ void Gui::DrawClock()
 			}
 			d->print(a);  y += h+8;
 		}	break;
+
+	case 2:  //  stats
+		d->setClr(16,22,31);
+		x = 6;	y = 32+8;  d->setCursor(x,y);
+		sprintf(a, "Pressed    %d", cnt_press);  d->print(a);
+
+		y += 16;  d->setCursor(x,y);
+		float pm = 60.f * float(cnt_press) / float(to);
+		dtostrf(pm, 6,3, f);
+		sprintf(a, "Press/min  %s", f);  d->print(a);
+
+		x = 6;	y = yi;  d->setCursor(x,y+2);  d->print("Inactive");
+		x = 6;	y = yo;  d->setCursor(x,y+4);  d->print("Since on");
+		break;
 	}
 }

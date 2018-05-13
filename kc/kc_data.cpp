@@ -255,6 +255,7 @@ void KC_Main::Send(uint32_t ms)
 					k.layerOn = nLayer;  // save layer of press
 					Keyboard.press(usb);
 					Keyboard.send_now();
+					tm_key = rtc_get();  // for stats
 				}
 				//  mouse  * * *
 				else
