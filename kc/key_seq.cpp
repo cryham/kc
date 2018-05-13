@@ -25,7 +25,19 @@ int8_t Gui::KeysSeq()
 				kc.set.key[nLay][sc] == sq)
 			{
 				SetScreen(ST_Map);
-				drawId = i;  scId = sc;  break;
+				drawId = i;  scId = sc;  return 1;
+			}
+		}
+		//  if not found, try all layers
+		for (int l = 0; l < KC_MaxLayers; ++l)
+		for (int i = 0; i < nDrawKeys; ++i)
+		{
+			uint8_t sc = drawKeys[i].sc;
+			if (sc < ScanKeys && sc != NO &&
+				kc.set.key[l][sc] == sq)
+			{
+				SetScreen(ST_Map);  nLay = l;
+				drawId = i;  scId = sc;  return 1;
 			}
 		}
 		return 1;

@@ -163,18 +163,12 @@ void Gui::DrawClock()
 			int8_t h = 2;
 			switch(i)
 			{
-			case 0:
-				sprintf(a,"Hour");  break;
-			case 1:
-				sprintf(a,"Minute");  break;
-			case 2:
-				sprintf(a,"Second");  h = 4;  break;
-			case 3:
-				sprintf(a,"Day");  break;
-			case 4:
-				sprintf(a,"Month");  break;
-			case 5:
-				sprintf(a,"Year");  break;
+			case 0:  sprintf(a,"Hour");  break;
+			case 1:  sprintf(a,"Minute");  break;
+			case 2:  sprintf(a,"Second");  h = 4;  break;
+			case 3:  sprintf(a,"Day");  break;
+			case 4:  sprintf(a,"Month");  break;
+			case 5:  sprintf(a,"Year");  break;
 			}
 			d->print(a);  y += h+8;
 		}	break;

@@ -131,7 +131,7 @@ void Gui::DrawHelp()
 		d->setClr(6,30,30);
 		sprintf(a,"All on Layer %d:", par.editLayer);
 		d->println(a);
-		d->setClr(18,30,30);
+		d->setClr(18,29,29);
 		d->moveCursor(0,6);
 		d->println("\x1B,\x1A   Move Cursor  Ctrl 4x");
 		d->moveCursor(0,2);
@@ -156,6 +156,8 @@ void Gui::DrawHelp()
 		d->println("C  Comment start/end {}");
 		d->moveCursor(0,2);
 		d->println("V  Hide> rest of seq.");
+		d->moveCursor(0,2);
+		d->println("X  Run other seq.");
 		d->moveCursor(0,6);
 		d->println("\x18,\x19  Adjust parameter");
 		break;
