@@ -23,6 +23,7 @@ KC_Main::KC_Main()
 	setDac = 1;
 
 	SeqModClear();
+	Mouse.screenSize(1920,1200);  //?
 }
 
 //  clear evth

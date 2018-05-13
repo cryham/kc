@@ -32,6 +32,7 @@ struct Gui
 	void DrawPressed();
 	void DrawLayout(bool edit), Chk_y1();
 	void DrawSeq(int8_t seq, int8_t q);
+	void DrawDispCur(int i, int16_t y);
 
 	//  keys
 	int8_t KeysSeq();  void KeysMap();
@@ -72,7 +73,9 @@ struct Gui
 
 	//  help
 	int8_t hpage = 0;
-	const static int8_t HAll = 10;
+	const static int8_t HAll = 11;
+	//  rtc on start
+	unsigned long tm_on = 0;
 
 
 	//  keys pressed, some +-1  _k_
@@ -93,7 +96,7 @@ struct Gui
 	int8_t ym2Scan = 0, ym2Keyb = 0, ym2Mouse = 0, pressGui = 0;  // Setup
 	int8_t ym2Disp = 0, pgDisp = 0;  // Display
 
-	const static uint8_t Disp_All = 2;
+	const static uint8_t Disp_All = 3;
 	const static uint8_t DispPages[Disp_All], ScanPages[S_All-1];
 
 	//  util

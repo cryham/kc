@@ -7,6 +7,7 @@
 //  Main  ----
 Gui::Gui() : d(0)
 {
+	tm_on = rtc_get();
 	Init(0);
 }
 

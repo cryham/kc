@@ -181,7 +181,6 @@ void KC_Main::Send(uint32_t ms)
 				case CM_xset:  xm=cm*100;  break;  // absolute pos
 				case CM_yset:  ym=cm*100;  break;
 				case CM_mset:
-					Mouse.screenSize(1920,1200);
 					Mouse.moveTo(xm,ym);  break;
 			}	}
 		}
