@@ -68,12 +68,12 @@ struct KC_Main
 	int8_t nLayer = 0;
 	int8_t setDac = 1;  // update
 
-	//  sequence running vars
-	int8_t inSeq = -1,  // id run, -1 none
-		seqPos = 0,   // cur index in seq data
-		seqRel = 0,   // pressed / released
-		seqWait = 0;  // one time, restore dtSeq
-	uint16_t dtSeq = 20;  // var delay  param
+	//  sequence running vars  0 norm, 1 from seq
+	int8_t inSeq[2] = {-1,-1},	// id run, -1 none
+		seqRel[2] = {0,0},		// pressed / released
+		seqWait = 0;			// one time, restore dtSeq
+	int16_t seqPos[2] = {0,0};	// cur index in seq data
+	uint16_t dtSeq = 20;		// var delay  param
 	uint32_t tiSeq = 0, tiFun = 0;  // ms time delay
 
 	int8_t seqMod[K_ModLast+1];  // modifiers state
@@ -88,7 +88,7 @@ struct KC_Main
 
 	void UpdLay(uint32_t ms);  // update
 	void Send(uint32_t ms);  // send usb
-	bool SeqEnd(const KC_Sequence& sq);
+	bool SeqEnd(int lev, const KC_Sequence& sq);
 
 	//  eeprom  ----
 	void Load(), Save();

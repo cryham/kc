@@ -98,13 +98,13 @@ void KC_Main::UpdLay(uint32_t ms)
 
 //  keyboard send  (to pc usb)
 //------------------------------------------------------------------------------------------------
-bool KC_Main::SeqEnd(const KC_Sequence& sq)
+bool KC_Main::SeqEnd(int lev, const KC_Sequence& sq)
 {
-	if (seqPos >= sq.len())
+	if (seqPos[lev] >= sq.len())
 	{
 		Keyboard.releaseAll();
 		SeqModClear();
-		inSeq = -1;  // end
+		inSeq[lev] = -1;  // end
 		return true;
 	}
 	return false;
@@ -117,7 +117,11 @@ const static uint8_t parMBtn[6]={
 void KC_Main::Send(uint32_t ms)
 {
 	//  in sequence  ***
-	if (inSeq >= 0 && (ms - tiSeq > dtSeq || ms < tiSeq))
+	int lev = -1;  // level, none
+	if (inSeq[1] >= 0)  lev = 1;  else  // from seq
+	if (inSeq[0] >= 0)  lev = 0;  // base, from key
+
+	if (lev >= 0 && (ms - tiSeq > dtSeq || ms < tiSeq))
 	{
 		tiSeq = ms;
 
@@ -125,8 +129,10 @@ void KC_Main::Send(uint32_t ms)
 		{	seqWait = 0;  // restore, dtSeqOwn-
 			dtSeq = par.dtSeqDef;
 		}
-		const KC_Sequence& sq = set.seqs[inSeq];
-		uint8_t code = sq.data[seqPos];
+		const KC_Sequence& sq = set.seqs[inSeq[lev]];
+		int16_t& sp = seqPos[lev];  int8_t& sr = seqRel[lev];
+		uint8_t code = sq.data[sp];
+
 		uint usb = cKeyUsb[code];
 
 		//  commands ___ execute
@@ -134,10 +140,10 @@ void KC_Main::Send(uint32_t ms)
 		if (isCmd)
 		{
 			int cmd = code - K_Cmd0;
-			++seqPos;  if (!SeqEnd(sq))
+			++sp;  if (!SeqEnd(lev,sq))
 			{
-				int cp = sq.data[seqPos], cm = cp-128;
-				++seqPos;  SeqEnd(sq);
+				int cp = sq.data[sp], cm = cp-128;  // par
+				++sp;  SeqEnd(lev,sq);
 
 				switch (cmd)
 				{
@@ -151,15 +157,21 @@ void KC_Main::Send(uint32_t ms)
 
 				case CMD_Comment:  //  move until over next Cmt
 					#define Cmt  K_Cmd0 + CMD_Comment
-					seqPos += 2;
-					while (!SeqEnd(sq) && sq.data[seqPos-2] != Cmt)
-						++seqPos;
+					sp += 2;
+					while (!SeqEnd(lev,sq) && sq.data[sp-2] != Cmt)
+						++sp;
 					break;
 
 				case CMD_Hide:  // ignore
 					break;
 
-				case CMD_RunSeq:  // todo inSeq2 =
+				case CMD_RunSeq:  //  run seq from seq, next level
+					//  lev 1 max, not self
+					if (lev == 0 && cp != inSeq[0])
+					{
+						inSeq[1] = cp;
+						seqPos[1]=0;  seqRel[1]=0;
+					}
 					break;
 
 				//  _mouse commands_ execute
@@ -198,32 +210,27 @@ void KC_Main::Send(uint32_t ms)
 				Keyboard.send_now();
 				seqMod[code] = 0;
 			}
-			seqRel = 2;  // next key
+			sr = 2;  // next key
 		}
 		//  keys
-		else if (seqRel == 0)
+		else if (sr == 0)
 		{
 			Keyboard.press(usb);
 			Keyboard.send_now();
-			++seqRel;  // next step
+			++sr;  // next step
 		}
-		else if (seqRel == 1)
+		else if (sr == 1)
 		{
 			Keyboard.release(usb);
 			Keyboard.send_now();
-			++seqRel;
+			++sr;
 		}
 		//  both
-		if (seqRel >= 2 && !isCmd)
+		if (sr >= 2 && !isCmd)
 		{
-			seqRel = 0;
-			++seqPos;  // next seq byte
-			if (seqPos >= sq.len())
-			{
-				Keyboard.releaseAll();
-				SeqModClear();
-				inSeq = -1;  // end
-			}
+			sr = 0;
+			++sp;  // next seq byte
+			SeqEnd(lev,sq);
 		}
 	}
 	//  deny keys during seq
@@ -289,7 +296,7 @@ void KC_Main::Send(uint32_t ms)
 				//  sequences  * * *
 				else
 				if (code >= K_Seq0 && code <= K_SeqLast
-					&& inSeq < 0)
+					&& inSeq[0] < 0)
 				{
 					int8_t sq = code - K_Seq0;
 					if (set.nseqs() > sq && sq < KC_MaxSeqs
@@ -298,10 +305,12 @@ void KC_Main::Send(uint32_t ms)
 						//  start seq  ***
 						Keyboard.releaseAll();
 						SeqModClear();
-						inSeq = sq;  tiSeq = ms;  seqPos = 0;  seqRel = 0;
-						dtSeq = par.dtSeqDef;  seqWait = 0;
+						inSeq[0] = sq;  inSeq[1] = -1;
+						seqPos[0]=0;  seqRel[0]=0;
+						seqPos[1]=0;  seqRel[1]=0;
+						tiSeq = ms;  dtSeq = par.dtSeqDef;  seqWait = 0;
 					}
-					else  inSeq = -1;
+					else  inSeq[0] = -1;
 				}
 			}
 			else if (off)
