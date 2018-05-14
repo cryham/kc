@@ -154,10 +154,10 @@ void Gui::DrawHelp()
 
 		d->moveCursor(0,6);
 		d->println("C  Comment start/end {}");
+		//d->moveCursor(0,2);
+		d->println("X  Hide> rest of seq.");
 		d->moveCursor(0,2);
-		d->println("V  Hide> rest of seq.");
-		d->moveCursor(0,2);
-		d->println("X  Run other seq.");
+		d->println("V  Run other seq.");
 		d->moveCursor(0,6);
 		d->println("\x18,\x19  Adjust parameter");
 		break;

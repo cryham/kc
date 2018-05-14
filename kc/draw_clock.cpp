@@ -111,7 +111,7 @@ void Gui::DrawClock()
 		d->print(a);
 	}
 
-	if (clock)
+	if (clock && yr > 2000)
 	{
 		//  date
 		int mth=0, day=0;
@@ -153,7 +153,7 @@ void Gui::DrawClock()
 		d->setClr(12,18,22);
 		x = 32;	y = 32;  d->setCursor(x,y+4);  d->print("Time");
 				y = yd;  d->setCursor(x,y+4);  d->print("Date");
-		x = 6;	y = yo;  d->setCursor(x,y+4);  d->print("Since on");
+		x = 6;	y = yo;  d->setCursor(x,y+4);  d->print("Time on");
 		break;
 
 	case 1:  //  adjust
@@ -184,7 +184,7 @@ void Gui::DrawClock()
 		sprintf(a, "Press/min  %s", f);  d->print(a);
 
 		x = 6;	y = yi;  d->setCursor(x,y+2);  d->print("Inactive");
-		x = 6;	y = yo;  d->setCursor(x,y+4);  d->print("Since on");
+		x = 6;	y = yo;  d->setCursor(x,y+4);  d->print("Time on");
 		break;
 	}
 }
