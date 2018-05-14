@@ -100,6 +100,9 @@ int main()
 	Periodic_init( par.scanFreq * 1000 );
 	Periodic_function( &main_periodic );
 
+	#ifdef LED
+	pinMode(LED, OUTPUT);
+	#endif
 
 	while(1)
 	{

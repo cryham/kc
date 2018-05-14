@@ -74,6 +74,13 @@ void KC_Main::UpdLay(uint32_t ms)
 				case K_Fun3:  // soft reset  //NVIC_SystemReset();
 					#define SCB_AIRCR (*(volatile uint32_t *)0xE000ED0C)
 					SCB_AIRCR = 0x05FA0004;  break;
+
+				case K_Fun4:  // light, led toggle
+					#ifdef LED
+					gui.led = 1 - gui.led;
+					digitalWrite(LED, gui.led ? LOW : HIGH);
+					#endif
+					break;
 				}
 			}
 		}else if (hold)

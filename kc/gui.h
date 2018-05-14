@@ -74,6 +74,9 @@ struct Gui
 	const static int8_t HAll = 11;
 	//  rtc on start
 	unsigned long tm_on = 0;
+	#ifdef LED
+	int8_t led = 0;
+	#endif
 
 
 	//  keys pressed, some +-1  _k_

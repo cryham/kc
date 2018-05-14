@@ -14,6 +14,9 @@
 #define CK6  // 18x8  new CK3
 //#define CK7  // 18x8  old CK4/2
 //-----------------
+#ifdef CK6
+#define LED 12  //pin
+#endif
 
 
 #define W 160  //  display dim
