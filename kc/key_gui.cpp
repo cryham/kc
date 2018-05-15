@@ -12,7 +12,8 @@
 void Gui::KeyPress()
 {
 	if (Key(par.keyGui))  // toggle Gui **
-	{	kbdSend = 1 - kbdSend;  kc.setDac = 1;  }
+	{	kbdSend = 1 - kbdSend;  kc.QuitSeq();
+		kc.setDac = 1;  }
 
 	if (kbdSend)
 		return;

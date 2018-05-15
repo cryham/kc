@@ -77,7 +77,7 @@ struct KC_Main
 	uint32_t tiSeq = 0, tiFun = 0;  // ms time delay
 
 	int8_t seqMod[K_ModLast+1];  // modifiers state
-	void SeqModClear();
+	void SeqModClear(), QuitSeq();
 	uint16_t xm=0, ym=0;  // abs mouse pos
 
 

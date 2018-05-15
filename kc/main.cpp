@@ -102,6 +102,7 @@ int main()
 
 	#ifdef LED
 	pinMode(LED, OUTPUT);
+	digitalWrite(LED, gui.led ? LOW : HIGH);
 	#endif
 
 	while(1)

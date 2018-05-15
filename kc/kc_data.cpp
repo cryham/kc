@@ -64,7 +64,7 @@ void KC_Main::UpdLay(uint32_t ms)
 				switch (codeL)
 				{
 				case K_Fun0:  // send, Gui toggle
-					gui.kbdSend = 1-gui.kbdSend;
+					gui.kbdSend = 1 - gui.kbdSend;  QuitSeq();
 					setDac = 1;  break;
 
 				case K_Fun1:
@@ -103,8 +103,7 @@ void KC_Main::UpdLay(uint32_t ms)
 	}
 }
 
-//  keyboard send  (to pc usb)
-//------------------------------------------------------------------------------------------------
+//  seq end check
 bool KC_Main::SeqEnd(int lev, const KC_Sequence& sq)
 {
 	if (seqPos[lev] >= sq.len())
@@ -117,10 +116,23 @@ bool KC_Main::SeqEnd(int lev, const KC_Sequence& sq)
 	return false;
 }
 
+//  Quit running Sequence on enter Gui
+void KC_Main::QuitSeq()
+{
+	if (gui.kbdSend)  return;
+	if (inSeq[0] < 0 && inSeq[1] < 0)  return;
+	inSeq[0] = -1;  inSeq[1] = -1;
+	Keyboard.releaseAll();
+	SeqModClear();
+}
+
 //  const
 const static uint8_t parMBtn[6]={
 		MOUSE_LEFT, MOUSE_MIDDLE, MOUSE_RIGHT, MOUSE_BACK, MOUSE_FORWARD};
 
+
+//  keyboard send  (to pc usb)
+//------------------------------------------------------------------------------------------------
 void KC_Main::Send(uint32_t ms)
 {
 	//  in sequence  ***
