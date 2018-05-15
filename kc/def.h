@@ -14,8 +14,10 @@
 #define CK6  // 18x8  new CK3
 //#define CK7  // 18x8  old CK4/2
 //-----------------
-#ifdef CK6
-#define LED 12  //pin
+#ifdef CK6  // extra pins
+#define LED  12
+//  temp sensor DS18B20
+#define TEMP1  31		//  44   9%  24k
 #endif
 
 

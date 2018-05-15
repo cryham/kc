@@ -3,6 +3,20 @@
 #include "matrix.h"
 #include "kc_data.h"
 
+#ifdef TEMP1
+#include <OneWire.h>
+#include <DS18B20.h>
+
+//  sensor address
+byte addr[8] = {0,};
+
+OneWire onewire(TEMP1);  // pin
+DS18B20 sensors(&onewire);
+
+int8_t temp1 = 1;  // fist, init
+float fTemp = 0.f;  // 'C
+#endif
+
 
 //  const
 uint8_t MDays[13] = {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
@@ -111,6 +125,15 @@ void Gui::DrawClock()
 		d->print(a);
 	}
 
+	#ifdef TEMP1  // Temp'C
+	if (pgClock == 0 && fTemp > 0.f)
+	{
+		dtostrf(fTemp, 4,2, f);
+		d->setClr(18,22,26);
+		d->setCursor(6,71);  d->print(f);
+	}
+	#endif
+
 	if (clock && yr > 2000)
 	{
 		//  date
@@ -150,11 +173,49 @@ void Gui::DrawClock()
 	switch (pgClock)
 	{
 	case 0:
-		d->setClr(12,18,22);
-		x = 32;	y = 32;  d->setCursor(x,y+4);  d->print("Time");
-				y = yd;  d->setCursor(x,y+4);  d->print("Date");
+	{	d->setClr(12,18,22);
+	//	x = 42;	y = 32;  d->setCursor(x,y+4);  d->print("Time");
+	//			y = yd;  d->setCursor(x,y+4);  d->print("Date");
 		x = 6;	y = yo;  d->setCursor(x,y+4);  d->print("Time on");
-		break;
+
+		#ifdef TEMP1  // 18B20  Temp'C
+		//  first, setup
+		if (temp1 == 1)
+		{	temp1 = 0;
+
+			//  Look for 1-Wire devices
+			if (onewire.search(addr))  // while
+			{
+				//for (i = 0; i < 8; i++)
+				//	Serial.print(addr[i], HEX);
+
+				if (OneWire::crc8(addr, 7) != addr[7])
+				{
+					//Serial.print("CRC is not valid!\n");
+					break;
+				}
+				//onewire.reset_search();
+
+				//  setup
+				sensors.begin(12);  // quality bits
+				sensors.request(addr);
+				temp1 = 2;
+			}
+		}
+		if (temp1 == 2)
+		{
+			//  if measurement ready
+			if (sensors.available())
+			{
+				fTemp = sensors.readTemperature(addr);
+				sensors.request(addr);  // next
+			}
+			//  Temp'C
+			d->setClr(12,20,25);
+			d->setCursor(6,58);  d->print("Temp \xF8""C");
+		}
+		#endif
+	}	break;
 
 	case 1:  //  adjust
 		for (int i=0; i <= pg; ++i)
