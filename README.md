@@ -28,10 +28,12 @@ Also:
 * Testing pages - showing pressed keys info, matrix ghosting, layer use, etc.
 * Keys list - for picking, with custom group colors and filtering.
 * Parameters - for Scan Setup, Mouse and Display, adjustable in menu.
+* Sequence preview in Mapping and Testing views. Mapped keys in Sequences view.
 
 Lastly:
 * Many **demos** - with presets, e.g. Plasma, Wave, Fire, Polyhedrons 3D, etc.
 * Falling blocks **game** - with random generated blocks, many presets and custom options.
+* Clock with date (with 3V battery) and Temperature reading from DS18B20 sensor.
 * Help pages with all GUI keys and colorful **GUI Menu** with 2 levels and 3 fonts.
 
 ---
