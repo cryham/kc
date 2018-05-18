@@ -69,8 +69,8 @@ const char* CKname = "CK6 18x8";  const int16_t XR = 116, XN = 128;  // pos
 const int8_t  kW = 8, kH = 9, /* size */ kF = 6, fW = 7, F = -fW, X = -kW;
 
 const DrawKey drawKeys[nDrawKeys] = {  //  Layout draw
-{ 0, 9,wf, 'e',6, 15,K_ESC},{-8,0,wf, 'p',6,140,K_PRTSCR},  //Esc 15x
-{-10,0,wf, '1',2,139,K_F1},{F, 0,wf, '2',2,103,K_F2}, {F,0,wf, '3',2, 13,K_F3}, {F,0,wf, '4',2,110,K_F4},
+{ 0, 9,wf, 'e',6, 15,K_ESC},  //Esc 15x
+{-18,0,wf, '1',2,139,K_F1},{F, 0,wf, '2',2,103,K_F2}, {F,0,wf, '3',2, 13,K_F3}, {F,0,wf, '4',2,110,K_F4},
 {-15,0,wf, '5',2, 95,K_F5},{F, 0,wf, '6',2,131,K_F6}, {F,0,wf, '7',2,127,K_F7}, {F,0,wf, '8',2,109,K_F8},
 {-14,0,wf, '9',2, 19,K_F9},{F, 0,wf, '0',2,111,K_F10},{F,0,wf, '1',2, 75,K_F11},{F,0,wf, '2',2, 74,K_F12},
  {XR+1,0,wf, '.',6, 57,0},  //Displ

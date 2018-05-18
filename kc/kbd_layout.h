@@ -29,7 +29,7 @@ extern const char* CKname;
 #if defined(CK1)   //  CK1
 	const static int nDrawKeys = 91;
 #elif defined(CK6)   //  CK6/3
-	const static int nDrawKeys = 103;
+	const static int nDrawKeys = 102;
 #elif defined(CK7)   //  CK7/4
 	const static int nDrawKeys = 103;
 #endif
