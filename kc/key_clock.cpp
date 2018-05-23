@@ -1,6 +1,6 @@
 #include "gui.h"
 
-const uint8_t Gui::ClockPages[Gui::Clock_All] = {0,5};
+const uint8_t Gui::ClockPages[Gui::Clock_All] = {0,0,5};
 
 
 //  Clock
@@ -20,7 +20,7 @@ void Gui::KeysClock()
 	case 0:
 		break;
 
-	case 1:
+	case 2:
 	{	unsigned long tm = rtc_get(), td = 0;
 		//rtc_compensate(int adjust)
 		int a = kRight * (kCtrl ? 10 : 1);

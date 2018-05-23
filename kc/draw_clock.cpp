@@ -15,6 +15,7 @@ DS18B20 sensors(&onewire);
 
 int8_t temp1 = 1;  // fist, init
 float fTemp = 0.f;  // 'C
+uint16_t skip = 0;  // read inactive
 #endif
 
 
@@ -23,7 +24,7 @@ uint8_t MDays[13] = {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 const int8_t t12[] = {0, 3, 2, 5, 0, 3, 5, 1, 4, 6, 2, 4};
 
 const char* mths[] = {"Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"};
-const char* wdays[] = {"Wed", "Thu", "Fri", "Sat", "Sun", "Mon", "Tue"};
+const char* wdays[] = {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
 
 
 //  date from day number
@@ -58,7 +59,7 @@ int DayOfWeek(int d, int m, int y)
     return (y + y/4 - y/100 + y/400 + int(t12[m-1]) + d) % 7;
 }
 
-const char* sPgClock[Gui::Clock_All] = {"", "Adjust", "Stats"};
+const char* sPgClock[Gui::Clock_All] = {"", "Stats", "Adjust"};
 
 
 //  Display
@@ -80,52 +81,92 @@ void Gui::DrawClockCur(int i, int16_t y)
 void Gui::DrawClock()
 {		
 	char a[64],f[32];
-	d->setClr(20,22,24);
-	d->print(strMain[ym]);
-
 	//  time  ---
 	unsigned long t = rtc_get(), to, ti;
-	//if (!t)  return;  // no rtc osc
-
 	int h = t/3600%24, m = t/60%60, s = t%60,
 		dt = t/3600/24, yr = dt/365 + 2000;
 
-	int16_t x = W/2, y = 32, yo = H-20, yd = 32+24, yi = yo-26;
-	to = t - tm_on;
-	bool clock = pgClock < 2;
+	bool clock = !pgClock || pgClock == 2;
+	bool date = yr >= 2018;  // rtc set
 
-	//  time, date
-	if (clock)
+
+	//  late hours, background color
+	//if (pgClock < 2)
+	{
+		int8_t r=0, g=0, b=0, hf = m >= 30 ? 4 : 0;
+		if (h == 22){  r = hf + 10;  g = 4;  }  else
+		if (h == 23){  r = 19;  g = hf + 6;  }  else
+		if (h == 0) {  r = 23 + hf;  g = hf + 12;  b = 6;  }  else
+		if (h < 6)  {  r = 30;  g = 20;  b = 10;  }
+
+		if (r)
+		for (int y=0; y < r + 15; ++y)
+		{
+			d->drawFastHLine(0,y,W-1, RGB(r,g,b));
+			if (r > 0 && y%2==0)  --r;
+			if (g > 0 && y%4==0)  --g;
+			if (b > 0 && y%3==0)  --b;
+		}
+	}
+
+	//  title
+	d->setClr(12,14,17);
+	d->print(strMain[ym]);
+
+
+	//  x,y pos
+	int16_t x = W/2, y = 32, yo = H-20, yd = 32+24,
+			yp = y+22, yi = yo-20;
+	to = t - tm_on;
+
+
+	//  time  ----
+	if (clock || date)
 	{
 		d->setCursor(x, y);
-		d->setClr(25,27,29);
+		d->setClr(22,24,26);
 
+		if (!clock)
+			d->setClr(15,19,24);
 		sprintf(a,"%2d:%02d:%02d", h, m, s);
 		d->print(a);
 	}
 
-	//  time since on
+	//  uptime, since on  --
 	int dn = to/3600/24 %10;
 	h = to/3600%24;  m = to/60%60;  s = to%60;
 
 	y = yo;
 	d->setCursor(x -10, y);
-	d->setClr(16,21,26);
+	if (pgClock == 1)
+		d->setClr(18,22,28);
+	else
+		d->setClr(16,21,26);
 	sprintf(a,"%d %2d:%02d:%02d", dn, h, m, s);
 	d->print(a);
 
-	//  time inactive
-	if (pgClock == 2)
+
+	//  time inactive  --
+	if (pgClock == 1)
 	{
 		ti = t - kc.tm_key;
 		h = ti/3600%24;  m = ti/60%60;  s = ti%60;
 
-		d->setCursor(x, yi);
+		d->setCursor(x+5, yi);
+		d->setClr(14,18,24);
 		sprintf(a,"%2d:%02d:%02d", h, m, s);
 		d->print(a);
+
+		y = yp + 13;  // press/min
+		d->setCursor(x+4, y);
+		d->setClr(14,22,24);
+		float pm = 60.f * float(cnt_press) / float(to);
+		dtostrf(pm, 5,2, f);
+		d->print(f);
 	}
 
-	#ifdef TEMP1  // Temp'C
+
+	#ifdef TEMP1  // Temp'C  **
 	if (pgClock == 0 && fTemp > 0.f)
 	{
 		dtostrf(fTemp, 4,2, f);
@@ -134,21 +175,27 @@ void Gui::DrawClock()
 	}
 	#endif
 
-	if (clock && yr > 2000)
+
+	//  date  ----
+	if (clock && date)
 	{
 		//  date
-		int mth=0, day=0;
+		int mth=0, day=0, x2 = x + 36;
 		getMD(isLeap(yr), dt%365, &day, &mth);
 
 		//  day, week
 		x += 6;  y = yd;
 		d->setCursor(x, y);
 		d->setClr(20,23,26);
-		sprintf(a,"%02d  %s", day,
-				wdays[DayOfWeek(yr, mth, day)]);  d->print(a);
+		sprintf(a,"%02d", day);  d->print(a);
+		d->setCursor(x2, y);
+		d->print(wdays[DayOfWeek(day, mth, yr)]);
+
 		y += 16;  // month
 		d->setCursor(x, y);
-		sprintf(a,"%d  %s", mth, mths[mth-1]);  d->print(a);
+		sprintf(a,"%d", mth);  d->print(a);
+		d->setCursor(x2, y);
+		d->print(mths[mth-1]);
 		d->setFont(0);
 
 		y += 16;  // year
@@ -157,9 +204,10 @@ void Gui::DrawClock()
 	}else
 		d->setFont(0);
 
-	//  page  --
+
+	//  page, subtitle  --
 	d->setCursor(W-1 -3*6, 4);
-	d->setClr(20,25,31);
+	d->setClr(12,16,22);
 	sprintf(a,"%d/%d", pgClock+1, Clock_All);
 	d->print(a);
 
@@ -167,16 +215,14 @@ void Gui::DrawClock()
 	d->print(sPgClock[pgClock]);
 
 
-	//  par values  ---
+	//  par values  ====
 	int pg = ClockPages[pgClock];
 	y = 32;
 	switch (pgClock)
 	{
 	case 0:
 	{	d->setClr(12,18,22);
-	//	x = 42;	y = 32;  d->setCursor(x,y+4);  d->print("Time");
-	//			y = yd;  d->setCursor(x,y+4);  d->print("Date");
-		x = 6;	y = yo;  d->setCursor(x,y+4);  d->print("Time on");
+		x = 6;	y = yo;  d->setCursor(x,y+4);  d->print("Uptime");
 
 		#ifdef TEMP1  // 18B20  Temp'C
 		//  first, setup
@@ -186,14 +232,8 @@ void Gui::DrawClock()
 			//  Look for 1-Wire devices
 			if (onewire.search(addr))  // while
 			{
-				//for (i = 0; i < 8; i++)
-				//	Serial.print(addr[i], HEX);
-
 				if (OneWire::crc8(addr, 7) != addr[7])
-				{
-					//Serial.print("CRC is not valid!\n");
 					break;
-				}
 				//onewire.reset_search();
 
 				//  setup
@@ -204,9 +244,12 @@ void Gui::DrawClock()
 		}
 		if (temp1 == 2)
 		{
+			++skip;
+			//  slower if not in gui, every few sec
+			if (skip > 300 || !kbdSend)
 			//  if measurement ready
 			if (sensors.available())
-			{
+			{	skip = 0;
 				fTemp = sensors.readTemperature(addr);
 				sensors.request(addr);  // next
 			}
@@ -217,7 +260,20 @@ void Gui::DrawClock()
 		#endif
 	}	break;
 
-	case 1:  //  adjust
+	case 1:  //  stats  labels
+	{	d->setClr(12,22,30);
+		x = W/2+6;  y = yp;  d->setCursor(x,y);
+		sprintf(a, "%d", cnt_press);  d->print(a);
+
+		d->setClr(12,16,24);
+		x = 6;	y = yp;  d->setCursor(x,y);  d->print("Pressed");
+		y += 16;  d->setCursor(x,y);  d->print("Press/min");
+
+		x = 6;	y = yi;  d->setCursor(x,y+2);  d->print("Inactive");
+		x = 6;	y = yo;  d->setCursor(x,y+4);  d->print("Uptime");
+	}	break;
+
+	case 2:  //  adjust
 		for (int i=0; i <= pg; ++i)
 		{
 			DrawClockCur(i, y);
@@ -233,19 +289,5 @@ void Gui::DrawClock()
 			}
 			d->print(a);  y += h+8;
 		}	break;
-
-	case 2:  //  stats
-		d->setClr(16,22,31);
-		x = 6;	y = 32+8;  d->setCursor(x,y);
-		sprintf(a, "Pressed    %d", cnt_press);  d->print(a);
-
-		y += 16;  d->setCursor(x,y);
-		float pm = 60.f * float(cnt_press) / float(to);
-		dtostrf(pm, 6,3, f);
-		sprintf(a, "Press/min  %s", f);  d->print(a);
-
-		x = 6;	y = yi;  d->setCursor(x,y+2);  d->print("Inactive");
-		x = 6;	y = yo;  d->setCursor(x,y+4);  d->print("Time on");
-		break;
 	}
 }
