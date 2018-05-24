@@ -160,7 +160,8 @@ void Gui::DrawClock()
 		y = yp + 13;  // press/min
 		d->setCursor(x+4, y);
 		d->setClr(14,22,24);
-		float pm = 60.f * float(cnt_press) / float(to);
+		float fto = to ? to : 1;
+		float pm = 60.f * cnt_press / fto;
 		dtostrf(pm, 5,2, f);
 		d->print(f);
 	}

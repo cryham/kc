@@ -64,7 +64,7 @@ void Gui::KeyPress()
 	{
 		if (game.KeyPress(mlevel))
 		{	// goto help
-			ym = M_Help;  mlevel = 1;  hpage = 8;
+			ym = M_Help;  mlevel = 1;  hpage = HAll-2;
 		}
 		return;
 	}

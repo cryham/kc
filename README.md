@@ -33,7 +33,7 @@ Also:
 Lastly:
 * Many **demos** - with presets, e.g. Plasma, Wave, Fire, Polyhedrons 3D, etc.
 * Falling blocks **game** - with random generated blocks, many presets and custom options.
-* Clock with date (with 3V battery) and Temperature reading from DS18B20 sensor.
+* Clock with date (needs 3V battery) and Temperature reading from DS18B20 sensor.
 * Help pages with all GUI keys and colorful **GUI Menu** with 2 levels and 3 fonts.
 
 ---
@@ -60,6 +60,7 @@ The keyboard is made of:
 * Teensy 3.2 (or 3.1), overclocked, stable at 144 MHz
 * TFT LCD display ST7735, 160 x 128, 16bit color RGB565. Red PCB with SD card slot. Terribly low viewing angle.
 * NPN transistor BC550. Connection from DAC A14 output through 4.7k resistor to base, collector to 3.3V, emitter through 47 ohm resistor to Display LED.
+* Optionally a DS18B20 1-wire temperature sensor with data pin through 4.7k resistor to 3.3V.
 
 #### Licensing
 
