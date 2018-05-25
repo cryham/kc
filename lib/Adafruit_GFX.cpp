@@ -34,8 +34,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
 #include "Adafruit_GFX.h"
 #include "WProgram.h"
-#include "glcdfont.c"
-//#include <avr/pgmspace.h>
+extern const unsigned char font5x7[];
 
 // Many (but maybe not all) non-AVR board installs define macros
 // for compatibility with existing PROGMEM-reading AVR code.
@@ -285,9 +284,8 @@ int Adafruit_GFX::write(uint8_t c)
 			cursor_y += 8;
 			cursor_x = 0;
 		}
-		else if (c == '\r')
-		{	// skip
-		}else
+		// else if (c == '\r') { }	// skip
+		else if (c < 128)  // half
 		{
 			if (wrap && cursor_x + 6 >= _width)
 			{	// Heading off edge?
@@ -347,7 +345,7 @@ void Adafruit_GFX::drawChar(int16_t x, int16_t y, unsigned char c, uint16_t colo
 
 		for (int8_t i=0; i < 6; ++i)
 		{
-			uint8_t line = i < 5 ? pgm_read_byte(font+(c*5)+i) : 0;
+			uint8_t line = i < 5 ? pgm_read_byte(font5x7 + (c*5)+i) : 0;
 			for (int8_t j=0; j < 8; ++j, line >>= 1)
 			{
 				if (line & 0x1)
@@ -376,7 +374,6 @@ void Adafruit_GFX::drawChar(int16_t x, int16_t y, unsigned char c, uint16_t colo
 		uint8_t	xx, yy, bits = 0, bit = 0;
 		//int16_t	xo16=0, yo16=0;
 
-		// Todo: Add character clipping here
 		for (yy=0; yy < h; ++yy)
 		{
 			for (xx=0; xx < w; ++xx)

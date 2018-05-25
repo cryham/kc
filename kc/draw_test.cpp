@@ -139,7 +139,7 @@ void Gui::DrawTesting()
 			a[1]=0;
 			if (k.state == KeyState_Off)
 			{	//sprintf(a,".");
-				a[0]=249;
+				a[0]=2;
 				bool gh = col_ghost[c] || row_ghost[r];
 				int u = max(col_use[c], row_use[r]);
 				CGh(gh, u);

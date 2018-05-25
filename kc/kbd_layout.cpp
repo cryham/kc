@@ -32,11 +32,11 @@ const DrawKey drawKeys[nDrawKeys] = {  //  Layout draw
 { X, 0,wh, 'O',0,NO,K_O},{X, 0,wh, 'P',0,NO,K_P},{X,0,wh, '[',3,NO,K_LBRACE},
 {X, 0,wh, ']',3,NO,K_RBRACE},{X,0, 9,kH,'\\',3,16,K_BSLASH}, // \| 14x
 
-{ 0,38,15,kH, 249,6,NO,K_A}, //Caps
+{ 0,38,15,kH,  2 ,6,NO,K_A}, //Caps
 {-15,0,wh, 'A',0,NO,K_A},{X, 0,wh, 'S',0,NO,K_S},{X,0,wh, 'D',0,23,K_D},{X,0,wh, 'F',0,21,K_F},
 { X, 0,wh, 'G',0,29,K_G},{X, 0,wh, 'H',0,27,K_H},{X,0,wh, 'J',0,19,K_J},{X,0,wh, 'K',0,NO,K_K},
 { X, 0,wh, 'L',0,NO,K_L},{X,0,wh, ';',3,NO,K_SEMIC},
-{ X, 0,wh,'\'',3,NO,K_QUOTE},{X, 0,14,kH, 217,7,32,K_ENT}, //Ent 13x
+{ X, 0,wh,'\'',3,NO,K_QUOTE},{X, 0,14,kH, 28,7,32,K_ENT}, //Ent 13x
 
 { 0,47,18,kH, 's',4,NO,K_LSHIFT}, //L Sh
 {-18,0,wh, 'Z',0,NO,K_Z},{X, 0,wh, 'X',0,NO,K_X},{X,0,wh, 'C',0,39,K_C},{X,0,wh, 'V',0,37,K_V},
@@ -50,13 +50,13 @@ const DrawKey drawKeys[nDrawKeys] = {  //  Layout draw
 {-45,0,10,kH, 'a',5,NO,K_RALT}, {-10,0,8,kH,  9 ,6,NO,K_RGUI},{-8,0, 9,kH,254,5,NO,K_MENU},
 {-9, 0,13,kH, 'c',5,NO,K_RCTRL}, //R Ct 8x
 //numpad: 17x
-{XN,20,wh, 250,6,34,K_NUML},{X, 0,wh, '/',3,36,KP_DIV},{X,0,wh, 'x',3,33,KP_MUL},{X,0,wh,  '-',3,41,KP_SUB},
+{XN,20,wh,  3 ,6,34,K_NUML},{X, 0,wh, '/',3,36,KP_DIV},{X,0,wh, 'x',3,33,KP_MUL},{X,0,wh,  '-',3,41,KP_SUB},
 {XN,29,wh, '7',8, 2,K_HOME},{X, 0,wh, 24 ,8, 4,K_UP},  {X,0,wh, '9',8, 1,K_PGUP},{X,0,kW,kH*2,'+',3, 6,KP_ADD},
 {XN,38,wh, 27 ,8,10,K_LEFT},{X, 0,wh,  7 ,6,12,K_DEL}, {X,0,wh, 26 ,8, 9,K_RIGHT},
-{XN,47,wh, '1',8,18,K_END}, {X, 0,wh, 25 ,8,20,K_DOWN},{X,0,wh, '3',8,17,K_PGDN},{X,0,kW,kH*2, 217,6,22,KP_ENT},
+{XN,47,wh, '1',8,18,K_END}, {X, 0,wh, 25 ,8,20,K_DOWN},{X,0,wh, '3',8,17,K_PGDN},{X,0,kW,kH*2, 28,6,22,KP_ENT},
 {XN,56,kW*2,kH,'_',6,28,K_INS},{-kW*2,0,wh,'.',6,25,K_DEL}, //Ins Del
 };
-//symbols: `240=  248 deg  249. 250,  7 cir  9 dot`
+//symbols:  2. 3,  7 cir  9 dot` 28 ent
 const uint8_t gGui=40, gMslow=32, gLoad=15,gSave=31,gDiv=36, gEsc=0,gAdd=6,gEnt=22,gEnt2=22,
 	gRight=9,gLeft=10,gDown=20,gUp=4, gPgDn=17,gPgUp=1,gEnd=18,gHome=2,
 	gCtrl=26,gSh=16,gMul=33,gSub=41, gIns=28,gDel=25,gBckSp=8, gC=39,gV=37,gX=45,
@@ -89,12 +89,12 @@ const DrawKey drawKeys[nDrawKeys] = {  //  Layout draw
 { X, 0,wh, ']',3, 96,K_RBRACE},{X,0, 8,kH,'\\',3, 55,K_BSLASH}, // \| 15x
  {XR,0,wh, '<',7,137,K_BACK},
 
-{ 0,38,15,kH, 249,6,104,K_CAPS}, //Caps
+{ 0,38,15,kH,  2 ,6,104,K_CAPS}, //Caps
 {-15,0,wh, 'A',0, 69,K_A},{X, 0,wh, 'S',0, 68,K_S},{X,0,wh, 'D',0, 67,K_D},{X,0,wh, 'F',0, 62,K_F},
 { X, 0,wh, 'G',0,  8,K_G},{X, 0,wh, 'H',0,  7,K_H},{X,0,wh, 'J',0, 61,K_J},{X,0,wh, 'K',0, 60,K_K},
 { X, 0,wh, 'L',0, 59,K_L},{X, 0,wh, ';',3, 54,K_SEMIC},
-{ X, 0,wh,'\'',3,  0,K_QUOTE},{X, 0,13,kH, 217,7, 37,K_ENT}, //Ent 14x
- {XR,0,wh, 217,7,119,K_ENT},
+{ X, 0,wh,'\'',3,  0,K_QUOTE},{X, 0,13,kH, 28,7, 37,K_ENT}, //Ent 14x
+ {XR,0,wh, 28,7,119,K_ENT},
 
 { 0,47,18,kH, 's',4, 94,K_LSHIFT}, //L Sh
 {-18,0,wh, 'Z',0, 51,K_Z},{X, 0,wh, 'X',0, 50,K_X},{X,0,wh, 'C',0, 49,K_C},{X,0,wh, 'V',0, 44,K_V},
@@ -111,7 +111,7 @@ const DrawKey drawKeys[nDrawKeys] = {  //  Layout draw
 {-7, 0, 7,kH, '>',5, 30,K_F13},  {-7, 0,7,kH,'v',5, 27,K_F14},
  {XR,0,wh,'c',7,28,K_RCTRL},
 //numpad: 17x
-{XN,20,wh, 250,6, 45,K_NUML},{X, 0,wh, '/',3, 46,KP_DIV},{X,0,wh, 'x',3, 47,KP_MUL},{X,0,kW-2,kH,  '-',3, 29,KP_SUB},
+{XN,20,wh,  3 ,6, 45,K_NUML},{X, 0,wh, '/',3, 46,KP_DIV},{X,0,wh, 'x',3, 47,KP_MUL},{X,0,kW-2,kH,  '-',3, 29,KP_SUB},
 {XN,29,wh, '7',8, 81,K_HOME},{X, 0,wh, 24 ,8, 82,K_UP},  {X,0,wh, '9',8, 83,K_PGUP},{X,0,kW-2,kH*2,'+',3, 84,KP_ADD},
 {XN,38,wh, 27 ,8, 99,K_LEFT},{X, 0,wh,  7 ,6,100,K_DEL}, {X,0,wh, 26 ,8,101,K_RIGHT},
 {XN,47,wh, '1',8, 63,K_END}, {X, 0,wh, 25 ,8, 64,K_DOWN},{X,0,wh, '3',8, 65,K_PGDN},{X,0,kW-2,kH*2, '|',3, 66,KP_ENT},
@@ -154,7 +154,7 @@ const DrawKey drawKeys[nDrawKeys] = {  //  Layout draw
 {M-3,-2,wh,'A',0,117,K_A},{X,0,wh, 'S',0,111,K_S},{X,0,wh, 'D',0,112,K_D},{X,0,wh, 'F',0,116,K_F},
 { X, 0,wh, 'G',0,134,K_G},{X,0,wh, 'H',0,142,K_H},{X,0,wh, 'J',0,124,K_J},{X,0,wh, 'K',0,121,K_K},
 { X, 0,wh, 'L',0,113,K_L},{X,0,wh, ';',3,122,K_SEMIC},
-{ X, 0,wh,'\'',3,140,K_QUOTE},{X, 0,14,kH, 217,7,28,K_ENT}, //Ent 12x
+{ X, 0,wh,'\'',3,140,K_QUOTE},{X, 0,14,kH, 28,7,28,K_ENT}, //Ent 12x
 
 { 0,47,18,kH, 's',4,101,K_LSHIFT}, //L Sh
 {-18,0,wh, 'Z',0,27,K_Z},{X,0,wh, 'X',0,21,K_X},{X,0,wh, 'C',0,22,K_C},{X,0,wh, 'V',0,26,K_V},
@@ -171,7 +171,7 @@ const DrawKey drawKeys[nDrawKeys] = {  //  Layout draw
  {M,-2,wh, '/',3, 25,KP_DIV},{X,0,wh, 'x',3, 35,KP_MUL},{X,0,wh, '-',3,17,KP_SUB},
 {XN,29,wh, '7',8, 87,K_HOME},{X,0,wh, 24 ,8, 79,K_UP},  {X,0,wh, '9',8, 89,K_PGUP},{X,0,kW,kH*2,'+',3,78,KP_ADD},
 {XN,38,wh, 27 ,8,105,K_LEFT},{X,0,wh,  7 ,6, 97,K_DEL}, {X,0,wh, 26 ,8,107,K_RIGHT},
-{XN,47,wh, '1',8,123,K_END}, {X,0,wh, 25 ,8,115,K_DOWN},{X,0,wh, '3',8,125,K_PGDN},{X,0,kW,kH*2, 217,7,114,KP_ENT},
+{XN,47,wh, '1',8,123,K_END}, {X,0,wh, 25 ,8,115,K_DOWN},{X,0,wh, '3',8,125,K_PGDN},{X,0,kW,kH*2, 28,7,114,KP_ENT},
 {XN,56,kW*2,kH,'_',6,133,K_INS},{-kW*2,0,wh,'.',6,143,K_DEL}, //Ins Del
 };
 const uint8_t gGui=96, gMslow=101, gLoad=37,gSave=130,gDiv=25, gEsc=135,gAdd=78,gEnt=114,gEnt2=28,

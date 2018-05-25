@@ -96,7 +96,7 @@ void Gui::DrawMenu(int cnt, const char** str, EFadeClr ec, uint16_t curClr,
 		d->setCursor(x,y);
 		d->setColor(curClr);
 		if (i == my)
-			d->fillRect(x, y-1, x+W/2, 10, bckClr);
+			d->fillRect(x, y-1, W/2-2, 10, bckClr);
 		d->print(i == my ? " \x10 ":"   ");  // >
 
 		c = abs(i - my);  // dist dim

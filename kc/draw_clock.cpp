@@ -256,7 +256,7 @@ void Gui::DrawClock()
 			}
 			//  Temp'C
 			d->setClr(12,20,25);
-			d->setCursor(6,58);  d->print("Temp \xF8""C");
+			d->setCursor(6,58);  d->print("Temp \x01""C");
 		}
 		#endif
 	}	break;
