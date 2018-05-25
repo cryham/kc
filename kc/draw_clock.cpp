@@ -91,20 +91,20 @@ void Gui::DrawClock()
 
 
 	//  late hours, background color
-	//if (pgClock < 2)
+	if (date)
 	{
-		int8_t r=0, g=0, b=0, hf = m >= 30 ? 4 : 0;
+		int8_t r=0, g=0, b=0, hf = m >= 30 ? 5 : 0;
 		if (h == 22){  r = hf + 10;  g = 4;  }  else
 		if (h == 23){  r = 19;  g = hf + 6;  }  else
-		if (h == 0) {  r = 23 + hf;  g = hf + 12;  b = 6;  }  else
-		if (h < 6)  {  r = 30;  g = 20;  b = 10;  }
+		if (h == 0) {  r = 25 + hf;  g = hf + 12;  b = 6;  }  else
+		if (h < 6)  {  r = 31;  g = 24;  b = 10;  }
 
 		if (r)
 		for (int y=0; y < r + 15; ++y)
 		{
 			d->drawFastHLine(0,y,W-1, RGB(r,g,b));
 			if (r > 0 && y%2==0)  --r;
-			if (g > 0 && y%4==0)  --g;
+			if (g > 0 && y%2==0)  --g;
 			if (b > 0 && y%3==0)  --b;
 		}
 	}
@@ -265,6 +265,7 @@ void Gui::DrawClock()
 	{	d->setClr(12,22,30);
 		x = W/2+6;  y = yp;  d->setCursor(x,y);
 		sprintf(a, "%d", cnt_press);  d->print(a);
+		//sprintf(a, "%lu", t);  d->print(a);
 
 		d->setClr(12,16,24);
 		x = 6;	y = yp;  d->setCursor(x,y);  d->print("Pressed");
