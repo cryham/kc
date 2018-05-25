@@ -83,10 +83,19 @@ void Games::Draw()
 	d.setCursor(x,y);
 	d.setClr(30,14,10);
 
+	// randomize
+	if (gui)
+	{
+		unsigned long t = rtc_get();
+		srand(t+(t>>16));
+		y = random(1000);
+		for (x=0; x<y; ++x)
+			t += random();
+		d.print("Sixtis");  d.setFont(0);
+	}
+
 	if (gui==1)  //  game menu
 	{
-		d.print("Sixtis");  d.setFont(0);
-
 		d.setClr(31,24,12);
 		d.setCursor(W/2-6, 4);
 		d.println(sPresets[preset]);  // title
@@ -118,8 +127,6 @@ void Games::Draw()
 	}
 	else if (gui==2)  //  options
 	{
-		d.print("Sixtis");  d.setFont(0);
-		
 		d.setClr(28,16,22);
 		d.setCursor(W-1 -3*6, 0);
 		sprintf(a,"%d/%d", opg+1, O_All);  d.print(a);

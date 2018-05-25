@@ -115,7 +115,6 @@ void Gui::SetScreen(int8_t s)
 
 const char* Gui::StrScreen(int8_t s)
 {
-	// todo main, pressed, layout, version, demos
 	switch (s)
 	{
 	case ST_Main0:  return "Main";

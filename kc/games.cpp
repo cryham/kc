@@ -124,18 +124,15 @@ void Games::NewGame()
 	Clear(blk);  Clear(cpy);  Clear(prv);
 	for (i=0; i < nx_max; ++i)
 		Clear(next[i]);
-	
+
+
 	//  fill bottom junk  . ..
 	int y0 = o.size_y - o.btm_junk;  y0 = max(y0, o.bsize);
 	for (y=y0; y < o.size_y; ++y)
 	for (x=0; x < o.size_x; ++x)
 		if (int(random(100)) < min(60, (y-y0+1) * 30))
 			grid[y][x] = 1;
-		
-	//  randomize  --
-	for (i=0; i < 1323; ++i)
-		random(1000);
-		
+
 	//  generate all previews
 	for (i=0; i < o.nx_cur; ++i)
 		GenBlock(next[i]);
