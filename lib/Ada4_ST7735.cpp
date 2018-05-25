@@ -43,6 +43,7 @@ void Ada4_ST7735::drawPixel(int16_t x, int16_t y, uint16_t color)
 	buffer[x + ww*y] = color;
 }
 
+
 //  constructor
 Ada4_ST7735::Ada4_ST7735()
 	: Adafruit_GFX(ww, hh)
@@ -65,6 +66,7 @@ void Ada4_ST7735::clear()
 //	memset(buffer, 0, ww * hh * 2);
 	memset(buffer, 0, sizeof(buffer));
 }
+
 
 void Ada4_ST7735::print(const char* str)
 {
@@ -97,4 +99,27 @@ void Ada4_ST7735::println(int i)
 	cursor_y += 8;
 }
 
-//void Ada4_ST7735::drawFastHLine(int16_t x, int16_t y, int16_t w, uint16_t color)
+
+void Ada4_ST7735::drawFastHLine(int16_t x, int16_t y, int16_t w, uint16_t color)
+{
+	int a = y*ww+x, i;
+	for (i=0; i < w; ++i,++a)
+		buffer[a] = color;
+}
+
+void Ada4_ST7735::drawFastVLine(int16_t x, int16_t y, int16_t h, uint16_t color)
+{
+	int a = y*ww+x, i;
+	for (i=0; i < h; ++i,a+=ww)
+		buffer[a] = color;
+}
+
+void Ada4_ST7735::fillRect(int16_t x, int16_t y, int16_t w, int16_t h, uint16_t color)
+{
+	int i,j,a;
+	for (j=y; j < y+h; ++j)
+	{	a = j*ww+x;
+		for (i=0; i < w; ++i,++a)
+			buffer[a] = color;
+	}
+}

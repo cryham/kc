@@ -8,6 +8,7 @@
 
 #include <Adafruit_GFX.h>
 
+
 class Ada4_ST7735 : public Adafruit_GFX
 {
  public:
@@ -24,14 +25,9 @@ class Ada4_ST7735 : public Adafruit_GFX
 	void print(const char* str), println(const char* str);
 	void print(char c), println(int i);
 
-//	virtual void drawFastVLine(int16_t x, int16_t y, int16_t h, uint16_t color);
-//	virtual void drawFastHLine(int16_t x, int16_t y, int16_t w, uint16_t color);
-
-private:
-
-	inline void drawFastVLineInternal(int16_t x, int16_t y, int16_t h, uint16_t color) __attribute__((always_inline));
-	inline void drawFastHLineInternal(int16_t x, int16_t y, int16_t w, uint16_t color) __attribute__((always_inline));
-
+	void drawFastVLine(int16_t x, int16_t y, int16_t h, uint16_t color);
+	void drawFastHLine(int16_t x, int16_t y, int16_t w, uint16_t color);
+	void fillRect(int16_t x, int16_t y, int16_t w, int16_t h, uint16_t color);
 };
 
 #endif
