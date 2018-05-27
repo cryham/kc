@@ -14,8 +14,8 @@ OneWire onewire(TEMP1);  // pin
 DS18B20 sensors(&onewire);
 
 int8_t temp1 = 1;  // fist, init
-float fTemp = 0.f;  // 'C
-uint16_t skip = 0;  // read inactive
+float fTemp = -90.f;  // 'C
+uint16_t skip = 900;  // read inactive
 #endif
 
 
@@ -167,12 +167,18 @@ void Gui::DrawClock()
 	}
 
 
-	#ifdef TEMP1  // Temp'C  **
-	if (pgClock == 0 && fTemp > 0.f)
+	#ifdef TEMP1  // Temp'C  val  **
+	if (pgClock < 2 && fTemp > -90.f)
 	{
 		dtostrf(fTemp, 4,2, f);
-		d->setClr(18,22,26);
-		d->setCursor(6,71);  d->print(f);
+		if (pgClock == 0)
+		{	d->setClr(18,22,26);
+			d->setCursor(6, 71);
+		}else
+		{	d->setClr(14,18,22);
+			d->setCursor(6, 32);
+		}
+		d->print(f);
 	}
 	#endif
 
@@ -216,6 +222,36 @@ void Gui::DrawClock()
 	d->print(sPgClock[pgClock]);
 
 
+	#ifdef TEMP1  // 18B20  Temp'C
+	if (temp1 == 1)
+	{	temp1 = 0;  //  first
+
+		//  Look for 1-Wire devices
+		if (onewire.search(addr))  // while
+		if (OneWire::crc8(addr, 7) == addr[7])
+		{
+			//onewire.reset_search();
+			//  setup
+			sensors.begin(12);  // quality bits
+			sensors.request(addr);
+			temp1 = 2;
+		}
+	}
+	if (temp1 == 2 && pgClock < 2)
+	{
+		++skip;
+		//  slower if not in gui, every 20, 10 sec
+		if (skip > (pgClock == 1 ? 500 : 300) || !kbdSend)
+		//  if measurement ready
+		if (sensors.available())
+		{	skip = 0;
+			fTemp = sensors.readTemperature(addr);
+			sensors.request(addr);  // next
+		}
+	}
+	#endif
+
+
 	//  par values  ====
 	int pg = ClockPages[pgClock];
 	y = 32;
@@ -225,54 +261,32 @@ void Gui::DrawClock()
 	{	d->setClr(12,18,22);
 		x = 6;	y = yo;  d->setCursor(x,y+4);  d->print("Uptime");
 
-		#ifdef TEMP1  // 18B20  Temp'C
-		//  first, setup
-		if (temp1 == 1)
-		{	temp1 = 0;
-
-			//  Look for 1-Wire devices
-			if (onewire.search(addr))  // while
-			{
-				if (OneWire::crc8(addr, 7) != addr[7])
-					break;
-				//onewire.reset_search();
-
-				//  setup
-				sensors.begin(12);  // quality bits
-				sensors.request(addr);
-				temp1 = 2;
-			}
-		}
+		#ifdef TEMP1  // Temp'C
 		if (temp1 == 2)
-		{
-			++skip;
-			//  slower if not in gui, every few sec
-			if (skip > 300 || !kbdSend)
-			//  if measurement ready
-			if (sensors.available())
-			{	skip = 0;
-				fTemp = sensors.readTemperature(addr);
-				sensors.request(addr);  // next
-			}
-			//  Temp'C
-			d->setClr(12,20,25);
+		{	d->setClr(12,20,25);
 			d->setCursor(6,58);  d->print("Temp \x01""C");
 		}
 		#endif
 	}	break;
 
 	case 1:  //  stats  labels
-	{	d->setClr(12,22,30);
+	{
+		d->setClr(12,22,30);
 		x = W/2+6;  y = yp;  d->setCursor(x,y);
 		sprintf(a, "%d", cnt_press);  d->print(a);
 		//sprintf(a, "%lu", t);  d->print(a);
 
-		d->setClr(12,16,24);
+		d->setClr(10,14,18);
 		x = 6;	y = yp;  d->setCursor(x,y);  d->print("Pressed");
 		y += 16;  d->setCursor(x,y);  d->print("Press/min");
 
 		x = 6;	y = yi;  d->setCursor(x,y+2);  d->print("Inactive");
 		x = 6;	y = yo;  d->setCursor(x,y+4);  d->print("Uptime");
+		#ifdef TEMP1
+		if (temp1 == 2)  // 'C
+		{	d->setCursor(9*6,32+4);  d->print("\x01""C");
+		}
+		#endif
 	}	break;
 
 	case 2:  //  adjust
