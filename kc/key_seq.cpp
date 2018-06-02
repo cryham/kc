@@ -123,6 +123,7 @@ int8_t Gui::KeysSeq()
 				if (kCopy)  cmd = CMD_Comment;
 				if (kSwap)  cmd = CMD_Hide;
 				if (kPaste) cmd = CMD_RunSeq;
+				if (kSub)   cmd = CMD_Repeat;
 				//  todo manual pick key from list-
 			}
 			else  // shift

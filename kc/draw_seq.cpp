@@ -51,6 +51,7 @@ void Gui::DrawSeq(int8_t seq, int8_t q)
 				case CMD_Hide:		d->drawFastVLine(x,y+1,5, ln);  return;
 				case CMD_RunSeq:    d->drawFastVLine(x,y,6, ln);
 					d->moveCursor(2, 0);  sprintf(a,"%2d",par);  d->print(a);  break;
+				case CMD_Repeat:	d->drawFastVLine(x,y+0,5, ln);  break;
 
 				//  _mouse commands_ draw short
 				#define ma(y1,h,a,s)  d->drawFastVLine(x, y+y1, h, ln); \
@@ -243,6 +244,9 @@ void Gui::DrawSequences()
 
 					case CMD_RunSeq:
 						sprintf(a,"S%2d", cp);  d->print(a);  break;
+
+					case CMD_Repeat:
+						d->print("Rpt");  break;
 
 					//  _mouse commands_ draw
 					case CM_x:  sprintf(a,"Mx%+4d", cm);  d->print(a);  break;

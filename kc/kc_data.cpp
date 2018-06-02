@@ -81,6 +81,10 @@ void KC_Main::UpdLay(uint32_t ms)
 					digitalWrite(LED, gui.led ? LOW : HIGH);
 					#endif
 					break;
+
+				case K_Fun5:  // quit seq, repeat
+					QuitSeq(0);
+					break;
 				}
 			}
 		}else if (hold)
@@ -117,9 +121,9 @@ bool KC_Main::SeqEnd(int lev, const KC_Sequence& sq)
 }
 
 //  Quit running Sequence on enter Gui
-void KC_Main::QuitSeq()
+void KC_Main::QuitSeq(int8_t chk)
 {
-	if (gui.kbdSend)  return;
+	if (chk && gui.kbdSend)  return;
 	if (inSeq[0] < 0 && inSeq[1] < 0)  return;
 	inSeq[0] = -1;  inSeq[1] = -1;
 	Keyboard.releaseAll();
@@ -148,7 +152,8 @@ void KC_Main::Send(uint32_t ms)
 		{	seqWait = 0;  // restore, dtSeqOwn-
 			dtSeq = par.dtSeqDef;
 		}
-		const KC_Sequence& sq = set.seqs[inSeq[lev]];
+		const int8_t isq = inSeq[lev];
+		const KC_Sequence& sq = set.seqs[isq];
 		int16_t& sp = seqPos[lev];  int8_t& sr = seqRel[lev];
 		uint8_t code = sq.data[sp];
 
@@ -191,6 +196,16 @@ void KC_Main::Send(uint32_t ms)
 						inSeq[1] = cp;
 						seqPos[1]=0;  seqRel[1]=0;
 					}
+					break;
+
+				case CMD_Repeat:  // repeat
+					Keyboard.releaseAll();
+					SeqModClear();
+					inSeq[lev] = isq;
+					//sp = 0;  sr = 0;
+					seqPos[0]=0;  seqRel[0]=0;
+					seqPos[1]=0;  seqRel[1]=0;
+					tiSeq = ms;  dtSeq = par.dtSeqDef;  seqWait = 0;
 					break;
 
 				//  _mouse commands_ execute

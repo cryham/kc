@@ -158,6 +158,8 @@ void Gui::DrawHelp()
 		d->println("X  Hide> rest of seq.");
 		d->moveCursor(0,2);
 		d->println("V  Run other seq.");
+		d->moveCursor(0,2);
+		d->println("-  Repeat seq, Gui quits");
 		d->moveCursor(0,6);
 		d->println("\x18,\x19  Adjust parameter");
 		break;

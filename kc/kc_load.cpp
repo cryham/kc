@@ -48,11 +48,13 @@ const uint16_t cCmdClrLn[CMD_ALL]={
 	RGB(6,31,6),RGB(16,31,6), RGB(6,22,6),RGB(12,22,6),  RGB(6,31,6),RGB(16,31,6), RGB(6,31,16),RGB(16,31,16),
 	//CMD_RunSeq,  CM_xbig,CM_ybig, CM_xset,CM_yset,  CM_mset,
 	RGB(31,11,6),  RGB(6,31,6),RGB(16,31,6), RGB(16,24,16),RGB(19,24,16),  RGB(21,26,21),
+	RGB(31,16,6), //CMD_Repeat
 };
 const uint8_t cCmdStrLen[CMD_ALL]={
 	6, 6, 2, 2,
 	6,6, 4,4,  3,4, 5,5,
 	3, 6,6, 6,6,  2,
+	3,
 };
 
 

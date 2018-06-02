@@ -232,8 +232,8 @@ void Gui::DrawClock()
 		{
 			//onewire.reset_search();
 			//  setup
-			sensors.begin(12);  // quality bits
-			sensors.request(addr);
+ 			sensors.begin(12);  // quality bits
+ 			sensors.request(addr);
 			temp1 = 2;
 		}
 	}
