@@ -133,16 +133,14 @@ void Gui::DrawClock()
 	}
 
 	//  uptime, since on  --
-	int dn = to/3600/24 %10;
 	h = to/3600%24;  m = to/60%60;  s = to%60;
-
 	y = yo;
-	d->setCursor(x -10, y);
+	d->setCursor(x +5, y);
 	if (pgClock == 1)
 		d->setClr(18,22,28);
 	else
 		d->setClr(16,21,26);
-	sprintf(a,"%d %2d:%02d:%02d", dn, h, m, s);
+	sprintf(a,"%2d:%02d:%02d", h, m, s);
 	d->print(a);
 
 
