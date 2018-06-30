@@ -105,16 +105,16 @@ void Gui::KeyPress()
 	}
 
 
-	//  Add+  <back global
-	if ((kAdd || kBckSp) && mlevel > 0)  --mlevel;
-
-
 	if (mlevel == 0)  //  main menu
 	{
 		if (kUp){  ym += kUp;  if (ym >= M_All)  ym = 0;  if (ym < 0)  ym = M_All-1;  }
 		if (kRight > 0 || kEnt2)  mlevel = 1;  // enter>
 		return;
 	}
+
+
+	//  Add+  <back global
+	if ((kAdd || kBckSp) && mlevel > 0)  --mlevel;
 
 
 	//  Help
@@ -131,7 +131,7 @@ void Gui::KeyPress()
 	if (mlevel == 1)  //  sub menu
 	{
 		//  navigate
-		if (kRight < 0 || kBckSp)  mlevel = 0;  // <back
+		if (kRight < 0)  mlevel = 0;  // <back
 		if (kRight > 0 || kEnt2)
 			if (ym != M_Display)  mlevel = 2;  // enter>
 
