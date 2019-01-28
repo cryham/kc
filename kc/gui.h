@@ -96,9 +96,9 @@ struct Gui
 	//  level 2 y cursors  - -
 	int8_t ym2Scan = 0, ym2Keyb = 0, ym2Mouse = 0, pressGui = 0;  // Setup
 	int8_t ym2Disp = 0, pgDisp = 0;  // Display
-	int8_t ym2Clock = 0, pgClock = 1;  // Clock
+	int8_t ym2Clock = 0, pgClock = 2;  // Clock
 
-	const static uint8_t Disp_All = 2, Clock_All = 3;
+	const static uint8_t Disp_All = 2, Clock_All = 4, pgClkAdj = Clock_All-1;  // adj on last
 	const static uint8_t DispPages[Disp_All], ScanPages[S_All-1], ClockPages[Clock_All];
 
 	//  util

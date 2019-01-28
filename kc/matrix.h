@@ -56,7 +56,7 @@ typedef struct GPIO_Pin {
 #define T3_11 gpio(C,6 ) //spi
 #define T3_12 gpio(C,7 )
 #define T3_13 gpio(C,5 ) //spi
-#define T3_14 gpio(D,1 )
+#define T3_14 gpio(D,1 ) 
 #define T3_15 gpio(C,0 )
 #define T3_16 gpio(B,0 ) //|1
 #define T3_17 gpio(B,1 ) //|2
@@ -76,7 +76,7 @@ typedef struct GPIO_Pin {
 #define T3_31 gpio(E,0 ) //|16
 #define T3_32 gpio(B,18) //|17
 #define T3_33 gpio(A,4 ) //|18
-#define T3_40 gpio(A,14) //dac led
+#define T3_40 gpio(A,14) //dac lcd led
 
 
 //  ----***  Matrix  ***----

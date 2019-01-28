@@ -98,7 +98,7 @@ struct KC_Main
 	uint16_t memSize = 0;  // result B
 	KC_Err err = E_ok;
 
-	unsigned long tm_key = 0;  // for stats
+	unsigned long tm_key = 0, tm_key2 = 0;  // for stats, actual, last
 };
 
 extern KC_Main kc;

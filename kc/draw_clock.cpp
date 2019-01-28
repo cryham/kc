@@ -59,7 +59,7 @@ int DayOfWeek(int d, int m, int y)
     return (y + y/4 - y/100 + y/400 + int(t12[m-1]) + d) % 7;
 }
 
-const char* sPgClock[Gui::Clock_All] = {"", "Stats", "Adjust"};
+const char* sPgClock[Gui::Clock_All] = {"", "Stats", "", "Adjust"};
 
 
 //  Display
@@ -86,7 +86,7 @@ void Gui::DrawClock()
 	int h = t/3600%24, m = t/60%60, s = t%60,
 		dt = t/3600/24, yr = dt/365 + 2000;
 
-	bool clock = !pgClock || pgClock == 2;
+	bool clock = !pgClock || pgClock == pgClkAdj;
 	bool date = yr >= 2018;  // rtc set
 
 
@@ -111,7 +111,8 @@ void Gui::DrawClock()
 
 	//  title
 	d->setClr(12,14,17);
-	d->print(strMain[ym]);
+	if (clock)
+		d->print(strMain[ym]);
 
 
 	//  x,y pos
@@ -124,10 +125,10 @@ void Gui::DrawClock()
 	if (clock || date)
 	{
 		d->setCursor(x, y);
-		d->setClr(22,24,26);
-
-		if (!clock)
-			d->setClr(15,19,24);
+		if (clock)
+			d->setClr(22,24,26);
+		else
+			d->setClr(18,22,26);
 		sprintf(a,"%2d:%02d:%02d", h, m, s);
 		d->print(a);
 	}
@@ -136,44 +137,53 @@ void Gui::DrawClock()
 	h = to/3600%24;  m = to/60%60;  s = to%60;
 	y = yo;
 	d->setCursor(x +5, y);
-	if (pgClock == 1)
+//	if (pgClock == 1)
 		d->setClr(18,22,28);
-	else
-		d->setClr(16,21,26);
-	sprintf(a,"%2d:%02d:%02d", h, m, s);
+//	else
+//		d->setClr(16,21,26);
+	sprintf(a,"%d:%02d:%02d", h, m, s);
 	d->print(a);
 
 
 	//  time inactive  --
-	if (pgClock == 1)
+	if (!clock)
 	{
-		ti = t - kc.tm_key;
+		ti = t - kc.tm_key;  // actual
+		if (ti > 5*60)  // set if more than 5 min
+			kc.tm_key2 = ti;
+
+		ti = kc.tm_key2;  // hold, last
 		h = ti/3600%24;  m = ti/60%60;  s = ti%60;
 
 		d->setCursor(x+5, yi);
 		d->setClr(14,18,24);
-		sprintf(a,"%2d:%02d:%02d", h, m, s);
+		//sprintf(a,"%d:%02d:%02d", h, m, s);
+		sprintf(a,"%d:%02d", h, m);
 		d->print(a);
 
 		y = yp + 13;  // press/min
-		d->setCursor(x+4, y);
+		d->setCursor(x+5, pgClock == 2 ? y-4 : y);
 		d->setClr(14,22,24);
 		float fto = to ? to : 1;
 		float pm = 60.f * cnt_press / fto;
-		dtostrf(pm, 5,2, f);
+		dtostrf(pm, 4,2, f);
 		d->print(f);
 	}
 
 
-	#ifdef TEMP1  // Temp'C  val  **
-	if (pgClock < 2 && fTemp > -90.f)
+	//  Temp'C  val  **
+	#ifdef TEMP1
+	if (pgClock < pgClkAdj && fTemp > -90.f)
 	{
 		dtostrf(fTemp, 4,2, f);
 		if (pgClock == 0)
 		{	d->setClr(18,22,26);
 			d->setCursor(6, 71);
 		}else
-		{	d->setClr(14,18,22);
+		{	if (pgClock == 2)
+				d->setClr(16,20,24);
+			else
+				d->setClr(14,18,22);
 			d->setCursor(6, 32);
 		}
 		d->print(f);
@@ -210,12 +220,16 @@ void Gui::DrawClock()
 		d->setFont(0);
 
 
-	//  page, subtitle  --
-	d->setCursor(W-1 -3*6, 4);
+	//  page/all  --
 	d->setClr(12,16,22);
-	sprintf(a,"%d/%d", pgClock+1, Clock_All);
-	d->print(a);
+	if (pgClock != 2)
+	{
+		d->setCursor(W-1 -3*6, 4);
+		sprintf(a,"%d/%d", pgClock+1, Clock_All);
+		d->print(a);
+	}
 
+	//  subtitle
 	d->setCursor(W/2 -2*6, 4);
 	d->print(sPgClock[pgClock]);
 
@@ -235,7 +249,7 @@ void Gui::DrawClock()
 			temp1 = 2;
 		}
 	}
-	if (temp1 == 2 && pgClock < 2)
+	if (temp1 == 2 && pgClock != pgClkAdj)
 	{
 		++skip;
 		//  slower if not in gui, every 20, 10 sec
@@ -282,12 +296,19 @@ void Gui::DrawClock()
 		x = 6;	y = yo;  d->setCursor(x,y+4);  d->print("Uptime");
 		#ifdef TEMP1
 		if (temp1 == 2)  // 'C
-		{	d->setCursor(9*6,32+4);  d->print("\x01""C");
-		}
+		{	d->setCursor(9*6,32+4);  d->print("\x01""C");  }
 		#endif
 	}	break;
 
-	case 2:  //  adjust
+	case 2:  //  stats2  no labels
+	{
+		#ifdef TEMP1
+		if (temp1 == 2)  // 'C
+		{	d->setCursor(9*6,32+4);  d->print("\x01""C");  }
+		#endif
+	}	break;
+
+	case pgClkAdj:  //  adjust
 		for (int i=0; i <= pg; ++i)
 		{
 			DrawClockCur(i, y);

@@ -1,6 +1,6 @@
 #include "gui.h"
 
-const uint8_t Gui::ClockPages[Gui::Clock_All] = {0,0,5};
+const uint8_t Gui::ClockPages[Gui::Clock_All] = {0,0,0,5};
 
 
 //  Clock
@@ -14,15 +14,8 @@ void Gui::KeysClock()
 	{	pgClock = RangeAdd(pgClock, kPgUp, 0, Clock_All-1, 1);
 		ym2Clock = RangeAdd(ym2Clock, 0, 0, ClockPages[pgClock], 1);
 	}else
-	if (kRight)  // adjust values
-	switch (pgClock)
-	{
-	case 0:
-		break;
-
-	case 2:
+	if (kRight && pgClock == pgClkAdj)  // adjust values
 	{	unsigned long tm = rtc_get(), td = 0;
-		//rtc_compensate(int adjust)
 		int a = kRight * (kCtrl ? 10 : 1);
 		if (a)
 		{	switch (ym2Clock)
@@ -33,12 +26,12 @@ void Gui::KeysClock()
 			case 3:  td = a * 3600*24;  break;  // day
 			case 4:  td = a * 3600*24*30;  break;  // mth-
 			case 5:  td = a * 3600*24*365;  break;  // yr
+			//todo: rtc_compensate(int adjust)
 			}
 			if (tm + td >= 0)
 			{	tm += td;  if (tm_on + td >= 0)  tm_on += td;
 				rtc_set(tm);  }
 		}
-	}
 	}
 	if (kAdd || kBckSp)  --mlevel;
 }
