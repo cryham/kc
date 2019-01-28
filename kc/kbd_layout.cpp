@@ -60,7 +60,7 @@ const DrawKey drawKeys[nDrawKeys] = {  //  Layout draw
 const uint8_t gGui=40, gMslow=32, gLoad=15,gSave=31,gDiv=36, gEsc=0,gAdd=6,gEnt=22,gEnt2=22,
 	gRight=9,gLeft=10,gDown=20,gUp=4, gPgDn=17,gPgUp=1,gEnd=18,gHome=2,
 	gCtrl=26,gSh=16,gMul=33,gSub=41, gIns=28,gDel=25,gBckSp=8, gC=39,gV=37,gX=45,
-	gF1=57,gF2=58,gF3=94,gF6=139,gF7=95,gF8=59,gF9=64,gF10=46,gF11=136,gF12=10;  //--
+	gF1=NO,gF2=NO,gF3=NO,gF6=NO,gF7=NO,gF8=NO,gF9=NO,gF10=NO,gF11=NO,gF12=NO;  //--
 
 #elif defined(CK6)   //  CK6/3  ------------------------------------------------
 #define  wf  fW,kF
