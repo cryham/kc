@@ -52,7 +52,7 @@ All unnecessary code for drawing from libraries was removed.
 Displaying GUI and scanning keyboard (at 1kHz) gives about 30-50 drawn frames per second. Demos are slower 10-30.
 
 Some of my code (anti-ghosting, Gui, demos) are adopted and were already present in my [fork of kiibohd](https://github.com/cryham/controller),
-done for my previous keyboards, info on [My Website](http://cryham.tuxfamily.org/archives/portfolio/crystal-keyboard-3-and-4).
+done for my previous keyboards, info on [My Website](http://cryham.tuxfamily.org/portfolio/crystal-keyboard-3-and-4).
 
 ### Hardware
 
