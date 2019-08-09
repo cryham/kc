@@ -96,10 +96,14 @@ struct Gui
 	//  level 2 y cursors  - -
 	int8_t ym2Scan = 0, ym2Keyb = 0, ym2Mouse = 0, pressGui = 0;  // Setup
 	int8_t ym2Disp = 0, pgDisp = 0;  // Display
-	int8_t ym2Clock = 0, pgClock = 2;  // Clock
+	int8_t ym2Clock = 0, pgClock = 3;  // Clock
 
-	const static uint8_t Disp_All = 2, Clock_All = 4, pgClkAdj = Clock_All-1;  // adj on last
-	const static uint8_t DispPages[Disp_All], ScanPages[S_All-1], ClockPages[Clock_All];
+	const static uint8_t Disp_All = 2;
+	const static uint8_t DispPages[Disp_All], ScanPages[S_All-1];
+
+	const static uint8_t Clock_All = 5, pgClkAdj = Clock_All-1;  // adj on last
+	inline static uint8_t ClockPages(int pg)
+	{	return pg == pgClkAdj ? 6 : 0;  }
 
 	//  util
 	int16_t RangeAdd(int16_t val, int16_t add, int16_t vmin, int16_t vmax, int8_t cycle=0);

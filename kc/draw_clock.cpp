@@ -59,7 +59,7 @@ int DayOfWeek(int d, int m, int y)
     return (y + y/4 - y/100 + y/400 + int(t12[m-1]) + d) % 7;
 }
 
-const char* sPgClock[Gui::Clock_All] = {"", "Stats", "", "Adjust"};
+const char* sPgClock[Gui::Clock_All] = {"", "Stats", "", "", "Adjust"};
 
 
 //  Display
@@ -81,16 +81,21 @@ void Gui::DrawClockCur(int i, int16_t y)
 void Gui::DrawClock()
 {		
 	char a[64],f[32];
+
 	//  time  ---
 	unsigned long t = rtc_get(), to, ti;
 	int h = t/3600%24, m = t/60%60, s = t%60,
 		dt = t/3600/24, yr = dt/365 + 2000;
 
-	bool clock = !pgClock || pgClock == pgClkAdj;
-	bool date = yr >= 2018;  // rtc set
+	bool adj = pgClock == pgClkAdj;
+	bool clock = !pgClock || adj;
+	bool date = yr >= 2019;  // rtc set
+	bool clock_date = clock && date;
+	bool leap = isLeap(yr);
+	bool page23 = pgClock == 2 || pgClock == 3;
 
 
-	//  late hours, background color
+	//  late hours, background color  --------
 	if (date)
 	{
 		int8_t r=0, g=0, b=0, hf = m >= 30 ? 5 : 0;
@@ -121,7 +126,7 @@ void Gui::DrawClock()
 	to = t - tm_on;
 
 
-	//  time  ----
+	//  time  ----------------
 	if (clock || date)
 	{
 		d->setCursor(x, y);
@@ -133,19 +138,17 @@ void Gui::DrawClock()
 		d->print(a);
 	}
 
-	//  uptime, since on  --
+
+	//  uptime, since on  --------
 	h = to/3600%24;  m = to/60%60;  s = to%60;
 	y = yo;
 	d->setCursor(x +5, y);
-//	if (pgClock == 1)
-		d->setClr(18,22,28);
-//	else
-//		d->setClr(16,21,26);
+	d->setClr(18,22,28);
 	sprintf(a,"%d:%02d:%02d", h, m, s);
 	d->print(a);
 
 
-	//  time inactive  --
+	//  time inactive  --------
 	if (!clock)
 	{
 		ti = t - kc.tm_key;  // actual
@@ -161,19 +164,29 @@ void Gui::DrawClock()
 		sprintf(a,"%d:%02d", h, m);
 		d->print(a);
 
-		y = yp + 13;  // press/min
+
+		// press/min  --------
+		y = yp + 13;
 		d->setCursor(x+5, pgClock == 2 ? y-4 : y);
-		d->setClr(14,22,24);
+
 		float fto = to ? to : 1;
 		float pm = 60.f * cnt_press / fto;
 		dtostrf(pm, 4,2, f);
+
+		//  color from value
+		if (pm > 90)  d->setClr(31,12, 2);  else
+		if (pm > 70)  d->setClr(30,18, 2);  else
+		if (pm > 50)  d->setClr(24,24, 4);  else
+		if (pm > 30)  d->setClr(14,24, 2);  else
+		if (pm > 10)  d->setClr( 6,24, 6);  else
+					  d->setClr( 6,16,24);
 		d->print(f);
 	}
 
 
-	//  Temp'C  val  **
+	//  Temp'C  val  --------
 	#ifdef TEMP1
-	if (pgClock < pgClkAdj && fTemp > -90.f)
+	if (!adj && fTemp > -90.f)
 	{
 		dtostrf(fTemp, 4,2, f);
 		if (pgClock == 0)
@@ -191,12 +204,24 @@ void Gui::DrawClock()
 	#endif
 
 
-	//  date  ----
-	if (clock && date)
+	//  layer  --------
+	if (page23)
+	{
+		d->setCursor(0, yo);
+		if (kc.nLayerLock >= 0)
+			d->setClr(27,23,28);
+		else
+			d->setClr(17,17,26);
+		sprintf(a,"L%d", kc.nLayer);  d->print(a);
+	}
+
+
+	//  date big  --------
+	if (clock_date)
 	{
 		//  date
 		int mth=0, day=0, x2 = x + 36;
-		getMD(isLeap(yr), dt%365, &day, &mth);
+		getMD(leap, dt%365, &day, &mth);
 
 		//  day, week
 		x += 6;  y = yd;
@@ -220,9 +245,12 @@ void Gui::DrawClock()
 		d->setFont(0);
 
 
-	//  page/all  --
+	//  small font  ----------------------
+
+
+	//  page / all  ---
 	d->setClr(12,16,22);
-	if (pgClock != 2)
+	if (!page23)
 	{
 		d->setCursor(W-1 -3*6, 4);
 		sprintf(a,"%d/%d", pgClock+1, Clock_All);
@@ -234,6 +262,7 @@ void Gui::DrawClock()
 	d->print(sPgClock[pgClock]);
 
 
+	//  temp get  --------
 	#ifdef TEMP1  // 18B20  Temp'C
 	if (temp1 == 1)
 	{	temp1 = 0;  //  first
@@ -249,7 +278,7 @@ void Gui::DrawClock()
 			temp1 = 2;
 		}
 	}
-	if (temp1 == 2 && pgClock != pgClkAdj)
+	if (temp1 == 2 && !adj)
 	{
 		++skip;
 		//  slower if not in gui, every 20, 10 sec
@@ -258,14 +287,15 @@ void Gui::DrawClock()
 		if (sensors.available())
 		{	skip = 0;
 			fTemp = sensors.readTemperature(addr);
+			fTemp -= 0.6f;  //par ofs adj..
 			sensors.request(addr);  // next
 		}
 	}
 	#endif
 
 
-	//  par values  ====
-	int pg = ClockPages[pgClock];
+	//  labels, par values  ====--------
+	int pg = ClockPages(pgClock);
 	y = 32;
 	switch (pgClock)
 	{
@@ -281,7 +311,7 @@ void Gui::DrawClock()
 		#endif
 	}	break;
 
-	case 1:  //  stats  labels
+	case 1:  //  stats old  labels
 	{
 		d->setClr(12,22,30);
 		x = W/2+6;  y = yp;  d->setCursor(x,y);
@@ -300,12 +330,48 @@ void Gui::DrawClock()
 		#endif
 	}	break;
 
-	case 2:  //  stats2  no labels
+	case 2:  //  stats new  no labels
+	case 3:
 	{
 		#ifdef TEMP1
 		if (temp1 == 2)  // 'C
 		{	d->setCursor(9*6,32+4);  d->print("\x01""C");  }
 		#endif
+		if (pgClock == 3)
+		{
+			//  press k
+			d->setClr(9,18,22);
+			x = W/2 -36;  y = yp +15;  d->setCursor(x,y);
+			sprintf(a, "%dk", cnt_press/1000);  d->print(a);
+
+			//  date small  ----
+			if (clock_date)
+			{
+				int mth=0, day=0;
+				getMD(leap, dt%365, &day, &mth);
+
+				//  day, week
+				x = W/2;  y = 32+12+4;
+				d->setCursor(x, y);
+				d->setClr(17,21,24);
+				d->print(wdays[DayOfWeek(day, mth, yr)]);
+				x += 40;
+				d->setCursor(x, y);
+				sprintf(a,"%d.%d", day, mth);  d->print(a);
+			}
+		}
+
+		//  seq  --------
+		if (kc.inSeq[0] >= 0)
+		{
+			d->setCursor(0, yo -10);
+			d->setClr(25,23,31);
+			sprintf(a,"S%d", kc.inSeq[0]);  d->print(a);
+
+			d->setCursor(0, yo -19);
+			DrawSeq(kc.inSeq[0], 2);
+		}
+
 	}	break;
 
 	case pgClkAdj:  //  adjust
@@ -320,9 +386,16 @@ void Gui::DrawClock()
 			case 2:  sprintf(a,"Second");  h = 4;  break;
 			case 3:  sprintf(a,"Day");  break;
 			case 4:  sprintf(a,"Month");  break;
-			case 5:  sprintf(a,"Year");  break;
+			case 5:  sprintf(a,"Year");  h = 4;  break;
+			case 6:  sprintf(a,"Compensate");  break;
 			}
 			d->print(a);  y += h+8;
+
+			if (i==6)
+			{
+				d->setCursor(20, y);
+				sprintf(a,"%d", par.rtcCompensate);  d->print(a);
+			}
 		}	break;
 	}
 }
