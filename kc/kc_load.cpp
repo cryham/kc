@@ -119,6 +119,8 @@ void KC_Main::Load()
 		par.quickKeys = 2;
 	}
 
+	//  zero
+	memset(set.key, 0, sizeof(set.key));
 
 	//  Keys  ---
 	for (i=0; i < set.scanKeys; ++i)

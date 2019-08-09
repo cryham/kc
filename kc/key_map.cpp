@@ -152,14 +152,26 @@ void Gui::KeysMap()
 	//  key oper
 	if (scId != NO && scId < kc.set.nkeys() && nLay < KC_MaxLayers)
 	{
-		if (kCtrl && kDel)  kc.set.key[nLay][scId] = KEY_NONE;
+		if (kCtrl && kDel)
+			kc.set.key[nLay][scId] = KEY_NONE;
 
-		if (kCopy){  scIdCpy = scId;  nLayCpy = nLay;  }
+		if (kCopy)
+		{	scIdCpy = scId;  nLayCpy = nLay;  }
 
-		if (kPaste)  kc.set.key[nLay][scId] = kc.set.key[nLayCpy][scIdCpy];
-
-		if (kSwap){  uint8_t c = kc.set.key[nLay][scId];
+		if (kPaste) {
+		if (!kCtrl)
 			kc.set.key[nLay][scId] = kc.set.key[nLayCpy][scIdCpy];
-			kc.set.key[nLayCpy][scIdCpy] = c;  }
+		else
+		{	// paste whole layer, to empty keys
+			for (int i=0; i < kc.set.nkeys(); ++i)
+				if (kc.set.key[nLay][i] == KEY_NONE)
+					kc.set.key[nLay][i] = kc.set.key[nLayCpy][i];
+		}	}
+
+		if (kSwap)
+		{	uint8_t c = kc.set.key[nLay][scId];
+			kc.set.key[nLay][scId] = kc.set.key[nLayCpy][scIdCpy];
+			kc.set.key[nLayCpy][scIdCpy] = c;
+		}
 	}
 }
