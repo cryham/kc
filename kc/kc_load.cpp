@@ -31,6 +31,9 @@ void ParInit()
 	par.dtSeqDef = 20;
 	par.defLayer = 0;  par.editLayer = 2;
 	par.keyGui = gGui;
+
+	par.msLayLock = 20;  // 200ms
+	par.rtcCompensate = 0;
 }
 
 //  errors
@@ -160,8 +163,10 @@ void KC_Main::Save()
 	if (set.rows * set.cols != set.scanKeys)
 	{	err=E_rcEq;  return;  }
 
+	#ifndef CK1
 	if (set.nkeys() != int(set.scanKeys))
 	{	err=E_nkeys;  return;  }
+	#endif
 
 	int a = EOfs, i, n;
 

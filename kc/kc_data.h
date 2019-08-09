@@ -66,7 +66,10 @@ extern const char* KCerrStr[E_max];
 struct KC_Main
 {
 	//  current layer, set by keys
-	int8_t nLayer = 0;
+	int8_t nLayer = 0,  // final, held layer key (or set)
+		   nLayerLock = -1;  // tap layer key to lock/unlock
+	uint32_t msKeyLay = 0;
+
 	int8_t setDac = 1;  // update
 
 	//  sequence running vars  0 norm, 1 from seq

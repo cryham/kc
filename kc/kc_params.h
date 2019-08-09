@@ -40,16 +40,19 @@ struct KC_Params
 	uint8_t krDelay, krRepeat;
 	uint8_t mkSpeed, mkAccel;  // mouse keys
 
-	//* sequence, default keys dt
+	//* sequence, default keys delay
 	uint8_t dtSeqDef;
 
-	//  default layer 0, sequence edit layer 2
-	uint8_t defLayer, editLayer;
+	uint8_t defLayer;   // default layer 0
+	uint8_t editLayer;  // sequence edit layer 2
 	uint8_t keyGui;  // scId for gui toggle
 
 	uint8_t keyMouseSlow;  // mouse shift scId
 	uint8_t mkWhSpeed, mkWhAccel;  // mouse wheel
 	uint8_t quickKeys;  // off
+
+	uint8_t msLayLock;  // *10ms max press time to lock layer
+	int8_t rtcCompensate;  // drift fix
 
 	//  todo par, low pri
 	//* start demo screen
@@ -57,6 +60,7 @@ struct KC_Params
 	//* inactive time show, start demo-
 };
 //  --- ADD new to END ----
+//  set defaults in ParInit()
 
 
 enum EStScr  //  start screen

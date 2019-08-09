@@ -33,7 +33,8 @@ void Gui::DrawTesting()
 		d->setCursor(0,32);
 		//  layer  -
 		d->setClr(20,23,31);
-		sprintf(a,"Layer: %d", kc.nLayer);
+		sprintf(a,"Layer: %d %s", kc.nLayer,
+				   kc.nLayerLock >= 0 ? "Lock" : "");
 		d->setClr(24,27,31);
 		d->print(a);
 		d->println("");  d->moveCursor(0,4);
@@ -107,7 +108,8 @@ void Gui::DrawTesting()
 		d->setCursor(0,26);
 		//  layer  -
 		d->setClr(20,23,31);
-		sprintf(a,"Layer: %d", kc.nLayer);
+		sprintf(a,"Layer: %d %s", kc.nLayer,
+				   kc.nLayerLock >= 0 ? "Lock" : "");
 		d->print(a);
 		d->setCursor(0,38);
 

@@ -44,8 +44,8 @@ void Gui::DrawSetup()
 	//-----------------------------------------------------
 	case S_Keyboard:
 	{
-		int16_t y=32;
-		for (int i=0; i < 4; ++i)
+		int16_t y=32;  // ScanPages[yy]
+		for (int i=0; i < 5; ++i)
 		{
 			d->setCursor(2,y);
 			int c = abs(i - ym2Keyb);
@@ -60,9 +60,9 @@ void Gui::DrawSetup()
 			switch(i)
 			{
 			case 0:
-				sprintf(a,"Sequence delay: %d ms", par.dtSeqDef);  y+=2;  break;
-			case 1:  // todo warning layer empty
 				sprintf(a,"Default layer: %d", par.defLayer);  y-=2;  break;
+			case 1:  // todo warning layer empty
+				sprintf(a,"Sequence delay: %d ms", par.dtSeqDef);  break;
 			case 2:  // todo warning seq key not bound
 				sprintf(a,"Seq. edit layer: %d", par.editLayer);  break;
 			case 3:
@@ -70,7 +70,9 @@ void Gui::DrawSetup()
 					sprintf(a,"Gui toggle Key: Press ..");
 				else
 					sprintf(a,"Gui toggle Key: %d", par.keyGui);  break;
-			}
+			case 4:
+				sprintf(a,"Layer lock max: %d ms", par.msLayLock*10);  y+=2;  break;
+		}
 			d->print(a);  y += 8+4;
 		}
 	}	break;

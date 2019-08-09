@@ -49,15 +49,30 @@ void KC_Main::UpdLay(uint32_t ms)
 
 			if (code0 >= K_Layer1 && code0 < K_Layer1+KC_MaxLayers)
 			{
-				//  set layer, hold
-				if (on)   nLayer = code0 - K_Layer1 + 1;
+				int8_t lay = code0 - K_Layer1 + 1;
+
+				if (on)
+					msKeyLay = ms;
+				else                      //par
+				if (off && (ms - msKeyLay < par.msLayLock*10 || ms < msKeyLay))
+				{
+					if (nLayerLock == lay)
+						nLayerLock = -1;  // unlock
+					else
+						nLayerLock = lay;  // lock, set, sticky
+				}
+
+				//  set layer, hold  ------
+				if (on)   nLayer = lay;
 				else  // default layer
-				if (off)  nLayer = par.defLayer;
+				if (off)  nLayer =
+					nLayerLock >=0 ? nLayerLock : par.defLayer;
 
 				if (nLayer >= KC_MaxLayers-1)
 					nLayer = KC_MaxLayers-1;
 			}
-			else  //  display, internal functions  ***
+			else
+			//  display, internal functions  ***
 			//..........................................................
 			if (on && fun)
 			{
@@ -82,12 +97,14 @@ void KC_Main::UpdLay(uint32_t ms)
 					#endif
 					break;
 
-				case K_Fun5:  // quit seq, repeat
+				case K_Fun5:  // quit seq, stop repeat
 					QuitSeq(0);
 					break;
+
 				}
 			}
-		}else if (hold)
+		}
+		else if (hold)  // repeat, funct
 		{
 			if (fun)
 			if (ms - tiFun > par.krRepeat*5 || ms < tiFun)

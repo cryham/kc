@@ -7,7 +7,7 @@
 #include "periodic.h"
 
 const uint8_t Gui::DispPages[Gui::Disp_All] = {2,4};
-const uint8_t Gui::ScanPages[S_All-1] = {2,3,4};
+const uint8_t Gui::ScanPages[S_All-1] = {2,4,4};
 
 
 //  Key press
@@ -47,13 +47,15 @@ void Gui::KeysParSetup(int sp)
 		switch (ym2Keyb)
 		{
 		case 0:
-			par.dtSeqDef = RangeAdd(par.dtSeqDef, kRight * sp, 0, 250);  break;
-		case 1:
 			par.defLayer = RangeAdd(par.defLayer, kRight, 0, KC_MaxLayers-1);  break;
+		case 1:
+			par.dtSeqDef = RangeAdd(par.dtSeqDef, kRight * sp, 0, 250);  break;
 		case 2:
 			par.editLayer = RangeAdd(par.editLayer, kRight, 0, KC_MaxLayers-1);  break;
 		case 3:
 			pressGui = 1;  break;
+		case 4:
+			par.msLayLock = RangeAdd(par.msLayLock, kRight, 0, 100);  break;
 		}	break;
 
 	case S_Mouse:
