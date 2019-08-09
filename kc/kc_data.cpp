@@ -101,7 +101,25 @@ void KC_Main::UpdLay(uint32_t ms)
 					QuitSeq(0);
 					break;
 
+				case K_Fun6:  // zero uptime
+					gui.tm_on = rtc_get();
+					break;
+
+				case K_Fun7:  // dec,inc default layer
+					if (par.defLayer > 0)
+						--par.defLayer;
+					break;
+				case K_Fun8:
+					if (par.defLayer < KC_MaxLayers-1)
+						++par.defLayer;
+					break;
 				}
+			}
+			//  quit seq, etc
+			if (on && (id == gEsc || id == gBckSp) && inSeq[0] >= 0)
+			{
+				//nLayerLock = -1;
+				QuitSeq(0);
 			}
 		}
 		else if (hold)  // repeat, funct

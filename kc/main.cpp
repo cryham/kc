@@ -92,8 +92,8 @@ int main()
 	gui.SetScreen(par.startScreen);
 	gui.kbdSend = 1;  // release
 #ifdef CK1
-	par.brightness = 100;
-	par.brightOff = 100;
+	par.brightness = 65;
+	par.brightOff = 85;
 	gui.kbdSend = 0;  // release
 	par.debounce = 8;  // ms?
 	par.strobe_delay = 8;
@@ -102,7 +102,8 @@ int main()
 	par.krDelay = 250/5;  par.krRepeat = 80/5;  // ms
 	par.mkSpeed = 100;  par.mkAccel = 100;
 	par.mkWhSpeed = 100;  par.mkWhAccel = 100;
-	par.quickKeys = 2;
+	par.quickKeys = 2;  par.msLayLock = 20;
+	par.rtcCompensate = 0;
 
 	par.dtSeqDef = 20;
 	par.defLayer = 0;  par.editLayer = 2;
