@@ -49,13 +49,15 @@ void Gui::KeyPress()
 		if (kF1)  SetScreen(ST_Map);
 		if (kF2)  SetScreen(ST_Seqs);
 		//if (kF3)  SetScreen(ST_Test);
+
 		if (kF6)  SetScreen(ST_Test2+T_Pressed);
 		if (kF7)  SetScreen(ST_Test2+T_Layout);
 		if (kF8)  SetScreen(ST_Setup2+S_Mouse);
+
 		if (kF9)  SetScreen(ST_Displ);
-		if (kF10)  SetScreen(ST_Clock);
+		if (kF10)  SetScreen(ST_Demos2+D_Plasma);
 		if (kF11)  SetScreen(ST_Help);
-		if (kF12)  SetScreen(ST_Demos2+D_Plasma);
+		if (kF12)  SetScreen(ST_Clock);
 	}
 
 	//  Game  ------

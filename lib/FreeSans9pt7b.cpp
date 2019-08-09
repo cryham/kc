@@ -1,5 +1,5 @@
 #include "FreeSans9pt7b.h"
-//  CryHam font
+//  CryHam font 13-17px
 //  based on FreeSans9pt7b, edited in:
 //  https://tchapi.github.io/Adafruit-GFX-Font-Customiser/
 #define PROGMEM 

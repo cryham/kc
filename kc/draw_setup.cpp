@@ -64,7 +64,7 @@ void Gui::DrawSetup()
 			case 1:  // todo warning layer empty
 				sprintf(a,"Sequence delay: %d ms", par.dtSeqDef);  break;
 			case 2:  // todo warning seq key not bound
-				sprintf(a,"Seq. edit layer: %d", par.editLayer);  break;
+				sprintf(a,"Seq. edit layer: %d", par.editLayer);  y-=2;  break;
 			case 3:
 				if (pressGui)
 					sprintf(a,"Gui toggle Key: Press ..");

@@ -181,11 +181,11 @@ void Gui::DrawSequences()
 
 			if (isCmd)
 			{	++n;  ++ofs;
-			switch (cmd)
-			{
-			case CMD_Comment:
-				inCmt = !inCmt;  break;
-			}
+				switch (cmd)
+				{
+				case CMD_Comment:
+					inCmt = !inCmt;  break;
+				}
 			}
 			// todo get num lines, scroll-
 		}

@@ -12,8 +12,8 @@ Gui::Gui() : d(0)
 	int yr = t/3600/24/365;
 	if (yr == 0)  // set date if none
 	{
-		//  whatever in 2019, 614736000
-		t = 19 * 365 + 8 * 30;  t *= 24 * 3600;
+		//  whatever in 2018, 614736000
+		t = 18 * 365 + 8 * 30;  t *= 24 * 3600;
 		t += 16 * 3600;
 		rtc_set(t);
 	}

@@ -68,10 +68,10 @@ void Gui::DrawHelp()
 		d->println("F8   Setup Mouse");
 		d->moveCursor(0,4);
 		d->println("F9   Display");
-		d->println("F10  Clock");
+		d->println("F10  Demos Plasma");
 		d->moveCursor(0,2);
 		d->println("F11  Help");
-		d->println("F12  Demos Plasma");
+		d->println("F12  Clock");
 		break;
 
 	case 2:  //  mapping  ------------------------
