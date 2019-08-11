@@ -9,11 +9,12 @@
 //#define DEMOS_OLD_PAR	//  280 <1%   16%  min
 					// all  6680 10%  17%  max 41k
 #define GAME		// game 1.5k 2%   8%  22.5k
+#define GRAPHS          //  320 <1%
 
 
 //   Keyboard  ----
-#define CK1  // 8x6
-//#define CK6  // 18x8  new CK6/3
+//#define CK1  // 8x6
+#define CK6  // 18x8  new CK6/3
 //#define CK7  // 18x8  old CK7/4/2
 
 
@@ -81,7 +82,7 @@ enum ETesting  //  Testing kbd, level1
 };
 enum ESetup  //  Setup kbd, level1
 {
-	S_Keyboard, S_Mouse, S_Scan, S_Version, S_All
+	S_Keyboard, S_Mouse, S_Scan, S_Info, S_Version, S_All
 };
 
 //  pages  --
@@ -91,7 +92,12 @@ enum EDisplay
 };
 enum EClock
 {
-	Cl_Adjust, Cl_Simple,  Cl_StatsText, Cl_Stats, Cl_StatsExt, Cl_All
+	Cl_Adjust, Cl_Simple,
+	Cl_StatsText, Cl_Stats, Cl_StatsExt,
+	#ifdef GRAPHS
+		Cl_Graphs,
+	#endif
+	Cl_All
 };
 
 //  string names for all above ^

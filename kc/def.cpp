@@ -2,7 +2,7 @@
 #include "gui.h"
 
 //  menu colors
-const uint8_t Gui::Mclr[Gui::Cl_ALL][2][3] = {
+const uint8_t Gui::Mclr[Gui::C_ALL][2][3] = {
 	{{20,26,31},{5,3,1}},  // 0 main
 	{{27,26,31},{2,3,1}},  // 1 demos
 	{{20,30,26},{6,3,4}},  //  2 test
@@ -38,7 +38,7 @@ const char* strTest[T_All] =
 //  Setup kbd
 const char* strSetup[S_All] =
 {
-	"Keyboard", "Mouse", "Scan #", "Version (i)",
+	"Keyboard", "Mouse", "Scan #", "Info, use", "Version (i)",
 };
 
 
