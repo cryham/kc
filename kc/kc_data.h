@@ -3,6 +3,7 @@
 #include <vector>
 #include "keys_usb.h"
 #include "kc_params.h"
+#include "def.h"
 
 
 struct KC_Sequence
@@ -104,8 +105,6 @@ struct KC_Main
 
 
 	//  inactive time(s) for stats
-	const static int8_t
-		minInact = 5;  // minimum minutes for inactive
 	unsigned long
 		tm_key = 0, tm_keyOld = 0,  // last key press time, previous
 		tm_keyAct = 0,
@@ -113,9 +112,14 @@ struct KC_Main
 	uint16_t
 		tInact1 = 0, tInact2 = 0,  // previous 2 inact mins in minutes
 		tInactSum = 0,  // sum inactive times
-		min1_KeysCur = 0, min1_KeysAll = 0;  // 1 minute key presses cur, show
+		min1_Keys = 0;  // 1 minute keys press, show
+
 	//--inact-----|-active--|----------|---|----------------------
 	//   0   1   2* *3 * 4  *5   6   7 * 8 * 9  10 now    * key press
+
+#ifdef GRAPHS
+	uint8_t arPMin[W];  // press/1min graph array
+#endif
 };
 
 extern KC_Main kc;

@@ -151,6 +151,7 @@ extern uint8_t col_ghost[NumCols], row_ghost[NumRows];  // marked as having ghos
 #endif
 
 extern int cnt_press, cnt_hold, cnt_rel;  // testing
+extern int16_t cnt_press1min;
 
 
 //  ----- Functions -----

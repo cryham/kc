@@ -24,6 +24,23 @@ void KC_Main::UpdLay(uint32_t ms)
 		analogWriteDAC0(val);
 	}
 
+	//  1 minute time, stats
+	if (ms - tm_min1 > /*60000*/6000 || ms < tm_min1)
+	{
+		tm_min1 = ms;
+		min1_Keys = cnt_press1min*10;
+		cnt_press1min = 0;
+
+	#ifdef GRAPHS
+		//  graph move left
+		for (int i=0; i < W-1; ++i)
+			arPMin[i] = arPMin[i+1];
+		//  add to graph
+		arPMin[W-1] = min1_Keys > 255 ? 255 : min1_Keys;
+	#endif
+	}
+
+
 	//  all matrix scan codes  ----
 	uint c,r;  int id;
 	for (c=0; c < NumCols; ++c)
@@ -53,8 +70,8 @@ void KC_Main::UpdLay(uint32_t ms)
 
 				if (on)
 					msKeyLay = ms;
-				else                      //par
-				if (//off &&
+				else
+				if (off &&
 					(ms - msKeyLay < par.msLLTapMax*10 || ms < msKeyLay ||
 					(ms - msKeyLay > par.msLLHoldMin*100 && par.msLLHoldMin > 0)))
 				{
@@ -114,6 +131,10 @@ void KC_Main::UpdLay(uint32_t ms)
 				case K_Fun8:
 					if (par.defLayer < KC_MaxLayers-1)
 						++par.defLayer;
+					break;
+
+				case K_Fun9:  // unlock layer
+					nLayerLock = -1;
 					break;
 				}
 			}
@@ -269,7 +290,6 @@ void KC_Main::Send(uint32_t ms)
 					Mouse.moveTo(xm,ym);  break;
 			}	}
 		}
-		//  todo hold any key-
 		//  modifiers
 		else if (code > KEY_NONE && code <= K_ModLast)
 		{
@@ -343,7 +363,7 @@ void KC_Main::Send(uint32_t ms)
 					tm_key = rtc_get();
 
 					//  prev inactive times
-					if (tm_key - tm_keyOld > 60 * minInact)
+					if (tm_key - tm_keyOld > 60 * par.minInactive)
 					{
 						tm_keyAct = tm_key;  // reset active start
 						tInact2 = tInact1;
