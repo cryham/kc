@@ -89,8 +89,15 @@ void Gui::DrawDisplay()
 			sprintf(a,"Ram info: %d", iRam);  h = 2;  break;
 		case 1:
 			sprintf(a,"Frames per sec: %d", demos.iFps);  break;
+		case 2:
+			sprintf(a,"Temp offset ""\x01""C: ");  break;
 		}
 		d->print(a);  y += h+8;
+		if (i==2)
+		{
+			dtostrf(0.03f * par.tempOfs, 4,2, a);
+			d->print(a);
+		}
 	}	break;
 	}
 }

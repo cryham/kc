@@ -91,10 +91,11 @@ int main()
 	kc.Load();
 	gui.SetScreen(par.startScreen);
 	gui.kbdSend = 1;  // release
-#ifdef CK1
+
+#ifdef CK1aa
+	gui.kbdSend = 0;  // release
 	par.brightness = 65;
 	par.brightOff = 85;
-	gui.kbdSend = 0;  // release
 	par.debounce = 8;  // ms?
 	par.strobe_delay = 8;
 	par.scanFreq = 50;  // mul by 1 kHz
@@ -102,8 +103,8 @@ int main()
 	par.krDelay = 250/5;  par.krRepeat = 80/5;  // ms
 	par.mkSpeed = 100;  par.mkAccel = 100;
 	par.mkWhSpeed = 100;  par.mkWhAccel = 100;
-	par.quickKeys = 2;
-	par.msLLTapMax = 10;  par.msLLHoldMin = 20;
+	par.quickKeys = 1;
+	par.msLLTapMax = 0;  par.msLLHoldMin = 20;
 	par.rtcCompensate = 0;
 
 	par.dtSeqDef = 20;

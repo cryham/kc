@@ -46,6 +46,8 @@ public:
 	// get current cursor position
 	int16_t getCursorX() const;
 	int16_t getCursorY() const;
+	uint16_t getClr() const
+	{	return textcolor;  }
 
 protected:
 	int16_t _width, _height,

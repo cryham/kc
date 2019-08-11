@@ -55,7 +55,9 @@ struct KC_Params
 	uint8_t msLLTapMax;   // *10ms max fast press (tap) time to lock layer
 	uint8_t msLLHoldMin;  // *100ms min hold press time to lock layer
 
-	int8_t rtcCompensate;  // xtal capacitance, adjust ppm
+	int8_t rtcCompensate; // xtal capacitance, adjust ppm
+	uint8_t minInactive;  // minimum minutes for inactive
+	int8_t tempOfs;       // adj temp val * 0.03'C  +-4'C
 };
 //  --- ADD new to END ----
 //  set defaults in ParInit()

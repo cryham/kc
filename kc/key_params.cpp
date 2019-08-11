@@ -6,8 +6,8 @@
 #include "kc_data.h"
 #include "periodic.h"
 
-const uint8_t Gui::DispPages[Di_All] = {2,2,1};
-const uint8_t Gui::ScanPages[S_All-1] = {5,4,2};
+const uint8_t Gui::DispPages[Di_All] = {2,2,2};
+const uint8_t Gui::ScanPages[S_All-1] = {5,4,2,1};
 
 
 //  Key press
@@ -88,6 +88,10 @@ void Gui::KeysParSetup(int sp)
 			par.debounce = RangeAdd(par.debounce, kRight, 0, 50);  break;
 		}	break;
 
+	case S_Info:
+		par.verCounter = RangeAdd(par.verCounter, kRight * sp, 0, 255, 1);  break;
+		break;
+
 	//case S_Version:
 	}
 	if (kSave)  Save();
@@ -129,7 +133,7 @@ void Gui::KeysParDisplay(int sp)
 		case 1:
 			par.krRepeat = RangeAdd(par.krRepeat, kRight, 0,255);  break;
 		case 2:
-			par.quickKeys = RangeAdd(par.quickKeys, kRight, 0, 2);  break;
+			par.quickKeys = RangeAdd(par.quickKeys, kRight, 0, 1);  break;
 		}	break;
 
 	case Di_Debug:
@@ -139,6 +143,8 @@ void Gui::KeysParDisplay(int sp)
 			iRam = RangeAdd(iRam, kRight, 0, 2);  break;
 		case 1:  // fps
 			demos.iFps = RangeAdd(demos.iFps, kRight, 0, 2);  break;
+		case 2:
+			par.tempOfs = RangeAdd(par.tempOfs, kRight, -128, 127, 1);  break;
 		}	break;
 	}
 	if (kAdd || kBckSp)  --mlevel;

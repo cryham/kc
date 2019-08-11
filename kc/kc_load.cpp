@@ -26,7 +26,7 @@ void ParInit()
 	par.krDelay = 250/5;  par.krRepeat = 80/5;  // ms
 	par.mkSpeed = 100;  par.mkAccel = 100;
 	par.mkWhSpeed = 100;  par.mkWhAccel = 100;
-	par.quickKeys = 2;
+	par.quickKeys = 1;
 
 	par.dtSeqDef = 20;
 	par.defLayer = 0;  par.editLayer = 2;
@@ -36,6 +36,8 @@ void ParInit()
 	par.msLLHoldMin = 30;  // 3s
 
 	par.rtcCompensate = 0;
+	par.minInactive = 5;
+	par.tempOfs = int8_t(-0.6/*'C*/ / 0.03);  //-20
 }
 
 //  errors
@@ -118,7 +120,7 @@ void KC_Main::Load()
 	{	par.defLayer = 0;  par.editLayer = 2;
 		par.keyGui = gGui;  par.keyMouseSlow = gMslow;
 		par.mkWhSpeed = 100;  par.mkWhAccel = 100;
-		par.quickKeys = 2;
+		par.quickKeys = 1;
 	}
 
 	//  zero

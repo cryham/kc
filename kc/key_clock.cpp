@@ -30,12 +30,18 @@ void Gui::KeysClock()
 
 			case 6:
 				par.rtcCompensate += a;
-				rtc_compensate(par.rtcCompensate);
-				break;
+				rtc_compensate(par.rtcCompensate);  break;
+			case 7:
+				par.minInactive = RangeAdd(par.minInactive, a, 0, 60, 1);  break;
 			}
+
+			if (td)
 			if (tm + td >= 0)
-			{	tm += td;  if (tm_on + td >= 0)  tm_on += td;
-				rtc_set(tm);  }
+			{	tm += td;
+				if (tm_on + td >= 0)
+					tm_on += td;
+				rtc_set(tm);
+			}
 		}
 	}
 	if (kAdd || kBckSp)  --mlevel;
