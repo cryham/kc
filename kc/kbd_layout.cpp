@@ -59,7 +59,7 @@ const DrawKey drawKeys[nDrawKeys] = {  //  Layout draw
 //symbols:  2. 3,  7 cir  9 dot` 28 ent
 const uint8_t gGui=40, gMslow=32, gLoad=15,gSave=31,gDiv=36, gEsc=0,gAdd=6,gEnt=22,gEnt2=22,
 	gRight=9,gLeft=10,gDown=20,gUp=4, gPgDn=17,gPgUp=1,gEnd=18,gHome=2,
-	gCtrl=26,gSh=16,gMul=33,gSub=41, gIns=28,gDel=25,gBckSp=8, gC=39,gV=37,gX=45,
+	gCtrl=26,gSh=16,gMul=33,gSub=41, gIns=28,gDel=25, gBckSp=8,gSpc=26, gC=39,gV=37,gX=45,
 	gF1=NO,gF2=NO,gF3=NO,gF6=NO,gF7=NO,gF8=NO,gF9=NO,gF10=NO,gF11=NO,gF12=NO;  //--
 
 #elif defined(CK6)   //  CK6/3  ------------------------------------------------
@@ -119,7 +119,7 @@ const DrawKey drawKeys[nDrawKeys] = {  //  Layout draw
 };
 const uint8_t gGui=57, gMslow=94, gLoad=95,gSave=110,gDiv=46, gEsc=15,gAdd=84,gEnt=66,gEnt2=37,
 	gRight=101,gLeft=99,gDown=64,gUp=82, gPgUp=83,gPgDn=65,gEnd=63,gHome=81,
-	gCtrl=128,gSh=94,gMul=47,gSub=29, gIns=10,gDel=100,gBckSp=91, gC=49,gV=44,gX=50,
+	gCtrl=128,gSh=94,gMul=47,gSub=29, gIns=10,gDel=100, gBckSp=91,gSpc=9, gC=49,gV=44,gX=50,
 	gF1=139,gF2=103,gF3=13,gF6=131,gF7=127,gF8=109,gF9=19,gF10=111,gF11=75,gF12=74;
 
 #elif defined(CK7)   //  CK7/4  ------------------------------------------------
@@ -176,7 +176,7 @@ const DrawKey drawKeys[nDrawKeys] = {  //  Layout draw
 };
 const uint8_t gGui=96, gMslow=101, gLoad=37,gSave=130,gDiv=25, gEsc=135,gAdd=78,gEnt=114,gEnt2=28,
 	gRight=107,gLeft=105,gDown=115,gUp=79, gPgUp=89,gPgDn=125,gEnd=123,gHome=87,
-	gCtrl=55,gSh=101,gMul=35,gSub=17, gIns=133,gDel=97,gBckSp=100, gC=22,gV=26,gX=21,
+	gCtrl=55,gSh=101,gMul=35,gSub=17, gIns=133,gDel=97, gBckSp=100,gSpc=141, gC=22,gV=26,gX=21,
 	gF1=57,gF2=58,gF3=94,gF6=139,gF7=95,gF8=59,gF9=64,gF10=46,gF11=136,gF12=10;
 #endif
 #undef wf

@@ -102,7 +102,8 @@ int main()
 	par.krDelay = 250/5;  par.krRepeat = 80/5;  // ms
 	par.mkSpeed = 100;  par.mkAccel = 100;
 	par.mkWhSpeed = 100;  par.mkWhAccel = 100;
-	par.quickKeys = 2;  par.msLayLock = 20;
+	par.quickKeys = 2;
+	par.msLLTapMax = 10;  par.msLLHoldMin = 20;
 	par.rtcCompensate = 0;
 
 	par.dtSeqDef = 20;

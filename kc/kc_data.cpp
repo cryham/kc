@@ -54,12 +54,14 @@ void KC_Main::UpdLay(uint32_t ms)
 				if (on)
 					msKeyLay = ms;
 				else                      //par
-				if (off && (ms - msKeyLay < par.msLayLock*10 || ms < msKeyLay))
+				if (//off &&
+					(ms - msKeyLay < par.msLLTapMax*10 || ms < msKeyLay ||
+					(ms - msKeyLay > par.msLLHoldMin*100 && par.msLLHoldMin > 0)))
 				{
 					if (nLayerLock == lay)
 						nLayerLock = -1;  // unlock
 					else
-						nLayerLock = lay;  // lock, set, sticky
+						nLayerLock = lay;  // lock, set sticky
 				}
 
 				//  set layer, hold  ------
@@ -115,12 +117,14 @@ void KC_Main::UpdLay(uint32_t ms)
 					break;
 				}
 			}
-			//  quit seq, etc
-			if (on && (id == gEsc || id == gBckSp) && inSeq[0] >= 0)
+			/*else
+			//  quit seq, layer lock etc
+			if (on && (id == gEsc || id == gSpc))
 			{
-				//nLayerLock = -1;
-				QuitSeq(0);
-			}
+				nLayerLock = -1;
+				if (inSeq[0] >= 0)
+					QuitSeq(0);
+			}*/
 		}
 		else if (hold)  // repeat, funct
 		{
@@ -329,9 +333,23 @@ void KC_Main::Send(uint32_t ms)
 					//  if 1 key, send press
 					uint usb = cKeyUsb[code];
 					k.layerOn = nLayer;  // save layer of press
+
 					Keyboard.press(usb);
 					Keyboard.send_now();
-					tm_key = rtc_get();  // for stats
+
+
+					//  key press time, for stats  ---
+					tm_keyOld = tm_key;
+					tm_key = rtc_get();
+
+					//  prev inactive times
+					if (tm_key - tm_keyOld > 60 * minInact)
+					{
+						tm_keyAct = tm_key;  // reset active start
+						tInact2 = tInact1;
+						tInact1 = (tm_key - tm_keyOld) / 60;
+						tInactSum += tInact1;
+					}
 				}
 				//  mouse  * * *
 				else

@@ -39,5 +39,5 @@ extern const DrawKey drawKeys[nDrawKeys];
 extern const uint8_t
 	gGui, gMslow, gLoad,gSave, gDiv, gEsc,gAdd,gEnt,gEnt2,
 	gRight,gLeft, gDown,gUp, gPgUp,gPgDn, gEnd,gHome,
-	gCtrl,gSh, gMul,gSub, gIns,gDel,gBckSp, gC,gV,gX,
+	gCtrl,gSh, gMul,gSub, gIns,gDel, gBckSp,gSpc, gC,gV,gX,
 	gF1,gF2,gF3,gF6,gF7,gF8,gF9,gF10,gF11,gF12;

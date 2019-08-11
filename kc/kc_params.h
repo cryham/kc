@@ -49,15 +49,13 @@ struct KC_Params
 
 	uint8_t keyMouseSlow;  // mouse shift scId
 	uint8_t mkWhSpeed, mkWhAccel;  // mouse wheel
-	uint8_t quickKeys;  // off
+	uint8_t quickKeys;  // F1..12 access
 
-	uint8_t msLayLock;  // *10ms max press time to lock layer
-	int8_t rtcCompensate;  // drift fix
+	//  layer lock
+	uint8_t msLLTapMax;   // *10ms max fast press (tap) time to lock layer
+	uint8_t msLLHoldMin;  // *100ms min hold press time to lock layer
 
-	//  todo par, low pri
-	//* start demo screen
-	//* auto start seq to login, after time
-	//* inactive time show, start demo-
+	int8_t rtcCompensate;  // xtal capacitance, adjust ppm
 };
 //  --- ADD new to END ----
 //  set defaults in ParInit()

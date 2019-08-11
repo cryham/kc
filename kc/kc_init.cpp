@@ -23,7 +23,11 @@ KC_Main::KC_Main()
 	SeqModClear();
 
 	Mouse.screenSize(1920,1200);  //?
+
 	tm_key = rtc_get();
+	tm_min1 = tm_keyAct = tm_keyOld = tm_key;
+
+	tInactSum = 0;  tInact1 = tInact2 = 0;
 }
 
 //  clear evth

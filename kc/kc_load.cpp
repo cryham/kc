@@ -32,7 +32,9 @@ void ParInit()
 	par.defLayer = 0;  par.editLayer = 2;
 	par.keyGui = gGui;
 
-	par.msLayLock = 20;  // 200ms
+	par.msLLTapMax = 10;  // 100ms
+	par.msLLHoldMin = 30;  // 3s
+
 	par.rtcCompensate = 0;
 }
 

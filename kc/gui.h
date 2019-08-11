@@ -98,12 +98,10 @@ struct Gui
 	int8_t ym2Disp = 0, pgDisp = 0;  // Display
 	int8_t ym2Clock = 0, pgClock = 3;  // Clock
 
-	const static uint8_t Disp_All = 2;
-	const static uint8_t DispPages[Disp_All], ScanPages[S_All-1];
+	const static uint8_t DispPages[Di_All], ScanPages[S_All-1];
 
-	const static uint8_t Clock_All = 5, pgClkAdj = Clock_All-1;  // adj on last
-	inline static uint8_t ClockPages(int pg)
-	{	return pg == pgClkAdj ? 6 : 0;  }
+	inline static uint8_t ClockVars(int pg)
+	{	return pg == Cl_Adjust ? 6 : 0;  }
 
 	//  util
 	int16_t RangeAdd(int16_t val, int16_t add, int16_t vmin, int16_t vmax, int8_t cycle=0);
@@ -114,6 +112,7 @@ struct Gui
 	int8_t edit = 0;   // seq 0 view / 1 edit
 	int8_t edins = 1;  // 1 ins 0 overwrite
 	int8_t copyId = -1;  // copy/swap from
+
 	int8_t slot=0, page=0;  int16_t edpos=0;  // edit vars
 	void slotMax(),slotMin(),pageInc(),pageDec();
 	int seqId()

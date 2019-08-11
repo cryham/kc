@@ -1,7 +1,8 @@
 #pragma once
 #include <stdint.h>
 
-//----  Setup  ----		   ram B      flash
+//----  Setup  ----	  use:  ram B      flash
+//  features, comment out to disable
 #define DEMOS			//  28        9%
 #define DEMOS_PLASMA	//  36        11%
 #define DEMOS_3D		//  44        15%
@@ -9,19 +10,21 @@
 					// all  6680 10%  17%  max 41k
 #define GAME		// game 1.5k 2%   8%  22.5k
 
+
 //   Keyboard  ----
-//#define CK1  // 8x6
-#define CK6  // 18x8  new CK6/3
+#define CK1  // 8x6
+//#define CK6  // 18x8  new CK6/3
 //#define CK7  // 18x8  old CK7/4/2
+
 
 //-----------------
 #ifdef CK6  // extra pins
-#define LED  12
-//  temp sensor DS18B20
-#define TEMP1  31		//  44   9%  24k
+	#define LED  12
+	//  temp sensor DS18B20
+	#define TEMP1  31	//  44   9%  24k
 #endif
 #ifdef CK7
-#define TEMP1  14
+	#define TEMP1  14
 #endif
 
 
@@ -71,13 +74,24 @@ enum EDemo  //  Demos, level1
 extern const char *strDemo[D_All];
 #endif
 
+//  menus  --
 enum ETesting  //  Testing kbd, level1
 {
-	T_Pressed=0, T_Matrix, T_Layout, T_All
+	T_Pressed, T_Matrix, T_Layout, T_All
 };
 enum ESetup  //  Setup kbd, level1
 {
-	S_Scan, S_Keyboard, S_Mouse, S_Version, S_All
+	S_Keyboard, S_Mouse, S_Scan, S_Version, S_All
+};
+
+//  pages  --
+enum EDisplay
+{
+	Di_Bright, Di_Key, Di_Debug, Di_All
+};
+enum EClock
+{
+	Cl_Adjust, Cl_Simple,  Cl_StatsText, Cl_Stats, Cl_StatsExt, Cl_All
 };
 
 //  string names for all above ^

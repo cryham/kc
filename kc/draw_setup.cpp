@@ -22,7 +22,7 @@ void Gui::DrawSetup()
 		d->setClr(21,23,23);
 		d->print(strMain[ym]);  d->setFont(0);
 
-		DrawMenu(S_All,strSetup, C_Setup,RGB(18,24,22),RGB(4,6,6), 10, -1, 2);
+		DrawMenu(S_All,strSetup, C_Setup,RGB(18,24,22),RGB(4,6,6), 10, -1, 1);
 		pressGui = 0;
 		return;
 	}
@@ -39,13 +39,14 @@ void Gui::DrawSetup()
 	d->setClr(21,26,26);
 
 
+	int ii = ScanPages[yy];
 	switch (yy)
 	{
 	//-----------------------------------------------------
 	case S_Keyboard:
 	{
-		int16_t y=32;  // ScanPages[yy]
-		for (int i=0; i < 5; ++i)
+		int16_t y=32;
+		for (int i=0; i <= ii; ++i)
 		{
 			d->setCursor(2,y);
 			int c = abs(i - ym2Keyb);
@@ -63,6 +64,7 @@ void Gui::DrawSetup()
 				sprintf(a,"Default layer: %d", par.defLayer);  y-=2;  break;
 			case 1:  // todo warning layer empty
 				sprintf(a,"Sequence delay: %d ms", par.dtSeqDef);  break;
+
 			case 2:  // todo warning seq key not bound
 				sprintf(a,"Seq. edit layer: %d", par.editLayer);  y-=2;  break;
 			case 3:
@@ -71,9 +73,18 @@ void Gui::DrawSetup()
 				else
 					sprintf(a,"Gui toggle Key: %d", par.keyGui);  break;
 			case 4:
-				sprintf(a,"Layer lock max: %d ms", par.msLayLock*10);  y+=2;  break;
-		}
-			d->print(a);  y += 8+4;
+				d->print("Layer\\ Fast max: ");
+				dtostrf(par.msLLTapMax*0.01f, 4,2, a);  d->print(a);
+				d->print(" s");
+				y-=2;  break;
+			case 5:
+				d->print(" Lock/ Hold min: ");
+				dtostrf(par.msLLHoldMin*0.1f, 3,1, a);  d->print(a);
+				d->print(" s");
+				y+=2;  break;
+			}
+			if (i < 4)
+				d->print(a);  y += 8+4;
 		}
 	}	break;
 
@@ -81,7 +92,7 @@ void Gui::DrawSetup()
 	case S_Scan:
 	{
 		int16_t y=32;
-		for (int i=0; i < 3; ++i)
+		for (int i=0; i <= ii; ++i)
 		{
 			d->setCursor(2,y);
 			int c = abs(i - ym2Scan);
@@ -129,7 +140,7 @@ void Gui::DrawSetup()
 	case S_Mouse:
 	{
 		int16_t x=2, y=32;
-		for (int i=0; i < 5; ++i)
+		for (int i=0; i <= ii; ++i)
 		{
 			d->setCursor(x,y);
 			int c = abs(i - ym2Mouse);

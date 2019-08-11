@@ -33,12 +33,12 @@ const char* strMain[M_All] =
 //  Testing kbd
 const char* strTest[T_All] =
 {
-	"Pressed", "Matrix", "Layout",
+	"Pressed", "Matrix #", "Layout",
 };
 //  Setup kbd
 const char* strSetup[S_All] =
 {
-	"Scan", "Keyboard", "Mouse", "Version",
+	"Keyboard", "Mouse", "Scan #", "Version (i)",
 };
 
 
