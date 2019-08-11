@@ -125,5 +125,10 @@ struct Gui
 
 	//  const from grp
 	uint8_t grpStart[grpMax], grpEnd[grpMax];
+
+#ifdef GRAPHS
+	uint8_t arTemp[W];  // temp'C graph array
+#endif
+
 };
 

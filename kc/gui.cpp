@@ -20,6 +20,10 @@ Gui::Gui() : d(0)
 	tm_on = rtc_get();
 
 	Init(0);
+
+#ifdef GRAPHS
+	memset(arTemp, 0, sizeof(arTemp));
+#endif
 }
 
 void Gui::Init(Ada4_ST7735* tft)
