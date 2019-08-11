@@ -176,6 +176,8 @@ const uint8_t cGrpRgb[grpMax][2][3]=
 };
 //  funtion names  ***
 const char* cFunStr[K_Fun9-K_Fun0+1]=
-{	"GUI toggle", "Bright-", "Bright+", "Soft Reset", "Light",
-	"Quit Seq.", "Zero uptime", "Def.Layer-","Def.Layer+", ""
+{	"GUI toggle", "Bright-", "Bright+",
+	"Soft Reset", "Light",
+	"Quit Seq.", "Zero uptime",
+	"Def.Layer-","Def.Layer+", "Un/lock layer"
 };

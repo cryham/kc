@@ -48,14 +48,14 @@ void Gui::KeyPress()
 		if (kEsc)  SetScreen(ST_Main0);
 		if (kF1)  SetScreen(ST_Map);
 		if (kF2)  SetScreen(ST_Seqs);
-		//if (kF3)  SetScreen(ST_Test);
+		if (kF3)  SetScreen(ST_Test2 + T_Layout);
+		//  F4 save  F5 laod
+		if (kF6)  SetScreen(ST_Test2 + T_Pressed);
+		if (kF7)  SetScreen(ST_Setup2 + S_Mouse);
+		if (kF8)  SetScreen(ST_Setup2 + S_Keyboard);  //(kSh ?
 
-		if (kF6)  SetScreen(ST_Test2+T_Pressed);
-		if (kF7)  SetScreen(ST_Test2+T_Layout);
-		if (kF8)  SetScreen(ST_Setup2+S_Mouse);
-
-		if (kF9)  SetScreen(ST_Displ);
-		if (kF10)  SetScreen(ST_Demos2+D_Plasma);
+		if (kF9)   SetScreen(ST_Displ);
+		if (kF10)  SetScreen(ST_Demos2 + D_Plasma);
 		if (kF11)  SetScreen(ST_Help);
 		if (kF12)  SetScreen(ST_Clock);
 	}

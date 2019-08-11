@@ -63,13 +63,15 @@ void Gui::DrawHelp()
 		d->println("F1   Mapping");
 		d->println("F2   Sequences");
 		d->moveCursor(0,4);
+		d->println("F3   Test Layout");
 		d->println("F6   Test Pressed");
-		d->println("F7   Test Layout");
-		d->println("F8   Setup Mouse");
+		d->moveCursor(0,4);
+		d->println("F7   Setup Mouse");
+		d->println("F8   Setup Keyboard");
 		d->moveCursor(0,4);
 		d->println("F9   Display");
 		d->println("F10  Demos Plasma");
-		d->moveCursor(0,2);
+		d->moveCursor(0,4);
 		d->println("F11  Help");
 		d->println("F12  Clock");
 		break;
@@ -92,7 +94,10 @@ void Gui::DrawHelp()
 		d->moveCursor(0,6);
 		d->println("C,V,X      Copy,Paste,Swap");
 		//d->moveCursor(0,2);
-		d->println("Ctrl-Del   Delete");
+		d->println("Ctrl-Del   Delete key");
+		d->moveCursor(0,H-8);
+		d->setClr(17,24,17);
+		d->print("Ctrl-V  Paste whole layer");
 		break;
 
 	case 3:  //  pick key

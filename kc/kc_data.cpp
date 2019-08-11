@@ -25,10 +25,10 @@ void KC_Main::UpdLay(uint32_t ms)
 	}
 
 	//  1 minute time, stats
-	if (ms - tm_min1 > /*60000*/6000 || ms < tm_min1)
+	if (ms - tm_min1 > 60000 || ms < tm_min1)
 	{
 		tm_min1 = ms;
-		min1_Keys = cnt_press1min*10;
+		min1_Keys = cnt_press1min;
 		cnt_press1min = 0;
 
 	#ifdef GRAPHS

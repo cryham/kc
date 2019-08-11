@@ -57,6 +57,9 @@ void Gui::DrawLayout(bool edit)
 		bool layUse = nLay == KC_MaxLayers;  // vis mode
 		bool tiny = k.w < 6;
 
+		if (layKey && nLay == dtL0 -K_Layer1 +1)  // cur layer backg
+			d->fillRect(x+1, y-1, k.w-1, k.h-1, RGB(24,14,18));
+
 		//  text  ----
 		d->setCursor(
 			k.o==5 || k.o==7 ? x + k.w - 6 :  // right align

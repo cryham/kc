@@ -144,7 +144,7 @@ void Gui::KeysParDisplay(int sp)
 		case 1:  // fps
 			demos.iFps = RangeAdd(demos.iFps, kRight, 0, 2);  break;
 		case 2:
-			par.tempOfs = RangeAdd(par.tempOfs, kRight, -128, 127, 1);  break;
+			par.tempOfs = RangeAdd(par.tempOfs, kRight * sp, -128, 127, 1);  break;
 		}	break;
 	}
 	if (kAdd || kBckSp)  --mlevel;
