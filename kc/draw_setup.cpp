@@ -22,16 +22,13 @@ void Gui::DrawSetup()
 		d->setClr(21,23,23);
 		d->print(strMain[ym]);  d->setFont(0);
 
-		DrawMenu(S_All,strSetup, C_Setup,RGB(18,24,22),RGB(4,6,6), 10, -1, 2);
+		DrawMenu(S_All,strSetup, C_Setup,RGB(18,24,22),RGB(4,6,6), 10);
 		pressGui = 0;
 		return;
 	}
 	char a[64];
 	int16_t y = 32;
 
-
-	if (yy == S_Version)
-	{	demos.Version();  return;  }
 
 	//  title
 	d->setClr(17,22,22);
@@ -44,6 +41,44 @@ void Gui::DrawSetup()
 	switch (yy)
 	{
 	//-----------------------------------------------------
+	case S_Layer:
+	{
+		for (int i=0; i <= ii; ++i)
+		{
+			d->setCursor(2,y);
+			int c = abs(i - ym2Lay);
+			if (!c)
+			{	d->setClr(30,25,20);
+				d->fillRect(0, y-1, W-1, 10, RGB(3,6,6));
+				d->print("\x10 ");  // >
+			}else
+				d->print("  ");
+
+			FadeClr(C_Setup2, 4, c, 1);
+			switch(i)
+			{
+			case 0:
+				sprintf(a,"Default layer: %d", par.defLayer);  y-=2;  break;
+
+			case 1:  // todo warning seq key not bound
+				sprintf(a,"Seq. edit layer: %d", par.editLayer);  y-=2;  break;
+
+			case 2:
+				d->print("Layer\\ Fast max: ");
+				dtostrf(par.msLLTapMax*0.01f, 4,2, a);  d->print(a);
+				d->print(" s");
+				y-=2;  break;
+			case 3:
+				d->print(" Lock/ Hold min: ");
+				dtostrf(par.msLLHoldMin*0.1f, 3,1, a);  d->print(a);
+				d->print(" s");
+				y+=2;  break;
+			}
+			if (i < 2)
+				d->print(a);  y += 8+4;
+		}
+	}	break;
+
 	case S_Keyboard:
 	{
 		for (int i=0; i <= ii; ++i)
@@ -60,28 +95,14 @@ void Gui::DrawSetup()
 			FadeClr(C_Setup2, 4, c, 1);
 			switch(i)
 			{
-			case 0:
-				sprintf(a,"Default layer: %d", par.defLayer);  y-=2;  break;
-			case 1:  // todo warning layer empty
+			case 0:  // todo warning layer empty
 				sprintf(a,"Sequence delay: %d ms", par.dtSeqDef);  break;
 
-			case 2:  // todo warning seq key not bound
-				sprintf(a,"Seq. edit layer: %d", par.editLayer);  y-=2;  break;
-			case 3:
+			case 1:
 				if (pressGui)
 					sprintf(a,"Gui toggle Key: Press ..");
 				else
 					sprintf(a,"Gui toggle Key: %d", par.keyGui);  break;
-			case 4:
-				d->print("Layer\\ Fast max: ");
-				dtostrf(par.msLLTapMax*0.01f, 4,2, a);  d->print(a);
-				d->print(" s");
-				y-=2;  break;
-			case 5:
-				d->print(" Lock/ Hold min: ");
-				dtostrf(par.msLLHoldMin*0.1f, 3,1, a);  d->print(a);
-				d->print(" s");
-				y+=2;  break;
 			}
 			if (i < 4)
 				d->print(a);  y += 8+4;
@@ -195,56 +216,5 @@ void Gui::DrawSetup()
 			Ch(Mouse_wheel_x+1), Ch(Mouse_wheel_y+1), usb_mouse_buttons_state);  d->print(a);
 	}	break;
 
-	//-----------------------------------------------------
-	case S_Info:  // use
-	{
-		d->setClr(15,23,30);
-		d->setCursor(0, y);
-		d->print("\x10 ");  // >
-
-		d->setClr(16,20,24);
-		sprintf(a,"Save counter: %d", par.verCounter);
-		d->print(a);  y += 12;
-
-		d->setClr(15,22,29);
-		int i, s = 0, t = 0;
-
-		//  count seqs
-		for (i=0; i < KC_MaxSeqs; ++i)
-			if (kc.set.seqs[i].len() > 0)  ++s;
-
-		sprintf(a,"Used Sequences:  %d /%d", s, KC_MaxSeqs);
-		d->setCursor(0, y);  d->print(a);  y+=10;
-
-		//  count layers, keys
-		s = 0;
-		for (i=0; i < KC_MaxLayers; ++i)
-		{	bool b = false;
-			for (int k=0; k < kc.set.nkeys(); ++k)
-				if (kc.set.key[i][k] != KEY_NONE)
-				{	++t;  b = true;  }
-			if (b)  ++s;
-		}
-
-		sprintf(a,"   Used Layers:  %d /%d", s, KC_MaxLayers);
-		d->setCursor(0, y);  d->print(a);  y+=10;
-
-		sprintf(a,"   Total keys:  %d", t);
-		d->setCursor(0, y);  d->print(a);  y+=16;
-
-		//  usb const  --
-		d->setClr(22,22,25);
-		d->setCursor(0, y);  d->print("USB const");  y+=10;
-		d->setClr(18,18,22);
-
-		sprintf(a,"All %d  Ext %d", KEYS_ALL, KEYS_ALL_EXT);
-		d->setCursor(0, y);  d->print(a);  y+=10;
-
-		sprintf(a,"Lay %d  Fun %d", K_Layer1, K_Fun0);
-		d->setCursor(0, y);  d->print(a);  y+=10;
-
-		sprintf(a,"Med %d  Pow %d", K_F24+1, KS_POWER_DOWN);
-		d->setCursor(0, y);  d->print(a);  y+=10;
-	}	break;
 	}
 }

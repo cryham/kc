@@ -19,7 +19,7 @@ void Gui::DrawDispCur(int i, int16_t y)
 	FadeClr(C_Disp, 4, c, 1);
 }
 
-const char* sPgDisplay[Di_All] = {"Bright", "Gui keys", "Debug"};
+const char* sPgDisplay[Di_All] = {"Bright", "Gui keys", "Stats", "Debug"};
 
 
 void Gui::DrawDisplay()
@@ -56,7 +56,7 @@ void Gui::DrawDisplay()
 		case 1:
 			sprintf(a,"Off bright: %d %%", par.brightOff);  break;
 		case 2:
-			sprintf(a,"Start screen: %s", StrScreen(par.startScreen));  break;
+			sprintf(a,"Start with: %s", StrScreen(par.startScreen));  break;
 		}
 		d->print(a);  y += h+8;
 	}	break;
@@ -74,6 +74,21 @@ void Gui::DrawDisplay()
 			sprintf(a,"Key repeat: %d ms", par.krRepeat*5);  break;
 		case 2:
 			sprintf(a,"Quick keys F1-12: %d", par.quickKeys);  break;
+		}
+		d->print(a);  y += h+8;
+	}	break;
+
+	case Di_Stats:
+	for (int i=0; i <= pg; ++i)
+	{
+		DrawDispCur(i, y);
+		int8_t h = 4;
+		switch(i)
+		{
+		case 0:
+			sprintf(a,"Minutes inactive: %d", par.minInactive);  break;
+		case 1:
+			sprintf(a,"Time for 1min: %d:%02d", (par.time1min*6)/60, (par.time1min*6)%60);  break;
 		}
 		d->print(a);  y += h+8;
 	}	break;

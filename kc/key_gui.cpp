@@ -81,6 +81,12 @@ void Gui::KeyPress()
 		KeysParSetup(sp);
 	}
 
+	//  Info
+	if (ym == M_Info && mlevel == 2)
+	{
+		KeysParInfo(sp);
+	}
+
 	//  Display
 	if (ym == M_Display && mlevel == 1)
 	{

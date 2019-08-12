@@ -14,13 +14,14 @@ const uint8_t Gui::Mclr[Gui::C_ALL][2][3] = {
 	{{26,28,28},{4,3,3}},  // 8 setup2
 	{{31,26,12},{1,4,5}},  //  9 game
 	{{31,26,22},{1,6,8}},  //  10 game opt
+	{{26,26,28},{6,6,7}},  // 11 info
 };
 
 //  Main Menu
 const char* strMain[M_All] =
 {
 	"Mapping", "Sequences",
-	"Testing", "Setup",
+	"Testing", "Setup", "Info",
 	"Display", "Clock", "Help",
 #ifdef GAME
 	"Game",
@@ -33,12 +34,25 @@ const char* strMain[M_All] =
 //  Testing kbd
 const char* strTest[T_All] =
 {
-	"Pressed", "Matrix #", "Layout",
+	"Layout", "Pressed", "Matrix #",
 };
 //  Setup kbd
 const char* strSetup[S_All] =
 {
-	"Keyboard", "Mouse", "Scan #", "Version (i)", "Info, use",
+	"Layer", "Keyboard", "Mouse", "Scan #",
+};
+//  Info use, ver
+const char* strInfo[I_All] =
+{
+	"Use", "Version",
+};
+//  Clock pages
+const char* strClock[Cl_All] =
+{
+	"Adjust", "Clock", "Stats", "Stats Extd", "Stats+Graph",
+#ifdef GRAPHS
+	"Graphs~"
+#endif
 };
 
 
@@ -70,8 +84,9 @@ const uint8_t YM1[M_All] =
 	1,  // M_Sequences
 	T_All,  // M_Testing
 	S_All,  // M_Setup
+	I_All,  // M_Info
 	1,  // M_Display
-	1,  // M_Clock,
+	1,  // M_Clock  Cl_All
 	1,  // M_Help
 #ifdef GAME
 	1,  // M_Game
@@ -80,3 +95,4 @@ const uint8_t YM1[M_All] =
 	D_All,  // M_Demos
 #endif
 };
+

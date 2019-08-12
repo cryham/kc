@@ -13,8 +13,8 @@
 
 
 //   Keyboard  ----
-//#define CK1  // 8x6
-#define CK6  // 18x8  new CK6/3
+#define CK1  // 8x6
+//#define CK6  // 18x8  new CK6/3
 //#define CK7  // 18x8  old CK7/4/2
 
 
@@ -44,7 +44,7 @@ class Ada4_ST7735;
 enum EMainMenu  //  main menu entries, level0
 {
 	M_Mapping, M_Sequences,
-	M_Testing, M_Setup,
+	M_Testing, M_Setup, M_Info,
 	M_Display, M_Clock, M_Help,
 	#ifdef GAME
 		M_Game,
@@ -52,7 +52,7 @@ enum EMainMenu  //  main menu entries, level0
 	#ifdef DEMOS
 		M_Demos,
 	#endif
-	M_All,  M_Next = M_Display  // -1 off
+	M_All,  M_Next = M_Display  // 2nd column, -1 off
 };
 
 #ifdef DEMOS
@@ -78,17 +78,23 @@ extern const char *strDemo[D_All];
 //  menus  --
 enum ETesting  //  Testing kbd, level1
 {
-	T_Pressed, T_Matrix, T_Layout, T_All
+	T_Layout, T_Pressed, T_Matrix, T_All
 };
+
 enum ESetup  //  Setup kbd, level1
 {
-	S_Keyboard, S_Mouse, S_Scan, S_Version, S_Info, S_All
+	S_Layer, S_Keyboard, S_Mouse, S_Scan, S_All
+};
+
+enum EInfo  //  Info use,ver
+{
+	I_Use, I_Version, I_All
 };
 
 //  pages  --
 enum EDisplay
 {
-	Di_Bright, Di_Key, Di_Debug, Di_All
+	Di_Bright, Di_Key, Di_Stats, Di_Debug, Di_All
 };
 enum EClock
 {
@@ -101,6 +107,10 @@ enum EClock
 };
 
 //  string names for all above ^
-extern const char *strMain[M_All], *strTest[T_All], *strSetup[S_All];
+extern const char
+	*strMain[M_All], *strTest[T_All], *strSetup[S_All],
+	*strInfo[I_All], *strClock[Cl_All];
+
 //  sub page counts, inside each main menu entry
 extern const uint8_t YM1[M_All];
+

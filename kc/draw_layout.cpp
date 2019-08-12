@@ -1,6 +1,6 @@
 #include "gui.h"
 #include "Ada4_ST7735.h"
-#include "TomThumb.h"
+#include "TomThumb3x5.h"
 #include "matrix.h"
 #include "kbd_layout.h"
 #include "kc_data.h"
@@ -30,6 +30,15 @@ void Gui::DrawLayout(bool edit)
 		//  mapping cursor
 		if (edit && drawId >= 0 && i == drawId)  f = 2;
 
+
+		//  vars  layer keys visible on all layers ``
+		uint8_t dtL0 = kc.set.key[0][k.sc];
+		bool layKey = dtL0 >= K_Layer1 && dtL0 < K_Layer1+KC_MaxLayers;
+		bool layUse = nLay == KC_MaxLayers;  // vis mode
+		bool tiny = k.w < 6;
+		bool lk = layKey && nLay == dtL0 -K_Layer1 +1;  // cur layer key
+
+
 		//  set coords or advance
 		if (k.x >=0)  x = k.x;  else  x -= k.x;
 		if (k.y > 0)  y = k.y + yPosLay;  else
@@ -39,26 +48,23 @@ void Gui::DrawLayout(bool edit)
 		{	drawX = x + k.w/2;
 			drawY = y + k.h/2;  }
 
-		if (f)  // backgr
+
+		if (f)  // backgr  ----
 			d->fillRect(x+1, y-1, k.w-1, k.h-1, clrRect[k.o]);
 
 		uint16_t  // clr
-			cR = f==2 ? RGB(31,30,29) : f==1 ? RGB(28,28,29) : clrRect[k.o];
+			cR = f==2 ? RGB(31,30,29) : f==1 ? RGB(28,28,29) :
+				 lk ? RGB(31,20,25) : clrRect[k.o];
 
 		//  darken  if draw has NO scId
 		if (edit && k.sc == NO)  cR = RGB(9,9,9);
 
-		d->drawRect(x, y-2, k.w+1, k.h+1, cR);  // frame
+		d->drawRect(x, y-2, k.w+1, k.h+1, cR);  // frame []
 
 
-		//  layer keys visible on all layers ``
-		uint8_t dtL0 = kc.set.key[0][k.sc];
-		bool layKey = dtL0 >= K_Layer1 && dtL0 < K_Layer1+KC_MaxLayers;
-		bool layUse = nLay == KC_MaxLayers;  // vis mode
-		bool tiny = k.w < 6;
+		if (lk)  // cur lay key backg
+			d->fillRect(x+1, y-1, k.w-1, k.h-1, RGB(22,12,16));
 
-		if (layKey && nLay == dtL0 -K_Layer1 +1)  // cur layer backg
-			d->fillRect(x+1, y-1, k.w-1, k.h-1, RGB(24,14,18));
 
 		//  text  ----
 		d->setCursor(

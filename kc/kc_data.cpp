@@ -25,18 +25,19 @@ void KC_Main::UpdLay(uint32_t ms)
 	}
 
 	//  1 minute time, stats
-	if (ms - tm_min1 > 60000 || ms < tm_min1)
+	if (par.time1min)
+	if (ms - tm_min1 > 1000 * 6 * par.time1min || ms < tm_min1)
 	{
 		tm_min1 = ms;
-		min1_Keys = cnt_press1min;
+		min1_Keys = cnt_press1min * 60 / (6 * par.time1min);
 		cnt_press1min = 0;
 
 	#ifdef GRAPHS
-		//  graph move left
-		for (int i=0; i < W-1; ++i)
-			arPMin[i] = arPMin[i+1];
+		//  graph inc pos
+		++grPpos;
+		if (grPpos >= W)  grPpos = 0;
 		//  add to graph
-		arPMin[W-1] = min1_Keys > 255 ? 255 : min1_Keys;
+		grPMin[grPpos] = min1_Keys > 255 ? 255 : min1_Keys;
 	#endif
 	}
 
@@ -56,7 +57,7 @@ void KC_Main::UpdLay(uint32_t ms)
 
 		bool hold = k.state == KeyState_Hold;
 		uint8_t codeL = set.key[nLayer][id];
-		bool fun = codeL >= K_Fun0 && codeL <= K_Fun9;
+		bool fun = codeL >= K_Fun0 && codeL <= K_FunLast;
 
 		if (on || off)
 		{
@@ -97,7 +98,7 @@ void KC_Main::UpdLay(uint32_t ms)
 			{
 				switch (codeL)
 				{
-				case K_Fun0:  // send, Gui toggle
+				case K_Fun10:  // send, Gui toggle
 					gui.kbdSend = 1 - gui.kbdSend;  QuitSeq();
 					setDac = 1;  break;
 
@@ -120,8 +121,10 @@ void KC_Main::UpdLay(uint32_t ms)
 					QuitSeq(0);
 					break;
 
-				case K_Fun6:  // zero uptime
+				case K_Fun6:  // reset stats
 					gui.tm_on = rtc_get();
+					cnt_press = 0;
+					cnt_press1min = 0;
 					break;
 
 				case K_Fun7:  // dec,inc default layer
@@ -133,9 +136,16 @@ void KC_Main::UpdLay(uint32_t ms)
 						++par.defLayer;
 					break;
 
-				case K_Fun9:  // unlock layer
-					nLayerLock = -1;
+				case K_FunLast:  // un/lock layer
+					if (nLayerLock >= 0)
+						nLayerLock = -1;  // unlock
+					else
+					if (nLayer > 0)  // lock to current
+						nLayerLock = nLayer;
 					break;
+
+				//todo new funct
+				//case K_Fun0, K_Fun11, K_Fun12, K_Fun13, K_Fun14, K_Fun15, K_Fun16, K_Fun17,
 				}
 			}
 			/*else

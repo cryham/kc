@@ -6,17 +6,45 @@
 #include "kc_data.h"
 #include "periodic.h"
 
-const uint8_t Gui::DispPages[Di_All] = {2,2,2};
-const uint8_t Gui::ScanPages[S_All-1] = {5,4,2,1};
+const uint8_t Gui::DispPages[Di_All] = {2,2,1,2};
+const uint8_t Gui::ScanPages[S_All] = {3,1,4,2};
 
 
-//  Key press
+//  Info
+//....................................................................................
+
+void Gui::KeysParInfo(int sp)
+{
+	switch (yy)
+	{
+	case I_Use:
+		par.verCounter = RangeAdd(par.verCounter, kRight * sp, 0, 255, 1);  break;
+	}
+}
+
+//  Setup
 //....................................................................................
 void Gui::KeysParSetup(int sp)
 {
 	int16_t ysp = ScanPages[yy];
 	switch (yy)
 	{
+	case S_Layer:
+		if (kUp)
+		{	ym2Lay  = RangeAdd(ym2Lay , kUp, 0, ysp, 1);  }
+		else if (kRight)
+		switch (ym2Lay)
+		{
+		case 0:
+			par.defLayer = RangeAdd(par.defLayer, kRight, 0, KC_MaxLayers-1);  break;
+		case 1:
+			par.editLayer = RangeAdd(par.editLayer, kRight, 0, KC_MaxLayers-1);  break;
+		case 2:
+			par.msLLTapMax = RangeAdd(par.msLLTapMax, kRight, 0, 250);  break;
+		case 3:
+			par.msLLHoldMin = RangeAdd(par.msLLHoldMin, kRight, 0, 90);  break;
+		}	break;
+
 	case S_Keyboard:
 		if (pressGui)
 		{
@@ -33,17 +61,9 @@ void Gui::KeysParSetup(int sp)
 		switch (ym2Keyb)
 		{
 		case 0:
-			par.defLayer = RangeAdd(par.defLayer, kRight, 0, KC_MaxLayers-1);  break;
-		case 1:
 			par.dtSeqDef = RangeAdd(par.dtSeqDef, kRight * sp, 0, 250);  break;
-		case 2:
-			par.editLayer = RangeAdd(par.editLayer, kRight, 0, KC_MaxLayers-1);  break;
-		case 3:
+		case 1:
 			pressGui = 1;  break;
-		case 4:
-			par.msLLTapMax = RangeAdd(par.msLLTapMax, kRight, 0, 250);  break;
-		case 5:
-			par.msLLHoldMin = RangeAdd(par.msLLHoldMin, kRight, 0, 90);  break;
 		}	break;
 
 	case S_Mouse:
@@ -87,12 +107,6 @@ void Gui::KeysParSetup(int sp)
 		case 2:
 			par.debounce = RangeAdd(par.debounce, kRight, 0, 50);  break;
 		}	break;
-
-	//case S_Version:
-
-	case S_Info:
-		par.verCounter = RangeAdd(par.verCounter, kRight * sp, 0, 255, 1);  break;
-		break;
 	}
 	if (kSave)  Save();
 	if (kLoad)  Load(kCtrl);
@@ -134,6 +148,15 @@ void Gui::KeysParDisplay(int sp)
 			par.krRepeat = RangeAdd(par.krRepeat, kRight, 0,255);  break;
 		case 2:
 			par.quickKeys = RangeAdd(par.quickKeys, kRight, 0, 1);  break;
+		}	break;
+
+	case Di_Stats:
+		switch (ym2Disp)
+		{
+		case 0:
+			par.minInactive = RangeAdd(par.minInactive, kRight *sp/2, 0, 60, 1);  break;
+		case 1:
+			par.time1min = RangeAdd(par.time1min, kRight * sp/2, 0,255);  break;
 		}	break;
 
 	case Di_Debug:

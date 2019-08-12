@@ -31,8 +31,6 @@ void Gui::KeysClock()
 			case 6:
 				par.rtcCompensate += a;
 				rtc_compensate(par.rtcCompensate);  break;
-			case 7:
-				par.minInactive = RangeAdd(par.minInactive, a, 0, 60, 1);  break;
 			}
 
 			if (td)
