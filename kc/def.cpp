@@ -38,7 +38,7 @@ const char* strTest[T_All] =
 //  Setup kbd
 const char* strSetup[S_All] =
 {
-	"Keyboard", "Mouse", "Scan #", "Info, use", "Version (i)",
+	"Keyboard", "Mouse", "Scan #", "Version (i)", "Info, use",
 };
 
 

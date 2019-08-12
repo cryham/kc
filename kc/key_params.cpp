@@ -88,11 +88,11 @@ void Gui::KeysParSetup(int sp)
 			par.debounce = RangeAdd(par.debounce, kRight, 0, 50);  break;
 		}	break;
 
+	//case S_Version:
+
 	case S_Info:
 		par.verCounter = RangeAdd(par.verCounter, kRight * sp, 0, 255, 1);  break;
 		break;
-
-	//case S_Version:
 	}
 	if (kSave)  Save();
 	if (kLoad)  Load(kCtrl);

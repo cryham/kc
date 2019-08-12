@@ -95,7 +95,7 @@ void Gui::DrawHelp()
 		d->println("C,V,X      Copy,Paste,Swap");
 		//d->moveCursor(0,2);
 		d->println("Ctrl-Del   Delete key");
-		d->moveCursor(0,H-8);
+		d->setCursor(0,H-8);
 		d->setClr(17,24,17);
 		d->print("Ctrl-V  Paste whole layer");
 		break;

@@ -62,8 +62,11 @@ int DayOfWeek(int d, int m, int y)
 }
 
 //  pages
-const char* sPgClock[Cl_All] = {"Adjust", "", "Stats", "", "", "~"};
-
+const char* sPgClock[Cl_All] = {"Adjust", "", "Stats", "", "",
+	#ifdef GRAPHS
+		"~"
+	#endif
+};
 
 void Gui::DrawClockCur(int i, int16_t y)
 {
@@ -123,7 +126,7 @@ void Gui::DrawClock()
 
 	//  late hours Background  --------
 	x = x0;  y = yt;
-	if (date)
+	if (date && kbdSend)  // not in menu
 	{
 		int8_t r = 0, g = 0, b = 0, hf = m >= 30 ? 5 : 0;
 		if (h == 22){  r = hf + 10;  g = 4;  }  else

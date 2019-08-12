@@ -82,7 +82,7 @@ enum ETesting  //  Testing kbd, level1
 };
 enum ESetup  //  Setup kbd, level1
 {
-	S_Keyboard, S_Mouse, S_Scan, S_Info, S_Version, S_All
+	S_Keyboard, S_Mouse, S_Scan, S_Version, S_Info, S_All
 };
 
 //  pages  --
