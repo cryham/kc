@@ -38,6 +38,7 @@ void ParInit()
 	par.rtcCompensate = 0;
 	par.minInactive = 5;
 	par.tempOfs = int8_t(-0.6/*'C*/ / 0.03);  //-20
+	par.time1min = 10;  //*6s
 }
 
 //  errors

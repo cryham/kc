@@ -29,7 +29,7 @@ KC_Main::KC_Main()
 
 	tInactSum = 0;  tInact1 = tInact2 = 0;
 #ifdef GRAPHS
-	memset(arPMin, 0, sizeof(arPMin));
+	memset(grPMin, 0, sizeof(grPMin));
 #endif
 }
 

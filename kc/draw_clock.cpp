@@ -17,7 +17,7 @@ int8_t temp1 = 1;  // fist, init
 float fTemp = -90.f;  // 'C
 uint16_t skip = 900;  // read inactive
 //  scale graph
-const float minTemp = 20.f, maxTemp = 35.f;
+const int minTemp = 20, maxTemp = 35;
 #endif
 
 
@@ -61,13 +61,8 @@ int DayOfWeek(int d, int m, int y)
     return (y + y/4 - y/100 + y/400 + int(t12[m-1]) + d) % 7;
 }
 
-//  pages
-const char* sPgClock[Cl_All] = {"Adjust", "", "Stats", "", "",
-	#ifdef GRAPHS
-		"~"
-	#endif
-};
 
+//  util
 void Gui::DrawClockCur(int i, int16_t y)
 {
 	d->setCursor(2, y);
@@ -108,7 +103,8 @@ void Gui::DrawClock()
 		dt = t / 3600 / 24, yr = dt / 365 + 2000;
 
 	bool adjust = pgClock == Cl_Adjust;
-	bool clock = pgClock == Cl_Simple || adjust;
+	bool simple = pgClock == Cl_Simple;
+	bool clock = simple || adjust;
 
 	bool date = yr >= 2019; // rtc set
 	bool leap = isLeap(yr);
@@ -170,6 +166,7 @@ void Gui::DrawClock()
 	if (temp1 == 2 && !adjust)
 	{
 		++skip;
+		// todo interval 0.1s, par gui act,inact
 		//  slower if not in gui, every 20, 10 sec
 		if (skip > (pgClock == Cl_Stats ? 500 : 300) || !kbdSend)
 		//  if measurement ready
@@ -180,13 +177,13 @@ void Gui::DrawClock()
 			sensors.request(addr);  // next
 
 		#ifdef GRAPHS
-			//  graph move left
-			for (int i=0; i < W-1; ++i)
-				arTemp[i] = arTemp[i+1];
+			//  graph inc pos
+			++grTpos;
+			if (grTpos >= W)  grTpos = 0;
 			//  add to graph
 			int t = 255.f * (fTemp - minTemp) / (maxTemp - minTemp);
 			t = t > 255 ? 255 : (t < 0 ? 0 : t);
-			arTemp[W-1] = t;
+			grTemp[grTpos] = t;
 		#endif
 		}
 	}
@@ -195,64 +192,26 @@ void Gui::DrawClock()
 
 	//  Graphs  ~~~~~~~~~~~~~~~~
 	#ifdef GRAPHS
-	int v, y0;
+	int v, y0, ii, i;
 	if (ext)
-	for (int i=0; i < W; ++i)
+	for (i=0; i <= W-1; ++i)
 	{
-		v = kc.arPMin[i];
+		ii = kc.grPpos + i - (W-1) + W;
+		v = kc.grPMin[ii % W];
 		if (v > 0)
 		{
 			ClrPress(v);  uint16_t c = d->getClr();
 			y0 = yt - v / 3;  // 96 is max
 			if (y0 < 0)  y0 = 0;
 			d->drawPixel(i,y0, c);
-		}
-	}
+	}	}
 
 	if (pgClock == Cl_Graphs)
 	{
-		x = 0;  y = 0;
-		d->setFont(0);
-		d->setClr(16, 19, 22);
-		d->setCursor(x, y);  d->print("Press/min");
-		x = 0;  y = H/2;
-		d->setCursor(x, y);  d->print("Temp \x01""C");
-		uint16_t c;
-
-		for (int i=0; i < W; ++i)
-		{
-			v = kc.arPMin[i];
-
-			ClrPress(v);  c = d->getClr();
-
-			h = 2 * v / 3;  // 96 is max
-			if (h > H/2)  h = H/2;
-
-			y0 = H/2 - h;
-			if (y0 < 0)  y0 = 0;
-
-			if (y0+h < H)
-			d->drawFastVLine(i, y0, h, c);
-		}
-		for (int i=0; i < W; ++i)
-		{
-			// 255 = maxTemp 0 = minTemp
-			v = arTemp[i];
-
-			ClrPress(v / 2);  c = d->getClr();
-
-			h = H/2 * v / 256;
-			if (h > H/2)  h = H/2;
-			y0 = H-1 - h;
-			if (y0 < 0)  y0 = 0;
-
-			d->drawPixel(i,y0, c);
-			//if (y0+h < H)
-			//d->drawFastVLine(i, y0, h, c);
-		}
+		DrawGraph();
 		return;
 	}
-#endif
+	#endif
 
 
 	//  Time  ----------------
@@ -405,8 +364,11 @@ void Gui::DrawClock()
 	}
 
 	//  subtitle
-	d->setCursor(W / 2 - 2 * 6, 4);
-	d->print(sPgClock[pgClock]);
+	if (!stats && !simple)
+	{
+		d->setCursor(W / 2 - 2 * 6, 4);
+		d->print(strClock[pgClock]);
+	}
 
 
 	//  labels, par values  ====--------
@@ -551,7 +513,6 @@ void Gui::DrawClock()
 			case 5:  sprintf(a, "Year");  h = 10;  break;
 
 			case 6:  sprintf(a, "RTC Compensate: %d", par.rtcCompensate);  h = 2;  break;
-			case 7:  sprintf(a, "Minutes inactive: %d", par.minInactive);  break;
 			}
 			d->print(a);
 			y += h + 8;
