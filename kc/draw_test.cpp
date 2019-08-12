@@ -208,7 +208,7 @@ void Gui::DrawPressed()
 				d->print(" ");  d->print(cKeyStr[k]);
 
 				if (k >= K_Seq0 && k <= K_SeqLast)  seq = k - K_Seq0;  else
-				if (k >= K_Fun0 && k <= K_Fun9   )  fun = k - K_Fun0;
+				if (k >= K_Fun0 && k <= K_FunLast)  fun = k - K_Fun0;
 	}	}	}
 
 	d->setCursor(0, d->getCursorY()+12);

@@ -1,6 +1,6 @@
 #include "gui.h"
 #include "Ada4_ST7735.h"
-#include "TomThumb.h"
+#include "TomThumb3x5.h"
 #include "matrix.h"
 #include "kbd_layout.h"
 #include "kc_data.h"
@@ -52,7 +52,7 @@ void Gui::DrawMapping()
 			{	d->setCursor(0, 21);
 				DrawSeq(seq, 2);
 		}	}
-		else if (keyCode >= K_Fun0 && keyCode <= K_Fun9)
+		else if (keyCode >= K_Fun0 && keyCode <= K_FunLast)
 		{	int8_t fun = keyCode - K_Fun0;
 			d->setCursor(0, 21);
 			d->print(cFunStr[fun]);
@@ -175,7 +175,7 @@ void Gui::DrawMapping()
 						{	d->setCursor(x, y+12);
 							DrawSeq(seq, 2);
 					}	}
-					else if (u >= K_Fun0 && u <= K_Fun9)
+					else if (u >= K_Fun0 && u <= K_FunLast)
 					{	int8_t fun = u - K_Fun0;
 						d->setCursor(x, y+12);
 						d->print(cFunStr[fun]);

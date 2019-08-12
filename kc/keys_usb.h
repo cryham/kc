@@ -3,8 +3,8 @@
 
 enum EKeys  // byte key codes
 {
-	//  normal usb keys ----
 	KEY_NONE=0,
+//  >  normal  USB keys  ----
 	K_LCTRL, K_LSHIFT, K_LALT, K_LGUI,  // modif
 	K_RCTRL, K_RSHIFT, K_RALT, K_RGUI, K_ModLast = K_RGUI,
 
@@ -14,7 +14,7 @@ enum EKeys  // byte key codes
 
 	K_ENT, K_ESC, K_BACK, K_TAB, K_SPACE, K_MENU,  // long
 	K_CAPS, K_PRTSCR, K_SCRL, K_PAUSE, K_NUML,
-	K_MINUS, K_EQUAL, K_LBRACE,K_RBRACE, K_BSLASH,  // symbol
+	K_MINUS, K_EQUAL, K_LBRACE,K_RBRACE, K_BSLASH,  // symbols
 	K_NON_US_NUM, K_SEMIC, K_QUOTE, K_TILDE, K_COMMA, K_PERIOD, K_SLASH, K_NON_US_BS,
 
 	K_F1,K_F2,K_F3,K_F4,K_F5,K_F6,K_F7,K_F8,K_F9,K_F10,K_F11,K_F12,  // func
@@ -24,25 +24,24 @@ enum EKeys  // byte key codes
 	KP_1,KP_2,KP_3,KP_4,KP_5,KP_6,KP_7,KP_8,KP_9,KP_0, KP_DOT,
 
 	K_F13,K_F14,K_F15,K_F16,K_F17,K_F18,K_F19,K_F20,K_F21,K_F22,K_F23,K_F24,  // func2
-	// =119
+	// = 119
 	KM_PLAY, KM_PAUSE, KM_RECORD, KM_FAST_FORWARD, KM_REWIND,  // media
 	KM_NEXT_TRACK, KM_PREV_TRACK, KM_STOP,
+//  KM_NEXT_TRACK, KM_PREV_TRACK, KM_STOP, KM_PLAY_PAUSE  // only used
 	KM_EJECT, KM_RANDOM_PLAY, KM_PLAY_PAUSE, KM_PLAY_SKIP,
-	// KM_NEXT_TRACK, KM_PREV_TRACK, KM_STOP, KM_PLAY_PAUSE
 
-	K_MUTE, K_VOL_INC, K_VOL_DEC,  // vol,sys
-	KS_POWER_DOWN, KS_SLEEP, KS_WAKE_UP,
-	KEYS_ALL,  // < End of normal  = 137  ----
+	K_MUTE, K_VOL_INC, K_VOL_DEC,  // volume, power
+	KS_POWER_DOWN, KS_SLEEP, KS_WAKE_UP,  // =134
+	KEYS_ALL,  // < End of normal  = 137  ----+
 
-	//  padding-  for any forgotten usb codes
-	K_Data0, K_Data1, K_Data2, K_Data3, K_Data4, K_Data5, K_Data6, K_Data7,
+//	>  special  EXT  < Start  ----
+	//  internal functions  18  =138
+	K_Fun0, K_Fun11, K_Fun12, K_Fun13, K_Fun14, K_Fun15, K_Fun16, K_Fun17,
+	K_Fun10, K_Fun1, K_Fun2, K_Fun3, K_Fun4, K_Fun5, K_Fun6, K_Fun7, K_Fun8, K_FunLast,
 
-	//  special  EXT  < Start  ----
-	//  display, internal functions  10  =146
-	K_Fun0, K_Fun1, K_Fun2, K_Fun3, K_Fun4,	K_Fun5, K_Fun6, K_Fun7, K_Fun8, K_Fun9,
 	//  mouse  13
-	KM_Left,KM_Right,KM_Up,KM_Down, KM_LMB,KM_MMB,KM_RMB,
-	KM_WhlUp,KM_WhlDown, KM_WhlLeft,KM_WhlRight, KM_Back,KM_Forw,
+	KM_Left, KM_Right, KM_Up, KM_Down,  KM_LMB, KM_MMB, KM_RMB,
+	KM_WhlUp, KM_WhlDown,  KM_WhlLeft, KM_WhlRight,  KM_Back, KM_Forw,
 
 	//  layer switch  16 (8 used)  =169
 	K_Layer1, K_Layer2, K_Layer3, K_Layer4, K_Layer5, K_Layer6, K_Layer7, K_Layer8,
@@ -54,7 +53,8 @@ enum EKeys  // byte key codes
 	K_S30,K_S31,K_S32,K_S33,K_S34,K_S35,K_S36,K_S37,K_S38,K_S39,
 	K_S40,K_S41,K_S42,K_S43,K_S44,K_S45,K_S46,K_S47,K_S48,K_S49,
 	K_S50,K_S51,K_S52,K_S53,K_S54,K_S55,K_S56,K_S57,K_S58,K_S59, K_SeqLast = K_S59,
-	KEYS_ALL_EXT,  // < End  =245
+	KEYS_ALL_EXT,  // < End  = 245
+
 	//  commands in sequence, same ids, note: have at least 10 seqs to have all cmds
 	K_Cmd0=K_Seq0, K_CmdLast=K_SeqLast
 };
@@ -62,7 +62,7 @@ enum EKeys  // byte key codes
 //  usb codes  for byte key codes
 extern const uint16_t cKeyUsb[KEYS_ALL];
 
-//  key names strings  for key codes
+//  key names strings
 extern const char* cKeyStr[KEYS_ALL_EXT];
 //  short key names
 extern const char* cKeySh[KEYS_ALL_EXT];
@@ -71,9 +71,9 @@ extern const char* cKeySh[KEYS_ALL_EXT];
 extern const uint8_t cKeyGrp[KEYS_ALL_EXT];
 
 //  group names and colors
-const uint8_t grpMax = 17;
-extern const char* cGrpName[grpMax];
+const uint8_t grpMax = 16;
+extern const char*   cGrpName[grpMax];
 extern const uint8_t cGrpRgb[grpMax][2][3];
 
 //  funtion names
-extern const char* cFunStr[K_Fun9-K_Fun0+1];
+extern const char* cFunStr[K_FunLast-K_Fun0+1];

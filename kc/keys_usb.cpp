@@ -2,6 +2,7 @@
 #include "keylayouts.h"
 
 //  usb codes  from byte key
+//--------------------------------------------
 const uint16_t cKeyUsb[KEYS_ALL]={  KEY_ESC, //0
 	MODIFIERKEY_LEFT_CTRL, MODIFIERKEY_LEFT_SHIFT, MODIFIERKEY_LEFT_ALT, MODIFIERKEY_LEFT_GUI,  // modif
 	MODIFIERKEY_RIGHT_CTRL, MODIFIERKEY_RIGHT_SHIFT, MODIFIERKEY_RIGHT_ALT, MODIFIERKEY_RIGHT_GUI,
@@ -27,9 +28,10 @@ const uint16_t cKeyUsb[KEYS_ALL]={  KEY_ESC, //0
 	KEY_MEDIA_NEXT_TRACK, KEY_MEDIA_PREV_TRACK, KEY_MEDIA_STOP,
 	KEY_MEDIA_CALC, KEY_MEDIA_RANDOM_PLAY, KEY_MEDIA_PLAY_PAUSE, KEY_MEDIA_PLAY_SKIP,
 
-	KEY_MEDIA_MUTE, KEY_MEDIA_VOLUME_INC, KEY_MEDIA_VOLUME_DEC,  // vol
-	KEY_SYSTEM_POWER_DOWN, KEY_SYSTEM_SLEEP, KEY_SYSTEM_WAKE_UP,  // sys
+	KEY_MEDIA_MUTE, KEY_MEDIA_VOLUME_INC, KEY_MEDIA_VOLUME_DEC,  // volume
+	KEY_SYSTEM_POWER_DOWN, KEY_SYSTEM_SLEEP, KEY_SYSTEM_WAKE_UP,  // power
 };
+
 //  key names strings
 const char* cKeyStr[KEYS_ALL_EXT]={  "None",  // max [255]
 	"CtrL", "ShL", "AltL", "GuiL",  "CtrR", "ShR", "AltR", "GuiR",  // modif
@@ -52,22 +54,26 @@ const char* cKeyStr[KEYS_ALL_EXT]={  "None",  // max [255]
 	"Play", "Pause", "Rec", "Forw", "Rew", "Next", "Prev", "Stop",  // media
 	"Calc", "Randm", "PlPau", "PlSkp",
 
-	"Mute", "Vol+", "Vol-",  "Power", "Sleep", "Wake",  // vol,sys
-	"All",  "D0", "D1", "D2", "D3", "D4", "D5", "D6", "D7",  // padding-
+	"Mute", "Vol+", "Vol-",  "Power", "Sleep", "Wake",  // volume, power
+	"All",  // _extras_
 
-	"Fun0", "Fun1", "Fun2", "Fun3", "Fun4", "Fun5", "Fun6", "Fun7", "Fun8", "Fun9",  // disp fun _ext_
+	"Fun10", "Fun11", "Fun12", "Fun13", "Fun14", "Fun15", "Fun16", "Fun17",  // internal funct
+	"Fun0", "Fun1", "Fun2", "Fun3", "Fun4", "Fun5", "Fun6", "Fun7", "Fun8", "Fun9",
+
 	"M\x1B","M\x1A","M\x18","M\x19", "LMB","MMB","RMB",  // mouse
 	"Mwh\x18","Mwh\x19", "Mwh\x1B","Mwh\x1A", "Mbck","Mfrw",
 
-	"L1", "L2", "L3", "L4", "L5", "L6", "L7", "L8",  // layer
+	"L1", "L2", "L3", "L4", "L5", "L6", "L7", "L8",  // layers
 	"L9", "L10", "L11", "L12", "L13", "L14", "L15", "L16",
-	"S0","S1","S2","S3","S4","S5","S6","S7","S8","S9",  // sequence
+
+	"S0","S1","S2","S3","S4","S5","S6","S7","S8","S9",  // sequences
 	"S10","S11","S12","S13","S14","S15","S16","S17","S18","S19",
 	"S20","S21","S22","S23","S24","S25","S26","S27","S28","S29",
 	"S30","S31","S32","S33","S34","S35","S36","S37","S38","S39",
 	"S40","S41","S42","S43","S44","S45","S46","S47","S48","S49",
 	"S50","S51","S52","S53","S54","S55","S56","S57","S58","S59",
 };
+
 //  short names
 const char* cKeySh[KEYS_ALL_EXT]={  "no",
 	"Cl", "Sl", "Al", "Gl",  "Cr", "Sr", "Ar", "Gr",  // modif
@@ -90,66 +96,79 @@ const char* cKeySh[KEYS_ALL_EXT]={  "no",
 	"Pl", "Pa", "Rc", "Fw", "Rw", "Nx", "Pv", "St",  // media
 	"Ca", "Rn", "Pp", "Pk",
 
-	"Mt", "V+", "V-",  "Pw", "Sl", "Wk",  // vol,sys
-	"AL",  "D0", "D1", "D2", "D3", "D4", "D5", "D6", "D7",  // padding-
+	"Mt", "V+", "V-",  "Pw", "Sl", "Wk",  // volume, power
+	"Aa",  // _extras_
 
-	"0", "1", "2", "3", "4", "5", "6", "7", "8", "9",  // disp fun _ext_
+	"10", "11", "12", "13", "14", "15", "16", "17",  // internal funct
+	"0", "1", "2", "3", "4", "5", "6", "7", "8", "9",
+
 	"\x1B","\x1A","\x18","\x19", "L","M","R",  // mouse
 	"wU","wD", "wL","wR", "Mb","Mf",
 
-	"L1", "L2", "L3", "L4", "L5", "L6", "L7", "L8",  // layer
+	"L1", "L2", "L3", "L4", "L5", "L6", "L7", "L8",  // layers
 	"L9", "10", "11", "12", "13", "14", "15", "16",
-	"S0","S1","S2","S3","S4","S5","S6","S7","S8","S9",  // sequence
+
+	"S0","S1","S2","S3","S4","S5","S6","S7","S8","S9",  // sequences
 	"10","11","12","13","14","15","16","17","18","19",
 	"20","21","22","23","24","25","26","27","28","29",
 	"30","31","32","33","34","35","36","37","38","39",
 	"40","41","42","43","44","45","46","47","48","49",
 	"50","51","52","53","54","55","56","57","58","59",
 };
-//  key groups for color
+
+//  key Groups for color
+//--------------------------------------------
 const uint8_t cKeyGrp[KEYS_ALL_EXT]=
 {	0,  // none
-	1, 1, 1, 1,  1, 1, 1, 1,  // mod
+	1, 1, 1, 1,  1, 1, 1, 1,  // modif
 
-	2,2,2,2,2,2,2,2,2,2,2,2,2,2, // letters
+	2,2,2,2,2,2,2,2,2,2,2,2,2,2,  // letters
 	2,2,2,2,2,2,2,2,2,2,2,2,
-	3,3,3,3,3,3,3,3,3,3,  // digits
+	3,3,3,3,3,3,3,3,3,3,      // digits
 
-	4, 4, 4, 4, 4, 4,  // long
+	4, 4, 4, 4, 4, 4,         // long
 	4, 4, 4, 4, 4,
-	7, 7, 7,7, 7, 7, 7, 7, 7, 7,7, 7, 7, // symb
+	7, 7, 7,7, 7, 7, 7, 7, 7, 7,7, 7, 7,  // symbols
 
 	5,5,5,5,5,5,5,5,5,5,5,5,  // func
-	6,6,6,6,6,6, 6,6,6,6,  // arrows
+	6,6,6,6,6,6, 6,6,6,6,     // arrows
 
 	8, 8, 8, 8, 8,
-	8,8,8,8,8,8,8,8,8,8, 8,  // numpad
+	8,8,8,8,8,8,8,8,8,8, 8,   // numpad
 
 	9,9,9,9,9,9,9,9,9,9,9,9,  // func2
 	10,10,10,10,10,10,10,10,  // media
 	10,10,10,10,
-	11,11,11, 11,11,11,  // vol, sys
-	12, 12,12,12,12,12,12,12,12,  // padding-
+	11,11,11, 11,11,11,  // volume, power
+	99,  //-  _extras_
 
-	13,13,13,13,13,13,13,13,13,13,  // disp fun _ext_
-	14,14,14,14,14,14,14,  // mouse
-	14,14,14,14,14,14,
+	12,12,12,12,12,12,12,12,  // internal funct
+	12,12,12,12,12,12,12,12,12,12,
 
-	15,15,15,15,15,15,15,15,  // layer
-	15,15,15,15,15,15,15,15,
-	16,16,16,16,16,16,16,16,16,16,  // sequence
-	16,16,16,16,16,16,16,16,16,16,
-	16,16,16,16,16,16,16,16,16,16,
-	16,16,16,16,16,16,16,16,16,16,
-	16,16,16,16,16,16,16,16,16,16,
-	16,16,16,16,16,16,16,16,16,16,
+	13,13,13,13,13,13,13,     // mouse
+	13,13,13,13,13,13,
+
+	14,14,14,14,14,14,14,14,  // layers
+	14,14,14,14,14,14,14,14,
+
+	15,15,15,15,15,15,15,15,15,15,  // sequences
+	15,15,15,15,15,15,15,15,15,15,
+	15,15,15,15,15,15,15,15,15,15,
+	15,15,15,15,15,15,15,15,15,15,
+	15,15,15,15,15,15,15,15,15,15,
+	15,15,15,15,15,15,15,15,15,15,
 };
+
 //  group names
 const char* cGrpName[grpMax]=
-{	"None", "Modifier","Letter","Digit","Long","Function",  // 5
-	"Arrows","Sybmol","Numpad", "Function2","Media", "Volume,System", "padding-",  // 12
-	"Display funct", "Mouse", "Layer", "Sequence",  // 16
+{	"None",
+	"Modifiers", "Letters", "Digits", "Long", "Function",  // 5
+	"Arrows", "Sybmols", "Numpad", // 8
+	"Function2", "Media", "Volume,Power", // 11
+	// _extras_
+	"Internal", "Mouse", "Layers", "Sequences",  // 15
 };
+
 //  group colors  r,g,b and mul rgb fade
 const uint8_t cGrpRgb[grpMax][2][3]=
 {
@@ -167,17 +186,23 @@ const uint8_t cGrpRgb[grpMax][2][3]=
 	{31,23,31, 2,3,2},  // 9 func2
 	{31,20,25, 1,3,3},  // 10 media
 	{30,30,30, 3,3,2},  // 11 vol,sys
-	{17,16,16, 1,1,1},  // 12 padding-
 
 	{14,25,31, 2,1,0},  // 13 disp fun _ext_
 	{30,30, 8, 2,2,4},  // 14 mouse
 	{31,18,20, 0,2,1},  // 15 layer
 	{28,26,31, 4,4,2},  // 16 sequence
 };
-//  funtion names  ***
-const char* cFunStr[K_Fun9-K_Fun0+1]=
-{	"GUI toggle", "Bright-", "Bright+",
-	"Soft Reset", "Light",
-	"Quit Seq.", "Zero uptime",
-	"Def.Layer-","Def.Layer+", "Un/lock layer"
+
+
+//  internal funtion names  ***
+//--------------------------------------------
+const char* cFunStr[K_FunLast-K_Fun0+1]=
+{
+	"", "", "", "", "", "", "", "",
+	"\x13"" GUI toggle", "\x14"" Bright -", "\x16"" Bright +",
+	"\x08"" Soft Reset", "\x0F"" Light",
+	"X Quit Sequence", "~ Reset stats",
+	"- Default Layer","+ Default Layer", "* Un/lock layer"
 };
+
+
