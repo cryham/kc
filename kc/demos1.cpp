@@ -1,7 +1,7 @@
 #include "demos.h"
 #include "Ada4_ST7735.h"
 #include "FreeSans9pt7b.h"  // 2k flash, 1%
-#include "TomThumb.h"
+#include "TomThumb3x5.h"
 
 
 //  Version

@@ -5,7 +5,7 @@
 
 #include "Ada4_ST7735.h"
 #include "FreeSans9pt7b.h"
-#include "TomThumb.h"
+#include "TomThumb3x5.h"
 
 extern RamMonitor ram;
 
