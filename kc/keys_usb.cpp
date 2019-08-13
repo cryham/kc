@@ -51,8 +51,8 @@ const char* cKeyStr[KEYS_ALL_EXT]={  "None",  // max [255]
 	"P1","P2","P3","P4","P5","P6","P7","P8","P9","P0", "P.",
 
 	"F13","F14","F15","F16","F17","F18","F19","F20","F21","F22","F23","F24",  // func2
-	"Play", "Pause", "Rec", "Forw", "Rew", "Next", "Prev", "Stop",  // media
-	"Calc", "Randm", "PlPau", "PlSkp",
+	"Play-", "Pause-", "Rec-", "Forw-", "Rew-", "Next", "Prev", "Stop",  // media
+	"Calc", "Randm-", "PlPau", "PlSkp-",
 
 	"Mute", "Vol+", "Vol-",  "Power", "Sleep", "Wake",  // volume, power
 	"All",  // _extras_
@@ -140,7 +140,7 @@ const uint8_t cKeyGrp[KEYS_ALL_EXT]=
 	10,10,10,10,10,10,10,10,  // media
 	10,10,10,10,
 	11,11,11, 11,11,11,  // volume, power
-	99,  //-  _extras_
+	0,  //-  _extras_
 
 	12,12,12,12,12,12,12,12,  // internal funct
 	12,12,12,12,12,12,12,12,12,12,

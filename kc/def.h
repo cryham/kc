@@ -9,7 +9,7 @@
 //#define DEMOS_OLD_PAR	//  280 <1%   16%  min
 					// all  6680 10%  17%  max 41k
 #define GAME		// game 1.5k 2%   8%  22.5k
-#define GRAPHS          //  320 <1%
+#define GRAPHS          //  322 <1%
 
 
 //   Keyboard  ----

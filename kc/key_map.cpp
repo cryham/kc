@@ -35,8 +35,10 @@ void Gui::KeysMap()
 		if (kRight)  // <- ->
 		{	if (grpFilt)
 			{	keyGroup += kRight;
-				if (keyGroup < 0)		 keyGroup = grpMax-1;
-				if (keyGroup >= grpMax)	 keyGroup = 0;
+				if (grpEnd[keyGroup] - grpStart[keyGroup] <= 1)  // none,all
+					keyGroup += kRight;
+				if (keyGroup < 1)		 keyGroup = grpMax-1;
+				if (keyGroup >= grpMax)	 keyGroup = 1;
 				keyCode = grpStart[keyGroup];
 			}else
 				keyCode += kRight * 12;
