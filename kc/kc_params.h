@@ -64,8 +64,9 @@ struct KC_Params
 	uint8_t time1min;     // *6s  press/1min
 	uint8_t timeTemp;     // Temp'C read
 	uint8_t timeTgraph;   // Temp'C add to graph, no average
-	//  scale Temp graph
+	//  Temp graph scale
 	uint8_t minTemp, maxTemp;
+	uint8_t xCur;         // cursor
 
 	#define t1min(par)    (6 * par.time1min)  // s
 	#define tTemp(par)    (100 * gIntervals[par.timeTemp   & gIntvMask])  // ms

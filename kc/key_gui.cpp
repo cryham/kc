@@ -50,8 +50,8 @@ void Gui::KeyPress()
 		if (kF1)  SetScreen(ST_Map);
 		if (kF2)  SetScreen(ST_Seqs);
 		if (kF3)  SetScreen(ST_Test2 + (kSh ? T_Pressed : T_Layout));
-		//  F4 save  F5 laod
-		if (kF6)  SetScreen(ST_Info + I_Use);
+		//  F4 save  F5 load
+		if (kF6)  SetScreen(ST_Info2 + I_Use);
 		if (kF7)  SetScreen(ST_Setup2 + S_Mouse);
 		if (kF8)  SetScreen(ST_Setup2 + (kSh ? S_Keyboard : S_Layer));
 
@@ -62,7 +62,7 @@ void Gui::KeyPress()
 
 		if (kF11){ SetScreen(ST_Displ);
 			// set page for clock
-			if (pgClock == Cl_Graphs)  pgDisp = Di_Graph;
+			if (pgClock == Cl_Graphs)  pgDisp = Di_Graph;  else
 			if (pgClock >= Cl_Stats)  pgDisp = Di_Stats;  }
 
 		if (kF12)  SetScreen(ST_Clock +

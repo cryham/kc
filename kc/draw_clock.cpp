@@ -313,6 +313,7 @@ void Gui::DrawClock()
 
 	//  labels, par values  ====--------
 	int pg = ClockVars(pgClock);
+	bool temp = temp1 > 2;
 	y = yt;
 	switch (pgClock)
 	{
@@ -324,7 +325,7 @@ void Gui::DrawClock()
 		d->setCursor(x, y + 4);  d->print("Uptime");
 
 		#ifdef TEMP1  // Temp'C
-		if (temp1 == 2)
+		if (temp)
 		{	d->setClr(12,20,25);
 			d->setCursor(6,54);  d->print("Temp \x01""C");
 		}
@@ -351,7 +352,7 @@ void Gui::DrawClock()
 		d->setCursor(x, y + 4);  d->print("Uptime");
 
 		#ifdef TEMP1
-		if (temp1 == 2)  // 'C
+		if (temp)  // 'C
 		{	d->setCursor(9*6, 32+4);  d->print("\x01""C");  }
 		#endif
 	}	break;
@@ -360,7 +361,7 @@ void Gui::DrawClock()
 	case Cl_StatsExt:  //------------
 	{
 		#ifdef TEMP1
-		if (temp1 == 2)  // 'C
+		if (temp)  // 'C
 		{	d->setCursor(9*6, 32+4);  d->print("\x01""C");  }
 		#endif
 		if (pgClock == Cl_StatsExt)

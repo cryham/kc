@@ -133,7 +133,6 @@ struct Gui
 
 
 	//  Temp 'C  ---
-	uint8_t xCur = W-1;   // graphs cursor
 #ifdef TEMP1
 	float fTemp = -90.f;  // cur value
 	int8_t temp1 = 1;     // fist, init

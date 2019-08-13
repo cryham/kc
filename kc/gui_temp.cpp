@@ -32,17 +32,17 @@ void Gui::GetTemp()
  			sensors.begin(12);  // quality bits
  			sensors.request(addr);
 			temp1 = 2;
-			msTemp = ms + 1;  // 1st now
 		}
 	}
-	if (temp1 == 2)
+	if (temp1 >= 2)
 	{
-		if (ms - msTemp > tTemp(par) || ms < msTemp)
+		if (ms - msTemp > tTemp(par) || ms < msTemp || temp1 == 2)
 		{
 			//  if measurement ready
 			if (sensors.available())
 			{
 				msTemp = ms;
+				temp1 = 3;
 				//?  slower if not in gui, every 20, 10 sec
 
 				fTemp = sensors.readTemperature(addr);

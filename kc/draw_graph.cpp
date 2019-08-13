@@ -42,8 +42,10 @@ void Gui::DrawGraph()
 
 	char a[64];
 	d->setFont(0);
-	bool cursor = xCur < W;
+	int xc = par.xCur;
+	bool cursor = xc < W;
 	int i,ii, y0,h;  uint16_t c;
+
 
 	//  grid 	// press/1min  ------------
 	if (par.time1min)
@@ -65,18 +67,20 @@ void Gui::DrawGraph()
 
 	if (cursor)
 	{
-		getPv(xCur);
+		getPv(xc);
 		ClrPress(v);
 		sprintf(a,"%d", v);  d->println(a);
 
 		d->moveCursor(0,1);
-		PrintInterval(t1min(par)*1000*(W-1-xCur));  d->println("");
+		PrintInterval(t1min(par)*1000*(W-1-xc));  d->println("");
 	}
 	v = H/2 * 4 / 2;  // max
 	d->setClr(16, 16, 20);
 	d->moveCursor(0,2);
-	if (!cursor)  d->print("max ");
-	sprintf(a,"%d", v);  d->println(a);
+	if (!cursor)
+	{	d->print("max ");
+		sprintf(a,"%d", v);  d->println(a);
+	}
 
 	//  graph  Press/1min
 	for (i=0; i <= W-1; ++i)
@@ -95,13 +99,15 @@ void Gui::DrawGraph()
 			if (y0+h < H)
 				d->drawFastVLine(i, y0, h, c);
 
-			if (i == xCur)
+			if (i == xc)
 				d->drawPixel(i, y0, RGB(31,31,31));  //.
 	}	}
+
 
 #ifdef TEMP1
 	//  grid	// Temp'C  ------------
 	{
+		GridLineT(d,par,  5, RGB( 9,  9,  9),"5");
 		GridLineT(d,par, 10, RGB( 9,  9,  9),"10");  // m
 		GridLineT(d,par, 30, RGB(12, 12, 12),"30");
 		GridLineT(d,par, 60, RGB(16, 16, 16),"1h");  // h
@@ -119,18 +125,20 @@ void Gui::DrawGraph()
 
 	if (cursor)
 	{
-		d->drawPixel(xCur,H/2, RGB(29,29,29));  //.
+		d->drawPixel(xc,  0, RGB(29,29,29));  //.
+		d->drawPixel(xc,H/2, RGB(29,29,29));  //.
+		d->drawPixel(xc,H-1, RGB(29,29,29));  //.
 
 		//d->print("cur ");
-		getTv(xCur);
+		getTv(xc);
 		ClrPress(v / 2);
 
-		float f = xCur == W-1 ? fTemp : // latest
+		float f = xc == W-1 ? fTemp : // latest
 			v / 255.f * (par.maxTemp - par.minTemp) + par.minTemp;
 		dtostrf(f,4,2,a);  d->println(a);
 
 		d->moveCursor(0,1);
-		PrintInterval(tTgraph(par)*(W-1-xCur));  d->println("");
+		PrintInterval(tTgraph(par)*(W-1-xc));  d->println("");
 	}
 	d->setClr(14, 17, 20);
 	d->moveCursor(0,2);
@@ -146,7 +154,7 @@ void Gui::DrawGraph()
 		if (v > 0)
 		{
 			ClrPress(v / 2);  c = d->getClr();
-			if (i == xCur)  c = RGB(31,31,31);  //.
+			if (i == xc)  c = RGB(31,31,31);  //.
 
 			h = H/2 * v / 256;
 			if (h > H/2)  h = H/2;

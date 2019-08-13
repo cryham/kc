@@ -43,6 +43,7 @@ void ParInit()
 	par.timeTemp = 10;   // 8s
 	par.timeTgraph = 15; // 1m  gIntervals
 	par.minTemp = 20;  par.maxTemp = 35;
+	par.xCur = W-1;
 }
 
 //  errors

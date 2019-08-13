@@ -47,14 +47,14 @@ void Gui::KeysClock()
 	else if (pgClock == Cl_Graphs)
 	{
 		if (kEnd)
-			xCur = W-1;  // to end
+			par.xCur = W-1;  // to end
 		if (kMul)
-		{	if (xCur == W)  xCur = W-1;  // show
-			else  xCur = W;  // hide
+		{	if (par.xCur == W)  par.xCur = W-1;  // show
+			else  par.xCur = W;  // hide
 		}
 		int a = kRight * (kCtrl ? 30 : kSh ? 1 : 10);
 		if (a)
-			xCur = RangeAdd(xCur, a, 0, W-1, 1);
+			par.xCur = RangeAdd(par.xCur, a, 0, W-1, 1);
 	}
 	if (kAdd || kBckSp)  --mlevel;
 }
