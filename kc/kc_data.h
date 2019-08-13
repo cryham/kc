@@ -105,7 +105,7 @@ struct KC_Main
 
 
 	//  inactive time(s) for stats
-	unsigned long
+	uint32_t
 		tm_key = 0, tm_keyOld = 0,  // last key press time, previous
 		tm_keyAct = 0,
 		tm_min1 = 0;  // 1 minute time

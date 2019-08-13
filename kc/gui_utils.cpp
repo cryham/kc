@@ -113,6 +113,37 @@ void Gui::DrawMenu(int cnt, const char** str, EFadeClr ec, uint16_t curClr,
 	}
 }
 
+void Gui::DrawDispCur(int i, int16_t y)
+{
+	d->setCursor(2, y);
+	int c = abs(i - ym2Disp);  // dist dim
+	if (!c)
+	{	d->fillRect(0, y-1, W-1, 10, RGB(8,8,4));
+		d->setClr(31,22,6);
+		d->print("\x10 ");  // >
+	}else
+		d->print("  ");
+
+	FadeClr(C_Disp, 4, c, 1);
+}
+
+//  time
+void Gui::PrintInterval(uint32_t t)
+{
+	char a[32];
+	int ms = t/100%10;
+	int s = t/1000;  t=s;  s%=60;
+	int m = t/60;  t=m;  m%=60;
+	int h = t/60;
+	if (h)
+		sprintf(a,"%dh%02dm", h, m);
+	else if (m)
+		sprintf(a,"%dm%02ds", m, s);
+	else //if (s)
+		sprintf(a,"%d.%ds", s, ms);
+	d->print(a);
+}
+
 void Gui::FadeClr(EFadeClr ec, const uint8_t mi, const uint8_t mul, const uint8_t div)
 {
 	const uint8_t* clr = &Mclr[ec][0][0];

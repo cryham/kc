@@ -3,25 +3,11 @@
 #include "Ada4_ST7735.h"
 
 
+const char* sPgDisplay[Di_All] = {
+	"Bright", "Gui keys", "Intervals", "Graph""\x01""C", "Debug" };
+
 //  Display
 //....................................................................................
-void Gui::DrawDispCur(int i, int16_t y)
-{
-	d->setCursor(2, y);
-	int c = abs(i - ym2Disp);  // dist dim
-	if (!c)
-	{	d->fillRect(0, y-1, W-1, 10, RGB(8,8,4));
-		d->setClr(31,22,6);
-		d->print("\x10 ");  // >
-	}else
-		d->print("  ");
-
-	FadeClr(C_Disp, 4, c, 1);
-}
-
-const char* sPgDisplay[Di_All] = {"Bright", "Gui keys", "Stats", "Debug"};
-
-
 void Gui::DrawDisplay()
 {		
 	char a[64];
@@ -73,7 +59,7 @@ void Gui::DrawDisplay()
 		case 1:
 			sprintf(a,"Key repeat: %d ms", par.krRepeat*5);  break;
 		case 2:
-			sprintf(a,"Quick keys F1-12: %d", par.quickKeys);  break;
+			sprintf(a,"Quick keys F1-12: %s", par.quickKeys?"on":"off");  break;
 		}
 		d->print(a);  y += h+8;
 	}	break;
@@ -86,11 +72,30 @@ void Gui::DrawDisplay()
 		switch(i)
 		{
 		case 0:
-			sprintf(a,"Minutes inactive: %d", par.minInactive);  break;
+			sprintf(a,"Inactive after: %d min", par.minInactive);  break;
 		case 1:
-			sprintf(a,"Time for 1min: %d:%02d", (par.time1min*6)/60, (par.time1min*6)%60);  break;
+			sprintf(a,"Time for 1min: %dm%02ds", t1min(par)/60, t1min(par)%60);  break;
 		}
 		d->print(a);  y += h+8;
+	}	break;
+
+	case Di_Graph:
+	for (int i=0; i <= pg; ++i)
+	{
+		DrawDispCur(i, y);
+		int8_t h = 4;
+		switch(i)
+		{
+		case 0:
+			d->print("Temp read:  ");  PrintInterval(tTemp(par));  h = 2;  break;
+		case 1:
+			d->print("Graph add:  ");  PrintInterval(tTgraph(par));  break;
+		case 2:
+			sprintf(a,"Scale min:  %d ""\x01""C", par.minTemp);  d->print(a);  h = 2;  break;
+		case 3:
+			sprintf(a,"Scale max:  %d ""\x01""C", par.maxTemp);  d->print(a);  break;
+		}
+		y += h+8;
 	}	break;
 
 	case Di_Debug:

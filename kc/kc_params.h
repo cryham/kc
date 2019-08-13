@@ -55,10 +55,21 @@ struct KC_Params
 	uint8_t msLLTapMax;   // *10ms  max fast press (tap) time to lock layer
 	uint8_t msLLHoldMin;  // *100ms min hold press time to lock layer
 
+	//  ofs
 	int8_t rtcCompensate; // xtal capacitance, adjust ppm
 	uint8_t minInactive;  // minimum minutes for inactive
-	int8_t tempOfs;       // adj temp val  *0.03'C  +-3.8'C
-	uint8_t time1min;     // 1min time  *6s  for press/1min
+	int8_t tempOfs;       // adj Temp val  *0.03'C  +-3.8'C
+
+	//  time intervals
+	uint8_t time1min;     // *6s  press/1min
+	uint8_t timeTemp;     // Temp'C read
+	uint8_t timeTgraph;   // Temp'C add to graph, no average
+	//  scale Temp graph
+	uint8_t minTemp, maxTemp;
+
+	#define t1min(par)    (6 * par.time1min)  // s
+	#define tTemp(par)    (100 * gIntervals[par.timeTemp   & gIntvMask])  // ms
+	#define tTgraph(par)  (100 * gIntervals[par.timeTgraph & gIntvMask])
 };
 //  --- ADD new to END ----
 //  set defaults in ParInit()

@@ -6,7 +6,7 @@
 #include "kc_data.h"
 #include "periodic.h"
 
-const uint8_t Gui::DispPages[Di_All] = {2,2,1,2};
+const uint8_t Gui::DispPages[Di_All] = {2,2,1,3,2};
 const uint8_t Gui::ScanPages[S_All] = {3,1,4,2};
 
 
@@ -157,6 +157,19 @@ void Gui::KeysParDisplay(int sp)
 			par.minInactive = RangeAdd(par.minInactive, kRight *sp/2, 0, 60, 1);  break;
 		case 1:
 			par.time1min = RangeAdd(par.time1min, kRight * sp/2, 0,255);  break;
+		}	break;
+
+	case Di_Graph:
+		switch (ym2Disp)
+		{
+		case 0:
+			par.timeTemp = RangeAdd(par.timeTemp, kRight * sp/2, 0, gIntvMask, 1);  break;
+		case 1:
+			par.timeTgraph = RangeAdd(par.timeTgraph, kRight * sp/2, 0, gIntvMask, 1);  break;
+		case 2:
+			par.minTemp = RangeAdd(par.minTemp, kRight * sp/2, 0, 40, 1);  break;
+		case 3:
+			par.maxTemp = RangeAdd(par.maxTemp, kRight * sp/2, 0, 40, 1);  break;
 		}	break;
 
 	case Di_Debug:

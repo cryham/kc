@@ -133,5 +133,10 @@ int main()
 		gui.Draw();
 
 		gui.DrawEnd();
+
+		//  temp get  --------
+		#ifdef TEMP1  // 18B20  Temp'C
+		gui.GetTemp();
+		#endif
 	}
 }

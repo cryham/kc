@@ -33,6 +33,7 @@ struct Gui
 	void DrawSeq(int8_t seq, int8_t q), DrawOperInfo();
 	void DrawDispCur(int i, int16_t y), DrawClockCur(int i, int16_t y);
 	void ClrPress(int pressPerMin);
+	void PrintInterval(uint32_t t);
 
 
 	//  keys
@@ -131,9 +132,19 @@ struct Gui
 	uint8_t grpStart[grpMax], grpEnd[grpMax];
 
 
+	//  Temp 'C  ---
+	uint8_t xCur = W-1;   // graphs cursor
+#ifdef TEMP1
+	float fTemp = -90.f;  // cur value
+	int8_t temp1 = 1;     // fist, init
+	//  last time read'C, add to graph
+	uint32_t msTemp = 0, msTempG = 0;
+	void GetTemp();
+
 #ifdef GRAPHS
-	uint8_t grTemp[W];  // temp'C graph array
-	uint8_t grTpos = 0;  // write pos
+	uint8_t grTemp[W];    // graph array
+	uint8_t grTpos = 0;   // write pos
+#endif
 #endif
 
 };

@@ -1,8 +1,23 @@
 #include "def.h"
 #include "gui.h"
 
+//  time intervals *0.1s
+const uint16_t gIntervals[gIntvMask+1] =
+{
+	0, 1 /*100ms 1*/, 2, 4, 6, 8,
+	10   /*1s 6*/   ,20,40,60,80,
+	100  /*10s 11*/ ,200,300,450,
+	600  /*1m 15*/  ,720,900,
+	1200 /*2m 18*/  ,2100,3000,4500,
+	6000 /*10m 22*/ ,7200,9000,
+	12000/*20m 25*/ ,15000,18000,24000,
+	36000/*1h 29*/  ,45000,
+	54000/*1.5h 31*/
+};
+
 //  menu colors
-const uint8_t Gui::Mclr[Gui::C_ALL][2][3] = {
+const uint8_t Gui::Mclr[Gui::C_ALL][2][3] =
+{
 	{{20,26,31},{5,3,1}},  // 0 main
 	{{27,26,31},{2,3,1}},  // 1 demos
 	{{20,30,26},{6,3,4}},  //  2 test
@@ -95,4 +110,3 @@ const uint8_t YM1[M_All] =
 	D_All,  // M_Demos
 #endif
 };
-

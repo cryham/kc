@@ -21,8 +21,10 @@ Gui::Gui() : d(0)
 
 	Init(0);
 
+#ifdef TEMP1
 #ifdef GRAPHS
 	memset(grTemp, 0, sizeof(grTemp));
+#endif
 #endif
 }
 

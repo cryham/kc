@@ -3,23 +3,6 @@
 #include "matrix.h"
 #include "kc_data.h"
 
-#ifdef TEMP1
-#include <OneWire.h>
-#include <DS18B20.h>
-
-//  sensor address
-byte addr[8] = {0,};
-
-OneWire onewire(TEMP1);  // pin
-DS18B20 sensors(&onewire);
-
-int8_t temp1 = 1;  // fist, init
-float fTemp = -90.f;  // 'C
-uint16_t skip = 900;  // read inactive
-//  scale graph
-const int minTemp = 20, maxTemp = 35;
-#endif
-
 
 //  const
 uint8_t MDays[13] = {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
@@ -145,49 +128,6 @@ void Gui::DrawClock()
 	d->setClr(12, 14, 17);
 	if (clock)
 		d->print(strMain[ym]);
-
-
-	//  temp get  --------
-	#ifdef TEMP1  // 18B20  Temp'C
-	if (temp1 == 1)
-	{	temp1 = 0;  //  first
-
-		//  Look for 1-Wire devices
-		if (onewire.search(addr))  // while
-		if (OneWire::crc8(addr, 7) == addr[7])
-		{
-			//onewire.reset_search();
-			//  setup
- 			sensors.begin(12);  // quality bits
- 			sensors.request(addr);
-			temp1 = 2;
-		}
-	}
-	if (temp1 == 2 && !adjust)
-	{
-		++skip;
-		// todo interval 0.1s, par gui act,inact
-		//  slower if not in gui, every 20, 10 sec
-		if (skip > (pgClock == Cl_Stats ? 500 : 300) || !kbdSend)
-		//  if measurement ready
-		if (sensors.available())
-		{	skip = 0;
-			fTemp = sensors.readTemperature(addr);
-			fTemp += 0.03f * par.tempOfs;  // fix sensor fault
-			sensors.request(addr);  // next
-
-		#ifdef GRAPHS
-			//  graph inc pos
-			++grTpos;
-			if (grTpos >= W)  grTpos = 0;
-			//  add to graph
-			int t = 255.f * (fTemp - minTemp) / (maxTemp - minTemp);
-			t = t > 255 ? 255 : (t < 0 ? 0 : t);
-			grTemp[grTpos] = t;
-		#endif
-		}
-	}
-	#endif
 
 
 	//  Graphs  ~~~~~~~~~~~~~~~~
@@ -386,7 +326,7 @@ void Gui::DrawClock()
 		#ifdef TEMP1  // Temp'C
 		if (temp1 == 2)
 		{	d->setClr(12,20,25);
-			d->setCursor(6,58);  d->print("Temp \x01""C");
+			d->setCursor(6,54);  d->print("Temp \x01""C");
 		}
 		#endif
 	}	break;
