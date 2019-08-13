@@ -61,15 +61,15 @@ void Gui::DrawSetup()
 				sprintf(a,"Default layer: %d", par.defLayer);  y-=2;  break;
 
 			case 1:  // todo warning seq key not bound
-				sprintf(a,"Seq. edit layer: %d", par.editLayer);  y-=2;  break;
+				sprintf(a," Seq. edit on: %d", par.editLayer);  break;
 
 			case 2:
-				d->print("Layer\\ Fast max: ");
+				d->print(" Lock Fast max: ");
 				dtostrf(par.msLLTapMax*0.01f, 4,2, a);  d->print(a);
 				d->print(" s");
 				y-=2;  break;
 			case 3:
-				d->print(" Lock/ Hold min: ");
+				d->print(" Lock Hold min: ");
 				dtostrf(par.msLLHoldMin*0.1f, 3,1, a);  d->print(a);
 				d->print(" s");
 				y+=2;  break;
@@ -79,6 +79,7 @@ void Gui::DrawSetup()
 		}
 	}	break;
 
+	//-----------------------------------------------------
 	case S_Keyboard:
 	{
 		for (int i=0; i <= ii; ++i)
@@ -108,6 +109,7 @@ void Gui::DrawSetup()
 				d->print(a);  y += 8+4;
 		}
 	}	break;
+
 
 	//-----------------------------------------------------
 	case S_Scan:

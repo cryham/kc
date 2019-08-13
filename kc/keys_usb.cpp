@@ -51,8 +51,8 @@ const char* cKeyStr[KEYS_ALL_EXT]={  "None",  // max [255]
 	"P1","P2","P3","P4","P5","P6","P7","P8","P9","P0", "P.",
 
 	"F13","F14","F15","F16","F17","F18","F19","F20","F21","F22","F23","F24",  // func2
-	"Play-", "Pause-", "Rec-", "Forw-", "Rew-", "Next", "Prev", "Stop",  // media
-	"Calc", "Randm-", "PlPau", "PlSkp-",
+	"-Play", "-Pause", "-Rec", "-Forw", "-Rew", "Next", "Prev", "Stop",  // media
+	"Calc", "-Rand", "PlPau", "-PlSkp",
 
 	"Mute", "Vol+", "Vol-",  "Power", "Sleep", "Wake",  // volume, power
 	"All",  // _extras_

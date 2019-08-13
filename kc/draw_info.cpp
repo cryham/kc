@@ -50,7 +50,6 @@ void Gui::DrawInfo()
 		sprintf(a,"Save counter: %d", par.verCounter);
 		d->print(a);  y += 14;
 
-		d->setClr(15,22,29);
 		int i,l,k, s = 0, t = 0, si = 0;
 
 		//  count nonempty seqs
@@ -71,14 +70,16 @@ void Gui::DrawInfo()
 			}
 		}
 
+		d->setClr(21,25,29);
 		sprintf(a,"  Sequences:  %d /%d", s, KC_MaxSeqs);
 		d->setCursor(0, y);  d->print(a);  y+=10;
+		d->setClr(15,21,25);
 		sprintf(a,"     Unused:  %d", t);
 		d->setCursor(0, y);  d->print(a);  y+=10;
 		sprintf(a,"       Size:  %d B", si);
 		d->setCursor(0, y);  d->print(a);  y+=12;
 
-		//  int.funct keys used-
+		//  int.funct keys used
 		si = 0;
 		for (i = K_Fun0; i < K_FunLast; ++i)
 		{
@@ -101,14 +102,17 @@ void Gui::DrawInfo()
 			if (u)  ++s;
 		}
 
-		d->setClr(15,27,27);
+		d->setClr(21,25,29);
 		sprintf(a,"     Layers:  %d /%d", s, KC_MaxLayers);
-		d->setCursor(0, y);  d->print(a);  y+=10;
+		d->setCursor(0, y);  d->print(a);  y+=12;
+
 		sprintf(a,"       Keys:  %d", t);
 		d->setCursor(0, y);  d->print(a);  y+=10;
+		d->setClr(15,21,25);
 		sprintf(a,"   Internal:  %d", si);
 		d->setCursor(0, y);  d->print(a);  y+=12;
 
+		d->setClr(25,25,29);
 		sprintf(a,"      Total:  %d B", kc.memSize);
 		d->setCursor(0, y);  d->print(a);  y+=12;
 

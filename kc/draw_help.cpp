@@ -69,10 +69,10 @@ void Gui::DrawHelp()
 		d->println("F7   Setup Mouse");
 		d->println("F8   Setup Keyboard");
 		d->moveCursor(0,4);
-		d->println("F9   Display");
-		d->println("F10  Demos Plasma");
+		d->println("F9   Demos Plasma");
+		d->println("F10  Help");
 		d->moveCursor(0,4);
-		d->println("F11  Help");
+		d->println("F11  Display");
 		d->println("F12  Clock");
 		break;
 

@@ -54,10 +54,10 @@ void Gui::KeyPress()
 		if (kF7)  SetScreen(ST_Setup2 + S_Mouse);
 		if (kF8)  SetScreen(ST_Setup2 + S_Keyboard);  //(kSh ?
 
-		if (kF9)   SetScreen(ST_Displ);
-		if (kF10)  SetScreen(ST_Demos2 + D_Plasma);
-		if (kF11)  SetScreen(ST_Help);
-		if (kF12)  SetScreen(ST_Clock);
+		if (kF9)   SetScreen(ST_Demos2 + D_Plasma);
+		if (kF10)  SetScreen(ST_Help);
+		if (kF11)  SetScreen(ST_Displ);
+		if (kF12)  SetScreen(ST_Clock + pgClock);
 	}
 
 	//  Game  ------
