@@ -3,67 +3,87 @@
 #include "kc_data.h"
 
 
-//  Graphs ~ ~
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-inline void GridLineP(Ada4_ST7735* d, const KC_Params& par, int m, uint16_t c, const char* s)
+//  Grid  | |
+inline void GridLineP(Ada4_ST7735* d, KC_Params& par, int m, uint16_t c, const char* s)
 {
-	int h = m * 60 / (6 * par.time1min);  // m min time
+	int h = m * 60 / t1min(par);  // m min time
 	int x = W-1 - h;
 	if (x > 0)  d->drawFastVLine(x, 0, H/2, c);
 	else  return;
 	x -= 6;
-	if (x < 12)  return;
+	if (x < 12 || x >= W-12)  return;
 	if (x < 0)  x = 0;
 	d->setCursor(x, 0);
 	d->setColor(c);
 	d->print(s);
 }
+inline void GridLineT(Ada4_ST7735* d, KC_Params& par, int m, uint16_t c, const char* s)
+{
+	int h = m * 60000 / tTgraph(par);  // m min time
+	int x = W-1 - h;
+	if (x > 0)  d->drawFastVLine(x, H/2, H/2-1, c);
+	else  return;
+	x -= 6;
+	if (x < 12 || x >= W-12)  return;
+	if (x < 0)  x = 0;
+	d->setCursor(x, H/2);
+	d->setColor(c);
+	d->print(s);
+}
 
+//  Graphs ~ ~
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 void Gui::DrawGraph()
 {
 #ifdef GRAPHS
+
+	#define getPv(i)  ii = kc.grPpos + i - (W-1) + W;  v = kc.grPMin[ii % W];
+	#define getTv(i)  ii =    grTpos + i - (W-1) + W;  v =    grTemp[ii % W];
+
 	char a[64];
 	d->setFont(0);
+	bool cursor = xCur < W;
+	int i,ii, y0,h;  uint16_t c;
 
-	//  grid lines ||
-	GridLineP(d,par, 10, RGB( 9,  9,  9),"10");  // min
-	GridLineP(d,par, 30, RGB(12, 12, 12),"30");
-	GridLineP(d,par, 60, RGB(16, 16, 16),"1h");  // h
-	GridLineP(d,par,120, RGB(16, 16, 16),"2h");
-	GridLineP(d,par,240, RGB(16, 16, 16),"4h");
-	GridLineP(d,par,480, RGB(16, 16, 16),"8h");
+	//  grid 	// press/1min  ------------
+	if (par.time1min)
+	{
+		GridLineP(d,par, 10, RGB( 9,  9,  9),"10");  // min
+		GridLineP(d,par, 30, RGB(12, 12, 12),"30");
+		GridLineP(d,par, 60, RGB(16, 16, 16),"1h");  // h
+		GridLineP(d,par,120, RGB(16, 16, 16),"2h");
+		GridLineP(d,par,240, RGB(16, 16, 16),"4h");
+		GridLineP(d,par,480, RGB(16, 16, 16),"8h");
+	}
 
-
-	//  legends text
-	int x = 0, y = 14, v;
+	//  legend
+	int x = 0, y = 10, v;
 	d->setClr(20, 20, 25);
 	d->setCursor(x, y);
 	d->println("Press/min");
 
+	if (cursor)
+	{
+		getPv(xCur);
+		ClrPress(v);
+		sprintf(a,"%d", v);  d->println(a);
+
+		//d->print("time ");
+		PrintInterval(t1min(par)*1000*(W-1-xCur));
+		d->println("");
+	}
 	v = H/2 * 4 / 2;  // max
 	d->setClr(16, 16, 20);
 	sprintf(a,"max %d", v);  d->println(a);
 
-#ifdef TEMP1
-	x = 0;  y = H/2 +14;
-	d->setClr(18, 22, 25);
-	d->setCursor(x, y);
-	d->++("Temp \x01""C");
-
-	d->setClr(14, 17, 20);
-	sprintf(a,"max %d", maxTemp);  d->println(a);
-	sprintf(a,"min %d", minTemp);  d->println(a);
-#endif
-	int i,ii, y0,h;  uint16_t c;
-
-	//  graphs
+	//  graph  Press/1min
 	for (i=0; i <= W-1; ++i)
 	{
-		ii = kc.grPpos + i - (W-1) + W;
-		v = kc.grPMin[ii % W];
+		getPv(i);
 		if (v > 0)
 		{
 			ClrPress(v);  c = d->getClr();
+			if (i == xCur)  c = RGB(31,31,31);
 
 			h = 2 * v / 4;  // max
 			if (h > H/2)  h = H/2;
@@ -74,16 +94,53 @@ void Gui::DrawGraph()
 			if (y0+h < H)
 			d->drawFastVLine(i, y0, h, c);
 	}	}
-	//  Temp
+
 #ifdef TEMP1
+	//  grid	// Temp'C  ------------
+	{
+		GridLineT(d,par, 10, RGB( 9,  9,  9),"10");  // min
+		GridLineT(d,par, 30, RGB(12, 12, 12),"30");
+		GridLineT(d,par, 60, RGB(16, 16, 16),"1h");  // h
+		GridLineT(d,par,120, RGB(16, 16, 16),"2h");
+		GridLineT(d,par,240, RGB(16, 16, 16),"4h");
+		GridLineT(d,par,480, RGB(16, 16, 16),"8h");
+	}
+
+	//  legend
+	x = 0;  y += H/2;
+	d->setClr(18, 22, 25);
+	d->setCursor(x, y);
+	d->println("Temp \x01""C");
+
+	if (cursor)
+	{
+		d->drawPixel(xCur,H/2, RGB(29,29,29));  //.
+
+		//d->print("cur ");
+		getTv(xCur);
+		ClrPress(v / 2);
+
+		float f = xCur == W-1 ? fTemp : // latest
+			v / 255.f * (par.maxTemp - par.minTemp) + par.minTemp;
+		dtostrf(f,4,2,a);  d->println(a);
+
+		//d->print("time ");
+		PrintInterval(tTgraph(par)*(W-1-xCur));
+		sprintf(a,"time %d", par.minTemp);
+		d->println("");
+	}
+	d->setClr(14, 17, 20);
+	sprintf(a,"max %d", par.maxTemp);  d->println(a);
+	sprintf(a,"min %d", par.minTemp);  d->println(a);
+
+	//  graph  Temp
 	for (i=0; i <= W-1; ++i)
 	{
-		ii = grTpos + i - (W-1) + W;
-		v = grTemp[ii % W];
-		//  0 = minTemp  255 = maxTemp
+		getTv(i);
 		if (v > 0)
 		{
 			ClrPress(v / 2);  c = d->getClr();
+			if (i == xCur)  c = RGB(31,31,31);
 
 			h = H/2 * v / 256;
 			if (h > H/2)  h = H/2;

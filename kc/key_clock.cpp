@@ -13,7 +13,8 @@ void Gui::KeysClock()
 	{	pgClock = RangeAdd(pgClock, kPgUp, 0, Cl_All-1, 1);
 		ym2Clock = RangeAdd(ym2Clock, 0, 0, ClockVars(pgClock), 1);
 	}else
-	if (kRight && pgClock == Cl_Adjust)  // adjust values
+	//  adjust time  ---
+	if (kRight && pgClock == Cl_Adjust)
 	{
 		unsigned long tm = rtc_get(), td = 0;
 		int a = kRight * (kCtrl ? 10 : 1);
@@ -41,6 +42,19 @@ void Gui::KeysClock()
 				rtc_set(tm);
 			}
 		}
+	}
+	//  graphs cursor move  ---
+	else if (pgClock == Cl_Graphs)
+	{
+		if (kEnd)
+			xCur = W-1;  // to end
+		if (kMul)
+		{	if (xCur == W)  xCur = W-1;  // show
+			else  xCur = W;  // hide
+		}
+		int a = kRight * (kCtrl ? 30 : kSh ? 1 : 10);
+		if (a)
+			xCur = RangeAdd(xCur, a, 0, W-1, 1);
 	}
 	if (kAdd || kBckSp)  --mlevel;
 }
