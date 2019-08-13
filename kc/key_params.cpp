@@ -154,9 +154,9 @@ void Gui::KeysParDisplay(int sp)
 		switch (ym2Disp)
 		{
 		case 0:
-			par.minInactive = RangeAdd(par.minInactive, kRight *sp/2, 0, 60, 1);  break;
-		case 1:
 			par.time1min = RangeAdd(par.time1min, kRight * sp/2, 0,255);  break;
+		case 1:
+			par.minInactive = RangeAdd(par.minInactive, kRight *sp/2, 0, 60, 1);  break;
 		}	break;
 
 	case Di_Graph:

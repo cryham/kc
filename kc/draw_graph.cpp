@@ -48,7 +48,7 @@ void Gui::DrawGraph()
 	//  grid 	// press/1min  ------------
 	if (par.time1min)
 	{
-		GridLineP(d,par, 10, RGB( 9,  9,  9),"10");  // min
+		GridLineP(d,par, 10, RGB( 9,  9,  9),"10");  // m
 		GridLineP(d,par, 30, RGB(12, 12, 12),"30");
 		GridLineP(d,par, 60, RGB(16, 16, 16),"1h");  // h
 		GridLineP(d,par,120, RGB(16, 16, 16),"2h");
@@ -57,10 +57,11 @@ void Gui::DrawGraph()
 	}
 
 	//  legend
-	int x = 0, y = 10, v;
+	int x = 0, y = 9, v;
 	d->setClr(20, 20, 25);
 	d->setCursor(x, y);
 	d->println("Press/min");
+	d->moveCursor(0,2);
 
 	if (cursor)
 	{
@@ -68,13 +69,14 @@ void Gui::DrawGraph()
 		ClrPress(v);
 		sprintf(a,"%d", v);  d->println(a);
 
-		//d->print("time ");
-		PrintInterval(t1min(par)*1000*(W-1-xCur));
-		d->println("");
+		d->moveCursor(0,1);
+		PrintInterval(t1min(par)*1000*(W-1-xCur));  d->println("");
 	}
 	v = H/2 * 4 / 2;  // max
 	d->setClr(16, 16, 20);
-	sprintf(a,"max %d", v);  d->println(a);
+	d->moveCursor(0,2);
+	if (!cursor)  d->print("max ");
+	sprintf(a,"%d", v);  d->println(a);
 
 	//  graph  Press/1min
 	for (i=0; i <= W-1; ++i)
@@ -83,7 +85,6 @@ void Gui::DrawGraph()
 		if (v > 0)
 		{
 			ClrPress(v);  c = d->getClr();
-			if (i == xCur)  c = RGB(31,31,31);
 
 			h = 2 * v / 4;  // max
 			if (h > H/2)  h = H/2;
@@ -92,13 +93,16 @@ void Gui::DrawGraph()
 			if (y0 < 0)  y0 = 0;
 
 			if (y0+h < H)
-			d->drawFastVLine(i, y0, h, c);
+				d->drawFastVLine(i, y0, h, c);
+
+			if (i == xCur)
+				d->drawPixel(i, y0, RGB(31,31,31));  //.
 	}	}
 
 #ifdef TEMP1
 	//  grid	// Temp'C  ------------
 	{
-		GridLineT(d,par, 10, RGB( 9,  9,  9),"10");  // min
+		GridLineT(d,par, 10, RGB( 9,  9,  9),"10");  // m
 		GridLineT(d,par, 30, RGB(12, 12, 12),"30");
 		GridLineT(d,par, 60, RGB(16, 16, 16),"1h");  // h
 		GridLineT(d,par,120, RGB(16, 16, 16),"2h");
@@ -111,6 +115,7 @@ void Gui::DrawGraph()
 	d->setClr(18, 22, 25);
 	d->setCursor(x, y);
 	d->println("Temp \x01""C");
+	d->moveCursor(0,2);
 
 	if (cursor)
 	{
@@ -124,14 +129,15 @@ void Gui::DrawGraph()
 			v / 255.f * (par.maxTemp - par.minTemp) + par.minTemp;
 		dtostrf(f,4,2,a);  d->println(a);
 
-		//d->print("time ");
-		PrintInterval(tTgraph(par)*(W-1-xCur));
-		sprintf(a,"time %d", par.minTemp);
-		d->println("");
+		d->moveCursor(0,1);
+		PrintInterval(tTgraph(par)*(W-1-xCur));  d->println("");
 	}
 	d->setClr(14, 17, 20);
-	sprintf(a,"max %d", par.maxTemp);  d->println(a);
-	sprintf(a,"min %d", par.minTemp);  d->println(a);
+	d->moveCursor(0,2);
+	if (!cursor)  d->print("max ");
+	sprintf(a,"%d", par.maxTemp);  d->println(a);
+	if (!cursor)  d->print("min ");
+	sprintf(a,"%d", par.minTemp);  d->println(a);
 
 	//  graph  Temp
 	for (i=0; i <= W-1; ++i)
@@ -140,7 +146,7 @@ void Gui::DrawGraph()
 		if (v > 0)
 		{
 			ClrPress(v / 2);  c = d->getClr();
-			if (i == xCur)  c = RGB(31,31,31);
+			if (i == xCur)  c = RGB(31,31,31);  //.
 
 			h = H/2 * v / 256;
 			if (h > H/2)  h = H/2;

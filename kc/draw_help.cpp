@@ -58,22 +58,22 @@ void Gui::DrawHelp()
 		d->println("F5   Load   Ctrl- Reset");
 		break;
 
-	case 1:  //  quick
+	case 1:  //  quic
+
 		d->setClr(16,22,28);
-		d->println("F1   Mapping");
-		d->println("F2   Sequences");
+		d->println("F1  Mapping    /=Shift");
+		d->println("F2  Sequences");
+		d->println("F3  Test Layout /Pressed");
 		d->moveCursor(0,4);
-		d->println("F3   Test Layout");
-		d->println("F6   Test Pressed");
+		d->println("F6  Info Use");
+		d->println("F7  Setup Mouse");
+		d->println("F8  Setup Layer /Keyboard");
 		d->moveCursor(0,4);
-		d->println("F7   Setup Mouse");
-		d->println("F8   Setup Keyboard");
-		d->moveCursor(0,4);
-		d->println("F9   Demos Plasma");
+		d->println("F9  Demos Plasma /Hedrons");
 		d->println("F10  Help");
 		d->moveCursor(0,4);
 		d->println("F11  Display");
-		d->println("F12  Clock");
+		d->println("F12  Clock /Stats/Graphs");
 		break;
 
 	case 2:  //  mapping  ------------------------

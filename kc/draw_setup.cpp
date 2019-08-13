@@ -64,12 +64,12 @@ void Gui::DrawSetup()
 				sprintf(a," Seq. edit on: %d", par.editLayer);  break;
 
 			case 2:
-				d->print(" Lock Fast max: ");
+				d->print("Lock Fast max: ");
 				dtostrf(par.msLLTapMax*0.01f, 4,2, a);  d->print(a);
 				d->print(" s");
 				y-=2;  break;
 			case 3:
-				d->print(" Lock Hold min: ");
+				d->print("Lock Hold min: ");
 				dtostrf(par.msLLHoldMin*0.1f, 3,1, a);  d->print(a);
 				d->print(" s");
 				y+=2;  break;

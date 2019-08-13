@@ -72,9 +72,9 @@ void Gui::DrawDisplay()
 		switch(i)
 		{
 		case 0:
-			sprintf(a,"Inactive after: %d min", par.minInactive);  break;
+			sprintf(a,"Time for 1min:  %dm%02ds", t1min(par)/60, t1min(par)%60);  break;
 		case 1:
-			sprintf(a,"Time for 1min: %dm%02ds", t1min(par)/60, t1min(par)%60);  break;
+			sprintf(a,"Inactive after: %d min", par.minInactive);  break;
 		}
 		d->print(a);  y += h+8;
 	}	break;

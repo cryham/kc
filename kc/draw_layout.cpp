@@ -54,7 +54,7 @@ void Gui::DrawLayout(bool edit)
 
 		uint16_t  // clr
 			cR = f==2 ? RGB(31,30,29) : f==1 ? RGB(28,28,29) :
-				 lk ? RGB(31,20,25) : clrRect[k.o];
+				 lk ? RGB(31,26,28) : clrRect[k.o];
 
 		//  darken  if draw has NO scId
 		if (edit && k.sc == NO)  cR = RGB(9,9,9);
