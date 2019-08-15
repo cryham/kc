@@ -371,8 +371,8 @@ void KC_Main::Send(uint32_t ms)
 					tm_keyOld = tm_key;
 					tm_key = rtc_get();
 
-					if (tm_key - tm_keyOld > 3600 * 8)
-						ResetStats(true);  // over 8 hours inactive
+					if (tm_key - tm_keyOld > 3600 * 20)
+						ResetStats(true);  // over 20 hours inactive
 					else
 					if (tm_key - tm_keyOld > 60 * par.minInactive)
 					{

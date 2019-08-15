@@ -60,11 +60,14 @@ void Gui::KeyPress()
 					 (kSh ? D_Hedrons : D_Plasma)));
 		if (kF10)  SetScreen(ST_Help);
 
-		if (kF11){ SetScreen(ST_Displ);
+		if (kF11)
+		{	bool clk = ym == M_Clock;
+			SetScreen(ST_Displ);
 			// set page for clock
-			if (pgClock == Cl_Graphs)  pgDisp = Di_Graph;  else
-			if (pgClock >= Cl_Stats)  pgDisp = Di_Stats;  }
-
+			if (clk)
+			{	if (pgClock == Cl_Graphs)  pgDisp = Di_Graph;  else
+				if (pgClock >= Cl_Stats)  pgDisp = Di_Stats;  }
+		}
 		if (kF12)  SetScreen(ST_Clock +
 			(kCtrl ? Cl_Graphs : kSh ? Cl_StatsExt : pgClock));
 	}
