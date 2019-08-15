@@ -65,9 +65,10 @@ void Gui::ClrPress(int pm)
 {
 	if (pm >200)  d->setClr(31, 25,31);  else
 	if (pm >150)  d->setClr(31, 20,25);  else
-	if (pm >120)  d->setClr(31, 14,14);  else
-	if (pm > 90)  d->setClr(31,  8, 2);  else
-	if (pm > 70)  d->setClr(31, 18, 2);  else
+	if (pm >120)  d->setClr(31, 10,10);  else
+
+	if (pm > 90)  d->setClr(31, 16, 2);  else
+	if (pm > 70)  d->setClr(31, 20, 2);  else
 	if (pm > 50)  d->setClr(24, 24, 4);  else
 	if (pm > 30)  d->setClr( 6, 24, 6);  else
 	if (pm > 10)  d->setClr( 4, 22,22);  else
@@ -75,15 +76,14 @@ void Gui::ClrPress(int pm)
 }
 void Gui::ClrTemp(int tm)
 {
-	if (tm >240)  d->setClr(31, 20,20);  else
-	if (tm >224)  d->setClr(31, 18,12);  else
-	if (tm >196)  d->setClr(31, 16, 2);  else
+	if (tm >224)  d->setClr(31, 10,10);  else
+	if (tm >192)  d->setClr(31, 18, 4);  else
 	if (tm >160)  d->setClr(30, 30, 2);  else
-	if (tm >128)  d->setClr(18, 31, 2);  else
-	if (tm > 96)  d->setClr( 6, 31, 6);  else
-	if (tm > 64)  d->setClr( 6, 24,24);  else
-	if (tm > 32)  d->setClr(15, 22,31);  else
-				  d->setClr( 6, 16,31);
+	if (tm >128)  d->setClr(16, 29, 2);  else
+	if (tm > 96)  d->setClr( 6, 27, 6);  else
+	if (tm > 64)  d->setClr( 6, 26,26);  else
+	if (tm > 32)  d->setClr(10, 20,30);  else
+				  d->setClr( 6, 16,29);
 }
 
 //  Display
