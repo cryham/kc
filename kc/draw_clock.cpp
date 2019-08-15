@@ -63,14 +63,27 @@ void Gui::DrawClockCur(int i, int16_t y)
 //  color from value
 void Gui::ClrPress(int pm)
 {
-	if (pm >150)  d->setClr(31, 22,22);  else
-	if (pm >120)  d->setClr(31, 12,12);  else
-	if (pm > 90)  d->setClr(31, 12, 2);  else
-	if (pm > 70)  d->setClr(30, 18, 2);  else
+	if (pm >200)  d->setClr(31, 25,31);  else
+	if (pm >150)  d->setClr(31, 20,25);  else
+	if (pm >120)  d->setClr(31, 14,14);  else
+	if (pm > 90)  d->setClr(31,  8, 2);  else
+	if (pm > 70)  d->setClr(31, 18, 2);  else
 	if (pm > 50)  d->setClr(24, 24, 4);  else
 	if (pm > 30)  d->setClr( 6, 24, 6);  else
 	if (pm > 10)  d->setClr( 4, 22,22);  else
 				  d->setClr( 6, 16,24);
+}
+void Gui::ClrTemp(int tm)
+{
+	if (tm >240)  d->setClr(31, 20,20);  else
+	if (tm >224)  d->setClr(31, 18,12);  else
+	if (tm >196)  d->setClr(31, 16, 2);  else
+	if (tm >160)  d->setClr(30, 30, 2);  else
+	if (tm >128)  d->setClr(18, 31, 2);  else
+	if (tm > 96)  d->setClr( 6, 31, 6);  else
+	if (tm > 64)  d->setClr( 6, 24,24);  else
+	if (tm > 32)  d->setClr(15, 22,31);  else
+				  d->setClr( 6, 16,31);
 }
 
 //  Display
@@ -100,7 +113,7 @@ void Gui::DrawClock()
 	const int16_t x0 = W / 2,
 			yt = 32, yu = H - 20, yd = yt + 24, // time, uptime, date
 			yp = yt + 22, yi = yu - 19;
-	to = t - tm_on;
+	to = t - kc.tm_on;
 
 
 	//  late hours Background  --------
@@ -114,7 +127,7 @@ void Gui::DrawClock()
 		if (h < 6)  {  r = 31;  g = 24;  b = 10;  }
 
 		if (r)
-		for (int y=0; y < r + 17; ++y)
+		for (int y=0; y < r + 15; ++y)  //par intens-
 		{
 			d->drawFastHLine(0, y, W - 1, RGB(r, g, b));
 			//d->drawFastHLine(0,H-1-y,W-1, RGB(r/2,g/2,b/2));
@@ -141,7 +154,7 @@ void Gui::DrawClock()
 		if (v > 0)
 		{
 			ClrPress(v);  uint16_t c = d->getClr();
-			y0 = yt - v / 3;  // 96 is max
+			y0 = yt - v / 3;  // 96 is max  //par scale-
 			if (y0 < 0)  y0 = 0;
 			d->drawPixel(i,y0, c);
 	}	}
@@ -205,7 +218,7 @@ void Gui::DrawClock()
 			if (s > 180)  d->setClr(28, 10,  5);  else
 			if (s > 110)  d->setClr(26, 13, 16);  else
 			if (s > 50)   d->setClr(24, 18, 10);  else
-			if (s > 25)   d->setClr(14, 22, 24);  else
+			if (s > 25)   d->setClr(10, 22, 24);  else
 			              d->setClr(15, 15, 20);
 			y = yp + 14;
 			d->setCursor(x, y);
@@ -220,7 +233,7 @@ void Gui::DrawClock()
 
 		float fto = to ? to : 1;
 		float pm = 60.f * cnt_press / fto;
-		dtostrf(pm, 4, 2, f);
+		dtostrf(pm, 4, 1, f);
 
 		ClrPress(pm);
 		d->print(f);
@@ -291,6 +304,7 @@ void Gui::DrawClock()
 	}
 	else
 		d->setFont(0);
+
 
 	//  small font  ----------------------
 
@@ -393,12 +407,13 @@ void Gui::DrawClock()
 			x = 6;  y = yp;
 			d->setCursor(x, y);
 
-			int m1 = kc.min1_Keys; // / 60.f;
+			int m1 = kc.min1_Keys;
 			ClrPress(m1);
 			dtostrf(m1, 3,0, f);  d->print(f);
 
 
-			//  previous 2 inactive times  --
+			//  inactive times  --
+			//  Previous 2
 			x = W - 30;
 			ti = kc.tInact1;
 			h = ti / 60 % 24;  m = ti % 60;
@@ -414,7 +429,7 @@ void Gui::DrawClock()
 			d->setCursor(x, yi - 4);
 			sprintf(a, "%d:%02d", h, m);  d->print(a);
 
-			//  inactive Sum  --
+			//  Sum
 			ti = kc.tInactSum;
 			h = ti / 60 % 24;  m = ti % 60;
 
