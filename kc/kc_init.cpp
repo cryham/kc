@@ -3,11 +3,10 @@
 #include "usb_keyboard.h"
 #include "matrix.h"
 #include "keys_usb.h"
-#include "gui.h"
 #include "kc_params.h"
+#include "WProgram.h"  // rtc, Mouse
 
 
-//  ctor init
 //------------------------------------------------
 void KC_Main::SeqModClear()
 {
@@ -16,24 +15,59 @@ void KC_Main::SeqModClear()
 		seqMod[i] = 0;
 }
 
+//  ctor  Main
+//------------------------------------------------
 KC_Main::KC_Main()
 {
-	err=E_ok;  memSize = 0;
+	err = E_ok;  memSize = 0;
 	setDac = 1;
 	SeqModClear();
 
 	Mouse.screenSize(1920,1200);  //?
 
-	tm_key = rtc_get();
-	tm_min1 = tm_keyAct = tm_keyOld = tm_key;
+	//  rtc set
+	unsigned long t = rtc_get();
 
-	tInactSum = 0;  tInact1 = tInact2 = 0;
+	int yr = t/3600/24/365;
+	if (yr == 0)  // set date if none
+	{
+		//  whatever in 2018, 614736000
+		t = 18 * 365 + 8 * 30;  t *= 24 * 3600;
+		t += 16 * 3600;
+		rtc_set(t);
+	}
+	ResetStats(true);
+
 #ifdef GRAPHS
 	memset(grPMin, 0, sizeof(grPMin));
 #endif
 }
 
+//  Reset stats, rtc, times
+//------------------------------------------------
+void KC_Main::ResetStats(bool rtc)
+{
+	// rtc
+	unsigned long t = rtc_get();
+	if (rtc)
+		tm_on = t;
+
+	tm_key = tm_keyOld = tm_keyAct = t;
+	//  ms
+	uint32_t ms = millis();
+	msMin1 = msKeyLay = ms;
+
+	//  cnt
+	tInactSum = tInact1 = tInact2 = 0;
+	min1_Keys = 0;
+
+	cnt_press = 0;  // matrix.h
+	cnt_press1min = 0;
+}
+
+
 //  clear evth
+//------------------------------------------------
 void KC_Setup::Clear()
 {
 	//  header  ver
@@ -55,13 +89,15 @@ void KC_Setup::Clear()
 	}
 }
 
+//  ctor  Setup
+//------------------------------------------------
 KC_Setup::KC_Setup()
 {
 	//Clear();
 	InitCK();
 }
 
-//  Init  CK1 8x6
+//  Init
 //------------------------------------------------
 void KC_Setup::InitCK()
 {
@@ -84,7 +120,7 @@ void KC_Setup::InitCK()
 			#define add(code, lay)  key[lay][dk.sc] = code
 			add(dk.code, 0);
 
-		#if 1  //  override  --*
+		#if 0  //  CK1 override  --*
 		#ifdef CK1
 			if (dk.code == K_INS)	add(K_Layer1, 0);
 			if (dk.code == K_SPACE) add(K_Layer2, 0);  else 

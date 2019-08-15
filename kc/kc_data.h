@@ -69,7 +69,6 @@ struct KC_Main
 	//  current layer, set by keys
 	int8_t nLayer = 0,  // final, held layer key (or set)
 		   nLayerLock = -1;  // tap layer key to lock/unlock
-	uint32_t msKeyLay = 0;
 
 	int8_t setDac = 1;  // update
 
@@ -106,13 +105,16 @@ struct KC_Main
 
 	//  inactive time(s) for stats
 	uint32_t
+		tm_on = 0,  // uptime   tm_= rtc, ms_= milis
 		tm_key = 0, tm_keyOld = 0,  // last key press time, previous
 		tm_keyAct = 0,
-		tm_min1 = 0;  // 1 minute time
-	uint16_t
+		msKeyLay = 0,  // layer key press, for lock times
+		msMin1 = 0;    // 1 minute time
+	uint16_t  // counts
 		tInact1 = 0, tInact2 = 0,  // previous 2 inact mins in minutes
 		tInactSum = 0,  // sum inactive times
 		min1_Keys = 0;  // 1 minute keys press, show
+	void ResetStats(bool rtc=false);
 
 	//--inact-----|-active--|----------|---|----------------------
 	//   0   1   2* *3 * 4  *5   6   7 * 8 * 9  10 now    * key press

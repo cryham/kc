@@ -1,5 +1,7 @@
 #include "gui.h"
 #include "kc_params.h"
+#include "kc_data.h"
+extern KC_Main kc;
 
 
 //  Clock
@@ -12,7 +14,8 @@ void Gui::KeysClock()
 	if (kPgUp)  // pg
 	{	pgClock = RangeAdd(pgClock, kPgUp, 0, Cl_All-1, 1);
 		ym2Clock = RangeAdd(ym2Clock, 0, 0, ClockVars(pgClock), 1);
-	}else
+	}
+	else
 	//  adjust time  ---
 	if (kRight && pgClock == Cl_Adjust)
 	{
@@ -37,13 +40,15 @@ void Gui::KeysClock()
 			if (td)
 			if (tm + td >= 0)
 			{	tm += td;
-				if (tm_on + td >= 0)
-					tm_on += td;
 				rtc_set(tm);
+
+				if (kc.tm_on + td >= 0)
+					kc.tm_on += td;
+				kc.ResetStats(false);
 			}
 		}
 	}
-	//  graphs cursor move  ---
+	//  graphs  cursor move  ---
 	else if (pgClock == Cl_Graphs)
 	{
 		if (kEnd)
@@ -56,5 +61,12 @@ void Gui::KeysClock()
 		if (a)
 			par.xCur = RangeAdd(par.xCur, a, 0, W-1, 1);
 	}
+
 	if (kAdd || kBckSp)  --mlevel;
+
+	if (pgClock == Cl_Adjust || pgClock == Cl_Graphs)
+	{
+		if (kSave)  Save();
+		if (kLoad)  Load(kCtrl);
+	}
 }

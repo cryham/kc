@@ -52,9 +52,9 @@ void Gui::GetTemp()
 		}
 
 	#ifdef GRAPHS
-		if (ms - msTempG > tTgraph(par) || ms < msTempG)
+		if (ms - msTempGr > tTgraph(par) || ms < msTempGr)
 		{
-			msTempG = ms;
+			msTempGr = ms;
 			//  graph inc pos
 			++grTpos;
 			if (grTpos >= W)  grTpos = 0;

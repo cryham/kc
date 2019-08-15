@@ -32,7 +32,7 @@ struct Gui
 	void DrawPressed(), DrawLayout(bool edit), Chk_y1();
 	void DrawSeq(int8_t seq, int8_t q), DrawOperInfo();
 	void DrawDispCur(int i, int16_t y), DrawClockCur(int i, int16_t y);
-	void ClrPress(int pressPerMin);
+	void ClrPress(int pressPerMin), ClrTemp(int temp);
 	void PrintInterval(uint32_t t);
 
 
@@ -77,8 +77,6 @@ struct Gui
 	//  help
 	int8_t hpage = 0;
 	const static int8_t HAll = 11;
-	//  rtc on start
-	unsigned long tm_on = 0;
 	#ifdef LED
 	int8_t led = 0;
 	#endif
@@ -137,7 +135,7 @@ struct Gui
 	float fTemp = -90.f;  // cur value
 	int8_t temp1 = 1;     // fist, init
 	//  last time read'C, add to graph
-	uint32_t msTemp = 0, msTempG = 0;
+	uint32_t msTemp = 0, msTempGr = 0;
 	void GetTemp();
 
 #ifdef GRAPHS

@@ -26,9 +26,9 @@ void KC_Main::UpdLay(uint32_t ms)
 
 	//  1 minute time, stats
 	if (par.time1min)
-	if (ms - tm_min1 > 1000 * t1min(par) || ms < tm_min1)
+	if (ms - msMin1 > 1000 * t1min(par) || ms < msMin1)
 	{
-		tm_min1 = ms;
+		msMin1 = ms;
 		min1_Keys = cnt_press1min * 60 / t1min(par);
 		cnt_press1min = 0;
 
@@ -77,8 +77,9 @@ void KC_Main::UpdLay(uint32_t ms)
 					(ms - msKeyLay > par.msLLHoldMin*100 && par.msLLHoldMin > 0)))
 				{
 					if (nLayerLock == lay)
-						nLayerLock = -1;  // unlock
-					else
+					{	nLayerLock = -1;  // unlock
+						nLayer = par.defLayer;
+					}else
 						nLayerLock = lay;  // lock, set sticky
 				}
 
@@ -122,9 +123,7 @@ void KC_Main::UpdLay(uint32_t ms)
 					break;
 
 				case K_Fun6:  // reset stats
-					gui.tm_on = rtc_get();
-					cnt_press = 0;
-					cnt_press1min = 0;
+					ResetStats(true);
 					break;
 
 				case K_Fun7:  // dec,inc default layer
@@ -372,13 +371,16 @@ void KC_Main::Send(uint32_t ms)
 					tm_keyOld = tm_key;
 					tm_key = rtc_get();
 
-					//  prev inactive times
+					if (tm_key - tm_keyOld > 3600 * 8)
+						ResetStats(true);  // over 8 hours inactive
+					else
 					if (tm_key - tm_keyOld > 60 * par.minInactive)
 					{
 						tm_keyAct = tm_key;  // reset active start
+						//  prev inactive times
 						tInact2 = tInact1;
 						tInact1 = (tm_key - tm_keyOld) / 60;
-						tInactSum += tInact1;
+						tInactSum += tInact1;  // sum
 					}
 				}
 				//  mouse  * * *
