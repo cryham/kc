@@ -91,9 +91,9 @@ void Gui::DrawDisplay()
 		case 1:
 			d->print("Graph add:  ");  PrintInterval(tTgraph(par));  break;
 		case 2:
-			sprintf(a,"Scale min:  %d ""\x01""C", par.minTemp);  d->print(a);  h = 2;  break;
+			sprintf(a,"T min:  %d ""\x01""C", par.minTemp);  d->print(a);  h = 2;  break;
 		case 3:
-			sprintf(a,"Scale max:  %d ""\x01""C", par.maxTemp);  d->print(a);  break;
+			sprintf(a,"T max:  %d ""\x01""C", par.maxTemp);  d->print(a);  break;
 		}
 		y += h+8;
 	}	break;

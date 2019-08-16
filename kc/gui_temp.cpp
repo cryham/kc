@@ -59,9 +59,14 @@ void Gui::GetTemp()
 			++grTpos;
 			if (grTpos >= W)  grTpos = 0;
 			//  add to graph
-			int t = 255.f * (fTemp - par.minTemp) / (par.maxTemp - par.minTemp);
-			t = t > 255 ? 255 : (t < 0 ? 0 : t);
+			int t = TempFtoB(fTemp);
+		#if 0  // test
+			static uint8_t ii = 0;  ++ii;
+			static uint8_t ti = 128;  if (ii%3==0)  ++ti;  t = ti;
+		#endif
+			t = t > 255 ? 255 : (t < 0 ? 0 : t);  // 0 not measured
 			grTemp[grTpos] = t;
+			grTempUpd = 1;
 		}
 	#endif
 	}

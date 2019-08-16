@@ -42,7 +42,7 @@ void ParInit()
 	par.time1min = 10;  //*6s 1m
 	par.timeTemp = 10;   // 8s
 	par.timeTgraph = 15; // 1m  gIntervals
-	par.minTemp = 20;  par.maxTemp = 35;
+	par.minTemp = 17;  par.maxTemp = 35;
 	par.xCur = W-1;
 }
 

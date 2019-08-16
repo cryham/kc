@@ -32,8 +32,10 @@ struct Gui
 	void DrawPressed(), DrawLayout(bool edit), Chk_y1();
 	void DrawSeq(int8_t seq, int8_t q), DrawOperInfo();
 	void DrawDispCur(int i, int16_t y), DrawClockCur(int i, int16_t y);
+	//  util
 	void ClrPress(int pressPerMin), ClrTemp(int temp);
 	void PrintInterval(uint32_t t);
+	int TempFtoB(float t);  float TempBtoF(uint8_t b);
 
 
 	//  keys
@@ -141,6 +143,10 @@ struct Gui
 #ifdef GRAPHS
 	uint8_t grTemp[W];    // graph array
 	uint8_t grTpos = 0;   // write pos
+	// auto range
+	uint8_t grTempUpd = 1;  // update
+	uint8_t grFmin = 17, grFmax = 35;  // temp 'C
+	uint8_t grBmin = 0, grBmax = 255;  // val Byte
 #endif
 #endif
 
