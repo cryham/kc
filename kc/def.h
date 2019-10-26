@@ -13,8 +13,8 @@
 
 
 //   Keyboard  ----
-//#define CK1  // 8x6
-#define CK6  // 18x8  new CK6/3
+#define CK1  // 8x6
+//#define CK6  // 18x8  new CK6/3
 //#define CK7  // 18x8  old CK7/4/2
 
 

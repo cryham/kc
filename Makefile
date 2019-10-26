@@ -9,8 +9,8 @@ TARGET = main
 
 #  configurable options  + + +
 #************************************************************************
-OPTIONS = -DF_CPU=144000000  # CK6/3
-#OPTIONS = -DF_CPU=120000000  # CK7/4 CK1
+#OPTIONS = -DF_CPU=144000000  # CK6/3
+OPTIONS = -DF_CPU=120000000  # CK7/4 CK1
 
 # usb_desc.h : USB_HID  USB_KEYBOARDONLY 
 OPTIONS += -DUSB_HID -DLAYOUT_US_ENGLISH -DUSING_MAKEFILE
@@ -21,8 +21,14 @@ OPTIONS += -D__$(MCU)__ -DARDUINO=10805 -DTEENSYDUINO=141
 
 #  PATHS
 #************************************************************************
-# cygwin64
-COMPILERPATH ?= /usr/local/bin
+UNAME := $(shell uname)
+ifeq ($(UNAME), Linux)
+	COMPILERPATH ?= /usr/bin
+	E =  
+else
+	COMPILERPATH ?= /usr/local/bin
+	E = -e
+endif
 
 # source subdirs 3
 SRCDIR = t3
@@ -43,7 +49,7 @@ MCU_LD = $(SRCDIR)/$(LOWER_MCU).ld
 
 ARCH = -mcpu=$(CPUARCH) -mthumb -MMD
 WARN = -Wall -g
-OPT = -O3
+OPT = -O3 -Wno-misleading-indentation
 
 # compiler options for C only
 CFLAGS = $(WARN) $(OPT) $(ARCH) $(OPTIONS)
@@ -88,49 +94,56 @@ NORM_CLR = \e[38;5;249m
 NO_CLR   = \033[m
 ST_CLR = \e[38;5;51m
 
+ifeq ($(UNAME), Linux)
+COLOR_OUTPUT = 
+else
 COLOR_OUTPUT = 2>&1 |                                   \
 	while IFS='' read -r line; do                       \
-		if  [[ $$line == *:[\ ]error:* ]]; then         \
-			echo -e "$(ERR_CLR)$${line}$(NO_CLR)";     \
+		if [[ $$line == *:[\ ]error:* ]]; then         \
+			echo $(E) "$(ERR_CLR)$${line}$(NO_CLR)";     \
 		elif [[ $$line == *:[\ ]warning:* ]]; then      \
-			echo -e "$(WARN_CLR)$${line}$(NO_CLR)";     \
+			echo $(E) "$(WARN_CLR)$${line}$(NO_CLR)";     \
 		else                                            \
-			echo -e "$(NORM_CLR)$${line}$(NO_CLR)";     \
+			echo $(E) "$(NORM_CLR)$${line}$(NO_CLR)";     \
 		fi;                                             \
 	done; exit $${PIPESTATUS[0]};
+endif
 
 
 #  BUILD
 #************************************************************************
+# test
+#phony:
+#	echo $(COMPILERPATH)
 
 kc: $(BINDIR)/$(PROJECT).hex
 
 # C compilation
 $(OBJDIR)/%.o : $(SRCKC)/%.c
-	@echo -e "$(CC_CLR)  CC\e[m" $<
+	@echo $(E) "$(CC_CLR)  CC\e[m" $<
 	$(CC) $(CFLAGS) $(INC) -c $< -o $@ $(COLOR_OUTPUT)
 $(OBJDIR)/%.o : $(SRCLIB)/%.c
-	@echo -e "$(CC_CLR)  CC\e[m" $<
+	@echo $(E) "$(CC_CLR)  CC\e[m" $<
 	$(CC) $(CFLAGS) $(INC) -c $< -o $@ $(COLOR_OUTPUT)
 $(OBJDIR)/%.o : $(SRCDIR)/%.c
-	@echo -e "$(CC_CLR)  CC\e[m" $<
+	@echo $(E) "$(CC_CLR)  CC\e[m" $<
 	$(CC) $(CFLAGS) $(INC) -c $< -o $@ $(COLOR_OUTPUT)
 
 # C++ compilation
 $(OBJDIR)/%.o : $(SRCKC)/%.cpp
-	@echo -e "$(CXX_CLR) CXX\e[m" $<
+	@echo $(E) "$(CXX_CLR) CXX\e[m" $<
 	$(CXX) $(CXXFLAGS) $(INC) -c $< -o $@ $(COLOR_OUTPUT)
 $(OBJDIR)/%.o : $(SRCLIB)/%.cpp
-	@echo -e "$(CXX_CLR) CXX\e[m" $<
+	@echo $(E) "$(CXX_CLR) CXX\e[m" $<
 	$(CXX) $(CXXFLAGS) $(INC) -c $< -o $@ $(COLOR_OUTPUT)
 $(OBJDIR)/%.o : $(SRCDIR)/%.cpp
-	@echo -e "$(CXX_CLR) CXX\e[m" $<
+	@echo $(E) "$(CXX_CLR) CXX\e[m" $<
 	$(CXX) $(CXXFLAGS) $(INC) -c $< -o $@ $(COLOR_OUTPUT)
 
 
 # Linker invocation
 $(BINDIR)/$(PROJECT).elf: $(OBJ_FILES) $(MCU_LD)
-	@echo -e "\e[38;5;154m Linking \e[m"
+	@echo $(E) "\e[38;5;154m Linking \e[m"
 	$(CC) $(LDFLAGS) -o $@ $(OBJ_FILES) $(LIBS)
 
 
@@ -147,12 +160,12 @@ $(BINDIR)/$(PROJECT).hex : $(BINDIR)/$(PROJECT).elf
 
 #clean:
 c:
-	@echo -e "$(ST_CLR)Clean$(NO_CLR)"
+	@echo $(E) "$(ST_CLR)Clean$(NO_CLR)"
 	rm -f $(OBJDIR)/*.o $(OBJDIR)/*.d $(BINDIR)/$(PROJECT).elf $(BINDIR)/$(PROJECT).hex
 #rebuild:
 r:
 	@make c --no-print-directory
-	@echo -e "$(ST_CLR)Rebuild$(NO_CLR)"
+	@echo $(E) "$(ST_CLR)Rebuild$(NO_CLR)"
 	@make m --no-print-directory
 #make -j
 m:

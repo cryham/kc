@@ -327,8 +327,10 @@ void Gui::DrawClock()
 
 	//  labels, par values  ====--------
 	int pg = ClockVars(pgClock);
-	bool temp = temp1 > 2;
-	y = yt;
+    #ifdef TEMP1
+    bool temp = temp1 > 2;
+    #endif
+    y = yt;
 	switch (pgClock)
 	{
 
