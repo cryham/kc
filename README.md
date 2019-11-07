@@ -37,7 +37,7 @@ Lastly:
 * **Temperature** reading from DS18B20 sensor (optional, 1pin).
 * LED light (optional, 1pin).
 * **Statistics**: uptime, key presses (per minute and average), keyboard inactive and active (last) times. Also for used keys, layers, sequences etc.
-* 2 **Graphs** (key presses per minute and auto ranged temperature'C).
+* 2 **Graphs**: key presses per minute and temperature'C (auto ranged).
 * **Help** pages with all GUI keys used and commands listed.
 * Colorful **GUI Menu** with 2 levels and 3 fonts (2 my own).
 
@@ -46,7 +46,7 @@ Lastly:
 ### Code used
 
 It uses code from repositories, quite reduced and/or modified:
-* [PaulStoffregen cores](https://github.com/PaulStoffregen/cores/tree/master/teensy3) for teensy 3 core.
+* [PaulStoffregen cores](https://github.com/PaulStoffregen/cores/tree/master/teensy3) for Teensy 3 core.
 * [sumotoy TFT_ST7735](https://github.com/sumotoy/TFT_ST7735/tree/1.0p1) for fast TFT ST7735 display.
 * [Adafruit-GFX-Library](https://github.com/adafruit/Adafruit-GFX-Library) for drawing, combined with above.
 * [Kiibohd](https://github.com/kiibohd/controller) only keyboard matrix scan code.
@@ -73,20 +73,24 @@ The keyboard is made of:
 * NPN transistor BC550. Connection from DAC A14 output through 4.7k resistor to base, collector to 3.3V, emitter through 47 (or less) ohm resistor to Display LED.
 * Optionally a DS18B20 1-wire temperature sensor with data pin through 4.7k resistor to 3.3V.
 
-#### Configuring
+Display uses pins: 9 DC, 10 CS, 26 RST (set in `Ada4_ST7735.cpp`) 11 DOUT, 13 CLK and 40 DAC for backlight LED.
+
+### Configuring
 
 Setup is done in files:
 * `def.h`
-  * Define code features to use like: demos, game. Also optional pins for LED and Temp'C are defined.
+  * Define code features to use like: demos, game. Also optional pins for LED and Temp'C.
   * Choose keyboard type by define (CK1,CK6,CK7 or create own).
-* `matrix.h` has defined teensy pins for keyboard Matrix_cols and Matrix_rows.
-  * CK1 is easiest for testing (8 rows x 6 cols). CK6 and CK7 use 18 cols and 8 rows (same pins).
-  * Columns are as outputs (all High-Z with one set to 0), while rows are inputs.
+* `matrix.h` has defined Teensy pins for keyboard Matrix_cols and Matrix_rows.
+  * CK1 is easiest for testing (8 cols x 6 rows). CK6 and CK7 use 18 cols and 8 rows (same pins).
+  * Columns are as outputs (all High-Z with one set to low "0"), while rows are inputs (all high "1").
 * `kbd_layout.cpp` has physical keys layout.
 
-When defining a new keyboard, it is useful to force start in main.cpp on GUI Pressed tab, it shows scan codes.
+Other key constants are in `kc_params.h` like (max) counts of rows, cols, layers, sequences (also updated in `keys_usb.h`).
 
-#### Building
+When defining a new keyboard, it is useful to force starting in main.cpp on GUI Pressed tab, it shows scan codes.
+
+### Building
 
 On **Windows** it is done using [Cygwin](https://www.cygwin.com/).  
 Needs to have arm-gnu-none-eabi installed, just like for Linux.
@@ -111,4 +115,4 @@ On successful build the last lines are e.g.
 showing used percentages of memories.
 
 The output file `main.hex` is created inside `bin/` folder.  
-Open it in [Teensy Loader App](https://www.pjrc.com/teensy/loader.html) and press reset on board to upload and use.
+Open it in [Teensy Loader App](https://www.pjrc.com/teensy/loader.html) and press reset on board to flash (upload) and use.
