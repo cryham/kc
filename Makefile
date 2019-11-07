@@ -99,12 +99,12 @@ COLOR_OUTPUT =
 else
 COLOR_OUTPUT = 2>&1 |                                   \
 	while IFS='' read -r line; do                       \
-		if [[ $$line == *:[\ ]error:* ]]; then         \
-			echo $(E) "$(ERR_CLR)$${line}$(NO_CLR)";     \
+		if [[ $$line == *:[\ ]error:* ]]; then          \
+			echo $(E) "$(ERR_CLR)$${line}$(NO_CLR)";    \
 		elif [[ $$line == *:[\ ]warning:* ]]; then      \
-			echo $(E) "$(WARN_CLR)$${line}$(NO_CLR)";     \
+			echo $(E) "$(WARN_CLR)$${line}$(NO_CLR)";   \
 		else                                            \
-			echo $(E) "$(NORM_CLR)$${line}$(NO_CLR)";     \
+			echo $(E) "$(NORM_CLR)$${line}$(NO_CLR)";   \
 		fi;                                             \
 	done; exit $${PIPESTATUS[0]};
 endif
