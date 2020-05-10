@@ -92,6 +92,13 @@ int main()
 	gui.SetScreen(par.startScreen);
 	gui.kbdSend = 1;  // release
 
+#ifdef CK8
+	gui.kbdSend = 0;  // release
+	gui.SetScreen(ST_Test2+T_Matrix);
+	par.brightness = 100;
+	par.brightOff = 90;
+#endif
+
 #ifdef CK1aa
 	gui.kbdSend = 0;  // release
 	par.brightness = 65;

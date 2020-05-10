@@ -8,7 +8,7 @@ RGB(12,12,12), RGB(13,13,10), RGB( 8,14,19), RGB(21,21,12),	RGB(12,19,19), RGB(1
 //  6 ent,tab  7 ent R        8 arrows      9 tiny
 RGB( 9,21,12), RGB( 9,21,12), RGB(1,20,20), RGB(17,18,18) };
 
-#if defined(CK1)   //  CK1  ------------------------------------------------
+#if defined(CK1) || defined(CK8)   //  CK1  ------------------------------------------------
 #define  wf  kW,kF
 #define  wh  kW,kH
 const char* CKname = "CK1 8x6";  const int16_t XN = 127;  // pos
@@ -57,10 +57,17 @@ const DrawKey drawKeys[nDrawKeys] = {  //  Layout draw
 {XN,56,kW*2,kH,'_',6,28,K_INS},{-kW*2,0,wh,'.',6,25,K_DEL}, //Ins Del
 };
 //symbols:  2. 3,  7 cir  9 dot` 28 ent
+#if defined(CK1)
 const uint8_t gGui=40, gMslow=32, gLoad=15,gSave=31,gDiv=36, gEsc=0,gAdd=6,gEnt=22,gEnt2=22,
 	gRight=9,gLeft=10,gDown=20,gUp=4, gPgDn=17,gPgUp=1,gEnd=18,gHome=2,
 	gCtrl=26,gSh=16,gMul=33,gSub=41, gIns=28,gDel=25, gBckSp=8,gSpc=26, gC=39,gV=37,gX=45,
 	gF1=NO,gF2=NO,gF3=NO,gF6=NO,gF7=NO,gF8=NO,gF9=NO,gF10=NO,gF11=NO,gF12=NO;  //--
+#else  // CK8
+const uint8_t gGui=NO, gMslow=NO, gLoad=NO,gSave=NO,gDiv=NO, gEsc=NO,gAdd=NO,gEnt=NO,gEnt2=NO,
+	gRight=NO,gLeft=NO,gDown=NO,gUp=NO, gPgDn=NO,gPgUp=NO,gEnd=NO,gHome=NO,
+	gCtrl=NO,gSh=NO,gMul=NO,gSub=NO, gIns=NO,gDel=NO, gBckSp=NO,gSpc=NO, gC=NO,gV=NO,gX=NO,
+	gF1=NO,gF2=NO,gF3=NO,gF6=NO,gF7=NO,gF8=NO,gF9=NO,gF10=NO,gF11=NO,gF12=NO;  //--
+#endif
 
 #elif defined(CK6)   //  CK6/3  ------------------------------------------------
 #define  wf  fW,kF
