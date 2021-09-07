@@ -2,7 +2,6 @@
 #include <stdint.h>
 #include "def.h"
 #include "demos.h"
-#include "keys_usb.h"
 
 
 struct Gui
@@ -22,8 +21,7 @@ struct Gui
 	void DrawClock(), DrawGraph(), DrawHelp(), DrawInfo();  // info
 
 	//  draw util
-	void DrawPressed(), DrawLayout(bool edit), Chk_y1();
-	void DrawSeq(int8_t seq, int8_t q), DrawOperInfo();
+	void Chk_y1(), DrawOperInfo();
 	void DrawDispCur(int i, int16_t y), DrawClockCur(int i, int16_t y);
 	//  util
 	void ClrPress(int pressPerMin), ClrTemp(int temp);
@@ -50,7 +48,6 @@ struct Gui
 		Mclr[C_ALL][2][3];
 
 	void FadeClr(EFadeClr ec, const uint8_t minRGB, const uint8_t mul, const uint8_t div);
-	void FadeGrp(uint8_t g, const uint8_t minRGB, const uint8_t mul, const uint8_t div);
 	void DrawMenu(int cnt, const char** str, EFadeClr ec, uint16_t curClr,
 		uint16_t bckClr, int16_t yadd=10, int16_t nextCol=-1, int16_t numGap=-1);
 
@@ -82,13 +79,6 @@ struct Gui
 	/*seq*/	kBckSp=0, /*F4,5*/kLoad=0, kSave=0;
 
 
-	//  Mapping  - - - -
-	const int8_t yPosLay = 62;
-	int16_t keyCode=0, scId=0, scIdCpy=0, drawId=-1, drawX=0,drawY=0;
-	int8_t nLay=0, nLayCpy=0,
-		pressKey=0, pickCode=K_Seq0, // edit operations
-		keyGroup=grpMax-1, grpFilt=1;  // pick group filter
-
 	//  level 2 y cursors  - - -
 	int8_t ym2Lay = 0, ym2Scan = 0, ym2Keyb = 0, ym2Mouse = 0, pressGui = 0;  // Setup
 	int8_t ym2Disp = 0, pgDisp = 0;  // Display
@@ -118,9 +108,6 @@ struct Gui
 	int8_t tBlnk = 0;
 	int16_t tInfo=0;  int8_t infType=0;  // info text vars
 	const int8_t iPage = 10, cBlnk = 25;  // par-
-
-	//  const from grp
-	uint8_t grpStart[grpMax], grpEnd[grpMax];
 
 
 	//  Temp 'C  ---

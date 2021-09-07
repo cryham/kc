@@ -58,8 +58,6 @@ void Gui::DrawDisplay()
 			sprintf(a,"Key delay:  %d ms", par.krDelay*5);  h = 2;  break;
 		case 1:
 			sprintf(a,"Key repeat: %d ms", par.krRepeat*5);  break;
-		case 2:
-			sprintf(a,"Quick keys F1-12: %s", par.quickKeys?"on":"off");  break;
 		}
 		d->print(a);  y += h+8;
 	}	break;

@@ -48,8 +48,6 @@ extern "C"
 	void usb_mouse_screen_size(uint16_t width, uint16_t height, uint8_t mac);
 	extern uint8_t usb_mouse_buttons_state;
 
-	void usb_mouse_idle();
-
 	//  mouse accel
 	extern int mx_delay, my_delay, mx_move, my_move, mx_speed, my_speed;
 	extern float mx_holdtime, my_holdtime;

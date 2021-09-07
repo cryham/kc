@@ -85,8 +85,6 @@ const char* strDemo[D_All] =
 //  sub pages
 const uint8_t YM1[M_All] =
 {
-	4,  // M_Mapping
-	1,  // M_Sequences
 	T_All,  // M_Testing
 	S_All,  // M_Setup
 	I_All,  // M_Info

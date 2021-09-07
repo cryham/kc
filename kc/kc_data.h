@@ -1,63 +1,14 @@
 #pragma once
 #include <stdint.h>
 #include <vector>
-#include "keys_usb.h"
 #include "kc_params.h"
 #include "def.h"
-
-
-struct KC_Sequence
-{
-	//  var length
-	std::vector<uint8_t> data;
-
-	const int len() const {  return int(data.size());  }
-	void add(uint8_t b) {  data.push_back(b);  }
-};
-
-//  seq commands
-enum ESeqCmd {
-	CMD_SetDelay=0, CMD_Wait, CMD_Comment, CMD_Hide,
-	//  mouse move: x,y, buttons: press,release, click,double, wheels: x,y
-	CM_x,CM_y, CM_BtnOn,CM_BtnOff, CM_Btn,CM_Btn2x, CM_WhX,CM_WhY,
-	CMD_RunSeq, CM_xbig,CM_ybig, CM_xset,CM_yset,CM_mset,
-	CMD_Repeat, CMD_ALL // 19
-};	// note: need >= sequence ids than commands
-
-extern const uint16_t cCmdClrLn[CMD_ALL];  // underline colors
-extern const uint8_t cCmdStrLen[CMD_ALL];  // string lengths
-
-
-struct KC_Setup
-{
-	//  const
-	uint8_t h1,h2, ver;  // header
-
-	//  rows * cols = scanKeys,  matrix setup
-	uint8_t rows, cols, scanKeys, seqSlots;  // max seqs
-
-	//  maps scan to byte codes
-	//  const size: layers * scanKeys
-	uint8_t key[KC_MaxLayers][KC_MaxRows * KC_MaxCols];
-
-	KC_Sequence seqs[KC_MaxSeqs];
-	KC_Sequence copy;  // for paste, swap
-
-	const int nkeys() const {  return KC_MaxRows * KC_MaxCols;  }
-	const int nseqs() const {  return KC_MaxSeqs;  }
-
-	KC_Setup();
-	void Clear(), InitCK();
-
-	//int8_t minLay, layUsed;  // stats
-};
 
 
 //  errors load, save
 enum KC_Err {
 	E_ok=0, E_size,  E_H1, E_H2, E_ver,
-	E_rows, E_cols,  E_slots, E_lay,
-	E_rcEq, E_nkeys,  E_max
+	E_max
 };
 extern const char* KCerrStr[E_max];
 
@@ -80,15 +31,10 @@ struct KC_Main
 	uint16_t dtSeq = 20;		// var delay  param
 	uint32_t tiSeq = 0, tiFun = 0;  // ms time delay
 
-	int8_t seqMod[K_ModLast+1];  // modifiers state
-	void SeqModClear();
-	void QuitSeq(int8_t chk=1);
 	uint16_t xm=0, ym=0;  // abs mouse pos
 
 
 	//  main  ----
-	KC_Setup set;
-
 	KC_Main();
 
 	void UpdLay(uint32_t ms);  // update

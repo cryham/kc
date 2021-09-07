@@ -89,17 +89,10 @@ int main()
 
 	//  load set from ee
 	kc.Load();
-	gui.SetScreen(par.startScreen);
-
-#ifdef CK6
-	gui.SetScreen(ST_Test2+T_Pressed);
+	gui.SetScreen(ST_Clock + Cl_Stats);
 	par.brightness = 100;
-	par.brightOff = 90;
-#endif
 
 #ifdef CK1aa
-	par.brightness = 65;
-	par.brightOff = 85;
 	par.debounce = 8;  // ms?
 	par.strobe_delay = 8;
 	par.scanFreq = 50;  // mul by 1 kHz

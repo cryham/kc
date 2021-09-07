@@ -1,6 +1,5 @@
 #include "gui.h"
 #include "def.h"
-#include "kbd_layout.h"
 #include "kc_data.h"
 
 
@@ -33,29 +32,9 @@ void Gui::Init(Ada4_ST7735* tft)
 	ym2Lay=0; ym2Scan=0; ym2Keyb=0; ym2Mouse=0; pressGui=0;
 	ym2Disp=0; pgDisp=0;
 
-	nLay=0;  scId=NO;  drawId=54;  drawX=0; drawY=0;
-	nLayCpy=0;  scIdCpy=0;  
-	keyCode=0;  pressKey=0;  pickCode=0;
-
 	edit = 0;  edins = 1;  copyId = -1;
 	slot=0; page=0; edpos=0;
 	tBlnk=0; tInfo=0;  infType=0;
-
-
-	//  init Group Starts and Ends
-	for (int g=0; g < grpMax; ++g)
-	{
-		grpStart[g] = 0;  // all
-		grpEnd[g] = KEYS_ALL_EXT;
-
-		//  find first and last key, for this group
-		for (int i=0; i < KEYS_ALL_EXT; ++i)
-			if (cKeyGrp[i] == g)
-			{
-				if (grpStart[g] == 0)  grpStart[g] = i;
-				grpEnd[g] = i;
-			}
-	}
 }
 
 //  start screen  ---

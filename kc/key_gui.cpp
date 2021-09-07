@@ -1,10 +1,14 @@
 #include "gui.h"
 #include "matrix.h"
-#include "kbd_layout.h"
-#include "keys_usb.h"
 #include "kc_params.h"
 #include "kc_data.h"
 #include "periodic.h"
+
+
+//  scan codes for gui keys
+const uint8_t gLoad=15,gSave=31,gDiv=36, gEsc=0,gAdd=6,gEnt=22,
+	gRight=9,gLeft=10,gDown=20,gUp=4, gPgDn=17,gPgUp=1,gEnd=18,gHome=2,
+	gCtrl=26,gSh=16,gMul=33,gSub=41, gIns=28,gDel=25, gBckSp=8,gSpc=26;
 
 
 //  Key press
@@ -16,7 +20,7 @@ void Gui::KeyPress()
 	oldti_kr = ti;
 
 	//  update keys press  _k_
-	kRight= kr(gRight,dt) - kr(gLeft,dt);
+	/*kRight= kr(gRight,dt) - kr(gLeft,dt);
 	kUp   = kr(gDown,dt) - kr(gUp,dt);
 	kPgUp = kr(gPgDn,dt) - kr(gPgUp,dt);
 	kEnd  = kr(gEnd,dt) - kr(gHome,dt);
@@ -26,7 +30,7 @@ void Gui::KeyPress()
 	kMul  = Key(gMul);  kSub = Key(gSub);  kDiv = Key(gDiv);
 	//  edit seq
 	kBckSp = kr(gBckSp,dt);
-	kLoad = Key(gLoad);  kSave = Key(gSave);
+	kLoad = Key(gLoad);  kSave = Key(gSave);*/
 
 
 	int sp = (kCtrl ? 10 : kSh ? 1 : 2);  // mul

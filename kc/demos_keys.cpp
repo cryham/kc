@@ -109,27 +109,6 @@ void Demos::KeyPress(EDemo demo, Gui* gui)
 				if (ngRot >= ngRotMax)  ngRot = 0;  }
 			break;
 
-		//  old  --------
-	#ifdef DEMOS_OLD_PAR
-		case D_Space:
-			if (k){  sCnt += k*sp;  sCnt = max(0, min(sMax, sCnt));  einit = INone;  }
-			if (u){  sVel += u;     sVel = max(0, min(60, sVel));  einit = INone;  }
-			break;
-			
-		case D_Balls:
-			if (ct)
-			{	if (k){  bRad += k;      bRad = max(1, min(8, bRad));  einit = INone;  }
-				if (u){  bSpRnd += u;  bSpRnd = max(0, min(bSpRMax, bSpRnd));  einit = INone;  }
-			}else
-			{	if (k){  bCnt += k*sp;    bCnt = max(0, min(bMax, bCnt));  einit = INone;  }
-				if (u){  bSpd += u*sp*2;  bSpd = max(0, min(400, bSpd));  einit = INone;  }
-			}break;
-
-		case D_Fountain:
-			if (k)  fInt = (fInt + k + 12) % 12;
-			if (u)  fWave += u;
-			break;
-	#endif
 		case D_Rain:
 			if (!ct){  if (!rCur)
 			{	if (k){  r1Int += k;  if (r1Int < -6)  r1Int = -6;  }

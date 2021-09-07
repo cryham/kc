@@ -90,11 +90,11 @@ void Gui::ClrTemp(int tm)
 //....................................................................................
 void Gui::DrawClock()
 {
-	char a[64], f[32];
+	char a[64];
 
 
 	//  time  ---
-	unsigned long t = rtc_get(), to, ti;
+	unsigned long t = rtc_get(), to;
 	int h = t / 3600 % 24, m = t / 60 % 60, s = t % 60,
 		dt = t / 3600 / 24, yr = dt / 365 + 2000;
 
@@ -110,8 +110,8 @@ void Gui::DrawClock()
 	//  x,y pos~
 	int16_t x, y;
 	const int16_t x0 = W / 2,
-			yt = 32, yu = H - 20, yd = yt + 24, // time, uptime, date
-			yp = yt + 22, yi = yu - 19;
+			yt = 32, yu = H - 20, // time, uptime, date
+			yp = yt + 22;
 	to = t - kc.tm_on;
 
 

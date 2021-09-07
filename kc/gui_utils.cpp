@@ -154,16 +154,6 @@ void Gui::FadeClr(EFadeClr ec, const uint8_t mi, const uint8_t mul, const uint8_
 		max(mi, clr[1] - cmu[1] * mul / div),
 		max(mi, clr[2] - cmu[2] * mul / div) );
 }
-void Gui::FadeGrp(uint8_t g, const uint8_t mi, const uint8_t mul, const uint8_t div)
-{
-	const uint8_t* clr = &cGrpRgb[g][0][0];
-	const uint8_t* cmu = &cGrpRgb[g][1][0];
-
-	d->setClr(
-		max(mi, clr[0] - cmu[0] * mul / div),
-		max(mi, clr[1] - cmu[1] * mul / div),
-		max(mi, clr[2] - cmu[2] * mul / div) );
-}
 
 
 //  key utils
@@ -244,8 +234,5 @@ void Gui::Save()
 //  load
 void Gui::Load(int8_t reset)
 {
-	if (reset)
-	{	kc.set.InitCK();  infType = 0;  }
-	else
-	{	kc.Load();  infType = 1;  }  tInfo = -1;
+	kc.Load();  infType = 1;  tInfo = -1;
 }

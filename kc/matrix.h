@@ -50,7 +50,7 @@ typedef struct GPIO_Pin {
 #define T3_5  gpio(D,7 ) //-6
 #define T3_6  gpio(D,4 ) //-7
 #define T3_7  gpio(D,2 ) //-8
-#define T3_8  gpio(D,3 )
+#define T3_8  gpio(D,3 ) //lcd
 #define T3_9  gpio(C,3 ) //spi
 #define T3_10 gpio(C,4 ) //spi
 #define T3_11 gpio(C,6 ) //spi
@@ -76,16 +76,14 @@ typedef struct GPIO_Pin {
 #define T3_31 gpio(E,0 ) //|16
 #define T3_32 gpio(B,18) //|17
 #define T3_33 gpio(A,4 ) //|18
-#define T3_40 gpio(A,14) //dac lcd led
+#define T3_40 gpio(A,14) //dac
 
 
 //  ----***  Matrix  ***----
-//  8 x 6  CK1
-//c| 2:19  4:16  8:18  9:14  10:15  11:17  12:20  13:21
-//r- 3:0  4:1  5:2  6:3  7:23  8:22
+//  1 x 4  CK1
 const static GPIO_Pin
-Matrix_cols[] = { T3_19, T3_16, T3_18, T3_14, T3_15, T3_17, T3_20, T3_21 },
-Matrix_rows[] = { T3_0, T3_1, T3_2, T3_3, T3_23, T3_22 };
+Matrix_cols[] = { T3_21 },
+Matrix_rows[] = { T3_0, T3_1, T3_2, T3_3 };
 
 #define NumCols  sizeof( Matrix_cols ) / sizeof( GPIO_Pin )
 #define NumRows  sizeof( Matrix_rows ) / sizeof( GPIO_Pin )
