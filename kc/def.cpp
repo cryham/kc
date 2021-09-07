@@ -38,9 +38,6 @@ const char* strMain[M_All] =
 	"Mapping", "Sequences",
 	"Testing", "Setup", "Info",
 	"Display", "Clock", "Help",
-#ifdef GAME
-	"Game",
-#endif
 #ifdef DEMOS
 	"Demos",
 #endif
@@ -64,10 +61,7 @@ const char* strInfo[I_All] =
 //  Clock pages
 const char* strClock[Cl_All] =
 {
-	"Adjust", "Clock", "Stats", "Stats Extd", "Stats+Graph",
-#ifdef GRAPHS
-	"Graphs~"
-#endif
+	"Stats", "Graph", "Adjust", 
 };
 
 
@@ -103,9 +97,6 @@ const uint8_t YM1[M_All] =
 	1,  // M_Display
 	1,  // M_Clock  Cl_All
 	1,  // M_Help
-#ifdef GAME
-	1,  // M_Game
-#endif
 #ifdef DEMOS
 	D_All,  // M_Demos
 #endif

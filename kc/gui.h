@@ -3,17 +3,11 @@
 #include "def.h"
 #include "demos.h"
 #include "keys_usb.h"
-#ifdef GAME
-#include "games.h"
-#endif
 
 
 struct Gui
 {
 	Demos demos;
-#ifdef GAME
-	Games game;
-#endif
 	Ada4_ST7735* d=0;
 
 	//  main  ----
@@ -24,7 +18,6 @@ struct Gui
 
 
 	//  draw menus
-	void DrawMapping(), DrawSequences();  // edit
 	void DrawTesting(), DrawSetup(), DrawDisplay();  // set params
 	void DrawClock(), DrawGraph(), DrawHelp(), DrawInfo();  // info
 
@@ -39,7 +32,6 @@ struct Gui
 
 
 	//  keys
-	int8_t KeysSeq();  void KeysMap();
 	int PressKey(int8_t& var);
 	void KeysParSetup(int sp), KeysParDisplay(int sp);
 	void KeysParInfo(int sp), KeysClock();
@@ -78,17 +70,16 @@ struct Gui
 
 	//  help
 	int8_t hpage = 0;
-	const static int8_t HAll = 11;
+	const static int8_t HAll = 2;
 	#ifdef LED
 	int8_t led = 0;
 	#endif
 
 
 	//  keys pressed, some +-1  _k_
-	int8_t kRight=0, kUp=0,  kPgUp=0, kEnd=0,  kDnH=0,
-	/*Add*/ kEsc=0, kAdd=0, kEnt=0,kEnt2=0,  kCtrl=0, kSh=0,  kMul=0, kSub=0, kDiv=0,
-	/*seq*/	kBckSp=0, kIns=0, kDel=0,  kCopy=0, kPaste=0, kSwap=0, /*F4,5*/kLoad=0, kSave=0,
-			kF1=0,kF2=0,kF3=0,kF6=0,kF7=0,kF8=0,kF9=0,kF10=0,kF11=0,kF12=0;
+	int8_t kRight=0, kUp=0,  kPgUp=0, kEnd=0,
+	/*Add*/ kAdd=0, kEnt=0,  kCtrl=0, kSh=0,  kMul=0, kSub=0, kDiv=0,
+	/*seq*/	kBckSp=0, /*F4,5*/kLoad=0, kSave=0;
 
 
 	//  Mapping  - - - -
@@ -101,10 +92,10 @@ struct Gui
 	//  level 2 y cursors  - - -
 	int8_t ym2Lay = 0, ym2Scan = 0, ym2Keyb = 0, ym2Mouse = 0, pressGui = 0;  // Setup
 	int8_t ym2Disp = 0, pgDisp = 0;  // Display
-	int8_t ym2Clock = 0, pgClock = Cl_StatsExt;  // Clock
+	int8_t ym2Clock = 0, pgClock = Cl_Stats;  // Clock
 
 	const static uint8_t
-		DispPages[Di_All], ScanPages[S_All]; //, InfoPages[I_All];
+		DispPages[Di_All], ScanPages[S_All];
 
 	inline static uint8_t ClockVars(int pg)
 	{	return pg == Cl_Adjust ? 6 : 0;  }
@@ -139,16 +130,14 @@ struct Gui
 	//  last time read'C, add to graph
 	uint32_t msTemp = 0, msTempGr = 0;
 	void GetTemp();
+#endif
 
-#ifdef GRAPHS
 	uint8_t grTemp[W];    // graph array
 	uint8_t grTpos = 0;   // write pos
 	// auto range
 	uint8_t grTempUpd = 1;  // update
 	uint8_t grFmin = 17, grFmax = 35;  // temp 'C
 	uint8_t grBmin = 0, grBmax = 255;  // val Byte
-#endif
-#endif
 
 };
 

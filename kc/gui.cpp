@@ -9,11 +9,7 @@ Gui::Gui() : d(0)
 {
 	Init(0);
 
-#ifdef TEMP1
-#ifdef GRAPHS
 	memset(grTemp, 0, sizeof(grTemp));
-#endif
-#endif
 }
 
 void Gui::Init(Ada4_ST7735* tft)
@@ -38,9 +34,6 @@ void Gui::Init(Ada4_ST7735* tft)
 
 #ifdef DEMOS
 	demos.Init(d);
-#endif
-#ifdef GAME
-	game.Init(this);
 #endif
 
 	ym2Lay=0; ym2Scan=0; ym2Keyb=0; ym2Mouse=0; pressGui=0;

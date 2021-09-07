@@ -14,7 +14,7 @@ extern RamMonitor ram;
 //....................................................................................
 void Gui::DrawEnd()
 {
-	DrawOperInfo();
+	//DrawOperInfo();
 
 	char a[64];
 	//  ram info  ---------

@@ -38,9 +38,7 @@ KC_Main::KC_Main()
 	}
 	ResetStats(true);
 
-#ifdef GRAPHS
 	memset(grPMin, 0, sizeof(grPMin));
-#endif
 }
 
 //  Reset stats, rtc, times

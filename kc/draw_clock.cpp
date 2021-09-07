@@ -99,14 +99,13 @@ void Gui::DrawClock()
 		dt = t / 3600 / 24, yr = dt / 365 + 2000;
 
 	bool adjust = pgClock == Cl_Adjust;
-	bool simple = pgClock == Cl_Simple;
-	bool clock = simple || adjust;
+	bool clock = adjust;
 
 	bool date = yr >= 2019; // rtc set
 	bool leap = isLeap(yr);
 
-	bool ext = pgClock == Cl_StatsExt;
-	bool stats = pgClock == Cl_Stats || ext;
+	bool ext = true;
+	bool stats = true;
 
 	//  x,y pos~
 	int16_t x, y;
@@ -116,27 +115,6 @@ void Gui::DrawClock()
 	to = t - kc.tm_on;
 
 
-	//  late hours Background  --------
-	x = x0;  y = yt;
-	if (date && kbdSend)  // not in menu
-	{
-		int8_t r = 0, g = 0, b = 0, hf = m >= 30 ? 5 : 0;
-		if (h == 22){  r = hf + 10;  g = 4;  }  else
-		if (h == 23){  r = 19;  g = hf + 6;  }  else
-		if (h == 0) {  r = 25 + hf;  g = hf + 12;  b = 6;  }  else
-		if (h < 6)  {  r = 31;  g = 24;  b = 10;  }
-
-		if (r)
-		for (int y=0; y < r + 15; ++y)  //par intens-
-		{
-			d->drawFastHLine(0, y, W - 1, RGB(r, g, b));
-			//d->drawFastHLine(0,H-1-y,W-1, RGB(r/2,g/2,b/2));
-			if (r > 0 && y%2==0)  --r;
-			if (g > 0 && y%2==0)  --g;
-			if (b > 0 && y%3==0)  --b;
-		}
-	}
-
 	//  title
 	d->setClr(12, 14, 17);
 	if (clock)
@@ -144,7 +122,6 @@ void Gui::DrawClock()
 
 
 	//  Graphs  ~~~~~~~~~~~~~~~~
-	#ifdef GRAPHS
 	int v, y0, ii, i;
 	if (ext)
 	for (i=0; i <= W-1; ++i)
@@ -164,7 +141,8 @@ void Gui::DrawClock()
 		DrawGraph();
 		return;
 	}
-	#endif
+
+	x = 60;  y = 42;
 
 
 	//  Time  ----------------
@@ -191,55 +169,6 @@ void Gui::DrawClock()
 	}
 
 
-	//  time Inactive  --------
-	if (!clock)
-	{
-		ti = t - kc.tm_key;  // actual
-		bool inact = ti > 60 * par.minInactive;
-		h = ti / 3600 % 24;  m = ti / 60 % 60;
-
-		s = h*60 + m;
-		if (s > 90)  d->setClr(30, 24, 30);  else
-		if (s > 60)  d->setClr(24, 22, 28);  else
-		if (s > 30)  d->setClr(20, 20, 26);  else
-		             d->setClr(14, 18, 24);
-		y = yi;
-		d->setCursor(x, y);
-		sprintf(a, "%d:%02d%c", h, m, inact?'*':' ');  d->print(a);
-
-
-		//  time Active  --------
-		if (stats)
-		{
-			ti = kc.tm_key - kc.tm_keyAct;
-			h = ti / 3600 % 24;  m = ti / 60 % 60;
-
-			s = h*60 + m;
-			if (s > 180)  d->setClr(28, 10,  5);  else
-			if (s > 110)  d->setClr(26, 13, 16);  else
-			if (s > 50)   d->setClr(24, 18, 10);  else
-			if (s > 25)   d->setClr(10, 22, 24);  else
-			              d->setClr(15, 15, 20);
-			y = yp + 14;
-			d->setCursor(x, y);
-			sprintf(a, "%d:%02d%c", h, m, inact?' ':'*');  d->print(a);
-		}
-
-
-		//  Press/min  --------
-		x = stats ? 6 : x0;
-		y = yp + (pgClock == Cl_StatsText ? 13 : 14 -4);
-		d->setCursor(x, y);
-
-		float fto = to ? to : 1;
-		float pm = 60.f * cnt_press / fto;
-		dtostrf(pm, 4, 1, f);
-
-		ClrPress(pm);
-		d->print(f);
-	}
-
-
 	//  Temp'C  val  --------
 	#ifdef TEMP1
 	if (!adjust && fTemp > -90.f)
@@ -260,50 +189,7 @@ void Gui::DrawClock()
 	#endif
 
 
-	//  Layer  --------
-	if (stats)
-	{
-		bool lock = kc.nLayerLock >= 0,
-			  def = kc.nLayer == par.defLayer;
-
-		if (lock) d->setClr(28, 23, 30);  else
-		if (def)  d->setClr(14, 14, 22);  else
-		/*hold*/  d->setClr(17, 17, 28);
-
-		sprintf(a, "L%d %c", kc.nLayer, lock ? '*' : def ? ' ' : '+');
-		d->setCursor(6, yu);  d->print(a);
-	}
-
-
-	//  Date big  --------
-	if (clock && date)
-	{
-		int mth = 0, day = 0, x2 = x0 + 36;
-		getMD(leap, dt % 365, &day, &mth);
-		//  day, week
-		x = x0 + 4;
-		y = yd;
-		d->setCursor(x, y);
-		d->setClr(20, 23, 26);
-		sprintf(a, "%02d", day);  d->print(a);
-
-		d->setCursor(x2, y);
-		d->print(wdays[DayOfWeek(day, mth, yr)]);
-
-		y += 16; // month
-		d->setCursor(x, y);
-		sprintf(a, "%d", mth);  d->print(a);
-
-		d->setCursor(x2, y);
-		d->print(mths[mth - 1]);
-		d->setFont(0);
-
-		y += 16; // year
-		d->setCursor(x, y);
-		sprintf(a, "%04d", yr);  d->print(a);
-	}
-	else
-		d->setFont(0);
+	d->setFont(0);
 
 
 	//  small font  ----------------------
@@ -318,7 +204,7 @@ void Gui::DrawClock()
 	}
 
 	//  subtitle
-	if (!stats && !simple)
+	if (!stats)
 	{
 		d->setCursor(W / 2 - 2 * 6, 4);
 		d->print(strClock[pgClock]);
@@ -334,123 +220,43 @@ void Gui::DrawClock()
 	switch (pgClock)
 	{
 
-	case Cl_Simple:
+	case Cl_Stats:  //------------
 	{
-		d->setClr(12, 18, 22);
-		x = 6;  y = yu;
-		d->setCursor(x, y + 4);  d->print("Uptime");
-
-		#ifdef TEMP1  // Temp'C
-		if (temp)
-		{	d->setClr(12,20,25);
-			d->setCursor(6,54);  d->print("Temp \x01""C");
-		}
+		#ifdef TEMP1
+		if (temp)  // 'C
+		{	d->setCursor(9*6, 32+4);  d->print("\x01""C");  }
 		#endif
-	}	break;
 
-	case Cl_StatsText:  //  old, labels
-	{
-		d->setClr(12, 22, 30);
-		x = x0 + 4;  y = yp;
+		//  press k
+		d->setClr(9, 18, 22);
+		x = x0 - 22;
+		y = yp + 13;
 		d->setCursor(x, y);
-		sprintf(a, "%d", cnt_press);  d->print(a);
-		//sprintf(a, "%lu", t);  d->print(a);
+		sprintf(a, "%dk", cnt_press / 1000);  d->print(a);
 
-		d->setClr(10, 14, 18);
+		//  date small  ----
+		if (date)
+		{
+			int mth = 0, day = 0;
+			getMD(leap, dt % 365, &day, &mth);
+
+			//  day, week
+			x = x0 + 8;  y = 32 + 18;
+			d->setClr(14, 18, 23);
+			d->setCursor(x, y);
+			d->print(wdays[DayOfWeek(day, mth, yr)]);
+			x += 30;
+			d->setCursor(x, y);
+			sprintf(a, "%d.%d", day, mth);  d->print(a);
+		}
+
+		//  press / 1min
 		x = 6;  y = yp;
-		d->setCursor(x, y);  d->print("Pressed");
-		y += 16;
-		d->setCursor(x, y);  d->print("Press/min");
+		d->setCursor(x, y);
 
-		x = 6;  y = yi;
-		d->setCursor(x, y + 2);  d->print("Inactive");
-		x = 6;  y = yu;
-		d->setCursor(x, y + 4);  d->print("Uptime");
-
-		#ifdef TEMP1
-		if (temp)  // 'C
-		{	d->setCursor(9*6, 32+4);  d->print("\x01""C");  }
-		#endif
-	}	break;
-
-	case Cl_Stats:  //  new  no labels
-	case Cl_StatsExt:  //------------
-	{
-		#ifdef TEMP1
-		if (temp)  // 'C
-		{	d->setCursor(9*6, 32+4);  d->print("\x01""C");  }
-		#endif
-		if (pgClock == Cl_StatsExt)
-		{
-			//  press k
-			d->setClr(9, 18, 22);
-			x = x0 - 22;
-			y = yp + 13;
-			d->setCursor(x, y);
-			sprintf(a, "%dk", cnt_press / 1000);  d->print(a);
-
-			//  date small  ----
-			if (date)
-			{
-				int mth = 0, day = 0;
-				getMD(leap, dt % 365, &day, &mth);
-
-				//  day, week
-				x = x0 + 8;  y = 32 + 18;
-				d->setClr(14, 18, 23);
-				d->setCursor(x, y);
-				d->print(wdays[DayOfWeek(day, mth, yr)]);
-				x += 30;
-				d->setCursor(x, y);
-				sprintf(a, "%d.%d", day, mth);  d->print(a);
-			}
-
-			//  press / 1min
-			x = 6;  y = yp;
-			d->setCursor(x, y);
-
-			int m1 = kc.min1_Keys;
-			ClrPress(m1);
-			dtostrf(m1, 3,0, f);  d->print(f);
-
-
-			//  inactive times  --
-			//  Previous 2
-			x = W - 30;
-			ti = kc.tInact1;
-			h = ti / 60 % 24;  m = ti % 60;
-
-			d->setClr(15, 19, 24);
-			d->setCursor(x, yi + 5);
-			sprintf(a, "%d:%02d", h, m);  d->print(a);
-
-			ti = kc.tInact2;
-			h = ti / 60 % 24;  m = ti % 60;
-
-			d->setClr(12, 16, 22);
-			d->setCursor(x, yi - 4);
-			sprintf(a, "%d:%02d", h, m);  d->print(a);
-
-			//  Sum
-			ti = kc.tInactSum;
-			h = ti / 60 % 24;  m = ti % 60;
-
-			d->setClr(18, 18, 26);
-			d->setCursor(x, yi - 18);
-			sprintf(a, "%d:%02d", h, m);  d->print(a);
-		}
-
-
-		//  Sequence, prv  --------
-		if (kc.inSeq[0] >= 0)
-		{
-			d->setCursor(0, yu - 13);
-			d->setClr(25, 23, 31);
-			sprintf(a, "S%d", kc.inSeq[0]);  d->print(a);
-
-			d->setCursor(0, yu - 23);
-			DrawSeq(kc.inSeq[0], 2);
-		}
+		int m1 = kc.min1_Keys;
+		ClrPress(m1);
+		//dtostrf(m1, 3,0, f);  d->print(f);
 
 	}	break;
 

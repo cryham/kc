@@ -51,7 +51,6 @@ void Gui::GetTemp()
 			}
 		}
 
-	#ifdef GRAPHS
 		if (ms - msTempGr > tTgraph(par) || ms < msTempGr)
 		{
 			msTempGr = ms;
@@ -68,7 +67,6 @@ void Gui::GetTemp()
 			grTemp[grTpos] = t;
 			grTempUpd = 1;
 		}
-	#endif
 	}
 }
 

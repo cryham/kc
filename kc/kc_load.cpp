@@ -30,7 +30,7 @@ void ParInit()
 
 	par.dtSeqDef = 20;
 	par.defLayer = 0;  par.editLayer = 2;
-	par.keyGui = gGui;
+	par.keyGui = 0;
 
 	par.msLLTapMax = 10;  // 100ms
 	par.msLLHoldMin = 30;  // 3s
@@ -124,7 +124,7 @@ void KC_Main::Load()
 	//  old versions  --
 	if (set.ver == 2)
 	{	par.defLayer = 0;  par.editLayer = 2;
-		par.keyGui = gGui;  par.keyMouseSlow = gMslow;
+		par.keyGui = 0;  par.keyMouseSlow = 0;
 		par.mkWhSpeed = 100;  par.mkWhAccel = 100;
 		par.quickKeys = 1;
 	}
@@ -164,6 +164,15 @@ void KC_Main::Load()
 		set.seqSlots = KC_MaxSeqs;  // now more than in ee
 
 	memSize = a;
+
+	/*Serial.printf("len: %d\n", memSize);
+	for (int a=0; a < memSize; ++a)
+	{
+		if (a % 32 == 0)
+			Serial.println();
+		uint8_t b = eeprom_read_byte((uint8_t*)a);
+		Serial.printf("%02X,", b);
+	}*/
 }
 
 //  Save

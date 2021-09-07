@@ -26,18 +26,11 @@ extern const uint16_t clrRect[Omax], clrText[Omax];  // colors types
 //  CK  layout
 extern const char* CKname;
 
-#if defined(CK1) || defined(CK8)   //  CK1, CK8
-	const static int nDrawKeys = 91;
-#elif defined(CK6)   //  CK6/3
-	const static int nDrawKeys = 102;
-#elif defined(CK7)   //  CK7/4
-	const static int nDrawKeys = 103;
-#endif
+const static int nDrawKeys = 8;
 extern const DrawKey drawKeys[nDrawKeys];
 
 //  scan codes for gui keys
 extern const uint8_t
-	gGui, gMslow, gLoad,gSave, gDiv, gEsc,gAdd,gEnt,gEnt2,
+	gLoad,gSave, gDiv, gEsc,gAdd,gEnt,
 	gRight,gLeft, gDown,gUp, gPgUp,gPgDn, gEnd,gHome,
-	gCtrl,gSh, gMul,gSub, gIns,gDel, gBckSp,gSpc, gC,gV,gX,
-	gF1,gF2,gF3,gF6,gF7,gF8,gF9,gF10,gF11,gF12;
+	gCtrl,gSh, gMul,gSub, gIns,gDel, gBckSp,gSpc;

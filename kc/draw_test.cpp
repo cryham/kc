@@ -33,16 +33,9 @@ void Gui::DrawTesting()
 		d->setCursor(0,32);
 		//  layer  -
 		d->setClr(20,23,31);
-		sprintf(a,"Layer: %d %s", kc.nLayer,
-				   kc.nLayerLock >= 0 ? "Lock" : "");
 		d->setClr(24,27,31);
 		d->print(a);
 		d->println("");  d->moveCursor(0,4);
-
-		//  todo locks  -
-		//d->setClr(18,21,24);
-		//d->print("Locks: ");  // Num Caps Scrl
-		//d->println("");  d->moveCursor(0,2);
 
 		//  modifiers  -
 		d->setClr(18,21,24);
@@ -99,24 +92,6 @@ void Gui::DrawTesting()
 		sprintf(a,"Press: %d", cnt_press); //, cnt_hold % 1000);
 		d->print(a);
 
-	}	break;
-
-
-	//-----------------------------------------------------
-	case T_Layout:
-	{
-		d->setCursor(0,26);
-		//  layer  -
-		d->setClr(20,23,31);
-		sprintf(a,"Layer: %d %s", kc.nLayer,
-				   kc.nLayerLock >= 0 ? "Lock" : "");
-		d->print(a);
-		d->setCursor(0,38);
-
-		//  keys  - - - -
-		DrawPressed();
-
-		DrawLayout(false);
 	}	break;
 
 
@@ -231,10 +206,4 @@ void Gui::DrawPressed()
 	}	}	}
 
 	d->setCursor(0, d->getCursorY()+12);
-
-	if (seq >= 0)  //  seq preview  ---
-		DrawSeq(seq, 2);
-	else
-	if (fun >= 0)
-		d->print(cFunStr[fun]);
 }

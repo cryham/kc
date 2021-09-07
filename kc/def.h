@@ -6,18 +6,11 @@
 #define DEMOS			//  28        9%
 #define DEMOS_PLASMA	//  36        11%
 #define DEMOS_3D		//  44        15%
-//#define DEMOS_OLD_PAR	//  280 <1%   16%  min
-					// all  6680 10%  17%  max 41k
-#define GAME		// game 1.5k 2%   8%  22.5k
-#define GRAPHS          //  322 <1%
 
 
 //   Keyboard  ----
 //  define just one type, for matrix.h
 #define CK1  // 8x6
-//#define CK6  // 18x8  old CK6/3 in CK1-
-//#define CK7  // 18x8  old CK7/4/2
-//#define CK8  // 20x8  new
 
 //-----------------
 //  extra keyboard features, pins
@@ -26,9 +19,6 @@
 	//#define LED  12
 	//  temperature 'C sensor DS18B20
 	#define TEMP1  31	//  44   9%  24k
-#endif
-#ifdef CK7
-	#define TEMP1  14
 #endif
 
 
@@ -49,9 +39,6 @@ enum EMainMenu  //  main menu entries, level0
 	M_Mapping, M_Sequences,
 	M_Testing, M_Setup, M_Info,
 	M_Display, M_Clock, M_Help,
-	#ifdef GAME
-		M_Game,
-	#endif
 	#ifdef DEMOS
 		M_Demos,
 	#endif
@@ -101,11 +88,9 @@ enum EDisplay
 };
 enum EClock
 {
-	Cl_Adjust, Cl_Simple,
-	Cl_StatsText, Cl_Stats, Cl_StatsExt,
-	#ifdef GRAPHS
-		Cl_Graphs,
-	#endif
+	Cl_Stats,
+	Cl_Graphs,
+	Cl_Adjust,
 	Cl_All
 };
 

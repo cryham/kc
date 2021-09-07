@@ -48,8 +48,6 @@ float Gui::TempBtoF(uint8_t b)
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 void Gui::DrawGraph()
 {
-#ifdef GRAPHS
-
 	#define getPv(i)  ii = kc.grPpos + i - (W-1) + W;  v = kc.grPMin[ii % W];
 	#define getTv(i)  ii =    grTpos + i - (W-1) + W;  v =    grTemp[ii % W];
 
@@ -234,7 +232,5 @@ void Gui::DrawGraph()
 
 	if (!cursor)  d->print("min ");
 	sprintf(a,"%d", grFmin);  d->println(a);
-#endif
-
 #endif
 }

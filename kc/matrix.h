@@ -80,28 +80,12 @@ typedef struct GPIO_Pin {
 
 
 //  ----***  Matrix  ***----
-#if defined(CK8)   //  20 x 8  CK8
-	const static GPIO_Pin
-	Matrix_cols[] = { T3_14, T3_15, T3_16, T3_17, T3_18, T3_19,  // x6
-					  T3_28, T3_27, T3_29, T3_30, T3_31, T3_32, T3_33, T3_25, //x8 14
-					  T3_8, T3_7, T3_6, T3_5, T3_4, T3_24 }, // x6 20
-	Matrix_rows[] = { T3_0, T3_1, T3_2, T3_3, T3_23, T3_22, T3_21, T3_20 };
-#elif defined(CK1)   //  8 x 6  CK1
-	//c| 2:19  4:16  8:18  9:14  10:15  11:17  12:20  13:21
-	//r- 3:0  4:1  5:2  6:3  7:23  8:22
-	const static GPIO_Pin
-	Matrix_cols[] = { T3_19, T3_16, T3_18, T3_14, T3_15, T3_17, T3_20, T3_21 },
-	Matrix_rows[] = { T3_0, T3_1, T3_2, T3_3, T3_23, T3_22 };
-#elif defined(CK6) || defined(CK7)   //  18 x 8  CK6 or CK7
-	const static GPIO_Pin
-	Matrix_cols[] = {
-		gpio(B,16), gpio(B,17), gpio(D,0), gpio(A,12), gpio(A,13), gpio(D,7), gpio(D,4), gpio(D,2), gpio(D,3),
-		gpio(C,2), gpio(C,1), gpio(D,6), gpio(D,5), gpio(B,2), gpio(B,3), gpio(B,1), gpio(B,0), gpio(C,0)  },
-	Matrix_rows[] = {
-		gpio(C,10), gpio(C,11), gpio(B,18), gpio(A,4), gpio(A,5), gpio(B,19), gpio(C,9), gpio(C,8) };
-#else
-	#error "No keyboard defined! Put e.g. #define CK1 in def.h"
-#endif
+//  8 x 6  CK1
+//c| 2:19  4:16  8:18  9:14  10:15  11:17  12:20  13:21
+//r- 3:0  4:1  5:2  6:3  7:23  8:22
+const static GPIO_Pin
+Matrix_cols[] = { T3_19, T3_16, T3_18, T3_14, T3_15, T3_17, T3_20, T3_21 },
+Matrix_rows[] = { T3_0, T3_1, T3_2, T3_3, T3_23, T3_22 };
 
 #define NumCols  sizeof( Matrix_cols ) / sizeof( GPIO_Pin )
 #define NumRows  sizeof( Matrix_rows ) / sizeof( GPIO_Pin )

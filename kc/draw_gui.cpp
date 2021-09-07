@@ -60,11 +60,6 @@ void Gui::Draw()
 				case D_Ngons:    demos.Ngons();  break;  // 12 8ms 14 10ms
 				case D_Fonts:	 demos.Fonts();  break;
 
-			#ifdef DEMOS_OLD_PAR
-				case D_Fountain: demos.Fountain();  break;
-				case D_Balls:    demos.Balls();  break;
-				case D_Space:    demos.Space();  break;
-			#endif
 				case D_Rain:     demos.Rain();  break;
 			}
 		}else
@@ -77,13 +72,6 @@ void Gui::Draw()
 		return;
 	#endif
 
-	#ifdef GAME   // game
-	case M_Game:  game.Draw();  return;
-	#endif
-
-	//  Mappings,Seq  kbd
-	case M_Mapping:   DrawMapping();  return;
-	case M_Sequences: DrawSequences();  return;
 	//  Testing,Setup  kbd
 	case M_Testing:   DrawTesting();  return;
 	case M_Setup:     DrawSetup();  return;

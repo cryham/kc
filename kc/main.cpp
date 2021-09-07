@@ -41,7 +41,7 @@ void main_periodic()
 
 	//  kbd scan
 	bool bsc = false;
-	if (gui.kbdSend ||  // slower for demos
+	if (  // slower for demos
 		gui.ym != M_Demos || scan_n % 4==0)
 	{	Matrix_scan(0);  bsc = true;  }  // K
 
@@ -56,8 +56,8 @@ void main_periodic()
 	//------------------------
 	kc.UpdLay(ms);
 
-	if (gui.kbdSend)
-		kc.Send(ms);
+	//if (gui.kbdSend)
+	// 	kc.Send(ms);
 
 
 	//  scan time vs strobe delay
@@ -90,17 +90,14 @@ int main()
 	//  load set from ee
 	kc.Load();
 	gui.SetScreen(par.startScreen);
-	gui.kbdSend = 1;  // release
 
-#ifdef CK8
-	gui.kbdSend = 0;  // release
-	gui.SetScreen(ST_Test2+T_Matrix);
+#ifdef CK6
+	gui.SetScreen(ST_Test2+T_Pressed);
 	par.brightness = 100;
 	par.brightOff = 90;
 #endif
 
 #ifdef CK1aa
-	gui.kbdSend = 0;  // release
 	par.brightness = 65;
 	par.brightOff = 85;
 	par.debounce = 8;  // ms?
