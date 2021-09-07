@@ -23,7 +23,7 @@ tPicture tp {buffer, ww,hh, ww*hh, 16, RLE_no};
 
 #define CS1 10
 #define DC1  9
-#define RST 26
+#define RST  8
 
 TFT_ST7735 tft = TFT_ST7735(CS1, DC1, RST);
 //TFT_ST7735 tft = TFT_ST7735(CS1, DC1);

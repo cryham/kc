@@ -14,16 +14,16 @@
 
 //   Keyboard  ----
 //  define just one type, for matrix.h
-//#define CK1  // 8x6
-//#define CK6  // 18x8  new CK6/3
+#define CK1  // 8x6
+//#define CK6  // 18x8  old CK6/3 in CK1-
 //#define CK7  // 18x8  old CK7/4/2
-#define CK8  // 20x8  new
+//#define CK8  // 20x8  new
 
 //-----------------
 //  extra keyboard features, pins
 #ifdef CK6
     //  led light
-	#define LED  12
+	//#define LED  12
 	//  temperature 'C sensor DS18B20
 	#define TEMP1  31	//  44   9%  24k
 #endif
