@@ -35,7 +35,6 @@ const uint8_t Gui::Mclr[Gui::C_ALL][2][3] =
 //  Main Menu
 const char* strMain[M_All] =
 {
-	"Mapping", "Sequences",
 	"Testing", "Setup", "Info",
 	"Display", "Clock", "Help",
 #ifdef DEMOS
@@ -77,9 +76,6 @@ const char* strDemo[D_All] =
 	"Hedrons",
 #endif
 	"CK Logo",
-#ifdef DEMOS_OLD_PAR
-	"Space", "Balls", "Fountain",
-#endif
 	"Rain",
 	"N-gons", "Fonts",
 };

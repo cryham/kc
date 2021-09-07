@@ -23,12 +23,6 @@ void Gui::Init(Ada4_ST7735* tft)
 		ym1[i]=0;
 
 
-//	mlevel = 2;  //0
-//	ym = M_Testing;
-//	ym1[M_Testing] = T_Pressed;
-//	SetScreen(ST_Main0);
-
-	
 	oldti=0;  oldti_kr=0;
 	iRam = 0;  hpage = 0;
 
@@ -73,9 +67,6 @@ void Gui::SetScreen(int8_t s)
 
 	switch (s)
 	{
-	case ST_Map:   ym = M_Mapping;  break;
-	case ST_Seqs:  ym = M_Sequences;  break;
-
 	case ST_Test:  ym = M_Testing;  break;
 	case ST_Setup: ym = M_Setup;  break;
 	case ST_Info:  ym = M_Info;  break;
@@ -100,8 +91,6 @@ const char* Gui::StrScreen(int8_t s)
 	switch (s)
 	{
 	case ST_Main0:  return "Main ""\x13";
-	case ST_Map:    return strMain[M_Mapping];
-	case ST_Seqs:   return strMain[M_Sequences];
 
 	case ST_Test:   return strMain[M_Testing];
 	case ST_Setup:  return strMain[M_Setup];

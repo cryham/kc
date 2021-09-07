@@ -36,7 +36,6 @@ class Ada4_ST7735;
 
 enum EMainMenu  //  main menu entries, level0
 {
-	M_Mapping, M_Sequences,
 	M_Testing, M_Setup, M_Info,
 	M_Display, M_Clock, M_Help,
 	#ifdef DEMOS
@@ -56,9 +55,6 @@ enum EDemo  //  Demos, level1
 		D_Hedrons,
 	#endif
 		D_CK_Logo,
-	#ifdef DEMOS_OLD_PAR
-		D_Space, D_Balls, D_Fountain,
-	#endif
 	D_Rain, D_Ngons, D_Fonts,
 	D_All,  D_Next = D_CK_Logo
 };

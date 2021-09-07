@@ -18,13 +18,6 @@ void Demos::Init(Ada4_ST7735* tft)
 	iFps = 0;  iInfo = 0;
 	fntCur = 0;
 
-#ifdef DEMOS_OLD_PAR
-	einit = INone;
-	sCnt = 3*sMax/4;  sVel = 17;  // stars
-	bCnt = min(200,bMax);  bSpd = 120;  bSpRnd = 1;  bRad = 3;  // balls
-	fInt = 3;  fWave = 1;  // fountain
-#endif
-
 	r1Int = 2;  r1Size = 2;  // rain
 	r2Int = -1;  r2Size = 2;  rCur = 1;
 	
@@ -62,9 +55,6 @@ void Demos::KeyPress(EDemo demo, Gui* gui)
 
 	int8_t k = gui->kRight, u = -gui->kUp,
 		pgup = gui->kPgUp, end = gui->kEnd, ct = gui->kCtrl;
-	#ifdef DEMOS_OLD_PAR
-	int sp = gui->kSh ? 2 : 10;
-	#endif
 
 	if (k || u || pgup || end)
 	{	//iInfo = -1;

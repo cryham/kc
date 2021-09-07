@@ -69,46 +69,6 @@ struct Demos
 	void CK_logo();
 
 
-#ifdef DEMOS_OLD_PAR
-	//  Balls  --------
-	const static int  // _param_  none 49472
-	//bMax = 10,    // 156 B  ram size
-	//bMax = 100,  // 1356 B
-	//bMax = 200,  // 2696 B
-	bMax = 300,  // 4036 B  +100 = 1340
-	dMax = bMax, sMax = bMax *12/18;
-
-	int sCnt, sVel;  // stars: count, velocity
-	int bCnt, bSpd, bSpRnd, bRad;  // balls: count, speed, radius max
-	const static int bSpRMax = 8;
-	#define bDet  128  // move detail
-
-	enum EInit {  INone=0, IBalls, ISpace, IDrops  } einit;
-	struct Star {  int x,y,z, v;  uint16_t c;  };  // 18 B
-	struct Ball {  int16_t x,y, vx,vy, r;  uint16_t c;  };  // 12 B
-	struct Drop {  int16_t x,y, vx,vy, t;  uint16_t c;  };
-	union
-	{	//  common data
-		Star star[sMax];
-		Ball ball[bMax];
-		Drop drop[dMax];
-	};
-	void BallsInit();
-	void Balls();
-
-
-	//  Space
-	void SpaceInit();
-	void StarNew(int i);  // new
-	void Space();
-
-	//  Fountain, drops  ----
-	int fInt, fWave;
-	void FountainInit();
-	void Fountain();
-#endif
-
-
 	//  Rain  ----
 	int8_t rCur, r1Int,r1Size, r2Int,r2Size;
 	void Rain();
