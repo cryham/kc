@@ -62,7 +62,7 @@ void Gui::KeysClock()
 			par.xCur = RangeAdd(par.xCur, a, 0, W-1, 1);
 	}
 
-	if (kAdd || kBckSp)  --mlevel;
+	if (kBckSp)  --mlevel;
 
 	if (pgClock == Cl_Adjust || pgClock == Cl_Graphs)
 	{

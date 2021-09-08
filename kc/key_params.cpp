@@ -5,7 +5,7 @@
 #include "periodic.h"
 
 const uint8_t Gui::DispPages[Di_All] = {2,2,1,3,2};
-const uint8_t Gui::ScanPages[S_All] = {3,1,4,2};
+const uint8_t Gui::ScanPages[S_All] = {3};
 
 
 //  Info
@@ -115,7 +115,7 @@ void Gui::KeysParDisplay(int sp)
 			par.tempOfs = RangeAdd(par.tempOfs, kRight * sp, -128, 127, 1);  break;
 		}	break;
 	}
-	if (kAdd || kBckSp)  --mlevel;
+	if (kBckSp)  --mlevel;
 
 	if (kSave)  Save();
 	if (kLoad)  Load(kCtrl);

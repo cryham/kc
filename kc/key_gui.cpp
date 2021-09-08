@@ -5,12 +5,6 @@
 #include "periodic.h"
 
 
-//  scan codes for gui keys
-const uint8_t gLoad=15,gSave=31,gDiv=36, gEsc=0,gAdd=6,gEnt=22,
-	gRight=9,gLeft=10,gDown=20,gUp=4, gPgDn=17,gPgUp=1,gEnd=18,gHome=2,
-	gCtrl=26,gSh=16,gMul=33,gSub=41, gIns=28,gDel=25, gBckSp=8,gSpc=26;
-
-
 //  Key press
 //....................................................................................
 void Gui::KeyPress()
@@ -20,20 +14,29 @@ void Gui::KeyPress()
 	oldti_kr = ti;
 
 	//  update keys press  _k_
-	/*kRight= kr(gRight,dt) - kr(gLeft,dt);
-	kUp   = kr(gDown,dt) - kr(gUp,dt);
-	kPgUp = kr(gPgDn,dt) - kr(gPgUp,dt);
-	kEnd  = kr(gEnd,dt) - kr(gHome,dt);
+	//kRight= kr(0,dt) - kr(1,dt);
+	kUp   = kr(3,dt) - kr(2,dt);
+	/*kRight = Key(0);*/  kBckSp = kr(1,dt);
+	
+	//  scroll
+	static int8_t old = KeyH(5);
+	int8_t scr = KeyH(5);
+	if (scr && !old)
+		kRight = KeyH(4) > 0 ? -1 : 1;
+	else
+		kRight = Key(0);
+	old = scr;
 
-	kAdd = Key(gAdd);  kEnt = Key(gEnt);
+	//kPgUp = kr(gPgDn,dt) - kr(gPgUp,dt);
+	//kEnd  = kr(gEnd,dt) - kr(gHome,dt);
+
+	/*kEnt = Key(gEnt);  kBckSp = kr(gBckSp,dt);
 	kCtrl = KeyH(gCtrl); kSh  = KeyH(gSh);
 	kMul  = Key(gMul);  kSub = Key(gSub);  kDiv = Key(gDiv);
-	//  edit seq
-	kBckSp = kr(gBckSp,dt);
 	kLoad = Key(gLoad);  kSave = Key(gSave);*/
 
 
-	int sp = (kCtrl ? 10 : kSh ? 1 : 2);  // mul
+	int sp = 2; //(kCtrl ? 10 : kSh ? 1 : 2);  // mul
 
 
 	//  Setup
@@ -69,8 +72,8 @@ void Gui::KeyPress()
 	}
 
 
-	//  Add+  <back global
-	if ((kAdd || kBckSp) && mlevel > 0)  --mlevel;
+	//  <back global
+	if (kBckSp && mlevel > 0)  --mlevel;
 
 
 	//  Help
@@ -78,7 +81,7 @@ void Gui::KeyPress()
 	{
 		if (kUp || kPgUp)
 			hpage = RangeAdd(hpage, kUp+kPgUp, 0,HAll-1, 1);
-		if (kRight < 0 || kAdd || kBckSp)
+		if (kRight < 0 || kBckSp)
 			mlevel = 0;  // <back
 		return;
 	}

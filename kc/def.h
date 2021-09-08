@@ -64,12 +64,12 @@ extern const char *strDemo[D_All];
 //  menus  --
 enum ETesting  //  Testing kbd, level1
 {
-	T_Layout, T_Pressed, T_Matrix, T_All
+	T_Matrix, T_All
 };
 
 enum ESetup  //  Setup kbd, level1
 {
-	S_Layer, S_Keyboard, S_Mouse, S_Scan, S_All
+	S_Scan, S_All
 };
 
 enum EInfo  //  Info use,ver

@@ -41,9 +41,9 @@ struct Gui
 
 	//  fade color menu  ---
 	enum EFadeClr
-	{	C_Main=0, C_Demos, C_Test, C_Map, C_Seq,
+	{	C_Main=0, C_Demos, C_Test, 
 		C_Setup, C_Disp, C_Clock, C_Setup2,
-		C_Game, C_GameOpt, C_Info, C_ALL  };
+		C_Info, C_ALL  };
 	const static uint8_t
 		Mclr[C_ALL][2][3];
 
@@ -75,7 +75,7 @@ struct Gui
 
 	//  keys pressed, some +-1  _k_
 	int8_t kRight=0, kUp=0,  kPgUp=0, kEnd=0,
-	/*Add*/ kAdd=0, kEnt=0,  kCtrl=0, kSh=0,  kMul=0, kSub=0, kDiv=0,
+	/*Add*/ kEnt=0,  kCtrl=0, kSh=0,  kMul=0, kSub=0, kDiv=0,
 	/*seq*/	kBckSp=0, /*F4,5*/kLoad=0, kSave=0;
 
 

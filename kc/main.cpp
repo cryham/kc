@@ -74,9 +74,16 @@ int main()
 	ram.initialize();
 	ParInit();  // par defaults
 
-	//  dac for tft led
-	analogWriteRes(12);
-	analogWriteDAC0(0);  // dark
+
+	//  Init extra pins  --------
+	//  PWM brightness to display LED
+	#define LCD_LED  23
+	pinMode(LCD_LED, OUTPUT);
+	analogWriteResolution(12);
+	analogWrite(LCD_LED, 1000);  // 0-4095
+
+	// analogWriteRes(12);
+	// analogWriteDAC0(0);
 
 
 	Ada4_ST7735 tft;
@@ -89,26 +96,12 @@ int main()
 
 	//  load set from ee
 	kc.Load();
-	gui.SetScreen(ST_Clock + Cl_Stats);
-	par.brightness = 100;
-
-#ifdef CK1aa
-	par.debounce = 8;  // ms?
-	par.strobe_delay = 8;
-	par.scanFreq = 50;  // mul by 1 kHz
-
-	par.krDelay = 250/5;  par.krRepeat = 80/5;  // ms
-	par.mkSpeed = 100;  par.mkAccel = 100;
-	par.mkWhSpeed = 100;  par.mkWhAccel = 100;
-	par.quickKeys = 1;
-	par.msLLTapMax = 0;  par.msLLHoldMin = 20;
-	par.rtcCompensate = 0;
-
-	par.dtSeqDef = 20;
-	par.defLayer = 0;  par.editLayer = 2;
-	gui.SetScreen(ST_Test2+T_Pressed);
-	kc.Save();
-#endif
+	// gui.SetScreen(ST_Clock + Cl_Stats);
+	// gui.SetScreen(ST_Test2 + T_Matrix);
+	gui.SetScreen(ST_Main0);
+	// gui.SetScreen(ST_Demos2 + D_Plasma);
+	par.brightness = 50;
+	//kc.Save();
 
 
 	//  kbd
